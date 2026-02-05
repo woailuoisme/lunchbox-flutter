@@ -1,0 +1,143 @@
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../../core/services/storage_service.dart';
+import '../../../core/utils/logger_utils.dart';
+import '../../auth/repositories/auth_repository.dart';
+import '../../device/entities/device_model.dart';
+import 'profile_state.dart';
+
+part 'profile_notifier.g.dart';
+
+@riverpod
+class ProfileNotifier extends _$ProfileNotifier {
+  static const String _keyFavoriteDevices = 'favorite_devices';
+
+  @override
+  ProfileState build() {
+    // 异步初始化
+    Future.microtask(_init);
+    return const ProfileState();
+  }
+
+  Future<void> _init() async {
+    await loadUserInfo();
+    loadFavoriteDevices();
+  }
+
+  /// 加载用户信息
+  Future<void> loadUserInfo() async {
+    try {
+      state = state.copyWith(isLoading: true);
+      final authRepository = ref.read(authRepositoryProvider);
+      final user = await authRepository.getCurrentUser();
+      state = state.copyWith(currentUser: user);
+      LoggerUtils.i('ProfileNotifier: User info loaded');
+    } catch (e) {
+      LoggerUtils.e('ProfileNotifier: Failed to load user info', e);
+    } finally {
+      state = state.copyWith(isLoading: false);
+    }
+  }
+
+  /// 加载收藏设备
+  void loadFavoriteDevices() {
+    try {
+      final storageService = ref.read(storageServiceProvider);
+      final data = storageService.read<List>(_keyFavoriteDevices);
+      if (data != null) {
+        final devices = data
+            .map((json) => DeviceModel.fromJson(json as Map<String, dynamic>))
+            .toList();
+        state = state.copyWith(favoriteDevices: devices);
+        LoggerUtils.i(
+          'ProfileNotifier: Loaded ${devices.length} favorite devices',
+        );
+      }
+    } catch (e) {
+      LoggerUtils.e('ProfileNotifier: Failed to load favorite devices', e);
+    }
+  }
+
+  /// 添加收藏设备
+  Future<void> addFavoriteDevice(DeviceModel device) async {
+    try {
+      if (isFavorite(device.id)) return;
+
+      final updatedList = [...state.favoriteDevices, device];
+      state = state.copyWith(favoriteDevices: updatedList);
+      await _saveFavoriteDevices();
+      LoggerUtils.i('ProfileNotifier: Added favorite device: ${device.name}');
+    } catch (e) {
+      LoggerUtils.e('ProfileNotifier: Failed to add favorite device', e);
+      rethrow;
+    }
+  }
+
+  /// 移除收藏设备
+  Future<void> removeFavoriteDevice(String deviceId) async {
+    try {
+      final updatedList = state.favoriteDevices
+          .where((d) => d.id != deviceId)
+          .toList();
+      state = state.copyWith(favoriteDevices: updatedList);
+      await _saveFavoriteDevices();
+      LoggerUtils.i('ProfileNotifier: Removed favorite device: $deviceId');
+    } catch (e) {
+      LoggerUtils.e('ProfileNotifier: Failed to remove favorite device', e);
+      rethrow;
+    }
+  }
+
+  /// 检查设备是否已收藏
+  bool isFavorite(String deviceId) {
+    return state.favoriteDevices.any((device) => device.id == deviceId);
+  }
+
+  /// 保存收藏设备
+  Future<void> _saveFavoriteDevices() async {
+    try {
+      final storageService = ref.read(storageServiceProvider);
+      final data = state.favoriteDevices
+          .map((device) => device.toJson())
+          .toList();
+      await storageService.write(_keyFavoriteDevices, data);
+    } catch (e) {
+      LoggerUtils.e('ProfileNotifier: Failed to save favorite devices', e);
+    }
+  }
+
+  /// 更新用户信息
+  Future<void> updateUserInfo({String? nickname, String? avatar}) async {
+    try {
+      if (state.currentUser == null) return;
+
+      state = state.copyWith(isLoading: true);
+      final updatedUser = state.currentUser!.copyWith(
+        nickname: nickname ?? state.currentUser!.nickname,
+        avatar: avatar ?? state.currentUser!.avatar,
+      );
+
+      // TODO: 实际应该调用 API 更新用户信息
+      state = state.copyWith(currentUser: updatedUser);
+      LoggerUtils.i('ProfileNotifier: User info updated');
+    } catch (e) {
+      LoggerUtils.e('ProfileNotifier: Failed to update user info', e);
+      rethrow;
+    } finally {
+      state = state.copyWith(isLoading: false);
+    }
+  }
+
+  /// 登出
+  Future<void> logout() async {
+    try {
+      final authRepository = ref.read(authRepositoryProvider);
+      await authRepository.logout();
+      state = state.copyWith(currentUser: null);
+      LoggerUtils.i('ProfileNotifier: User logged out');
+    } catch (e) {
+      LoggerUtils.e('ProfileNotifier: Failed to logout', e);
+      rethrow;
+    }
+  }
+}

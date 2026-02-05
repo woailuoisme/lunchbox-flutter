@@ -1,0 +1,42 @@
+targets:
+  $default:
+    builders:
+      riverpod_generator:
+        enabled: true
+        generate_for:
+          - lib/**/*.dart
+        options:
+          # Riverpod generator options
+          riverpod_generator:
+            # Generate code for all providers
+            generate_riverpod_annotation: true
+      
+      freezed:
+        enabled: true
+        generate_for:
+          - lib/features/**/data/models/*.dart
+          - lib/features/**/domain/entities/*.dart
+          - lib/shared/models/*.dart
+          - lib/core/errors/*.dart
+        options:
+          # Freezed options
+          union_key: type
+          union_value_case: pascal
+      
+      json_serializable:
+        enabled: true
+        generate_for:
+          - lib/features/**/data/models/*.dart
+          - lib/shared/models/*.dart
+        options:
+          # JSON serializable options
+          any_map: false
+          checked: true
+          create_factory: true
+          create_to_json: true
+          disallow_unrecognized_keys: false
+          explicit_to_json: true
+          field_rename: snake
+          generic_argument_factories: false
+          ignore_unannotated: false
+          include_if_null: false
