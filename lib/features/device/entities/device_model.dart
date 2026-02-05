@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'device.dart';
-import 'device_status.dart';
-import 'location_model.dart';
+import 'package:lunchbox/features/device/entities/device.dart';
+import 'package:lunchbox/features/device/entities/device_status.dart';
+import 'package:lunchbox/features/device/entities/location_model.dart';
 
 part 'device_model.freezed.dart';
 part 'device_model.g.dart';

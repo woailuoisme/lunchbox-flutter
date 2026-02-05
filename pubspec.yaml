@@ -21,13 +21,15 @@ dependencies:
   # 路由与网络
   go_router: ^17.1.0
   dio: ^5.9.1
+  retrofit: ^4.9.0
   connectivity_plus: ^7.0.0
   web_socket_channel: ^3.0.3
   mqtt_client: ^10.11.9
 
   # 存储
   shared_preferences: ^2.5.4
-  objectbox: ^5.2.0
+  drift: ^2.31.0
+  sqlite3_flutter_libs: ^0.5.41
 
   # 基础 UI
   cupertino_icons: ^1.0.8
@@ -50,6 +52,8 @@ dependencies:
   smooth_page_indicator: ^2.0.1
   carousel_slider: ^5.1.1
   skeletonizer: ^2.1.2
+  flutter_html: ^3.0.0
+  qr_flutter: ^4.1.0
 
   # 业务功能
   flutter_stripe: ^12.2.0
@@ -70,6 +74,7 @@ dependencies:
   url_launcher: ^6.3.2
   share_plus: ^12.0.1
   package_info_plus: ^9.0.0
+  app_settings: ^7.0.0
 
   # 逻辑工具
   intl: ^0.20.2
@@ -85,11 +90,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  riverpod_lint: ^3.1.3
   mockito: ^5.6.3
 
   # 代码生成
-  build_runner: ^2.10.5
+  build_runner: ^2.11.0
   riverpod_generator: ^4.0.3
+  retrofit_generator: ^10.2.1
   freezed: ^3.2.5
   json_serializable: ^6.12.0
 
@@ -100,6 +107,8 @@ dev_dependencies:
   # 测试支持
   riverpod: any
   test: ^1.29.0
+
+  melos: ^7.4.0
 
 # 版本覆盖
 dependency_overrides:
@@ -120,3 +129,47 @@ flutter_launcher_icons:
   ios: true
   image_path: "assets/icons/icon.png"
   min_sdk_android: 21
+
+melos:
+  packages:
+    - .
+  scripts:
+    analyze:
+      run: flutter analyze
+      description: 运行静态代码分析
+
+    format:
+      run: dart format lib test
+      description: 格式化代码
+
+    fix:
+      run: dart fix --apply
+      description: 自动修复代码问题
+
+    test:
+      run: flutter test
+      description: 运行测试
+
+    build:runner:
+      run: dart run build_runner build --delete-conflicting-outputs
+      description: 运行 build_runner 生成代码
+
+    watch:
+      run: dart run build_runner watch --delete-conflicting-outputs
+      description: 运行 build_runner 监听模式
+
+    gen:i18n:
+      run: dart run slang
+      description: 生成国际化代码
+
+    gen:icons:
+      run: dart run flutter_launcher_icons
+      description: 生成应用图标
+    
+    clean:
+      run: flutter clean
+      description: 清理构建文件
+
+    prepare:
+      run: melos bootstrap && melos run build:runner && melos run gen:i18n
+      description: 准备开发环境 (bootstrap + build + i18n)

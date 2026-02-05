@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import '../entities/order_model.dart';
-import '../providers/order_notifier.dart';
+import 'package:lunchbox/features/order/entities/order_model.dart';
+import 'package:lunchbox/features/order/providers/order_notifier.dart';
 
 /// 订单详情视图
 class OrderDetailView extends ConsumerWidget {

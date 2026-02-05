@@ -1,0 +1,80 @@
+name: Flutter CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_android:
+        description: 'Build Android'
+        required: true
+        default: true
+        type: boolean
+      build_ios:
+        description: 'Build iOS'
+        required: true
+        default: true
+        type: boolean
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs[matrix.input_key] == true }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: Android
+            os: ubuntu-latest
+            input_key: build_android
+            build_cmd: flutter build apk --release
+            artifact_name: app-release-apk
+            artifact_path: build/app/outputs/flutter-apk/app-release.apk
+          - target: iOS
+            os: macos-latest
+            input_key: build_ios
+            build_cmd: flutter build ios --release --no-codesign
+            artifact_name: app-release-ios
+            artifact_path: build/ios/iphoneos/Runner.app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.10.8'
+          channel: 'stable'
+          cache: true
+
+      - name: Set up JDK 17
+        if: matrix.target == 'Android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Install Melos
+        run: dart pub global activate melos
+
+      - name: Bootstrap Workspace
+        run: melos bootstrap
+
+      - name: Generate Code
+        run: melos run build:runner
+
+      - name: Analyze
+        if: matrix.target == 'Android'
+        run: melos run analyze
+
+      - name: Run Tests
+        if: matrix.target == 'Android'
+        run: melos run test
+
+      - name: Build ${{ matrix.target }}
+        run: ${{ matrix.build_cmd }}
+
+      - name: Upload ${{ matrix.target }} Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_path }}

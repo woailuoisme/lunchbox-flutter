@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/values/app_colors.dart';
-import '../providers/settings_providers.dart';
+import 'package:lunchbox/core/values/app_colors.dart';
+import 'package:lunchbox/features/settings/providers/settings_providers.dart';
 
 /// 设备信息页面
 class DeviceInfoView extends ConsumerWidget {

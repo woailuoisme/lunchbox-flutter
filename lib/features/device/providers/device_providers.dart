@@ -1,10 +1,9 @@
+import 'package:lunchbox/core/errors/errors.dart';
+import 'package:lunchbox/features/city/city.dart';
+import 'package:lunchbox/features/device/entities/device_model.dart';
+import 'package:lunchbox/features/device/repositories/device_repository.dart';
+import 'package:lunchbox/features/product/product.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../city/providers/city_providers.dart';
-import '../../product/entities/product_model.dart';
-import '../../product/repositories/product_repository.dart';
-import '../entities/device_model.dart';
-import '../repositories/device_repository.dart';
 
 part 'device_providers.g.dart';
 
@@ -47,10 +46,12 @@ Future<List<DeviceModel>> rawDevices(Ref ref) async {
   final selectedCity = selectedCityAsync.value;
 
   if (selectedCity != null) {
-    return repository.getDevicesByCityId(selectedCity.id);
+    final result = await repository.getDevicesByCityId(selectedCity.id).run();
+    return result.getOrThrow();
   } else {
     // 如果没有选择城市，加载所有设备（或附近设备，这里暂用所有）
-    return repository.getAllDevices();
+    final result = await repository.getAllDevices().run();
+    return result.getOrThrow();
   }
 }
 
@@ -109,12 +110,14 @@ class SelectedDevice extends _$SelectedDevice {
 @riverpod
 Future<DeviceModel> deviceDetail(Ref ref, String deviceId) async {
   final repository = ref.watch(deviceRepositoryProvider);
-  return repository.getDeviceById(deviceId);
+  final result = await repository.getDeviceById(deviceId).run();
+  return result.getOrThrow();
 }
 
 /// 获取指定设备的产品列表
 @riverpod
 Future<List<ProductModel>> deviceProducts(Ref ref, String deviceId) async {
   final repository = ref.watch(productRepositoryProvider);
-  return repository.getProductsByDeviceId(deviceId);
+  final result = await repository.getProductsByDeviceId(deviceId).run();
+  return result.getOrThrow();
 }

@@ -1,7 +1,6 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../utils/logger_utils.dart';
 
 part 'location_service.g.dart';
 

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../utils/logger_utils.dart';
 
 part 'error_handling_interceptor.g.dart';
 

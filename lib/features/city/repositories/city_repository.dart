@@ -1,79 +1,77 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:dio/dio.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:lunchbox/core/errors/errors.dart';
+import 'package:lunchbox/core/network/network.dart';
+import 'package:lunchbox/core/services/services.dart';
+import 'package:lunchbox/core/values/values.dart';
+import 'package:lunchbox/features/city/entities/city_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../core/services/storage_service.dart';
-import '../../../core/values/app_constants.dart';
-import '../../../shared/models/api_response_model.dart';
-import '../../../shared/services/api_provider.dart';
-import '../../../shared/services/base_repository.dart';
-import '../../../shared/services/mock_provider.dart';
-import '../entities/city_model.dart';
 
 part 'city_repository.g.dart';
 
 @Riverpod(keepAlive: true)
 CityRepository cityRepository(Ref ref) {
-  final apiProvider = ref.watch(apiProviderProvider);
-  final mockProvider = ref.watch(mockProviderProvider);
+  final restClient = ref.watch(restClientProvider);
   final storageService = ref.watch(storageServiceProvider);
-  return CityRepository(apiProvider, mockProvider, storageService);
+  return CityRepository(restClient, storageService);
 }
 
 /// 城市仓库类
 /// 负责处理城市相关的数据访问和业务逻辑
-class CityRepository extends BaseRepository {
-  CityRepository(super.apiService, super.mockService, this._storageService);
+class CityRepository {
+  CityRepository(this._client, this._storageService);
+
+  final RestClient _client;
   final StorageService _storageService;
 
   /// 获取所有城市列表
-  Future<List<CityModel>> getAllCities() async {
-    return handleListResponse(() async {
-      if (useMockData) {
-        return mockService.getCities();
-      } else {
-        return apiService.get('/api/cities', (json) {
-          final data = (json! as Map<String, dynamic>)['data'] as List;
-          return List<CityModel>.from(
-            data.map(
-              (item) => CityModel.fromJson(item as Map<String, dynamic>),
-            ),
-          );
-        });
+  TaskEither<Failure, List<CityModel>> getAllCities() {
+    return TaskEither.tryCatch(() async {
+      final response = await _client.getCities();
+      if (response.success && response.data != null) {
+        return response.data!.items;
       }
-    }, '获取所有城市');
+      throw Failure.server(
+        message: response.message,
+        statusCode: response.code,
+      );
+    }, _handleError);
   }
 
   /// 获取热门城市列表
-  Future<List<CityModel>> getHotCities() async {
-    final allCities = await getAllCities();
-    return allCities.where((city) => city.isHot).toList();
+  TaskEither<Failure, List<CityModel>> getHotCities() {
+    return getAllCities().map(
+      (cities) => cities.where((city) => city.isHot).toList(),
+    );
   }
 
   /// 根据城市首字母获取城市列表
-  Future<Map<String, List<CityModel>>> getCitiesByInitial() async {
-    final allCities = await getAllCities();
-    final Map<String, List<CityModel>> result = {};
+  TaskEither<Failure, Map<String, List<CityModel>>> getCitiesByInitial() {
+    return getAllCities().map((cities) {
+      final Map<String, List<CityModel>> result = {};
 
-    for (final city in allCities) {
-      final initial = city.initial.toUpperCase();
-      if (!result.containsKey(initial)) {
-        result[initial] = [];
+      for (final city in cities) {
+        final initial = city.initial.toUpperCase();
+        if (!result.containsKey(initial)) {
+          result[initial] = [];
+        }
+        result[initial]!.add(city);
       }
-      result[initial]!.add(city);
-    }
 
-    // 按首字母排序
-    final sortedResult = Map<String, List<CityModel>>.fromEntries(
-      result.entries.toList()..sort((a, b) => a.key.compareTo(b.key)),
-    );
+      // 按首字母排序
+      final sortedResult = Map<String, List<CityModel>>.fromEntries(
+        result.entries.toList()..sort((a, b) => a.key.compareTo(b.key)),
+      );
 
-    return sortedResult;
+      return sortedResult;
+    });
   }
 
   /// 获取已选择的城市
-  Future<CityModel?> getSelectedCity() async {
+  CityModel? getSelectedCity() {
     try {
       final jsonStr = _storageService.read<String>(
         AppConstants.keySelectedCity,
@@ -96,64 +94,64 @@ class CityRepository extends BaseRepository {
   }
 
   /// 根据城市ID获取城市信息
-  Future<CityModel> getCityById(String cityId) async {
-    return handleResponse(() async {
-      if (useMockData) {
-        // Mock data usually returns all cities, we filter locally
-        final citiesResponse = await mockService.getCities();
-        return ApiResponseModel.success(
-          citiesResponse.data!.firstWhere((city) => city.id == cityId),
-        );
-      } else {
-        return apiService.get('/api/cities/$cityId', (json) {
-          final data = (json! as Map<String, dynamic>)['data'];
-          return CityModel.fromJson(data as Map<String, dynamic>);
-        });
+  TaskEither<Failure, CityModel> getCityById(String cityId) {
+    return TaskEither.tryCatch(() async {
+      final response = await _client.getCityById(cityId);
+      if (response.success && response.data != null) {
+        return response.data!;
       }
-    }, '获取城市详情');
+      throw Failure.server(
+        message: response.message,
+        statusCode: response.code,
+      );
+    }, _handleError);
   }
 
   /// 搜索城市
-  Future<List<CityModel>> searchCities(String keyword) async {
+  TaskEither<Failure, List<CityModel>> searchCities(String keyword) {
     if (keyword.isEmpty) {
-      return [];
+      return TaskEither.right([]);
     }
 
-    final allCities = await getAllCities();
-    final lowercaseKeyword = keyword.toLowerCase();
+    return getAllCities().map((cities) {
+      final lowercaseKeyword = keyword.toLowerCase();
 
-    return allCities
-        .where(
-          (city) =>
-              city.name.contains(keyword) ||
-              city.pinyin.toLowerCase().contains(lowercaseKeyword),
-        )
-        .toList();
+      return cities
+          .where(
+            (city) =>
+                city.name.contains(keyword) ||
+                city.pinyin.toLowerCase().contains(lowercaseKeyword),
+          )
+          .toList();
+    });
   }
 
   /// 获取用户当前位置附近的城市
-  Future<CityModel?> getNearbyCity(double latitude, double longitude) async {
-    final allCities = await getAllCities();
+  TaskEither<Failure, CityModel?> getNearbyCity(
+    double latitude,
+    double longitude,
+  ) {
+    return getAllCities().map((cities) {
+      // 简单的距离计算，实际项目中可能需要更复杂的地理计算
+      CityModel? nearestCity;
+      double minDistance = double.infinity;
 
-    // 简单的距离计算，实际项目中可能需要更复杂的地理计算
-    CityModel? nearestCity;
-    double minDistance = double.infinity;
+      for (final city in cities) {
+        final distance = _calculateDistance(
+          latitude,
+          longitude,
+          city.latitude,
+          city.longitude,
+        );
 
-    for (final city in allCities) {
-      final distance = _calculateDistance(
-        latitude,
-        longitude,
-        city.latitude,
-        city.longitude,
-      );
-
-      if (distance < minDistance) {
-        minDistance = distance;
-        nearestCity = city;
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestCity = city;
+        }
       }
-    }
 
-    return nearestCity;
+      return nearestCity;
+    });
   }
 
   /// 计算两点之间的距离（单位：千米）
@@ -184,5 +182,15 @@ class CityRepository extends BaseRepository {
   /// 将角度转换为弧度
   double _degreesToRadians(double degrees) {
     return degrees * pi / 180;
+  }
+
+  Failure _handleError(Object error, StackTrace stackTrace) {
+    if (error is DioException) {
+      return Failure.network(
+        message: error.message ?? 'Unknown network error',
+        statusCode: error.response?.statusCode,
+      );
+    }
+    return Failure.server(message: error.toString(), statusCode: 500);
   }
 }

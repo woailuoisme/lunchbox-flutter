@@ -1,9 +1,8 @@
+import 'package:lunchbox/core/services/storage_service.dart';
+import 'package:lunchbox/core/utils/logger_utils.dart';
+import 'package:lunchbox/core/values/app_constants.dart';
+import 'package:lunchbox/features/onboarding/providers/onboarding_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../core/services/storage_service.dart';
-import '../../../core/utils/logger_utils.dart';
-import '../../../core/values/app_constants.dart';
-import 'onboarding_state.dart';
 
 part 'onboarding_notifier.g.dart';
 

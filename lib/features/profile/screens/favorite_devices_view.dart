@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../routes/app_routes.dart';
-import '../../device/entities/device_model.dart';
-import '../providers/profile_notifier.dart';
+import 'package:lunchbox/features/device/entities/device_model.dart';
+import 'package:lunchbox/features/profile/providers/profile_notifier.dart';
+import 'package:lunchbox/routes/app_routes.dart';
 
 /// 收藏设备视图
 class FavoriteDevicesView extends ConsumerWidget {

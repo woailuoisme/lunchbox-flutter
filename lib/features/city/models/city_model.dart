@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../entities/city.dart';
+import 'package:lunchbox/features/city/entities/city.dart';
 
 part 'city_model.freezed.dart';
 part 'city_model.g.dart';

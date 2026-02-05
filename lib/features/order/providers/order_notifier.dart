@@ -1,10 +1,10 @@
+import 'package:lunchbox/core/errors/failure_extensions.dart';
+import 'package:lunchbox/core/utils/logger_utils.dart';
+import 'package:lunchbox/features/cart/providers/cart_notifier.dart';
+import 'package:lunchbox/features/order/entities/order_model.dart';
+import 'package:lunchbox/features/order/providers/order_state.dart';
+import 'package:lunchbox/features/order/repositories/order_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../core/utils/logger_utils.dart';
-import '../../cart/providers/cart_notifier.dart';
-import '../entities/order_model.dart';
-import '../repositories/order_repository.dart';
-import 'order_state.dart';
 
 part 'order_notifier.g.dart';
 
@@ -18,80 +18,97 @@ class OrderNotifier extends _$OrderNotifier {
 
   Future<void> loadOrders({String? status}) async {
     state = state.copyWith(isLoading: true);
-    try {
-      final repository = ref.read(orderRepositoryProvider);
-      final result = await repository.getUserOrders();
+    final repository = ref.read(orderRepositoryProvider);
+    final result = await repository.getUserOrders().run();
 
-      List<OrderModel> filteredOrders;
-      if (status != null && status != 'all') {
-        filteredOrders = result
-            .where((order) => order.status.name == status)
-            .toList();
-      } else {
-        filteredOrders = result;
-      }
+    result.fold(
+      (failure) {
+        LoggerUtils.e('OrderNotifier: Failed to load orders', failure);
+        state = state.copyWith(isLoading: false);
+      },
+      (data) {
+        List<OrderModel> filteredOrders;
+        if (status != null && status != 'all') {
+          filteredOrders = data
+              .where((order) => order.status.name == status)
+              .toList();
+        } else {
+          filteredOrders = data;
+        }
 
-      state = state.copyWith(orders: filteredOrders, isLoading: false);
-      LoggerUtils.i('OrderNotifier: Loaded ${filteredOrders.length} orders');
-    } catch (e) {
-      LoggerUtils.e('OrderNotifier: Failed to load orders', e);
-      state = state.copyWith(isLoading: false);
-    }
+        state = state.copyWith(orders: filteredOrders, isLoading: false);
+        LoggerUtils.i('OrderNotifier: Loaded ${filteredOrders.length} orders');
+      },
+    );
   }
 
   Future<void> loadOrderById(String orderId) async {
     state = state.copyWith(isLoading: true);
-    try {
-      final repository = ref.read(orderRepositoryProvider);
-      final order = await repository.getOrderById(orderId);
-      state = state.copyWith(selectedOrder: order, isLoading: false);
-      LoggerUtils.i('OrderNotifier: Loaded order: ${order.id}');
-    } catch (e) {
-      LoggerUtils.e('OrderNotifier: Failed to load order', e);
-      state = state.copyWith(isLoading: false);
-    }
+    final repository = ref.read(orderRepositoryProvider);
+    final result = await repository.getOrderById(orderId).run();
+
+    result.fold(
+      (failure) {
+        LoggerUtils.e('OrderNotifier: Failed to load order', failure);
+        state = state.copyWith(isLoading: false);
+      },
+      (order) {
+        state = state.copyWith(selectedOrder: order, isLoading: false);
+        LoggerUtils.i('OrderNotifier: Loaded order: ${order.id}');
+      },
+    );
   }
 
   Future<OrderModel?> createOrder(String deviceId) async {
     state = state.copyWith(isLoading: true);
-    try {
-      final cartState = ref.read(cartProvider);
+    final cartState = ref.read(cartProvider);
 
-      if (cartState.cartItems.isEmpty) {
-        state = state.copyWith(isLoading: false);
-        return null;
-      }
-
-      final repository = ref.read(orderRepositoryProvider);
-      final order = await repository.createOrder(
-        deviceId: deviceId,
-        cartItems: cartState.cartItems,
-        paymentMethod: state.selectedPaymentMethod,
-      );
-
-      // Clear cart
-      await ref.read(cartProvider.notifier).clearCart();
-
-      state = state.copyWith(isLoading: false, selectedOrder: order);
-      LoggerUtils.i('OrderNotifier: Order created: ${order.id}');
-      return order;
-    } catch (e) {
-      LoggerUtils.e('OrderNotifier: Failed to create order', e);
+    if (cartState.cartItems.isEmpty) {
       state = state.copyWith(isLoading: false);
-      rethrow;
+      return null;
     }
+
+    final repository = ref.read(orderRepositoryProvider);
+    final result = await repository
+        .createOrder(
+          deviceId: deviceId,
+          cartItems: cartState.cartItems,
+          paymentMethod: state.selectedPaymentMethod,
+        )
+        .run();
+
+    return result.fold(
+      (failure) {
+        LoggerUtils.e('OrderNotifier: Failed to create order', failure);
+        state = state.copyWith(isLoading: false);
+        // Throwing exception to be handled by UI
+        throw Exception(failure.toUserMessage());
+      },
+      (order) async {
+        // Clear cart
+        await ref.read(cartProvider.notifier).clearCart();
+
+        state = state.copyWith(isLoading: false, selectedOrder: order);
+        LoggerUtils.i('OrderNotifier: Order created: ${order.id}');
+        return order;
+      },
+    );
   }
 
   Future<void> cancelOrder(String orderId) async {
-    try {
-      final repository = ref.read(orderRepositoryProvider);
-      await repository.cancelOrder(orderId);
-      await loadOrders(status: state.selectedStatus);
-      LoggerUtils.i('OrderNotifier: Order cancelled: $orderId');
-    } catch (e) {
-      LoggerUtils.e('OrderNotifier: Failed to cancel order', e);
-      rethrow;
-    }
+    final repository = ref.read(orderRepositoryProvider);
+    final result = await repository.cancelOrder(orderId).run();
+
+    result.fold(
+      (failure) {
+        LoggerUtils.e('OrderNotifier: Failed to cancel order', failure);
+        throw Exception(failure.toUserMessage());
+      },
+      (_) async {
+        await loadOrders(status: state.selectedStatus);
+        LoggerUtils.i('OrderNotifier: Order cancelled: $orderId');
+      },
+    );
   }
 
   void filterByStatus(String status) {

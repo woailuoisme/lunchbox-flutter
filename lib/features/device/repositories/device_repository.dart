@@ -1,190 +1,165 @@
 import 'dart:math';
 
+import 'package:dio/dio.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:lunchbox/core/errors/failure.dart';
+import 'package:lunchbox/core/network/rest_client.dart';
+import 'package:lunchbox/features/device/entities/device_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../shared/models/api_response_model.dart';
-import '../../../shared/services/api_provider.dart';
-import '../../../shared/services/base_repository.dart';
-import '../../../shared/services/mock_provider.dart';
-import '../entities/device_model.dart';
 
 part 'device_repository.g.dart';
 
 @Riverpod(keepAlive: true)
 DeviceRepository deviceRepository(Ref ref) {
-  final apiProvider = ref.watch(apiProviderProvider);
-  final mockProvider = ref.watch(mockProviderProvider);
-  return DeviceRepository(apiProvider, mockProvider);
+  final restClient = ref.watch(restClientProvider);
+  return DeviceRepository(restClient);
 }
 
 /// 设备仓库类
 /// 负责处理自动售货机设备相关的数据访问和业务逻辑
-class DeviceRepository extends BaseRepository {
-  DeviceRepository(super.apiService, super.mockService, {super.useMockData});
+class DeviceRepository {
+  DeviceRepository(this._client);
+
+  final RestClient _client;
 
   /// 获取所有设备列表
-  Future<List<DeviceModel>> getAllDevices() async {
-    return handleListResponse(() async {
-      if (useMockData) {
-        return mockService.getDevices();
-      } else {
-        return apiService.get('/api/devices', (json) {
-          final data = (json! as Map<String, dynamic>)['data'] as List;
-          return List<DeviceModel>.from(
-            data.map(
-              (item) => DeviceModel.fromJson(item as Map<String, dynamic>),
-            ),
-          );
-        });
+  TaskEither<Failure, List<DeviceModel>> getAllDevices() {
+    return TaskEither.tryCatch(() async {
+      final response = await _client.getDevices();
+      if (response.success && response.data != null) {
+        return response.data!.items;
       }
-    }, '获取所有设备');
+      throw Failure.server(
+        message: response.message,
+        statusCode: response.code,
+      );
+    }, _handleError);
   }
 
   /// 根据城市ID获取设备列表
-  Future<List<DeviceModel>> getDevicesByCityId(String cityId) async {
-    return handleListResponse(() async {
-      if (useMockData) {
-        final response = await mockService.getDevices();
-        final filteredDevices = response.data!
-            .where((device) => device.cityId == cityId)
-            .toList();
-        return ApiResponseModel.success(filteredDevices);
-      } else {
-        return apiService.get('/api/devices/city/$cityId', (json) {
-          final data = (json! as Map<String, dynamic>)['data'] as List;
-          return List<DeviceModel>.from(
-            data.map(
-              (item) => DeviceModel.fromJson(item as Map<String, dynamic>),
-            ),
-          );
-        });
+  TaskEither<Failure, List<DeviceModel>> getDevicesByCityId(String cityId) {
+    return TaskEither.tryCatch(() async {
+      final response = await _client.getDevicesByCity(cityId);
+      if (response.success && response.data != null) {
+        return response.data!.items;
       }
-    }, '根据城市获取设备');
+      throw Failure.server(
+        message: response.message,
+        statusCode: response.code,
+      );
+    }, _handleError);
   }
 
   /// 根据设备ID获取设备详情
-  Future<DeviceModel> getDeviceById(String deviceId) async {
-    return handleResponse(() async {
-      if (useMockData) {
-        return mockService.getDeviceById(deviceId);
-      } else {
-        return apiService.get(
-          '/api/devices/$deviceId',
-          (json) => DeviceModel.fromJson(
-            (json! as Map<String, dynamic>)['data'] as Map<String, dynamic>,
-          ),
-        );
+  TaskEither<Failure, DeviceModel> getDeviceById(String deviceId) {
+    return TaskEither.tryCatch(() async {
+      final response = await _client.getDeviceById(deviceId);
+      if (response.success && response.data != null) {
+        return response.data!;
       }
-    }, '获取设备详情');
+      throw Failure.server(
+        message: response.message,
+        statusCode: response.code,
+      );
+    }, _handleError);
   }
 
   /// 获取用户当前位置附近的设备
-  Future<List<DeviceModel>> getNearbyDevices(
+  TaskEither<Failure, List<DeviceModel>> getNearbyDevices(
     double latitude,
     double longitude, {
     double radius = 1.0,
     int limit = 10,
-  }) async {
-    final allDevices = await getAllDevices();
+  }) {
+    return getAllDevices().map((allDevices) {
+      // 计算并排序设备距离
+      final deviceWithDistance = <DeviceModel, double>{};
 
-    // 计算并排序设备距离
-    final deviceWithDistance = <DeviceModel, double>{};
+      for (final device in allDevices) {
+        final distance = _calculateDistance(
+          latitude,
+          longitude,
+          device.location.latitude,
+          device.location.longitude,
+        );
 
-    for (final device in allDevices) {
-      final distance = _calculateDistance(
-        latitude,
-        longitude,
-        device.location.latitude,
-        device.location.longitude,
-      );
-
-      if (distance <= radius) {
-        deviceWithDistance[device] = distance;
+        if (distance <= radius) {
+          deviceWithDistance[device] = distance;
+        }
       }
-    }
 
-    // 按距离排序并限制数量
-    final sortedDevices = deviceWithDistance.entries.toList()
-      ..sort((a, b) => a.value.compareTo(b.value));
+      // 按距离排序并限制数量
+      final sortedDevices = deviceWithDistance.entries.toList()
+        ..sort((a, b) => a.value.compareTo(b.value));
 
-    return sortedDevices.take(limit).map((entry) => entry.key).toList();
+      return sortedDevices.take(limit).map((entry) => entry.key).toList();
+    });
   }
 
   /// 获取在线设备列表
-  Future<List<DeviceModel>> getOnlineDevices() async {
-    final allDevices = await getAllDevices();
-    return allDevices.where((device) => device.isOnline).toList();
+  TaskEither<Failure, List<DeviceModel>> getOnlineDevices() {
+    return getAllDevices().map(
+      (devices) => devices.where((device) => device.isOnline).toList(),
+    );
   }
 
   /// 搜索设备
-  Future<List<DeviceModel>> searchDevices(
+  TaskEither<Failure, List<DeviceModel>> searchDevices(
     String keyword, {
     String? cityId,
-  }) async {
-    List<DeviceModel> devices;
+  }) {
+    final devicesTask = cityId != null
+        ? getDevicesByCityId(cityId)
+        : getAllDevices();
 
-    if (cityId != null) {
-      devices = await getDevicesByCityId(cityId);
-    } else {
-      devices = await getAllDevices();
-    }
+    return devicesTask.map((devices) {
+      if (keyword.isEmpty) {
+        return devices;
+      }
 
-    if (keyword.isEmpty) {
-      return devices;
-    }
+      final lowercaseKeyword = keyword.toLowerCase();
 
-    final lowercaseKeyword = keyword.toLowerCase();
-
-    return devices
-        .where(
-          (device) =>
-              device.name.toLowerCase().contains(lowercaseKeyword) ||
-              (device.location.address?.toLowerCase().contains(
-                    lowercaseKeyword,
-                  ) ??
-                  false),
-        )
-        .toList();
+      return devices
+          .where(
+            (device) =>
+                device.name.toLowerCase().contains(lowercaseKeyword) ||
+                (device.location.address?.toLowerCase().contains(
+                      lowercaseKeyword,
+                    ) ??
+                    false),
+          )
+          .toList();
+    });
   }
 
   /// 检查设备状态
-  Future<DeviceModel> checkDeviceStatus(String deviceId) async {
-    return handleResponse(() async {
-      if (useMockData) {
-        // 在Mock数据中模拟设备状态检查
-        return mockService.getDeviceById(deviceId);
-      } else {
-        return apiService.get(
-          '/api/devices/$deviceId/status',
-          (json) => DeviceModel.fromJson(
-            (json! as Map<String, dynamic>)['data'] as Map<String, dynamic>,
-          ),
-        );
+  TaskEither<Failure, DeviceModel> checkDeviceStatus(String deviceId) {
+    return TaskEither.tryCatch(() async {
+      final response = await _client.getDeviceStatus(deviceId);
+      if (response.success && response.data != null) {
+        return response.data!;
       }
-    }, '检查设备状态');
+      throw Failure.server(
+        message: response.message,
+        statusCode: response.code,
+      );
+    }, _handleError);
   }
 
   /// 获取设备使用统计
-  Future<Map<String, dynamic>> getDeviceStatistics(String deviceId) async {
-    return handleResponse(() async {
-      if (useMockData) {
-        // 返回模拟的统计数据
-        final stats = {
-          'todayOrders': Random().nextInt(100) + 50,
-          'todaySales': (Random().nextInt(5000) + 2000).toDouble(),
-          'totalOrders': Random().nextInt(10000) + 5000,
-          'totalSales': (Random().nextInt(100000) + 50000).toDouble(),
-          'stockRate': (Random().nextDouble() * 0.3 + 0.7).toStringAsFixed(2),
-        };
-        return ApiResponseModel.success(stats);
-      } else {
-        return apiService.get(
-          '/api/devices/$deviceId/statistics',
-          (json) =>
-              (json! as Map<String, dynamic>)['data'] as Map<String, dynamic>,
-        );
+  TaskEither<Failure, Map<String, dynamic>> getDeviceStatistics(
+    String deviceId,
+  ) {
+    return TaskEither.tryCatch(() async {
+      final response = await _client.getDeviceStatistics(deviceId);
+      if (response.success && response.data != null) {
+        return response.data!;
       }
-    }, '获取设备统计');
+      throw Failure.server(
+        message: response.message,
+        statusCode: response.code,
+      );
+    }, _handleError);
   }
 
   /// 计算两点之间的距离（单位：千米）
@@ -215,5 +190,15 @@ class DeviceRepository extends BaseRepository {
   /// 将角度转换为弧度
   double _degreesToRadians(double degrees) {
     return degrees * pi / 180;
+  }
+
+  Failure _handleError(Object error, StackTrace stackTrace) {
+    if (error is DioException) {
+      return Failure.network(
+        message: error.message ?? 'Unknown network error',
+        statusCode: error.response?.statusCode,
+      );
+    }
+    return Failure.server(message: error.toString(), statusCode: 500);
   }
 }

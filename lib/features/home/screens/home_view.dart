@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lunchbox/core/values/app_colors.dart';
+import 'package:lunchbox/features/device/entities/device_model.dart';
+import 'package:lunchbox/features/device/entities/location_model.dart';
+import 'package:lunchbox/features/home/providers/home_notifier.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
-import '../../../core/values/app_colors.dart';
-import '../../device/entities/device_model.dart';
-import '../../device/entities/location_model.dart';
-import '../providers/home_notifier.dart';
 
 /// 首页视图
 class HomeView extends ConsumerWidget {

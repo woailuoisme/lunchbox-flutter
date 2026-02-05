@@ -1,7 +1,7 @@
+import 'package:lunchbox/core/errors/failure_extensions.dart';
+import 'package:lunchbox/features/city/entities/city_model.dart';
+import 'package:lunchbox/features/city/repositories/city_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../entities/city_model.dart';
-import '../repositories/city_repository.dart';
 
 part 'city_providers.g.dart';
 
@@ -11,7 +11,8 @@ class AllCities extends _$AllCities {
   @override
   Future<List<CityModel>> build() async {
     final repository = ref.watch(cityRepositoryProvider);
-    return repository.getAllCities();
+    final result = await repository.getAllCities().run();
+    return result.getOrThrow();
   }
 }
 
@@ -21,7 +22,8 @@ class HotCities extends _$HotCities {
   @override
   Future<List<CityModel>> build() async {
     final repository = ref.watch(cityRepositoryProvider);
-    return repository.getHotCities();
+    final result = await repository.getHotCities().run();
+    return result.getOrThrow();
   }
 }
 

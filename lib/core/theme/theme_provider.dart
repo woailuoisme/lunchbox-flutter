@@ -1,9 +1,8 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:lunchbox/core/services/storage_service.dart';
+import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../services/storage_service.dart';
-import '../values/app_colors.dart';
 
 part 'theme_provider.g.dart';
 

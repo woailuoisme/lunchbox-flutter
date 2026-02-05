@@ -1,8 +1,8 @@
 import 'package:formz/formz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../models/password.dart';
-import '../models/username.dart';
+import 'package:lunchbox/features/auth/models/password.dart';
+import 'package:lunchbox/features/auth/models/username.dart';
 
 part 'login_state.freezed.dart';
 

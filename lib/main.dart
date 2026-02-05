@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/core/services/services.dart';
+import 'package:lunchbox/core/theme/theme.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:lunchbox/routes/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
-
-import 'core/services/storage_service.dart';
-import 'core/theme/theme_provider.dart';
-import 'i18n/translations.g.dart';
-import 'routes/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

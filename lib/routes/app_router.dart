@@ -1,20 +1,16 @@
 import 'package:go_router/go_router.dart';
+import 'package:lunchbox/core/providers/providers.dart';
+import 'package:lunchbox/features/auth/auth.dart';
+import 'package:lunchbox/features/device/device.dart';
+import 'package:lunchbox/features/home/home.dart';
+import 'package:lunchbox/features/onboarding/onboarding.dart';
+import 'package:lunchbox/features/order/order.dart';
+import 'package:lunchbox/features/profile/profile.dart';
+import 'package:lunchbox/features/settings/settings.dart';
+import 'package:lunchbox/features/splash/splash.dart';
+import 'package:lunchbox/routes/app_routes.dart';
+import 'package:lunchbox/shared/shared.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../core/providers/navigator_key_provider.dart';
-import '../features/auth/providers/auth_notifier.dart';
-import '../features/auth/screens/login_view.dart';
-import '../features/device/screens/device_detail_view.dart';
-import '../features/home/screens/home_view.dart';
-import '../features/onboarding/screens/onboarding_view.dart';
-import '../features/order/screens/order_list_view.dart';
-import '../features/profile/screens/profile_view_riverpod.dart';
-import '../features/settings/screens/about_view.dart';
-import '../features/settings/screens/device_info_view.dart';
-import '../features/settings/screens/settings_view.dart';
-import '../features/splash/screens/splash_view.dart';
-import '../shared/widgets/scaffold_with_navbar.dart';
-import 'app_routes.dart';
 
 part 'app_router.g.dart';
 

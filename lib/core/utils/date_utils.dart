@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-import '../../i18n/translations.g.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 日期时间工具类
 class DateUtils {

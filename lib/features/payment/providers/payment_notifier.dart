@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:lunchbox/core/errors/failure_extensions.dart';
+import 'package:lunchbox/core/utils/logger_utils.dart';
+import 'package:lunchbox/features/order/entities/order_model.dart';
+import 'package:lunchbox/features/order/repositories/order_repository.dart';
+import 'package:lunchbox/features/payment/providers/payment_state.dart';
+import 'package:lunchbox/features/payment/repositories/payment_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../core/utils/logger_utils.dart';
-import '../../order/entities/order_model.dart';
-import '../../order/repositories/order_repository.dart';
-import '../repositories/payment_repository.dart';
-import 'payment_state.dart';
 
 part 'payment_notifier.g.dart';
 
@@ -44,30 +44,42 @@ class PaymentNotifier extends _$PaymentNotifier {
 
       final paymentRepo = ref.read(paymentRepositoryProvider);
       // 使用 CNY 作为默认货币，实际应根据业务需求调整
-      final data = await paymentRepo.createPaymentIntent(
-        state.order!.id,
-        state.order!.totalAmount,
-        'CNY',
+      final result = await paymentRepo
+          .createPaymentIntent(state.order!.id, state.order!.totalAmount, 'CNY')
+          .run();
+
+      await result.fold(
+        (failure) async {
+          LoggerUtils.e(
+            'PaymentNotifier: Failed to initialize payment sheet',
+            failure,
+          );
+          state = state.copyWith(
+            isLoading: false,
+            errorMessage: '支付初始化失败: ${failure.toUserMessage()}',
+          );
+        },
+        (data) async {
+          // 设置 Stripe publishableKey
+          if (data['publishableKey'] != null) {
+            Stripe.publishableKey = data['publishableKey'] as String;
+          }
+
+          // 初始化 Payment Sheet
+          await Stripe.instance.initPaymentSheet(
+            paymentSheetParameters: SetupPaymentSheetParameters(
+              merchantDisplayName: 'Lunchbox App',
+              paymentIntentClientSecret: data['paymentIntent'] as String?,
+              customerEphemeralKeySecret: data['ephemeralKey'] as String?,
+              customerId: data['customer'] as String?,
+              // 如果有需要，可以配置 applePay, googlePay 等
+            ),
+          );
+
+          state = state.copyWith(isPaymentSheetReady: true, isLoading: false);
+          LoggerUtils.i('PaymentNotifier: Payment sheet initialized');
+        },
       );
-
-      // 设置 Stripe publishableKey
-      if (data['publishableKey'] != null) {
-        Stripe.publishableKey = data['publishableKey'] as String;
-      }
-
-      // 初始化 Payment Sheet
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          merchantDisplayName: 'Lunchbox App',
-          paymentIntentClientSecret: data['paymentIntent'] as String?,
-          customerEphemeralKeySecret: data['ephemeralKey'] as String?,
-          customerId: data['customer'] as String?,
-          // 如果有需要，可以配置 applePay, googlePay 等
-        ),
-      );
-
-      state = state.copyWith(isPaymentSheetReady: true, isLoading: false);
-      LoggerUtils.i('PaymentNotifier: Payment sheet initialized');
     } catch (e) {
       LoggerUtils.e('PaymentNotifier: Failed to initialize payment sheet', e);
       state = state.copyWith(isLoading: false, errorMessage: '支付初始化失败: $e');
@@ -113,9 +125,23 @@ class PaymentNotifier extends _$PaymentNotifier {
     try {
       state = state.copyWith(isLoading: true);
       final orderRepository = ref.read(orderRepositoryProvider);
-      final updatedOrder = await orderRepository.getOrderById(state.order!.id);
+      final result = await orderRepository.getOrderById(state.order!.id).run();
 
-      state = state.copyWith(order: updatedOrder, isLoading: false);
+      result.fold(
+        (failure) {
+          LoggerUtils.e(
+            'PaymentNotifier: Failed to check payment status',
+            failure,
+          );
+          state = state.copyWith(
+            isLoading: false,
+            errorMessage: '检查支付状态失败: ${failure.toUserMessage()}',
+          );
+        },
+        (updatedOrder) {
+          state = state.copyWith(order: updatedOrder, isLoading: false);
+        },
+      );
 
       // 如果订单状态已更新为已支付，UI 层会相应处理
     } catch (e) {
@@ -143,7 +169,12 @@ class PaymentNotifier extends _$PaymentNotifier {
 
       if (state.order != null) {
         final orderRepository = ref.read(orderRepositoryProvider);
-        await orderRepository.cancelOrder(state.order!.id);
+        final result = await orderRepository.cancelOrder(state.order!.id).run();
+
+        result.fold((failure) {
+          LoggerUtils.e('PaymentNotifier: Failed to cancel order', failure);
+          throw Exception(failure.toUserMessage());
+        }, (_) => null);
       }
     } catch (e) {
       LoggerUtils.e('PaymentNotifier: Failed to cancel order', e);

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lunchbox/core/values/app_colors.dart';
+import 'package:lunchbox/core/widgets/error_widget.dart' as app_error; // 防止命名冲突
+import 'package:lunchbox/core/widgets/loading_widget.dart';
+import 'package:lunchbox/features/city/entities/city_model.dart';
+import 'package:lunchbox/features/city/providers/city_providers.dart';
 import 'package:toastification/toastification.dart';
-
-import '../../../core/values/app_colors.dart';
-import '../../../core/widgets/error_widget.dart' as app_error; // 防止命名冲突
-import '../../../core/widgets/loading_widget.dart';
-import '../entities/city_model.dart';
-import '../providers/city_providers.dart';
 
 /// 城市选择视图
 class CitySelectionView extends ConsumerStatefulWidget {

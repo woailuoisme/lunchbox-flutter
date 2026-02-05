@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/core/values/app_colors.dart';
+import 'package:lunchbox/features/settings/providers/settings_providers.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import '../../../core/values/app_colors.dart';
-import '../providers/settings_providers.dart';
 
 /// 关于应用页面
 class AboutView extends ConsumerWidget {

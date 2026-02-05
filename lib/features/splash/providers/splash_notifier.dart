@@ -1,10 +1,9 @@
+import 'package:lunchbox/core/services/storage_service.dart';
+import 'package:lunchbox/core/utils/logger_utils.dart';
+import 'package:lunchbox/core/values/app_constants.dart';
+import 'package:lunchbox/features/auth/repositories/auth_repository.dart';
+import 'package:lunchbox/routes/app_routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../core/services/storage_service.dart';
-import '../../../core/utils/logger_utils.dart';
-import '../../../core/values/app_constants.dart';
-import '../../../routes/app_routes.dart';
-import '../../auth/repositories/auth_repository.dart';
 
 part 'splash_notifier.g.dart';
 
@@ -117,10 +116,20 @@ class SplashNotifier extends _$SplashNotifier {
 
   Future<void> _preloadUserData(AuthRepository authRepository) async {
     try {
-      final user = await authRepository.getCurrentUser();
-      if (user != null) {
-        LoggerUtils.d('SplashNotifier: User data preloaded: ${user.username}');
-      }
+      final result = await authRepository.getCurrentUser().run();
+
+      result.fold(
+        (failure) {
+          LoggerUtils.e('SplashNotifier: Failed to preload user data', failure);
+        },
+        (user) {
+          if (user != null) {
+            LoggerUtils.d(
+              'SplashNotifier: User data preloaded: ${user.username}',
+            );
+          }
+        },
+      );
     } catch (e, stackTrace) {
       LoggerUtils.e(
         'SplashNotifier: Failed to preload user data',

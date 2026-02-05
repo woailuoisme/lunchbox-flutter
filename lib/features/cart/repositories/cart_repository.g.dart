@@ -48,4 +48,4 @@ final class CartRepositoryProvider
   }
 }
 
-String _$cartRepositoryHash() => r'6e62c801f2473dfb25f7cca326e8d16b4b644dd2';
+String _$cartRepositoryHash() => r'9111f55a97a09682c4b7b7039b96b0aca101a57a';

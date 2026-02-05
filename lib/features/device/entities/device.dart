@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'device_status.dart';
-import 'location.dart';
+import 'package:lunchbox/features/device/entities/device_status.dart';
+import 'package:lunchbox/features/device/entities/location.dart';
 
 part 'device.freezed.dart';
 

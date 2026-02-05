@@ -1,9 +1,8 @@
+import 'package:lunchbox/core/utils/logger_utils.dart';
+import 'package:lunchbox/features/city/repositories/city_repository.dart';
+import 'package:lunchbox/features/device/repositories/device_repository.dart';
+import 'package:lunchbox/features/home/providers/home_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../core/utils/logger_utils.dart';
-import '../../city/repositories/city_repository.dart';
-import '../../device/repositories/device_repository.dart';
-import 'home_state.dart';
 
 part 'home_notifier.g.dart';
 
@@ -31,10 +30,17 @@ class HomeNotifier extends _$HomeNotifier {
 
       // 尝试获取所有城市，默认选择第一个作为当前城市
       // TODO(User): 实现本地存储读取上次选择的城市
-      final cities = await cityRepository.getAllCities();
-      if (cities.isNotEmpty) {
-        state = state.copyWith(currentCity: cities.first);
-      }
+      final result = await cityRepository.getAllCities().run();
+      result.fold(
+        (failure) => LoggerUtils.e(
+          'HomeNotifier: Failed to load current city: ${failure.toString()}',
+        ),
+        (cities) {
+          if (cities.isNotEmpty) {
+            state = state.copyWith(currentCity: cities.first);
+          }
+        },
+      );
     } catch (e) {
       LoggerUtils.e('HomeNotifier: Failed to load current city', e);
     }
@@ -50,30 +56,52 @@ class HomeNotifier extends _$HomeNotifier {
       state = state.copyWith(isLoading: true);
 
       final deviceRepository = ref.read(deviceRepositoryProvider);
-      final devices = await deviceRepository.getNearbyDevices(
-        state.currentCity!.latitude,
-        state.currentCity!.longitude,
-      );
-      state = state.copyWith(nearbyDevices: devices);
+      final result = await deviceRepository
+          .getNearbyDevices(
+            state.currentCity!.latitude,
+            state.currentCity!.longitude,
+          )
+          .run();
 
-      LoggerUtils.i('HomeNotifier: Loaded ${devices.length} nearby devices');
+      result.fold(
+        (failure) {
+          LoggerUtils.e(
+            'HomeNotifier: Failed to load nearby devices: ${failure.toString()}',
+          );
+          // 如果获取附近设备失败，尝试获取城市的所有设备
+          _loadCityDevices();
+        },
+        (devices) {
+          state = state.copyWith(nearbyDevices: devices);
+          LoggerUtils.i(
+            'HomeNotifier: Loaded ${devices.length} nearby devices',
+          );
+        },
+      );
     } catch (e) {
       LoggerUtils.e('HomeNotifier: Failed to load nearby devices', e);
-
-      // 如果获取附近设备失败，尝试获取城市的所有设备
-      if (state.currentCity != null) {
-        try {
-          final deviceRepository = ref.read(deviceRepositoryProvider);
-          final devices = await deviceRepository.getDevicesByCityId(
-            state.currentCity!.id,
-          );
-          state = state.copyWith(nearbyDevices: devices);
-        } catch (e2) {
-          LoggerUtils.e('HomeNotifier: Failed to load city devices', e2);
-        }
-      }
+      _loadCityDevices();
     } finally {
       state = state.copyWith(isLoading: false);
+    }
+  }
+
+  Future<void> _loadCityDevices() async {
+    if (state.currentCity != null) {
+      try {
+        final deviceRepository = ref.read(deviceRepositoryProvider);
+        final result = await deviceRepository
+            .getDevicesByCityId(state.currentCity!.id)
+            .run();
+        result.fold(
+          (failure) => LoggerUtils.e(
+            'HomeNotifier: Failed to load city devices: ${failure.toString()}',
+          ),
+          (devices) => state = state.copyWith(nearbyDevices: devices),
+        );
+      } catch (e2) {
+        LoggerUtils.e('HomeNotifier: Failed to load city devices', e2);
+      }
     }
   }
 

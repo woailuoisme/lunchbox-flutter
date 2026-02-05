@@ -226,7 +226,7 @@ final class RawDevicesProvider
   }
 }
 
-String _$rawDevicesHash() => r'1a0d13b9bf3ce00cfe6ab1e7128a5b74cb7bfb24';
+String _$rawDevicesHash() => r'95c34e5b0cf387f312293e7bb6b8193d77680e87';
 
 /// 过滤和排序后的设备列表
 
@@ -392,7 +392,7 @@ final class DeviceDetailProvider
   }
 }
 
-String _$deviceDetailHash() => r'b2496e1e940b2b5d7bab80a34172b38c7ff54249';
+String _$deviceDetailHash() => r'0f8e7ddda7bd994d6e115c38df4a50f2290eb6c1';
 
 /// 根据ID获取设备详情
 
@@ -478,7 +478,7 @@ final class DeviceProductsProvider
   }
 }
 
-String _$deviceProductsHash() => r'6313cca5149f8494708e5f17aecc0398984f0db4';
+String _$deviceProductsHash() => r'7e364ab02b22943d7ae49ef8a88784b9511290d8';
 
 /// 获取指定设备的产品列表
 

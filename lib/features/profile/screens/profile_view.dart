@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../routes/app_routes.dart';
-import '../providers/profile_notifier.dart';
-import '../providers/profile_state.dart';
+import 'package:lunchbox/features/profile/providers/profile_notifier.dart';
+import 'package:lunchbox/features/profile/providers/profile_state.dart';
+import 'package:lunchbox/routes/app_routes.dart';
 
 /// 用户中心视图
 class ProfileView extends ConsumerWidget {

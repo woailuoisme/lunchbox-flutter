@@ -1,10 +1,9 @@
+import 'package:lunchbox/core/services/storage_service.dart';
+import 'package:lunchbox/core/utils/logger_utils.dart';
+import 'package:lunchbox/features/auth/repositories/auth_repository.dart';
+import 'package:lunchbox/features/device/entities/device_model.dart';
+import 'package:lunchbox/features/profile/providers/profile_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../core/services/storage_service.dart';
-import '../../../core/utils/logger_utils.dart';
-import '../../auth/repositories/auth_repository.dart';
-import '../../device/entities/device_model.dart';
-import 'profile_state.dart';
 
 part 'profile_notifier.g.dart';
 
@@ -29,9 +28,17 @@ class ProfileNotifier extends _$ProfileNotifier {
     try {
       state = state.copyWith(isLoading: true);
       final authRepository = ref.read(authRepositoryProvider);
-      final user = await authRepository.getCurrentUser();
-      state = state.copyWith(currentUser: user);
-      LoggerUtils.i('ProfileNotifier: User info loaded');
+      final result = await authRepository.getCurrentUser().run();
+
+      result.fold(
+        (failure) {
+          LoggerUtils.e('ProfileNotifier: Failed to load user info', failure);
+        },
+        (user) {
+          state = state.copyWith(currentUser: user);
+          LoggerUtils.i('ProfileNotifier: User info loaded');
+        },
+      );
     } catch (e) {
       LoggerUtils.e('ProfileNotifier: Failed to load user info', e);
     } finally {
@@ -136,7 +143,7 @@ class ProfileNotifier extends _$ProfileNotifier {
   Future<void> logout() async {
     try {
       final authRepository = ref.read(authRepositoryProvider);
-      await authRepository.logout();
+      authRepository.logout();
       state = state.copyWith(currentUser: null);
       LoggerUtils.i('ProfileNotifier: User logged out');
     } catch (e) {

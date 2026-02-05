@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:lunchbox/features/product/providers/product_providers.dart';
 import 'package:lunchbox/features/product/repositories/product_repository.dart';
@@ -53,7 +54,7 @@ void main() {
       () async {
         when(
           mockRepository.getProductCategories(any),
-        ).thenAnswer((_) async => ['fruit', 'drink']);
+        ).thenAnswer((_) => TaskEither.right(['fruit', 'drink']));
 
         final container = createContainer();
         final categories = await container.read(
@@ -67,7 +68,7 @@ void main() {
     test('rawProducts should return products from repository', () async {
       when(
         mockRepository.getProductsByDeviceId(any),
-      ).thenAnswer((_) async => tProducts);
+      ).thenAnswer((_) => TaskEither.right(tProducts));
 
       final container = createContainer();
       final products = await container.read(rawProductsProvider('d1').future);
@@ -78,7 +79,7 @@ void main() {
     test('filteredProducts should filter by availability', () async {
       when(
         mockRepository.getProductsByDeviceId(any),
-      ).thenAnswer((_) async => tProducts);
+      ).thenAnswer((_) => TaskEither.right(tProducts));
 
       final container = createContainer();
 
@@ -100,7 +101,7 @@ void main() {
     test('filteredProducts should filter by search query', () async {
       when(
         mockRepository.getProductsByDeviceId(any),
-      ).thenAnswer((_) async => tProducts);
+      ).thenAnswer((_) => TaskEither.right(tProducts));
 
       final container = createContainer();
 
@@ -119,7 +120,7 @@ void main() {
     test('filteredProducts should sort by price asc', () async {
       when(
         mockRepository.getProductsByDeviceId(any),
-      ).thenAnswer((_) async => tProducts);
+      ).thenAnswer((_) => TaskEither.right(tProducts));
 
       final container = createContainer();
 

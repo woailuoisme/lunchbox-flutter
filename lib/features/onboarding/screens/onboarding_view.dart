@@ -3,9 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-
-import '../../../routes/app_routes.dart';
-import '../providers/onboarding_notifier.dart';
+import 'package:lunchbox/features/onboarding/providers/onboarding_notifier.dart';
+import 'package:lunchbox/routes/app_routes.dart';
 
 /// Onboarding 引导页视图
 class OnboardingView extends ConsumerWidget {

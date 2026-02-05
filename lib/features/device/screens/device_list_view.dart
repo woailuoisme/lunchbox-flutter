@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import '../entities/device_model.dart';
-import '../providers/device_providers.dart';
+import 'package:lunchbox/features/device/entities/device_model.dart';
+import 'package:lunchbox/features/device/providers/device_providers.dart';
 
 /// 设备列表视图
 class DeviceListView extends ConsumerWidget {

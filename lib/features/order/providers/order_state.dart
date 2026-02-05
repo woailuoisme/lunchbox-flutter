@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../entities/order_model.dart';
+import 'package:lunchbox/features/order/entities/order_model.dart';
 
 part 'order_state.freezed.dart';
 

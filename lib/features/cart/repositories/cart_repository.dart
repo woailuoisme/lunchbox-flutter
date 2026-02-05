@@ -1,37 +1,33 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:lunchbox/core/errors/failure.dart';
+import 'package:lunchbox/core/network/rest_client.dart';
+import 'package:lunchbox/core/services/storage_service.dart';
+import 'package:lunchbox/core/utils/logger_utils.dart';
+import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
+import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../core/services/storage_service.dart';
-import '../../../core/utils/logger_utils.dart';
-import '../../../shared/services/api_provider.dart';
-import '../../../shared/services/base_repository.dart';
-import '../../../shared/services/mock_provider.dart';
-import '../../product/entities/product_model.dart';
-import '../entities/cart_item_model.dart';
 
 part 'cart_repository.g.dart';
 
 @Riverpod(keepAlive: true)
 CartRepository cartRepository(Ref ref) {
   final storageService = ref.watch(storageServiceProvider);
-  final apiProvider = ref.watch(apiProviderProvider);
-  final mockProvider = ref.watch(mockProviderProvider);
-  return CartRepository(storageService, apiProvider, mockProvider);
+  final client = ref.watch(restClientProvider);
+  return CartRepository(storageService, client);
 }
 
 /// 购物车仓库类
 /// 负责处理购物车相关的数据访问和业务逻辑
-class CartRepository extends BaseRepository {
-  CartRepository(
-    this._storage,
-    ApiProvider apiProvider,
-    MockProvider mockProvider,
-  ) : super(apiProvider, mockProvider);
+class CartRepository {
+  CartRepository(this._storage, this._client);
   static const String cartStorageKey = 'cart_items';
   static const String currentDeviceKey = 'current_device_id';
 
   final StorageService _storage;
+  final RestClient _client;
 
   /// 获取当前购物车中的所有商品
   List<CartItemModel> getCartItems() {
@@ -182,15 +178,12 @@ class CartRepository extends BaseRepository {
   }
 
   /// 同步购物车数据（与服务器同步）
-  Future<bool> syncCart() async {
-    try {
+  TaskEither<Failure, bool> syncCart() {
+    return TaskEither.tryCatch(() async {
       // 在实际项目中，这里应该与服务器同步购物车数据
-      // 这里简化处理，返回true表示同步成功
+      // TODO: Implement actual sync logic with _client when endpoints are available
       return true;
-    } catch (e) {
-      LoggerUtils.e('同步购物车失败: $e');
-      return false;
-    }
+    }, _handleError);
   }
 
   /// 批量添加商品到购物车
@@ -238,5 +231,15 @@ class CartRepository extends BaseRepository {
     } catch (e) {
       LoggerUtils.e('Failed to save cart items', e);
     }
+  }
+
+  Failure _handleError(Object error, StackTrace stackTrace) {
+    if (error is DioException) {
+      return Failure.network(
+        message: error.message ?? 'Unknown network error',
+        statusCode: error.response?.statusCode,
+      );
+    }
+    return Failure.server(message: error.toString(), statusCode: 500);
   }
 }

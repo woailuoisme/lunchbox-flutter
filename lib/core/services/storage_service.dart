@@ -1,6 +1,6 @@
+import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/logger_utils.dart';
 
 part 'storage_service.g.dart';
 

@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import 'failure.dart';
+import 'package:lunchbox/core/errors/failure.dart';
 
 /// Extension methods for Failure to provide user-friendly error messages
 /// and convenient error handling patterns.

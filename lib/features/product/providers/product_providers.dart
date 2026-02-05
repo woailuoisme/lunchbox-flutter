@@ -1,7 +1,7 @@
+import 'package:lunchbox/core/errors/failure_extensions.dart';
+import 'package:lunchbox/features/product/entities/product_model.dart';
+import 'package:lunchbox/features/product/repositories/product_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../entities/product_model.dart';
-import '../repositories/product_repository.dart';
 
 part 'product_providers.g.dart';
 
@@ -48,8 +48,11 @@ class ProductCategory extends _$ProductCategory {
 @riverpod
 Future<List<String>> productCategories(Ref ref, String deviceId) async {
   final repository = ref.watch(productRepositoryProvider);
-  final categories = await repository.getProductCategories(deviceId);
-  return ['all', ...categories];
+  final result = await repository.getProductCategories(deviceId).run();
+  return result.fold(
+    (failure) => ['all'],
+    (categories) => ['all', ...categories],
+  );
 }
 
 /// 获取指定设备的产品列表（原始列表）
@@ -58,10 +61,16 @@ Future<List<ProductModel>> rawProducts(Ref ref, String deviceId) async {
   final repository = ref.watch(productRepositoryProvider);
   final category = ref.watch(productCategoryProvider);
 
-  if (category != 'all') {
-    return repository.getProductsByCategory(deviceId, category);
-  }
-  return repository.getProductsByDeviceId(deviceId);
+  final result =
+      await (category != 'all'
+              ? repository.getProductsByCategory(deviceId, category)
+              : repository.getProductsByDeviceId(deviceId))
+          .run();
+
+  return result.fold(
+    (failure) => throw Exception(failure.toUserMessage()),
+    (products) => products,
+  );
 }
 
 /// 过滤和排序后的产品列表
@@ -103,5 +112,9 @@ Future<List<ProductModel>> filteredProducts(Ref ref, String deviceId) async {
 @riverpod
 Future<ProductModel> productDetail(Ref ref, String productId) async {
   final repository = ref.watch(productRepositoryProvider);
-  return repository.getProductById(productId);
+  final result = await repository.getProductById(productId).run();
+  return result.fold(
+    (failure) => throw Exception(failure.toUserMessage()),
+    (product) => product,
+  );
 }

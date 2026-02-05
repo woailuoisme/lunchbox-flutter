@@ -301,7 +301,7 @@ final class ProductCategoriesProvider
   }
 }
 
-String _$productCategoriesHash() => r'1e2b04a905ed3f1ff0d19358264b5b61ebdbc033';
+String _$productCategoriesHash() => r'eb063c6f6dc89a2d8d970f055542310a4643358d';
 
 /// 获取指定设备的产品分类列表
 
@@ -387,7 +387,7 @@ final class RawProductsProvider
   }
 }
 
-String _$rawProductsHash() => r'0aa72531a5b2d95b9cd0712729680117a68efb56';
+String _$rawProductsHash() => r'656038f4b120f6d4cc693bda074c83b4cd83be86';
 
 /// 获取指定设备的产品列表（原始列表）
 
@@ -557,7 +557,7 @@ final class ProductDetailProvider
   }
 }
 
-String _$productDetailHash() => r'4839a745d22534191c6ab0817bfcbec7bbade864';
+String _$productDetailHash() => r'951e4249c40a9cb97a53d5a4dd48c7dfc23ec412';
 
 /// 根据ID获取产品详情
 

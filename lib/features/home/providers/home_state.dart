@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../city/entities/city_model.dart';
-import '../../device/entities/device_model.dart';
+import 'package:lunchbox/features/city/entities/city_model.dart';
+import 'package:lunchbox/features/device/entities/device_model.dart';
 
 part 'home_state.freezed.dart';
 

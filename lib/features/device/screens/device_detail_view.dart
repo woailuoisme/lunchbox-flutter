@@ -2,10 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../product/entities/product_model.dart';
-import '../entities/device_model.dart';
-import '../providers/device_providers.dart';
+import 'package:lunchbox/features/device/entities/device_model.dart';
+import 'package:lunchbox/features/device/providers/device_providers.dart';
+import 'package:lunchbox/features/product/entities/product_model.dart';
 
 /// 设备详情视图
 class DeviceDetailView extends ConsumerWidget {

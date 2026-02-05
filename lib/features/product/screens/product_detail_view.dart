@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../entities/product_model.dart';
-import '../providers/product_providers.dart';
+import 'package:lunchbox/features/product/entities/product_model.dart';
+import 'package:lunchbox/features/product/providers/product_providers.dart';
 
 /// 产品详情视图
 class ProductDetailView extends ConsumerWidget {

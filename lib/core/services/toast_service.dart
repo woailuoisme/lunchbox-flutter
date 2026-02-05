@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lunchbox/core/providers/navigator_key_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:toastification/toastification.dart';
-
-import '../providers/navigator_key_provider.dart';
 
 part 'toast_service.g.dart';
 

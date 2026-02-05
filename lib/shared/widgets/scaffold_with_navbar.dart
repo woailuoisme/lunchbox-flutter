@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/values/app_colors.dart';
+import 'package:lunchbox/core/values/app_colors.dart';
 
 /// 带底部导航栏的脚手架
 ///

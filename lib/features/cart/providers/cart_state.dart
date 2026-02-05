@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../entities/cart_item_model.dart';
+import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
 
 part 'cart_state.freezed.dart';
 

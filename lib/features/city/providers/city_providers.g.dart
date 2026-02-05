@@ -36,7 +36,7 @@ final class AllCitiesProvider
   AllCities create() => AllCities();
 }
 
-String _$allCitiesHash() => r'cab32fc00f50f5554282b0fbbc0df9020d23db95';
+String _$allCitiesHash() => r'af7810423d5f6a138204fd439e0865be323aab63';
 
 /// 所有城市列表
 
@@ -86,7 +86,7 @@ final class HotCitiesProvider
   HotCities create() => HotCities();
 }
 
-String _$hotCitiesHash() => r'f1b5dbd368a6ad010741698b4698666de3a95995';
+String _$hotCitiesHash() => r'9db714417d0fd5648ec63b28166d6b9a64828673';
 
 /// 热门城市列表
 
@@ -144,7 +144,7 @@ final class CitySearchQueryProvider
   }
 }
 
-String _$citySearchQueryHash() => r'e1ff03218a50809d1fd6fdf7d0a0e640afea835d';
+String _$citySearchQueryHash() => r'4e7bfd02c6e921ff6237bf460022e6b1f9493683';
 
 /// 搜索关键词
 

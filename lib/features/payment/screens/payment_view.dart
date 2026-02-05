@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../order/entities/order_model.dart';
-import '../providers/payment_notifier.dart';
-import '../providers/payment_state.dart';
+import 'package:lunchbox/features/order/entities/order_model.dart';
+import 'package:lunchbox/features/payment/providers/payment_notifier.dart';
+import 'package:lunchbox/features/payment/providers/payment_state.dart';
 
 /// 支付视图
 class PaymentView extends ConsumerWidget {

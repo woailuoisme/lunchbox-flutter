@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:lunchbox/core/network/interceptors/auth_interceptor.dart';
+import 'package:lunchbox/core/network/interceptors/error_handling_interceptor.dart';
+import 'package:lunchbox/core/values/app_constants.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../values/app_constants.dart';
-import 'interceptors/auth_interceptor.dart';
-import 'interceptors/error_handling_interceptor.dart';
 
 part 'dio_provider.g.dart';
 

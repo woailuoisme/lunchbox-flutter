@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../cart/entities/cart_item_model.dart';
-import '../../device/entities/device_model.dart';
+import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
+import 'package:lunchbox/features/device/entities/device_model.dart';
 
 part 'order_model.freezed.dart';
 part 'order_model.g.dart';

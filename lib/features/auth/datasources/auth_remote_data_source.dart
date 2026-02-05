@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:lunchbox/core/services/api_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../core/services/api_service.dart';
 
 part 'auth_remote_data_source.g.dart';
 

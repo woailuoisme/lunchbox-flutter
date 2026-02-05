@@ -3,16 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
-
-import 'package:lunchbox/features/product/entities/product_model.dart' as _i4;
+import 'package:fpdart/fpdart.dart' as _i3;
+import 'package:lunchbox/core/errors/failure.dart' as _i4;
+import 'package:lunchbox/features/product/entities/product_model.dart' as _i5;
 import 'package:lunchbox/features/product/repositories/product_repository.dart'
-    as _i6;
-import 'package:lunchbox/shared/models/api_response_model.dart' as _i7;
-import 'package:lunchbox/shared/services/api_provider.dart' as _i2;
-import 'package:lunchbox/shared/services/mock_provider.dart' as _i3;
+    as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i8;
+import 'package:mockito/src/dummies.dart' as _i6;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -29,127 +26,103 @@ import 'package:mockito/src/dummies.dart' as _i8;
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
-class _FakeApiProvider_0 extends _i1.SmartFake implements _i2.ApiProvider {
-  _FakeApiProvider_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeMockProvider_1 extends _i1.SmartFake implements _i3.MockProvider {
-  _FakeMockProvider_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeProductModel_2 extends _i1.SmartFake implements _i4.ProductModel {
-  _FakeProductModel_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeFuture_3<T1> extends _i1.SmartFake implements _i5.Future<T1> {
-  _FakeFuture_3(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
 /// A class which mocks [ProductRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockProductRepository extends _i1.Mock implements _i6.ProductRepository {
+class MockProductRepository extends _i1.Mock implements _i2.ProductRepository {
   MockProductRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.ApiProvider get apiService =>
-      (super.noSuchMethod(
-            Invocation.getter(#apiService),
-            returnValue: _FakeApiProvider_0(
-              this,
-              Invocation.getter(#apiService),
-            ),
-          )
-          as _i2.ApiProvider);
-
-  @override
-  _i3.MockProvider get mockService =>
-      (super.noSuchMethod(
-            Invocation.getter(#mockService),
-            returnValue: _FakeMockProvider_1(
-              this,
-              Invocation.getter(#mockService),
-            ),
-          )
-          as _i3.MockProvider);
-
-  @override
-  bool get useMockData =>
-      (super.noSuchMethod(Invocation.getter(#useMockData), returnValue: false)
-          as bool);
-
-  @override
-  _i5.Future<List<_i4.ProductModel>> getProductsByDeviceId(String? deviceId) =>
+  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>> getProductsByDeviceId(
+    String? deviceId,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#getProductsByDeviceId, [deviceId]),
-            returnValue: _i5.Future<List<_i4.ProductModel>>.value(
-              <_i4.ProductModel>[],
-            ),
+            returnValue: _i6
+                .dummyValue<
+                  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>
+                >(this, Invocation.method(#getProductsByDeviceId, [deviceId])),
           )
-          as _i5.Future<List<_i4.ProductModel>>);
+          as _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>);
 
   @override
-  _i5.Future<_i4.ProductModel> getProductById(String? productId) =>
+  _i3.TaskEither<_i4.Failure, _i5.ProductModel> getProductById(
+    String? productId,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#getProductById, [productId]),
-            returnValue: _i5.Future<_i4.ProductModel>.value(
-              _FakeProductModel_2(
-                this,
-                Invocation.method(#getProductById, [productId]),
-              ),
-            ),
+            returnValue: _i6
+                .dummyValue<_i3.TaskEither<_i4.Failure, _i5.ProductModel>>(
+                  this,
+                  Invocation.method(#getProductById, [productId]),
+                ),
           )
-          as _i5.Future<_i4.ProductModel>);
+          as _i3.TaskEither<_i4.Failure, _i5.ProductModel>);
 
   @override
-  _i5.Future<List<_i4.ProductModel>> getAvailableProducts(String? deviceId) =>
+  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>> getAvailableProducts(
+    String? deviceId,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#getAvailableProducts, [deviceId]),
-            returnValue: _i5.Future<List<_i4.ProductModel>>.value(
-              <_i4.ProductModel>[],
-            ),
+            returnValue: _i6
+                .dummyValue<
+                  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>
+                >(this, Invocation.method(#getAvailableProducts, [deviceId])),
           )
-          as _i5.Future<List<_i4.ProductModel>>);
+          as _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>);
 
   @override
-  _i5.Future<List<_i4.ProductModel>> getDiscountProducts(String? deviceId) =>
+  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>> getDiscountProducts(
+    String? deviceId,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#getDiscountProducts, [deviceId]),
-            returnValue: _i5.Future<List<_i4.ProductModel>>.value(
-              <_i4.ProductModel>[],
-            ),
+            returnValue: _i6
+                .dummyValue<
+                  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>
+                >(this, Invocation.method(#getDiscountProducts, [deviceId])),
           )
-          as _i5.Future<List<_i4.ProductModel>>);
+          as _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>);
 
   @override
-  _i5.Future<List<_i4.ProductModel>> getProductsByCategory(
+  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>> getProductsByCategory(
     String? deviceId,
     String? category,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getProductsByCategory, [deviceId, category]),
-            returnValue: _i5.Future<List<_i4.ProductModel>>.value(
-              <_i4.ProductModel>[],
-            ),
+            returnValue: _i6
+                .dummyValue<
+                  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>
+                >(
+                  this,
+                  Invocation.method(#getProductsByCategory, [
+                    deviceId,
+                    category,
+                  ]),
+                ),
           )
-          as _i5.Future<List<_i4.ProductModel>>);
+          as _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>);
 
   @override
-  _i5.Future<List<String>> getProductCategories(String? deviceId) =>
+  _i3.TaskEither<_i4.Failure, List<String>> getProductCategories(
+    String? deviceId,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#getProductCategories, [deviceId]),
-            returnValue: _i5.Future<List<String>>.value(<String>[]),
+            returnValue: _i6
+                .dummyValue<_i3.TaskEither<_i4.Failure, List<String>>>(
+                  this,
+                  Invocation.method(#getProductCategories, [deviceId]),
+                ),
           )
-          as _i5.Future<List<String>>);
+          as _i3.TaskEither<_i4.Failure, List<String>>);
 
   @override
-  _i5.Future<List<_i4.ProductModel>> searchProducts(
+  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>> searchProducts(
     String? deviceId,
     String? keyword, {
     String? category,
@@ -160,14 +133,22 @@ class MockProductRepository extends _i1.Mock implements _i6.ProductRepository {
               [deviceId, keyword],
               {#category: category},
             ),
-            returnValue: _i5.Future<List<_i4.ProductModel>>.value(
-              <_i4.ProductModel>[],
-            ),
+            returnValue: _i6
+                .dummyValue<
+                  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>
+                >(
+                  this,
+                  Invocation.method(
+                    #searchProducts,
+                    [deviceId, keyword],
+                    {#category: category},
+                  ),
+                ),
           )
-          as _i5.Future<List<_i4.ProductModel>>);
+          as _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>);
 
   @override
-  _i5.Future<List<_i4.ProductModel>> getProductsByPriceRange(
+  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>> getProductsByPriceRange(
     String? deviceId,
     double? minPrice,
     double? maxPrice,
@@ -178,14 +159,22 @@ class MockProductRepository extends _i1.Mock implements _i6.ProductRepository {
               minPrice,
               maxPrice,
             ]),
-            returnValue: _i5.Future<List<_i4.ProductModel>>.value(
-              <_i4.ProductModel>[],
-            ),
+            returnValue: _i6
+                .dummyValue<
+                  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>
+                >(
+                  this,
+                  Invocation.method(#getProductsByPriceRange, [
+                    deviceId,
+                    minPrice,
+                    maxPrice,
+                  ]),
+                ),
           )
-          as _i5.Future<List<_i4.ProductModel>>);
+          as _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>);
 
   @override
-  _i5.Future<bool> updateProductStock(
+  _i3.TaskEither<_i4.Failure, bool> updateProductStock(
     String? deviceId,
     String? productId,
     int? quantity,
@@ -196,12 +185,19 @@ class MockProductRepository extends _i1.Mock implements _i6.ProductRepository {
               productId,
               quantity,
             ]),
-            returnValue: _i5.Future<bool>.value(false),
+            returnValue: _i6.dummyValue<_i3.TaskEither<_i4.Failure, bool>>(
+              this,
+              Invocation.method(#updateProductStock, [
+                deviceId,
+                productId,
+                quantity,
+              ]),
+            ),
           )
-          as _i5.Future<bool>);
+          as _i3.TaskEither<_i4.Failure, bool>);
 
   @override
-  _i5.Future<List<_i4.ProductModel>> getRecommendedProducts(
+  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>> getRecommendedProducts(
     String? deviceId, {
     int? limit = 5,
   }) =>
@@ -211,95 +207,30 @@ class MockProductRepository extends _i1.Mock implements _i6.ProductRepository {
               [deviceId],
               {#limit: limit},
             ),
-            returnValue: _i5.Future<List<_i4.ProductModel>>.value(
-              <_i4.ProductModel>[],
-            ),
+            returnValue: _i6
+                .dummyValue<
+                  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>
+                >(
+                  this,
+                  Invocation.method(
+                    #getRecommendedProducts,
+                    [deviceId],
+                    {#limit: limit},
+                  ),
+                ),
           )
-          as _i5.Future<List<_i4.ProductModel>>);
+          as _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>);
 
   @override
-  _i5.Future<List<_i4.ProductModel>> getProductsByIds(
+  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>> getProductsByIds(
     List<String>? productIds,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getProductsByIds, [productIds]),
-            returnValue: _i5.Future<List<_i4.ProductModel>>.value(
-              <_i4.ProductModel>[],
-            ),
+            returnValue: _i6
+                .dummyValue<
+                  _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>
+                >(this, Invocation.method(#getProductsByIds, [productIds])),
           )
-          as _i5.Future<List<_i4.ProductModel>>);
-
-  @override
-  _i5.Future<T> handleResponse<T>(
-    _i5.Future<_i7.ApiResponseModel<T>> Function()? request,
-    String? operationName,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#handleResponse, [request, operationName]),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<T>(
-                    this,
-                    Invocation.method(#handleResponse, [
-                      request,
-                      operationName,
-                    ]),
-                  ),
-                  (T v) => _i5.Future<T>.value(v),
-                ) ??
-                _FakeFuture_3<T>(
-                  this,
-                  Invocation.method(#handleResponse, [request, operationName]),
-                ),
-          )
-          as _i5.Future<T>);
-
-  @override
-  _i5.Future<List<T>> handleListResponse<T>(
-    _i5.Future<_i7.ApiResponseModel<List<T>>> Function()? request,
-    String? operationName,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#handleListResponse, [request, operationName]),
-            returnValue: _i5.Future<List<T>>.value(<T>[]),
-          )
-          as _i5.Future<List<T>>);
-
-  @override
-  _i5.Future<bool> checkNetwork() =>
-      (super.noSuchMethod(
-            Invocation.method(#checkNetwork, []),
-            returnValue: _i5.Future<bool>.value(false),
-          )
-          as _i5.Future<bool>);
-
-  @override
-  _i5.Future<T> retry<T>(
-    _i5.Future<T> Function()? action, {
-    int? maxRetries = 3,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#retry, [action], {#maxRetries: maxRetries}),
-            returnValue:
-                _i8.ifNotNull(
-                  _i8.dummyValueOrNull<T>(
-                    this,
-                    Invocation.method(
-                      #retry,
-                      [action],
-                      {#maxRetries: maxRetries},
-                    ),
-                  ),
-                  (T v) => _i5.Future<T>.value(v),
-                ) ??
-                _FakeFuture_3<T>(
-                  this,
-                  Invocation.method(
-                    #retry,
-                    [action],
-                    {#maxRetries: maxRetries},
-                  ),
-                ),
-          )
-          as _i5.Future<T>);
+          as _i3.TaskEither<_i4.Failure, List<_i5.ProductModel>>);
 }

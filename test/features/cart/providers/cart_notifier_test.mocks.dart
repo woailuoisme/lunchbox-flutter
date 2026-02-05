@@ -3,17 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
-
-import 'package:lunchbox/features/cart/entities/cart_item_model.dart' as _i6;
+import 'package:fpdart/fpdart.dart' as _i5;
+import 'package:lunchbox/core/errors/failure.dart' as _i6;
+import 'package:lunchbox/features/cart/entities/cart_item_model.dart' as _i3;
 import 'package:lunchbox/features/cart/repositories/cart_repository.dart'
-    as _i5;
-import 'package:lunchbox/features/product/entities/product_model.dart' as _i7;
-import 'package:lunchbox/shared/models/api_response_model.dart' as _i8;
-import 'package:lunchbox/shared/services/api_provider.dart' as _i2;
-import 'package:lunchbox/shared/services/mock_provider.dart' as _i3;
+    as _i2;
+import 'package:lunchbox/features/product/entities/product_model.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i9;
+import 'package:mockito/src/dummies.dart' as _i7;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -30,63 +27,21 @@ import 'package:mockito/src/dummies.dart' as _i9;
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
-class _FakeApiProvider_0 extends _i1.SmartFake implements _i2.ApiProvider {
-  _FakeApiProvider_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeMockProvider_1 extends _i1.SmartFake implements _i3.MockProvider {
-  _FakeMockProvider_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeFuture_2<T1> extends _i1.SmartFake implements _i4.Future<T1> {
-  _FakeFuture_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
 /// A class which mocks [CartRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCartRepository extends _i1.Mock implements _i5.CartRepository {
+class MockCartRepository extends _i1.Mock implements _i2.CartRepository {
   MockCartRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.ApiProvider get apiService =>
-      (super.noSuchMethod(
-            Invocation.getter(#apiService),
-            returnValue: _FakeApiProvider_0(
-              this,
-              Invocation.getter(#apiService),
-            ),
-          )
-          as _i2.ApiProvider);
-
-  @override
-  _i3.MockProvider get mockService =>
-      (super.noSuchMethod(
-            Invocation.getter(#mockService),
-            returnValue: _FakeMockProvider_1(
-              this,
-              Invocation.getter(#mockService),
-            ),
-          )
-          as _i3.MockProvider);
-
-  @override
-  bool get useMockData =>
-      (super.noSuchMethod(Invocation.getter(#useMockData), returnValue: false)
-          as bool);
-
-  @override
-  List<_i6.CartItemModel> getCartItems() =>
+  List<_i3.CartItemModel> getCartItems() =>
       (super.noSuchMethod(
             Invocation.method(#getCartItems, []),
-            returnValue: <_i6.CartItemModel>[],
+            returnValue: <_i3.CartItemModel>[],
           )
-          as List<_i6.CartItemModel>);
+          as List<_i3.CartItemModel>);
 
   @override
   void setCurrentDeviceId(String? deviceId) => super.noSuchMethod(
@@ -95,7 +50,7 @@ class MockCartRepository extends _i1.Mock implements _i5.CartRepository {
   );
 
   @override
-  void addToCart(_i7.ProductModel? product, {int? quantity = 1}) =>
+  void addToCart(_i4.ProductModel? product, {int? quantity = 1}) =>
       super.noSuchMethod(
         Invocation.method(#addToCart, [product], {#quantity: quantity}),
         returnValueForMissingStub: null,
@@ -161,91 +116,20 @@ class MockCartRepository extends _i1.Mock implements _i5.CartRepository {
           as int);
 
   @override
-  _i4.Future<bool> syncCart() =>
+  _i5.TaskEither<_i6.Failure, bool> syncCart() =>
       (super.noSuchMethod(
             Invocation.method(#syncCart, []),
-            returnValue: _i4.Future<bool>.value(false),
+            returnValue: _i7.dummyValue<_i5.TaskEither<_i6.Failure, bool>>(
+              this,
+              Invocation.method(#syncCart, []),
+            ),
           )
-          as _i4.Future<bool>);
+          as _i5.TaskEither<_i6.Failure, bool>);
 
   @override
-  void addMultipleToCart(Map<_i7.ProductModel, int>? productsWithQuantity) =>
+  void addMultipleToCart(Map<_i4.ProductModel, int>? productsWithQuantity) =>
       super.noSuchMethod(
         Invocation.method(#addMultipleToCart, [productsWithQuantity]),
         returnValueForMissingStub: null,
       );
-
-  @override
-  _i4.Future<T> handleResponse<T>(
-    _i4.Future<_i8.ApiResponseModel<T>> Function()? request,
-    String? operationName,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#handleResponse, [request, operationName]),
-            returnValue:
-                _i9.ifNotNull(
-                  _i9.dummyValueOrNull<T>(
-                    this,
-                    Invocation.method(#handleResponse, [
-                      request,
-                      operationName,
-                    ]),
-                  ),
-                  (T v) => _i4.Future<T>.value(v),
-                ) ??
-                _FakeFuture_2<T>(
-                  this,
-                  Invocation.method(#handleResponse, [request, operationName]),
-                ),
-          )
-          as _i4.Future<T>);
-
-  @override
-  _i4.Future<List<T>> handleListResponse<T>(
-    _i4.Future<_i8.ApiResponseModel<List<T>>> Function()? request,
-    String? operationName,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#handleListResponse, [request, operationName]),
-            returnValue: _i4.Future<List<T>>.value(<T>[]),
-          )
-          as _i4.Future<List<T>>);
-
-  @override
-  _i4.Future<bool> checkNetwork() =>
-      (super.noSuchMethod(
-            Invocation.method(#checkNetwork, []),
-            returnValue: _i4.Future<bool>.value(false),
-          )
-          as _i4.Future<bool>);
-
-  @override
-  _i4.Future<T> retry<T>(
-    _i4.Future<T> Function()? action, {
-    int? maxRetries = 3,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#retry, [action], {#maxRetries: maxRetries}),
-            returnValue:
-                _i9.ifNotNull(
-                  _i9.dummyValueOrNull<T>(
-                    this,
-                    Invocation.method(
-                      #retry,
-                      [action],
-                      {#maxRetries: maxRetries},
-                    ),
-                  ),
-                  (T v) => _i4.Future<T>.value(v),
-                ) ??
-                _FakeFuture_2<T>(
-                  this,
-                  Invocation.method(
-                    #retry,
-                    [action],
-                    {#maxRetries: maxRetries},
-                  ),
-                ),
-          )
-          as _i4.Future<T>);
 }

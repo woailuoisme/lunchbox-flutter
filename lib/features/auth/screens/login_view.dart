@@ -3,14 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lunchbox/core/values/app_colors.dart';
+import 'package:lunchbox/features/auth/models/password.dart';
+import 'package:lunchbox/features/auth/models/username.dart';
+import 'package:lunchbox/features/auth/providers/login_notifier.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:lunchbox/routes/app_routes.dart';
 import 'package:toastification/toastification.dart';
-
-import '../../../core/values/app_colors.dart';
-import '../../../i18n/translations.g.dart';
-import '../../../routes/app_routes.dart';
-import '../models/password.dart';
-import '../models/username.dart';
-import '../providers/login_notifier.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});

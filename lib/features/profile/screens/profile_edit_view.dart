@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lunchbox/features/profile/providers/profile_notifier.dart';
+import 'package:lunchbox/features/profile/providers/profile_state.dart';
 import 'package:toastification/toastification.dart';
-
-import '../providers/profile_notifier.dart';
-import '../providers/profile_state.dart';
 
 /// 个人信息编辑视图
 class ProfileEditView extends ConsumerStatefulWidget {

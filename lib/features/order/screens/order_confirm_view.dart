@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../routes/app_routes.dart';
-import '../../cart/entities/cart_item_model.dart';
-import '../../cart/providers/cart_notifier.dart';
-import '../providers/order_notifier.dart';
+import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
+import 'package:lunchbox/features/cart/providers/cart_notifier.dart';
+import 'package:lunchbox/features/order/providers/order_notifier.dart';
+import 'package:lunchbox/routes/app_routes.dart';
 
 /// 订单确认视图
 class OrderConfirmView extends ConsumerWidget {

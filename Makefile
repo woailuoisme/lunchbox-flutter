@@ -60,7 +60,6 @@ run-dev:
 run-prod:
 	flutter run --dart-define-from-file=config/env_prod.json
 
-
 test:
 	flutter test
 
@@ -70,8 +69,6 @@ test-unit:
 test-widget:
 	flutter test test/widget
 
-format:
-	dart format lib test
 
 analyze:
 	flutter analyze | grep -v "info •" || true
@@ -82,7 +79,14 @@ analyze-strict:
 fix:
 	dart fix --apply
 
+format:
+	dart format lib test
+
 lint: analyze
+
+# 一键全套：修复 -> 格式化 -> 分析
+ready: fix format lint
+	@echo "✅ 代码已准备就绪，可以提交！"
 
 doctor:
 	flutter doctor -v

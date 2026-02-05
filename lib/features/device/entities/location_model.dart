@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'location.dart';
+import 'package:lunchbox/features/device/entities/location.dart';
 
 part 'location_model.freezed.dart';
 part 'location_model.g.dart';

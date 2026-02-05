@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:lunchbox/core/services/storage_service.dart';
+import 'package:lunchbox/core/values/app_constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../services/storage_service.dart';
-import '../../values/app_constants.dart';
 
 part 'auth_interceptor.g.dart';
 

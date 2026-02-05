@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lunchbox/core/values/app_colors.dart';
+import 'package:lunchbox/features/settings/providers/settings_providers.dart';
+import 'package:lunchbox/routes/app_routes.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:upgrader/upgrader.dart';
-
-import '../../../core/values/app_colors.dart';
-import '../../../routes/app_routes.dart';
-import '../providers/settings_providers.dart';
 
 class SettingsView extends ConsumerWidget {
   const SettingsView({super.key});

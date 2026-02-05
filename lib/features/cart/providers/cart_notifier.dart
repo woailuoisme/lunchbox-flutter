@@ -1,10 +1,9 @@
+import 'package:lunchbox/core/utils/logger_utils.dart';
+import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
+import 'package:lunchbox/features/cart/providers/cart_state.dart';
+import 'package:lunchbox/features/cart/repositories/cart_repository.dart';
+import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../core/utils/logger_utils.dart';
-import '../../product/entities/product_model.dart';
-import '../entities/cart_item_model.dart';
-import '../repositories/cart_repository.dart';
-import 'cart_state.dart';
 
 part 'cart_notifier.g.dart';
 
