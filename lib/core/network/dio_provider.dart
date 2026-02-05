@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../values/app_constants.dart';
 import 'interceptors/auth_interceptor.dart';
 import 'interceptors/error_handling_interceptor.dart';
-import 'interceptors/logging_interceptor.dart';
 
 part 'dio_provider.g.dart';
 
@@ -13,7 +13,7 @@ part 'dio_provider.g.dart';
 /// This provider creates a Dio client with:
 /// - Base URL and timeout configurations
 /// - Authentication interceptor for token management
-/// - Logging interceptor for debugging
+/// - PrettyDioLogger for debugging (controlled by AppConstants.dioDebug)
 /// - Error handling interceptor for user-friendly error messages
 ///
 /// The provider is kept alive to maintain a single Dio instance throughout
@@ -33,13 +33,21 @@ Dio dio(Ref ref) {
 
   // Add interceptors in order:
   // 1. Auth interceptor - adds authentication tokens
-  // 2. Logging interceptor - logs requests/responses for debugging
+  // 2. Logging (if enabled) - logs requests/responses for debugging
   // 3. Error handling interceptor - transforms errors to user-friendly messages
-  dio.interceptors.addAll([
-    ref.read(authInterceptorProvider),
-    ref.read(loggingInterceptorProvider),
-    ref.read(errorHandlingInterceptorProvider),
-  ]);
+  dio.interceptors.add(ref.read(authInterceptorProvider));
+
+  if (AppConstants.dioDebug) {
+    dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: true,
+      ),
+    );
+  }
+
+  dio.interceptors.add(ref.read(errorHandlingInterceptorProvider));
 
   return dio;
 }

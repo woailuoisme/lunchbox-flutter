@@ -102,6 +102,20 @@ class ErrorHandlingInterceptor extends Interceptor {
       case 409:
         return serverMessage ?? '请求冲突';
       case 422:
+        if (data is Map<String, dynamic> && data['errors'] is Map) {
+          final errors = data['errors'] as Map<String, dynamic>;
+          final errorMessages = <String>[];
+          errors.forEach((key, value) {
+            if (value is List) {
+              errorMessages.addAll(value.map((e) => e.toString()));
+            } else {
+              errorMessages.add(value.toString());
+            }
+          });
+          if (errorMessages.isNotEmpty) {
+            return errorMessages.join('\n');
+          }
+        }
         return serverMessage ?? '请求数据验证失败';
       case 429:
         return '请求过于频繁，请稍后重试';

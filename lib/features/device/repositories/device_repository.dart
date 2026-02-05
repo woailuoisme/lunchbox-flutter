@@ -20,7 +20,7 @@ DeviceRepository deviceRepository(Ref ref) {
 /// 设备仓库类
 /// 负责处理自动售货机设备相关的数据访问和业务逻辑
 class DeviceRepository extends BaseRepository {
-  DeviceRepository(super.apiService, super.mockService);
+  DeviceRepository(super.apiService, super.mockService, {super.useMockData});
 
   /// 获取所有设备列表
   Future<List<DeviceModel>> getAllDevices() async {
@@ -28,12 +28,14 @@ class DeviceRepository extends BaseRepository {
       if (useMockData) {
         return mockService.getDevices();
       } else {
-        return apiService.get(
-          '/api/devices',
-          (json) => List<DeviceModel>.from(
-            json['data'].map((item) => DeviceModel.fromJson(item)),
-          ),
-        );
+        return apiService.get('/api/devices', (json) {
+          final data = (json! as Map<String, dynamic>)['data'] as List;
+          return List<DeviceModel>.from(
+            data.map(
+              (item) => DeviceModel.fromJson(item as Map<String, dynamic>),
+            ),
+          );
+        });
       }
     }, '获取所有设备');
   }
@@ -48,12 +50,14 @@ class DeviceRepository extends BaseRepository {
             .toList();
         return ApiResponseModel.success(filteredDevices);
       } else {
-        return apiService.get(
-          '/api/devices/city/$cityId',
-          (json) => List<DeviceModel>.from(
-            json['data'].map((item) => DeviceModel.fromJson(item)),
-          ),
-        );
+        return apiService.get('/api/devices/city/$cityId', (json) {
+          final data = (json! as Map<String, dynamic>)['data'] as List;
+          return List<DeviceModel>.from(
+            data.map(
+              (item) => DeviceModel.fromJson(item as Map<String, dynamic>),
+            ),
+          );
+        });
       }
     }, '根据城市获取设备');
   }
@@ -66,7 +70,9 @@ class DeviceRepository extends BaseRepository {
       } else {
         return apiService.get(
           '/api/devices/$deviceId',
-          (json) => DeviceModel.fromJson(json['data']),
+          (json) => DeviceModel.fromJson(
+            (json! as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+          ),
         );
       }
     }, '获取设备详情');
@@ -88,8 +94,8 @@ class DeviceRepository extends BaseRepository {
       final distance = _calculateDistance(
         latitude,
         longitude,
-        device.latitude,
-        device.longitude,
+        device.location.latitude,
+        device.location.longitude,
       );
 
       if (distance <= radius) {
@@ -133,7 +139,10 @@ class DeviceRepository extends BaseRepository {
         .where(
           (device) =>
               device.name.toLowerCase().contains(lowercaseKeyword) ||
-              device.address.toLowerCase().contains(lowercaseKeyword),
+              (device.location.address?.toLowerCase().contains(
+                    lowercaseKeyword,
+                  ) ??
+                  false),
         )
         .toList();
   }
@@ -147,7 +156,9 @@ class DeviceRepository extends BaseRepository {
       } else {
         return apiService.get(
           '/api/devices/$deviceId/status',
-          (json) => DeviceModel.fromJson(json['data']),
+          (json) => DeviceModel.fromJson(
+            (json! as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+          ),
         );
       }
     }, '检查设备状态');
@@ -169,7 +180,8 @@ class DeviceRepository extends BaseRepository {
       } else {
         return apiService.get(
           '/api/devices/$deviceId/statistics',
-          (json) => json['data'],
+          (json) =>
+              (json! as Map<String, dynamic>)['data'] as Map<String, dynamic>,
         );
       }
     }, '获取设备统计');

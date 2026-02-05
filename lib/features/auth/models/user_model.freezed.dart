@@ -17,14 +17,14 @@ mixin _$UserModel {
 
 /// 用户ID
  String get id;/// 用户名（手机号或邮箱）
- String get username;/// 手机号
+ String get username;/// 用户注册时间
+ DateTime get registeredAt;/// 手机号
  String? get phone;/// 邮箱
  String? get email;/// 用户昵称
  String get nickname;/// 用户头像URL
  String? get avatar;/// 用户性别：male、female、unknown
  String get gender;/// 用户生日
- DateTime? get birthday;/// 用户注册时间
- DateTime get registeredAt;/// 用户最后登录时间
+ DateTime? get birthday;/// 用户最后登录时间
  DateTime? get lastLoginAt;/// 用户积分
  int get points;/// 用户会员等级
  String get memberLevel;/// 用户是否已实名认证
@@ -42,16 +42,16 @@ $UserModelCopyWith<UserModel> get copyWith => _$UserModelCopyWithImpl<UserModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.birthday, birthday) || other.birthday == birthday)&&(identical(other.registeredAt, registeredAt) || other.registeredAt == registeredAt)&&(identical(other.lastLoginAt, lastLoginAt) || other.lastLoginAt == lastLoginAt)&&(identical(other.points, points) || other.points == points)&&(identical(other.memberLevel, memberLevel) || other.memberLevel == memberLevel)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&const DeepCollectionEquality().equals(other.favoriteDevices, favoriteDevices));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.registeredAt, registeredAt) || other.registeredAt == registeredAt)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.birthday, birthday) || other.birthday == birthday)&&(identical(other.lastLoginAt, lastLoginAt) || other.lastLoginAt == lastLoginAt)&&(identical(other.points, points) || other.points == points)&&(identical(other.memberLevel, memberLevel) || other.memberLevel == memberLevel)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&const DeepCollectionEquality().equals(other.favoriteDevices, favoriteDevices));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,username,phone,email,nickname,avatar,gender,birthday,registeredAt,lastLoginAt,points,memberLevel,isVerified,const DeepCollectionEquality().hash(favoriteDevices));
+int get hashCode => Object.hash(runtimeType,id,username,registeredAt,phone,email,nickname,avatar,gender,birthday,lastLoginAt,points,memberLevel,isVerified,const DeepCollectionEquality().hash(favoriteDevices));
 
 @override
 String toString() {
-  return 'UserModel(id: $id, username: $username, phone: $phone, email: $email, nickname: $nickname, avatar: $avatar, gender: $gender, birthday: $birthday, registeredAt: $registeredAt, lastLoginAt: $lastLoginAt, points: $points, memberLevel: $memberLevel, isVerified: $isVerified, favoriteDevices: $favoriteDevices)';
+  return 'UserModel(id: $id, username: $username, registeredAt: $registeredAt, phone: $phone, email: $email, nickname: $nickname, avatar: $avatar, gender: $gender, birthday: $birthday, lastLoginAt: $lastLoginAt, points: $points, memberLevel: $memberLevel, isVerified: $isVerified, favoriteDevices: $favoriteDevices)';
 }
 
 
@@ -62,7 +62,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String username, String? phone, String? email, String nickname, String? avatar, String gender, DateTime? birthday, DateTime registeredAt, DateTime? lastLoginAt, int points, String memberLevel, bool isVerified, List<String> favoriteDevices
+ String id, String username, DateTime registeredAt, String? phone, String? email, String nickname, String? avatar, String gender, DateTime? birthday, DateTime? lastLoginAt, int points, String memberLevel, bool isVerified, List<String> favoriteDevices
 });
 
 
@@ -79,18 +79,18 @@ class _$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? phone = freezed,Object? email = freezed,Object? nickname = null,Object? avatar = freezed,Object? gender = null,Object? birthday = freezed,Object? registeredAt = null,Object? lastLoginAt = freezed,Object? points = null,Object? memberLevel = null,Object? isVerified = null,Object? favoriteDevices = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? registeredAt = null,Object? phone = freezed,Object? email = freezed,Object? nickname = null,Object? avatar = freezed,Object? gender = null,Object? birthday = freezed,Object? lastLoginAt = freezed,Object? points = null,Object? memberLevel = null,Object? isVerified = null,Object? favoriteDevices = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
-as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,registeredAt: null == registeredAt ? _self.registeredAt : registeredAt // ignore: cast_nullable_to_non_nullable
+as DateTime,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,avatar: freezed == avatar ? _self.avatar : avatar // ignore: cast_nullable_to_non_nullable
 as String?,gender: null == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
 as String,birthday: freezed == birthday ? _self.birthday : birthday // ignore: cast_nullable_to_non_nullable
-as DateTime?,registeredAt: null == registeredAt ? _self.registeredAt : registeredAt // ignore: cast_nullable_to_non_nullable
-as DateTime,lastLoginAt: freezed == lastLoginAt ? _self.lastLoginAt : lastLoginAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,lastLoginAt: freezed == lastLoginAt ? _self.lastLoginAt : lastLoginAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
 as int,memberLevel: null == memberLevel ? _self.memberLevel : memberLevel // ignore: cast_nullable_to_non_nullable
 as String,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable
@@ -180,10 +180,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  DateTime? birthday,  DateTime registeredAt,  DateTime? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  DateTime registeredAt,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  DateTime? birthday,  DateTime? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.id,_that.username,_that.phone,_that.email,_that.nickname,_that.avatar,_that.gender,_that.birthday,_that.registeredAt,_that.lastLoginAt,_that.points,_that.memberLevel,_that.isVerified,_that.favoriteDevices);case _:
+return $default(_that.id,_that.username,_that.registeredAt,_that.phone,_that.email,_that.nickname,_that.avatar,_that.gender,_that.birthday,_that.lastLoginAt,_that.points,_that.memberLevel,_that.isVerified,_that.favoriteDevices);case _:
   return orElse();
 
 }
@@ -201,10 +201,10 @@ return $default(_that.id,_that.username,_that.phone,_that.email,_that.nickname,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  DateTime? birthday,  DateTime registeredAt,  DateTime? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  DateTime registeredAt,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  DateTime? birthday,  DateTime? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
-return $default(_that.id,_that.username,_that.phone,_that.email,_that.nickname,_that.avatar,_that.gender,_that.birthday,_that.registeredAt,_that.lastLoginAt,_that.points,_that.memberLevel,_that.isVerified,_that.favoriteDevices);case _:
+return $default(_that.id,_that.username,_that.registeredAt,_that.phone,_that.email,_that.nickname,_that.avatar,_that.gender,_that.birthday,_that.lastLoginAt,_that.points,_that.memberLevel,_that.isVerified,_that.favoriteDevices);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -221,10 +221,10 @@ return $default(_that.id,_that.username,_that.phone,_that.email,_that.nickname,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  DateTime? birthday,  DateTime registeredAt,  DateTime? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  DateTime registeredAt,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  DateTime? birthday,  DateTime? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.id,_that.username,_that.phone,_that.email,_that.nickname,_that.avatar,_that.gender,_that.birthday,_that.registeredAt,_that.lastLoginAt,_that.points,_that.memberLevel,_that.isVerified,_that.favoriteDevices);case _:
+return $default(_that.id,_that.username,_that.registeredAt,_that.phone,_that.email,_that.nickname,_that.avatar,_that.gender,_that.birthday,_that.lastLoginAt,_that.points,_that.memberLevel,_that.isVerified,_that.favoriteDevices);case _:
   return null;
 
 }
@@ -236,13 +236,15 @@ return $default(_that.id,_that.username,_that.phone,_that.email,_that.nickname,_
 @JsonSerializable()
 
 class _UserModel extends UserModel {
-  const _UserModel({required this.id, required this.username, this.phone, this.email, this.nickname = '', this.avatar, this.gender = 'unknown', this.birthday, required this.registeredAt, this.lastLoginAt, this.points = 0, this.memberLevel = 'normal', this.isVerified = false, final  List<String> favoriteDevices = const []}): _favoriteDevices = favoriteDevices,super._();
+  const _UserModel({required this.id, required this.username, required this.registeredAt, this.phone, this.email, this.nickname = '', this.avatar, this.gender = 'unknown', this.birthday, this.lastLoginAt, this.points = 0, this.memberLevel = 'normal', this.isVerified = false, final  List<String> favoriteDevices = const []}): _favoriteDevices = favoriteDevices,super._();
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 /// 用户ID
 @override final  String id;
 /// 用户名（手机号或邮箱）
 @override final  String username;
+/// 用户注册时间
+@override final  DateTime registeredAt;
 /// 手机号
 @override final  String? phone;
 /// 邮箱
@@ -255,8 +257,6 @@ class _UserModel extends UserModel {
 @override@JsonKey() final  String gender;
 /// 用户生日
 @override final  DateTime? birthday;
-/// 用户注册时间
-@override final  DateTime registeredAt;
 /// 用户最后登录时间
 @override final  DateTime? lastLoginAt;
 /// 用户积分
@@ -288,16 +288,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.birthday, birthday) || other.birthday == birthday)&&(identical(other.registeredAt, registeredAt) || other.registeredAt == registeredAt)&&(identical(other.lastLoginAt, lastLoginAt) || other.lastLoginAt == lastLoginAt)&&(identical(other.points, points) || other.points == points)&&(identical(other.memberLevel, memberLevel) || other.memberLevel == memberLevel)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&const DeepCollectionEquality().equals(other._favoriteDevices, _favoriteDevices));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.registeredAt, registeredAt) || other.registeredAt == registeredAt)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.birthday, birthday) || other.birthday == birthday)&&(identical(other.lastLoginAt, lastLoginAt) || other.lastLoginAt == lastLoginAt)&&(identical(other.points, points) || other.points == points)&&(identical(other.memberLevel, memberLevel) || other.memberLevel == memberLevel)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&const DeepCollectionEquality().equals(other._favoriteDevices, _favoriteDevices));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,username,phone,email,nickname,avatar,gender,birthday,registeredAt,lastLoginAt,points,memberLevel,isVerified,const DeepCollectionEquality().hash(_favoriteDevices));
+int get hashCode => Object.hash(runtimeType,id,username,registeredAt,phone,email,nickname,avatar,gender,birthday,lastLoginAt,points,memberLevel,isVerified,const DeepCollectionEquality().hash(_favoriteDevices));
 
 @override
 String toString() {
-  return 'UserModel(id: $id, username: $username, phone: $phone, email: $email, nickname: $nickname, avatar: $avatar, gender: $gender, birthday: $birthday, registeredAt: $registeredAt, lastLoginAt: $lastLoginAt, points: $points, memberLevel: $memberLevel, isVerified: $isVerified, favoriteDevices: $favoriteDevices)';
+  return 'UserModel(id: $id, username: $username, registeredAt: $registeredAt, phone: $phone, email: $email, nickname: $nickname, avatar: $avatar, gender: $gender, birthday: $birthday, lastLoginAt: $lastLoginAt, points: $points, memberLevel: $memberLevel, isVerified: $isVerified, favoriteDevices: $favoriteDevices)';
 }
 
 
@@ -308,7 +308,7 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String username, String? phone, String? email, String nickname, String? avatar, String gender, DateTime? birthday, DateTime registeredAt, DateTime? lastLoginAt, int points, String memberLevel, bool isVerified, List<String> favoriteDevices
+ String id, String username, DateTime registeredAt, String? phone, String? email, String nickname, String? avatar, String gender, DateTime? birthday, DateTime? lastLoginAt, int points, String memberLevel, bool isVerified, List<String> favoriteDevices
 });
 
 
@@ -325,18 +325,18 @@ class __$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? phone = freezed,Object? email = freezed,Object? nickname = null,Object? avatar = freezed,Object? gender = null,Object? birthday = freezed,Object? registeredAt = null,Object? lastLoginAt = freezed,Object? points = null,Object? memberLevel = null,Object? isVerified = null,Object? favoriteDevices = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? registeredAt = null,Object? phone = freezed,Object? email = freezed,Object? nickname = null,Object? avatar = freezed,Object? gender = null,Object? birthday = freezed,Object? lastLoginAt = freezed,Object? points = null,Object? memberLevel = null,Object? isVerified = null,Object? favoriteDevices = null,}) {
   return _then(_UserModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
-as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,registeredAt: null == registeredAt ? _self.registeredAt : registeredAt // ignore: cast_nullable_to_non_nullable
+as DateTime,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,avatar: freezed == avatar ? _self.avatar : avatar // ignore: cast_nullable_to_non_nullable
 as String?,gender: null == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
 as String,birthday: freezed == birthday ? _self.birthday : birthday // ignore: cast_nullable_to_non_nullable
-as DateTime?,registeredAt: null == registeredAt ? _self.registeredAt : registeredAt // ignore: cast_nullable_to_non_nullable
-as DateTime,lastLoginAt: freezed == lastLoginAt ? _self.lastLoginAt : lastLoginAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,lastLoginAt: freezed == lastLoginAt ? _self.lastLoginAt : lastLoginAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
 as int,memberLevel: null == memberLevel ? _self.memberLevel : memberLevel // ignore: cast_nullable_to_non_nullable
 as String,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable

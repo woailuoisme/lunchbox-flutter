@@ -6,8 +6,12 @@ import '../features/auth/providers/auth_notifier.dart';
 import '../features/auth/screens/login_view.dart';
 import '../features/device/screens/device_detail_view.dart';
 import '../features/home/screens/home_view.dart';
+import '../features/onboarding/screens/onboarding_view.dart';
 import '../features/order/screens/order_list_view.dart';
 import '../features/profile/screens/profile_view_riverpod.dart';
+import '../features/settings/screens/about_view.dart';
+import '../features/settings/screens/device_info_view.dart';
+import '../features/settings/screens/settings_view.dart';
 import '../features/splash/screens/splash_view.dart';
 import '../shared/widgets/scaffold_with_navbar.dart';
 import 'app_routes.dart';
@@ -40,7 +44,8 @@ GoRouter goRouter(Ref ref) {
     redirect: (context, state) {
       final isAuthRoute =
           state.matchedLocation.startsWith('/auth') ||
-          state.matchedLocation == AppRoutes.splash;
+          state.matchedLocation == AppRoutes.splash ||
+          state.matchedLocation == AppRoutes.onboarding;
 
       // 如果用户未认证且不在认证相关页面，重定向到登录页
       if (!isAuthenticated && !isAuthRoute) {
@@ -63,6 +68,12 @@ GoRouter goRouter(Ref ref) {
         builder: (context, state) => const SplashView(),
       ),
 
+      // 引导页
+      GoRoute(
+        path: AppRoutes.onboarding,
+        builder: (context, state) => const OnboardingView(),
+      ),
+
       // 认证相关路由（不需要认证）
       GoRoute(
         path: AppRoutes.login,
@@ -76,6 +87,21 @@ GoRouter goRouter(Ref ref) {
           final id = state.pathParameters['id']!;
           return DeviceDetailView(deviceId: id);
         },
+      ),
+      // 设置相关路由
+      GoRoute(
+        path: AppRoutes.settings,
+        builder: (context, state) => const SettingsView(),
+        routes: [
+          GoRoute(
+            path: 'about',
+            builder: (context, state) => const AboutView(),
+          ),
+          GoRoute(
+            path: 'device-info',
+            builder: (context, state) => const DeviceInfoView(),
+          ),
+        ],
       ),
 
       // 主应用 Shell：使用 StatefulShellRoute 实现底部导航

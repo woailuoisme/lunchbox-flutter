@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// 用户中心视图（Riverpod 版本）
 ///
 /// 临时实现，用于路由配置
-/// TODO: 完整实现用户中心功能
+// TODO(User): 完整实现用户中心功能
 class ProfileViewRiverpod extends ConsumerWidget {
   const ProfileViewRiverpod({super.key});
 

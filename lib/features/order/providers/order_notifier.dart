@@ -20,15 +20,17 @@ class OrderNotifier extends _$OrderNotifier {
     state = state.copyWith(isLoading: true);
     try {
       final repository = ref.read(orderRepositoryProvider);
-      final result = await repository.getOrders();
-      
+      final result = await repository.getUserOrders();
+
       List<OrderModel> filteredOrders;
       if (status != null && status != 'all') {
-        filteredOrders = result.where((order) => order.status == status).toList();
+        filteredOrders = result
+            .where((order) => order.status.name == status)
+            .toList();
       } else {
         filteredOrders = result;
       }
-      
+
       state = state.copyWith(orders: filteredOrders, isLoading: false);
       LoggerUtils.i('OrderNotifier: Loaded ${filteredOrders.length} orders');
     } catch (e) {
@@ -53,8 +55,8 @@ class OrderNotifier extends _$OrderNotifier {
   Future<OrderModel?> createOrder(String deviceId) async {
     state = state.copyWith(isLoading: true);
     try {
-      final cartState = ref.read(cartNotifierProvider);
-      
+      final cartState = ref.read(cartProvider);
+
       if (cartState.cartItems.isEmpty) {
         state = state.copyWith(isLoading: false);
         return null;
@@ -68,8 +70,8 @@ class OrderNotifier extends _$OrderNotifier {
       );
 
       // Clear cart
-      await ref.read(cartNotifierProvider.notifier).clearCart();
-      
+      await ref.read(cartProvider.notifier).clearCart();
+
       state = state.copyWith(isLoading: false, selectedOrder: order);
       LoggerUtils.i('OrderNotifier: Order created: ${order.id}');
       return order;
@@ -83,7 +85,7 @@ class OrderNotifier extends _$OrderNotifier {
   Future<void> cancelOrder(String orderId) async {
     try {
       final repository = ref.read(orderRepositoryProvider);
-      await repository.cancelOrder(orderId: orderId);
+      await repository.cancelOrder(orderId);
       await loadOrders(status: state.selectedStatus);
       LoggerUtils.i('OrderNotifier: Order cancelled: $orderId');
     } catch (e) {
@@ -96,7 +98,7 @@ class OrderNotifier extends _$OrderNotifier {
     state = state.copyWith(selectedStatus: status);
     loadOrders(status: status);
   }
-  
+
   void refreshOrders() {
     loadOrders(status: state.selectedStatus);
   }
@@ -104,11 +106,11 @@ class OrderNotifier extends _$OrderNotifier {
   void selectPaymentMethod(String method) {
     state = state.copyWith(selectedPaymentMethod: method);
   }
-  
+
   void updateOrderTotal(double total) {
     state = state.copyWith(orderTotal: total);
   }
-  
+
   // Helpers for UI
   String getStatusText(OrderStatus status) {
     switch (status) {

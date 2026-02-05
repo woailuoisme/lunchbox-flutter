@@ -18,7 +18,7 @@ ProductRepository productRepository(Ref ref) {
 /// 产品仓库类
 /// 负责处理自动售货机产品相关的数据访问和业务逻辑
 class ProductRepository extends BaseRepository {
-  ProductRepository(super.apiService, super.mockService);
+  ProductRepository(super.apiService, super.mockService, {super.useMockData});
 
   /// 获取设备的所有产品列表
   Future<List<ProductModel>> getProductsByDeviceId(String deviceId) async {
@@ -29,7 +29,9 @@ class ProductRepository extends BaseRepository {
         return apiService.get(
           '/api/devices/$deviceId/products',
           (json) => List<ProductModel>.from(
-            json['data'].map((item) => ProductModel.fromJson(item)),
+            (json! as List).map(
+              (item) => ProductModel.fromJson(item as Map<String, dynamic>),
+            ),
           ),
         );
       }
@@ -44,7 +46,7 @@ class ProductRepository extends BaseRepository {
       } else {
         return apiService.get(
           '/api/products/$productId',
-          (json) => ProductModel.fromJson(json['data']),
+          (json) => ProductModel.fromJson(json! as Map<String, dynamic>),
         );
       }
     }, '获取产品详情');
@@ -142,7 +144,7 @@ class ProductRepository extends BaseRepository {
         return apiService.post(
           '/api/devices/$deviceId/products/$productId/stock',
           {'quantity': quantity},
-          (json) => json['data'],
+          (json) => json! as bool,
         );
       }
     }, '更新产品库存');
@@ -159,12 +161,20 @@ class ProductRepository extends BaseRepository {
     final sortedProducts = [...allProducts]
       ..sort((a, b) {
         // 首先按库存状态排序
-        if (a.stock > 0 && b.stock == 0) return -1;
-        if (a.stock == 0 && b.stock > 0) return 1;
+        if (a.stock > 0 && b.stock == 0) {
+          return -1;
+        }
+        if (a.stock == 0 && b.stock > 0) {
+          return 1;
+        }
 
         // 然后按是否有折扣排序
-        if (a.hasDiscount && !b.hasDiscount) return -1;
-        if (!a.hasDiscount && b.hasDiscount) return 1;
+        if (a.hasDiscount && !b.hasDiscount) {
+          return -1;
+        }
+        if (!a.hasDiscount && b.hasDiscount) {
+          return 1;
+        }
 
         // 最后按价格排序
         return a.price.compareTo(b.price);
@@ -193,7 +203,9 @@ class ProductRepository extends BaseRepository {
           '/api/products/batch',
           {'ids': productIds},
           (json) => List<ProductModel>.from(
-            json['data'].map((item) => ProductModel.fromJson(item)),
+            (json! as List).map(
+              (item) => ProductModel.fromJson(item as Map<String, dynamic>),
+            ),
           ),
         );
       }

@@ -7,7 +7,6 @@ import '../providers/product_providers.dart';
 
 /// 产品详情视图
 class ProductDetailView extends ConsumerWidget {
-
   const ProductDetailView({required this.productId, super.key});
   final String productId;
 
@@ -135,7 +134,7 @@ class ProductDetailView extends ConsumerWidget {
       margin: EdgeInsets.only(right: 8.w),
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4.r),
         border: Border.all(color: color),
       ),
@@ -204,7 +203,7 @@ class ProductDetailView extends ConsumerWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -224,7 +223,7 @@ class ProductDetailView extends ConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.remove),
                     onPressed: () {
-                      // TODO: 减少数量
+                      // TODO(User): 减少数量
                     },
                     iconSize: 20.sp,
                   ),
@@ -232,7 +231,7 @@ class ProductDetailView extends ConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () {
-                      // TODO: 增加数量
+                      // TODO(User): 增加数量
                     },
                     iconSize: 20.sp,
                   ),
@@ -246,7 +245,7 @@ class ProductDetailView extends ConsumerWidget {
               child: ElevatedButton(
                 onPressed: (product != null && product.hasStock)
                     ? () {
-                        // TODO: 加入购物车
+                        // TODO(User): 加入购物车
                         ScaffoldMessenger.of(
                           context,
                         ).showSnackBar(const SnackBar(content: Text('已加入购物车')));

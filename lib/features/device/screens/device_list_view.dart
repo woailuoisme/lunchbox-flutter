@@ -12,7 +12,6 @@ class DeviceListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final devicesAsync = ref.watch(filteredDevicesProvider);
-    final sort = ref.watch(deviceSortProvider);
     final onlineOnly = ref.watch(deviceFilterOnlineProvider);
 
     return Scaffold(
@@ -26,14 +25,8 @@ class DeviceListView extends ConsumerWidget {
               ref.read(deviceSortProvider.notifier).set(value);
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'distance',
-                child: Text('按距离排序'),
-              ),
-              const PopupMenuItem(
-                value: 'name',
-                child: Text('按名称排序'),
-              ),
+              const PopupMenuItem(value: 'distance', child: Text('按距离排序')),
+              const PopupMenuItem(value: 'name', child: Text('按名称排序')),
             ],
           ),
           // 过滤按钮
@@ -151,7 +144,9 @@ class DeviceListView extends ConsumerWidget {
                     child: Text(
                       device.address,
                       style: TextStyle(
-                          fontSize: 14.sp, color: Colors.grey[600]),
+                        fontSize: 14.sp,
+                        color: Colors.grey[600],
+                      ),
                     ),
                   ),
                 ],
@@ -162,13 +157,18 @@ class DeviceListView extends ConsumerWidget {
                 SizedBox(height: 4.h),
                 Row(
                   children: [
-                    Icon(Icons.directions_walk,
-                        size: 16.sp, color: Colors.grey),
+                    Icon(
+                      Icons.directions_walk,
+                      size: 16.sp,
+                      color: Colors.grey,
+                    ),
                     SizedBox(width: 4.w),
                     Text(
                       device.distanceText,
                       style: TextStyle(
-                          fontSize: 14.sp, color: Colors.grey[600]),
+                        fontSize: 14.sp,
+                        color: Colors.grey[600],
+                      ),
                     ),
                   ],
                 ),
@@ -224,16 +224,13 @@ class DeviceListView extends ConsumerWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4.r),
         border: Border.all(color: color),
       ),
       child: Text(
         text,
-        style: TextStyle(
-          fontSize: 12.sp,
-          color: color,
-        ),
+        style: TextStyle(fontSize: 12.sp, color: color),
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../../shared/models/cart_item_model.dart';
+import '../../cart/entities/cart_item_model.dart';
 import '../../device/entities/device_model.dart';
 
 part 'order_model.freezed.dart';
@@ -7,82 +7,87 @@ part 'order_model.g.dart';
 
 /// 订单状态枚举
 enum OrderStatus {
-  pending,     // 待支付
-  paid,        // 已支付
-  completed,   // 已完成（商品已取出）
-  cancelled,   // 已取消
-  refunded,    // 已退款
-  failed       // 支付失败
+  pending, // 待支付
+  paid, // 已支付
+  completed, // 已完成（商品已取出）
+  cancelled, // 已取消
+  refunded, // 已退款
+  failed, // 支付失败
 }
 
 /// 支付方式枚举
 enum PaymentMethod {
-  wechatPay,   // 微信支付
-  alipay,      // 支付宝
-  cash         // 现金支付
+  wechatPay, // 微信支付
+  alipay, // 支付宝
+  cash, // 现金支付
 }
 
 /// 订单模型类
 /// 表示用户购买商品后的订单信息
 @freezed
 abstract class OrderModel with _$OrderModel {
-  
   const factory OrderModel({
     /// 订单ID
     required String id,
-    
+
     /// 用户ID
     required String userId,
-    
+
     /// 设备ID
     required String deviceId,
-    
+
     /// 订单包含的商品列表
-    required List<CartItemModel> items, /// 订单总金额
-    required double totalAmount, /// 订单创建时间
-    required DateTime createdAt, /// 设备信息
+    required List<CartItemModel> items,
+
+    /// 订单总金额
+    required double totalAmount,
+
+    /// 订单创建时间
+    required DateTime createdAt,
+
+    /// 设备信息
     DeviceModel? device,
-    
+
     /// 支付金额（可能包含优惠）
     @Default(0.0) double paidAmount,
-    
+
     /// 订单状态
     @Default(OrderStatus.pending) OrderStatus status,
-    
+
     /// 支付方式
     PaymentMethod? paymentMethod,
-    
+
     /// 支付时间
     DateTime? paidAt,
-    
+
     /// 订单完成时间
     DateTime? completedAt,
-    
+
     /// 订单取消时间
     DateTime? cancelledAt,
-    
+
     /// 取货码（用于从设备取货）
     String? pickupCode,
-    
+
     /// 订单备注
     String? remark,
   }) = _OrderModel;
   const OrderModel._();
 
   /// 从JSON映射创建OrderModel实例
-  factory OrderModel.fromJson(Map<String, dynamic> json) => 
+  factory OrderModel.fromJson(Map<String, dynamic> json) =>
       _$OrderModelFromJson(json);
-  
+
   /// 获取订单商品总数
   int get totalItemsCount {
     return items.fold(0, (sum, item) => sum + item.quantity);
   }
-  
+
   /// 判断订单是否可以取消
   bool get canCancel {
     return status == OrderStatus.pending || status == OrderStatus.paid;
   }
-  
+
   /// 获取订单状态的中文描述
   String get statusText {
     switch (status) {
@@ -100,10 +105,12 @@ abstract class OrderModel with _$OrderModel {
         return '支付失败';
     }
   }
-  
+
   /// 获取支付方式的中文描述
   String? get paymentMethodText {
-    if (paymentMethod == null) return null;
+    if (paymentMethod == null) {
+      return null;
+    }
     switch (paymentMethod!) {
       case PaymentMethod.wechatPay:
         return '微信支付';

@@ -18,7 +18,6 @@ AuthInterceptor authInterceptor(Ref ref) {
 }
 
 class AuthInterceptor extends Interceptor {
-
   AuthInterceptor(this._ref);
   final Ref _ref;
 
@@ -37,10 +36,13 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     // Handle 401 Unauthorized - token expired or invalid
     if (err.response?.statusCode == 401) {
-      // TODO: Implement token refresh logic when auth repository is available
+      // TODO(User): Implement token refresh logic when auth repository is available
       // For now, just clear the token and let the app redirect to login
       final storage = _ref.read(storageServiceProvider);
       await storage.remove(AppConstants.keyAuthToken);

@@ -30,7 +30,9 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   }
 
   Future<void> _handleRegister() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
 
     setState(() => _isLoading = true);
 
@@ -59,7 +61,9 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
         );
       }
     } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 

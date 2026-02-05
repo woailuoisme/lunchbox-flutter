@@ -10,14 +10,14 @@ class SplashView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Listen for navigation events
-    ref.listen(splashNotifierProvider, (previous, next) {
+    ref.listen(splashProvider, (previous, next) {
       if (next.navigationPath != null) {
         context.go(next.navigationPath!);
       }
     });
 
-    final state = ref.watch(splashNotifierProvider);
-    final controller = ref.read(splashNotifierProvider.notifier);
+    final state = ref.watch(splashProvider);
+    final controller = ref.read(splashProvider.notifier);
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -93,7 +93,7 @@ class SplashView extends ConsumerWidget {
           'E-Lunchbox',
           style: TextStyle(
             fontSize: 16.sp,
-            color: Colors.white.withOpacity(0.8),
+            color: Colors.white.withValues(alpha: 0.8),
             letterSpacing: 1,
           ),
         ),
@@ -110,7 +110,7 @@ class SplashView extends ConsumerWidget {
             borderRadius: BorderRadius.circular(10.r),
             child: LinearProgressIndicator(
               value: state.initializationProgress,
-              backgroundColor: Colors.white.withOpacity(0.3),
+              backgroundColor: Colors.white.withValues(alpha: 0.3),
               valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
               minHeight: 6.h,
             ),
@@ -120,7 +120,7 @@ class SplashView extends ConsumerWidget {
             '${(state.initializationProgress * 100).toInt()}%',
             style: TextStyle(
               fontSize: 12.sp,
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.8),
             ),
           ),
         ],
@@ -146,7 +146,10 @@ class SplashView extends ConsumerWidget {
 
     return Text(
       message,
-      style: TextStyle(fontSize: 14.sp, color: Colors.white.withOpacity(0.9)),
+      style: TextStyle(
+        fontSize: 14.sp,
+        color: Colors.white.withValues(alpha: 0.9),
+      ),
     );
   }
 
@@ -177,7 +180,7 @@ class SplashView extends ConsumerWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14.sp,
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withValues(alpha: 0.9),
               ),
             ),
             SizedBox(height: 40.h),

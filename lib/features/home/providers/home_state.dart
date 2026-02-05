@@ -5,7 +5,7 @@ import '../../device/entities/device_model.dart';
 part 'home_state.freezed.dart';
 
 @freezed
-class HomeState with _$HomeState {
+abstract class HomeState with _$HomeState {
   const factory HomeState({
     CityModel? currentCity,
     @Default([]) List<DeviceModel> nearbyDevices,

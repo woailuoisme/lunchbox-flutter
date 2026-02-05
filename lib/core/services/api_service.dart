@@ -12,7 +12,6 @@ ApiService apiService(Ref ref) {
 }
 
 class ApiService {
-
   ApiService(this._dio);
   final Dio _dio;
 
@@ -30,7 +29,7 @@ class ApiService {
 
   Future<Response<T>> post<T>(
     String path, {
-    data,
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) {
@@ -44,7 +43,7 @@ class ApiService {
 
   Future<Response<T>> put<T>(
     String path, {
-    data,
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) {
@@ -58,7 +57,7 @@ class ApiService {
 
   Future<Response<T>> delete<T>(
     String path, {
-    data,
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) {
@@ -72,7 +71,7 @@ class ApiService {
 
   Future<Response<T>> patch<T>(
     String path, {
-    data,
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) {

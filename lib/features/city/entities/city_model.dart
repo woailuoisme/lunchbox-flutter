@@ -6,7 +6,7 @@ part 'city_model.g.dart';
 /// City model
 /// Domain entity representing a city in the lunchbox vending machine system
 @freezed
-class CityModel with _$CityModel {
+abstract class CityModel with _$CityModel {
   const factory CityModel({
     /// Unique identifier for the city
     required String id,

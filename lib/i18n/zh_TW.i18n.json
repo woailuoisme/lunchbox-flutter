@@ -1,0 +1,27 @@
+{
+  "common": {
+    "login": "登入",
+    "register": "註冊",
+    "username": "使用者名稱",
+    "password": "密碼",
+    "confirm": "確認",
+    "cancel": "取消",
+    "error": "錯誤",
+    "success": "成功",
+    "loading": "載入中..."
+  },
+  "auth": {
+    "loginTitle": "歡迎回來",
+    "loginButton": "登入",
+    "registerButton": "註冊",
+    "forgotPassword": "忘記密碼？",
+    "loginFailed": "登入失敗",
+    "loginSuccess": "登入成功"
+  },
+  "time": {
+    "justNow": "剛剛",
+    "minutesAgo": "${minutes}分鐘前",
+    "hoursAgo": "${hours}小時前",
+    "daysAgo": "${days}天前"
+  }
+}

@@ -23,8 +23,7 @@ UserRepository userRepository(Ref ref) {
 /// 用户仓库类
 /// 负责处理用户相关的数据访问和业务逻辑
 class UserRepository extends BaseRepository {
-
-  UserRepository(super.apiProvider, super.mockProvider, this._storage);
+  UserRepository(super.apiService, super.mockService, this._storage);
   static const String userStorageKey = 'user_info';
   static const String tokenStorageKey = 'auth_token';
 
@@ -39,25 +38,28 @@ class UserRepository extends BaseRepository {
       final loginData = {'username': username, 'password': password};
 
       if (useMockData) {
-        final response = await mockProvider.login(loginData);
+        final response = await mockService.login(loginData);
         // 保存用户信息和token
         if (response.isSuccess && response.data != null) {
-          final user = UserModel.fromJson(response.data!['user']);
-          final token = response.data!['token'] as String;
+          final data = response.data!;
+          final user = UserModel.fromJson(data['user'] as Map<String, dynamic>);
+          final token = data['token'] as String;
           _saveUserInfo(user);
           _saveToken(token);
           return ApiResponseModel.success(user);
         }
         return ApiResponseModel.failure(response.message);
       } else {
-        final response = await apiProvider.post(
-          '/api/auth/login',
-          loginData,
-          (json) => {
-            'user': UserModel.fromJson(json['data']['user']),
-            'token': json['data']['token'],
-          },
-        );
+        final response = await apiService.post('/api/auth/login', loginData, (
+          json,
+        ) {
+          final map = json! as Map<String, dynamic>;
+          final data = map['data'];
+          return {
+            'user': UserModel.fromJson(data['user'] as Map<String, dynamic>),
+            'token': data['token'],
+          };
+        });
 
         if (response.isSuccess && response.data != null) {
           final user = response.data!['user'] as UserModel;
@@ -89,13 +91,15 @@ class UserRepository extends BaseRepository {
       };
 
       if (useMockData) {
-        final response = await mockProvider.register(registerData);
+        final response = await mockService.register(registerData);
         return response;
       } else {
-        return await apiProvider.post(
+        return apiService.post(
           '/api/auth/register',
           registerData,
-          (json) => UserModel.fromJson(json['data']),
+          (json) => UserModel.fromJson(
+            (json! as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+          ),
         );
       }
     }, '用户注册');
@@ -105,7 +109,11 @@ class UserRepository extends BaseRepository {
   Future<bool> logout() async {
     try {
       if (!useMockData) {
-        await apiProvider.post('/api/auth/logout', {}, (json) => {});
+        await apiService.post(
+          '/api/auth/logout',
+          <String, dynamic>{},
+          (json) => <String, dynamic>{},
+        );
       }
 
       // 清除本地存储的用户信息和token
@@ -131,9 +139,9 @@ class UserRepository extends BaseRepository {
     // 从服务器获取最新的用户信息
     try {
       if (!useMockData) {
-        final updatedUser = await apiProvider.get(
+        final updatedUser = await apiService.get(
           '/api/users/profile',
-          (json) => UserModel.fromJson(json['data']),
+          (json) => UserModel.fromJson(json! as Map<String, dynamic>),
         );
 
         if (updatedUser.isSuccess && updatedUser.data != null) {
@@ -187,10 +195,10 @@ class UserRepository extends BaseRepository {
         _saveUserInfo(updatedUser);
         return ApiResponseModel.success(updatedUser);
       } else {
-        final response = await apiProvider.put(
+        final response = await apiService.put(
           '/api/users/profile',
           updateData,
-          (json) => UserModel.fromJson(json['data']),
+          (json) => UserModel.fromJson(json['data'] as Map<String, dynamic>),
         );
 
         if (response.isSuccess && response.data != null) {
@@ -217,10 +225,10 @@ class UserRepository extends BaseRepository {
         // 在Mock数据中模拟修改密码
         return ApiResponseModel.success(true);
       } else {
-        return await apiProvider.put(
+        return apiService.put(
           '/api/users/password',
           passwordData,
-          (json) => json['data'],
+          (json) => json['data'] as bool,
         );
       }
     }, '修改密码');
@@ -244,9 +252,11 @@ class UserRepository extends BaseRepository {
         _saveUserInfo(updatedUser);
         return ApiResponseModel.success(true);
       } else {
-        return await apiProvider.post('/api/users/favorite-devices', {
-          'deviceId': deviceId,
-        }, (json) => json['data']);
+        return apiService.post(
+          '/api/users/favorite-devices',
+          {'deviceId': deviceId},
+          (json) => (json! as Map<String, dynamic>)['data'] as bool,
+        );
       }
     }, '添加常用设备');
   }
@@ -272,9 +282,9 @@ class UserRepository extends BaseRepository {
         _saveUserInfo(updatedUser);
         return ApiResponseModel.success(true);
       } else {
-        return await apiProvider.delete(
+        return apiService.delete(
           '/api/users/favorite-devices/$deviceId',
-          (json) => json['data'],
+          (json) => json['data'] as bool,
         );
       }
     }, '移除常用设备');
@@ -298,7 +308,7 @@ class UserRepository extends BaseRepository {
     }
     try {
       final userData = jsonDecode(jsonStr);
-      return UserModel.fromJson(userData);
+      return UserModel.fromJson(userData as Map<String, dynamic>);
     } catch (e) {
       LoggerUtils.e('Failed to parse user info', e);
       return null;

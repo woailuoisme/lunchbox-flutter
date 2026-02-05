@@ -23,7 +23,8 @@ class ApiProvider {
   /// 配置Dio实例
   void _setupDio() {
     // 设置基础URL
-    _dio.options.baseUrl = 'https://api.example.com'; // TODO: 配置实际的 API 地址
+    _dio.options.baseUrl =
+        'https://api.example.com'; // TODO(User): 配置实际的 API 地址
 
     // 设置超时时间
     _dio.options.connectTimeout = const Duration(seconds: 10);
@@ -34,7 +35,7 @@ class ApiProvider {
       InterceptorsWrapper(
         onRequest: (options, handler) {
           // 在发送请求前，可以添加认证token等
-          // TODO: 实现 token 获取逻辑
+          // TODO(User): 实现 token 获取逻辑
           // final token = getAuthToken();
           // if (token != null) {
           //   options.headers['Authorization'] = 'Bearer $token';
@@ -70,21 +71,19 @@ class ApiProvider {
   /// 发送GET请求
   Future<ApiResponseModel<T>> get<T>(
     String path,
-    T Function(Map<String, dynamic>) fromJsonT, {
+    T Function(Object?) fromJsonT, {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _dio.get(path, queryParameters: queryParameters);
+      final response = await _dio.get<dynamic>(
+        path,
+        queryParameters: queryParameters,
+      );
 
       if (response.data is Map<String, dynamic>) {
         return ApiResponseModel.fromJson(
           response.data as Map<String, dynamic>,
-          (json) {
-            if (json is Map<String, dynamic>) {
-              return fromJsonT(json);
-            }
-            return fromJsonT(json! as Map<String, dynamic>);
-          },
+          fromJsonT,
         );
       } else {
         return ApiResponseModel.failure('Invalid response format');
@@ -99,12 +98,12 @@ class ApiProvider {
   /// 发送POST请求
   Future<ApiResponseModel<T>> post<T>(
     String path,
-    data,
-    T Function(Map<String, dynamic>) fromJsonT, {
+    Object? data,
+    T Function(Object?) fromJsonT, {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.post<dynamic>(
         path,
         data: data,
         queryParameters: queryParameters,
@@ -113,12 +112,7 @@ class ApiProvider {
       if (response.data is Map<String, dynamic>) {
         return ApiResponseModel.fromJson(
           response.data as Map<String, dynamic>,
-          (json) {
-            if (json is Map<String, dynamic>) {
-              return fromJsonT(json);
-            }
-            return fromJsonT(json! as Map<String, dynamic>);
-          },
+          fromJsonT,
         );
       } else {
         return ApiResponseModel.failure('Invalid response format');
@@ -133,12 +127,12 @@ class ApiProvider {
   /// 发送PUT请求
   Future<ApiResponseModel<T>> put<T>(
     String path,
-    data,
+    Object? data,
     T Function(Map<String, dynamic>) fromJsonT, {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _dio.put(
+      final response = await _dio.put<dynamic>(
         path,
         data: data,
         queryParameters: queryParameters,
@@ -171,7 +165,7 @@ class ApiProvider {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _dio.delete(
+      final response = await _dio.delete<dynamic>(
         path,
         queryParameters: queryParameters,
       );
@@ -226,7 +220,7 @@ class ApiProvider {
     String path,
     String filePath,
     String fileName,
-    T Function(Map<String, dynamic>) fromJsonT, {
+    T Function(Object?) fromJsonT, {
     Map<String, dynamic>? data,
   }) async {
     try {
@@ -235,7 +229,7 @@ class ApiProvider {
         ...?data,
       });
 
-      final response = await _dio.post(
+      final response = await _dio.post<dynamic>(
         path,
         data: formData,
         options: Options(contentType: 'multipart/form-data'),
@@ -244,12 +238,7 @@ class ApiProvider {
       if (response.data is Map<String, dynamic>) {
         return ApiResponseModel.fromJson(
           response.data as Map<String, dynamic>,
-          (json) {
-            if (json is Map<String, dynamic>) {
-              return fromJsonT(json);
-            }
-            return fromJsonT(json! as Map<String, dynamic>);
-          },
+          fromJsonT,
         );
       } else {
         return ApiResponseModel.failure('Invalid response format');

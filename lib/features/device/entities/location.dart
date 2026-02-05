@@ -5,7 +5,7 @@ part 'location.freezed.dart';
 /// Location domain entity
 /// Represents a geographic location with coordinates and optional address
 @freezed
-class Location with _$Location {
+abstract class Location with _$Location {
   const factory Location({
     /// Latitude coordinate
     required double latitude,

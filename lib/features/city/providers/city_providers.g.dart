@@ -144,7 +144,7 @@ final class CitySearchQueryProvider
   }
 }
 
-String _$citySearchQueryHash() => r'54e7979c333758e99cb94f8cd8c447908adbd313';
+String _$citySearchQueryHash() => r'e1ff03218a50809d1fd6fdf7d0a0e640afea835d';
 
 /// 搜索关键词
 
@@ -202,7 +202,7 @@ final class FilteredCitiesProvider
   }
 }
 
-String _$filteredCitiesHash() => r'b68871d96a49d326f9943c6d66dbae9bdeed090e';
+String _$filteredCitiesHash() => r'7b0b4f9d80519f1b8d74edafe6ffa05452bf3cd6';
 
 /// 过滤后的城市列表
 
@@ -260,7 +260,7 @@ final class GroupedCitiesProvider
   }
 }
 
-String _$groupedCitiesHash() => r'94aa795f0b8390d1ae46303b61548f2d85d88e9a';
+String _$groupedCitiesHash() => r'a0ce11c643a30eb338f4f5ea3444b5db2ab06c36';
 
 /// 分组城市列表（按首字母）
 

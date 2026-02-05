@@ -9,7 +9,7 @@ part 'device_model.g.dart';
 /// Device data model
 /// Used for data transfer and JSON serialization
 @freezed
-class DeviceModel with _$DeviceModel {
+abstract class DeviceModel with _$DeviceModel {
   const factory DeviceModel({
     /// Unique device identifier
     required String id,
@@ -38,6 +38,15 @@ class DeviceModel with _$DeviceModel {
       _$DeviceModelFromJson(json);
 
   const DeviceModel._();
+
+  bool get isOnline => status == 'online';
+
+  bool get supportMobilePayment => true;
+  bool get supportCashPayment => true;
+
+  String get address => location.address ?? '';
+  double? get distance => null; // TODO: Calculate distance
+  String get distanceText => '';
 
   /// Convert DeviceModel to Device domain entity
   Device toEntity() => Device(

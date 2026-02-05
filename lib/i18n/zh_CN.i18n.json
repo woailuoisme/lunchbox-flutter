@@ -1,0 +1,27 @@
+{
+  "common": {
+    "login": "登录",
+    "register": "注册",
+    "username": "用户名",
+    "password": "密码",
+    "confirm": "确认",
+    "cancel": "取消",
+    "error": "错误",
+    "success": "成功",
+    "loading": "加载中..."
+  },
+  "auth": {
+    "loginTitle": "欢迎回来",
+    "loginButton": "登录",
+    "registerButton": "注册",
+    "forgotPassword": "忘记密码？",
+    "loginFailed": "登录失败",
+    "loginSuccess": "登录成功"
+  },
+  "time": {
+    "justNow": "刚刚",
+    "minutesAgo": "${minutes}分钟前",
+    "hoursAgo": "${hours}小时前",
+    "daysAgo": "${days}天前"
+  }
+}

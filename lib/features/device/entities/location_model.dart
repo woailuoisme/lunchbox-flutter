@@ -7,7 +7,7 @@ part 'location_model.g.dart';
 /// Location data model
 /// Used for data transfer and JSON serialization
 @freezed
-class LocationModel with _$LocationModel {
+abstract class LocationModel with _$LocationModel {
   const factory LocationModel({
     /// Latitude coordinate
     required double latitude,

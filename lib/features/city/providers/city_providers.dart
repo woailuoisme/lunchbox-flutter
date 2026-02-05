@@ -31,7 +31,11 @@ class CitySearchQuery extends _$CitySearchQuery {
   @override
   String build() => '';
 
-  void update(String query) => state = query;
+  String get query => state;
+
+  set query(String value) {
+    state = value;
+  }
 }
 
 /// 过滤后的城市列表
@@ -39,7 +43,7 @@ class CitySearchQuery extends _$CitySearchQuery {
 class FilteredCities extends _$FilteredCities {
   @override
   List<CityModel> build() {
-    final cities = ref.watch(allCitiesProvider).valueOrNull ?? [];
+    final cities = ref.watch(allCitiesProvider).asData?.value ?? [];
     final query = ref.watch(citySearchQueryProvider);
 
     if (query.isEmpty) {
@@ -59,7 +63,7 @@ class FilteredCities extends _$FilteredCities {
 class GroupedCities extends _$GroupedCities {
   @override
   Map<String, List<CityModel>> build() {
-    final cities = ref.watch(allCitiesProvider).valueOrNull ?? [];
+    final cities = ref.watch(allCitiesProvider).asData?.value ?? [];
 
     final Map<String, List<CityModel>> result = {};
 

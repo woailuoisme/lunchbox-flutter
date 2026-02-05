@@ -18,14 +18,14 @@ mixin _$OrderModel {
 /// 订单ID
  String get id;/// 用户ID
  String get userId;/// 设备ID
- String get deviceId;/// 设备信息
- DeviceModel? get device;/// 订单包含的商品列表
+ String get deviceId;/// 订单包含的商品列表
  List<CartItemModel> get items;/// 订单总金额
- double get totalAmount;/// 支付金额（可能包含优惠）
+ double get totalAmount;/// 订单创建时间
+ DateTime get createdAt;/// 设备信息
+ DeviceModel? get device;/// 支付金额（可能包含优惠）
  double get paidAmount;/// 订单状态
  OrderStatus get status;/// 支付方式
- PaymentMethod? get paymentMethod;/// 订单创建时间
- DateTime get createdAt;/// 支付时间
+ PaymentMethod? get paymentMethod;/// 支付时间
  DateTime? get paidAt;/// 订单完成时间
  DateTime? get completedAt;/// 订单取消时间
  DateTime? get cancelledAt;/// 取货码（用于从设备取货）
@@ -43,16 +43,16 @@ $OrderModelCopyWith<OrderModel> get copyWith => _$OrderModelCopyWithImpl<OrderMo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&(identical(other.device, device) || other.device == device)&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.paidAmount, paidAmount) || other.paidAmount == paidAmount)&&(identical(other.status, status) || other.status == status)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.paidAt, paidAt) || other.paidAt == paidAt)&&(identical(other.completedAt, completedAt) || other.completedAt == completedAt)&&(identical(other.cancelledAt, cancelledAt) || other.cancelledAt == cancelledAt)&&(identical(other.pickupCode, pickupCode) || other.pickupCode == pickupCode)&&(identical(other.remark, remark) || other.remark == remark));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.device, device) || other.device == device)&&(identical(other.paidAmount, paidAmount) || other.paidAmount == paidAmount)&&(identical(other.status, status) || other.status == status)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.paidAt, paidAt) || other.paidAt == paidAt)&&(identical(other.completedAt, completedAt) || other.completedAt == completedAt)&&(identical(other.cancelledAt, cancelledAt) || other.cancelledAt == cancelledAt)&&(identical(other.pickupCode, pickupCode) || other.pickupCode == pickupCode)&&(identical(other.remark, remark) || other.remark == remark));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,deviceId,device,const DeepCollectionEquality().hash(items),totalAmount,paidAmount,status,paymentMethod,createdAt,paidAt,completedAt,cancelledAt,pickupCode,remark);
+int get hashCode => Object.hash(runtimeType,id,userId,deviceId,const DeepCollectionEquality().hash(items),totalAmount,createdAt,device,paidAmount,status,paymentMethod,paidAt,completedAt,cancelledAt,pickupCode,remark);
 
 @override
 String toString() {
-  return 'OrderModel(id: $id, userId: $userId, deviceId: $deviceId, device: $device, items: $items, totalAmount: $totalAmount, paidAmount: $paidAmount, status: $status, paymentMethod: $paymentMethod, createdAt: $createdAt, paidAt: $paidAt, completedAt: $completedAt, cancelledAt: $cancelledAt, pickupCode: $pickupCode, remark: $remark)';
+  return 'OrderModel(id: $id, userId: $userId, deviceId: $deviceId, items: $items, totalAmount: $totalAmount, createdAt: $createdAt, device: $device, paidAmount: $paidAmount, status: $status, paymentMethod: $paymentMethod, paidAt: $paidAt, completedAt: $completedAt, cancelledAt: $cancelledAt, pickupCode: $pickupCode, remark: $remark)';
 }
 
 
@@ -63,7 +63,7 @@ abstract mixin class $OrderModelCopyWith<$Res>  {
   factory $OrderModelCopyWith(OrderModel value, $Res Function(OrderModel) _then) = _$OrderModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String userId, String deviceId, DeviceModel? device, List<CartItemModel> items, double totalAmount, double paidAmount, OrderStatus status, PaymentMethod? paymentMethod, DateTime createdAt, DateTime? paidAt, DateTime? completedAt, DateTime? cancelledAt, String? pickupCode, String? remark
+ String id, String userId, String deviceId, List<CartItemModel> items, double totalAmount, DateTime createdAt, DeviceModel? device, double paidAmount, OrderStatus status, PaymentMethod? paymentMethod, DateTime? paidAt, DateTime? completedAt, DateTime? cancelledAt, String? pickupCode, String? remark
 });
 
 
@@ -80,19 +80,19 @@ class _$OrderModelCopyWithImpl<$Res>
 
 /// Create a copy of OrderModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? deviceId = null,Object? device = freezed,Object? items = null,Object? totalAmount = null,Object? paidAmount = null,Object? status = null,Object? paymentMethod = freezed,Object? createdAt = null,Object? paidAt = freezed,Object? completedAt = freezed,Object? cancelledAt = freezed,Object? pickupCode = freezed,Object? remark = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? deviceId = null,Object? items = null,Object? totalAmount = null,Object? createdAt = null,Object? device = freezed,Object? paidAmount = null,Object? status = null,Object? paymentMethod = freezed,Object? paidAt = freezed,Object? completedAt = freezed,Object? cancelledAt = freezed,Object? pickupCode = freezed,Object? remark = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,deviceId: null == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
-as String,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
-as DeviceModel?,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
+as String,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
 as List<CartItemModel>,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
-as double,paidAmount: null == paidAmount ? _self.paidAmount : paidAmount // ignore: cast_nullable_to_non_nullable
+as double,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
+as DeviceModel?,paidAmount: null == paidAmount ? _self.paidAmount : paidAmount // ignore: cast_nullable_to_non_nullable
 as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as OrderStatus,paymentMethod: freezed == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as PaymentMethod?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,paidAt: freezed == paidAt ? _self.paidAt : paidAt // ignore: cast_nullable_to_non_nullable
+as PaymentMethod?,paidAt: freezed == paidAt ? _self.paidAt : paidAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,completedAt: freezed == completedAt ? _self.completedAt : completedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,cancelledAt: freezed == cancelledAt ? _self.cancelledAt : cancelledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,pickupCode: freezed == pickupCode ? _self.pickupCode : pickupCode // ignore: cast_nullable_to_non_nullable
@@ -194,10 +194,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  String deviceId,  DeviceModel? device,  List<CartItemModel> items,  double totalAmount,  double paidAmount,  OrderStatus status,  PaymentMethod? paymentMethod,  DateTime createdAt,  DateTime? paidAt,  DateTime? completedAt,  DateTime? cancelledAt,  String? pickupCode,  String? remark)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  String deviceId,  List<CartItemModel> items,  double totalAmount,  DateTime createdAt,  DeviceModel? device,  double paidAmount,  OrderStatus status,  PaymentMethod? paymentMethod,  DateTime? paidAt,  DateTime? completedAt,  DateTime? cancelledAt,  String? pickupCode,  String? remark)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderModel() when $default != null:
-return $default(_that.id,_that.userId,_that.deviceId,_that.device,_that.items,_that.totalAmount,_that.paidAmount,_that.status,_that.paymentMethod,_that.createdAt,_that.paidAt,_that.completedAt,_that.cancelledAt,_that.pickupCode,_that.remark);case _:
+return $default(_that.id,_that.userId,_that.deviceId,_that.items,_that.totalAmount,_that.createdAt,_that.device,_that.paidAmount,_that.status,_that.paymentMethod,_that.paidAt,_that.completedAt,_that.cancelledAt,_that.pickupCode,_that.remark);case _:
   return orElse();
 
 }
@@ -215,10 +215,10 @@ return $default(_that.id,_that.userId,_that.deviceId,_that.device,_that.items,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  String deviceId,  DeviceModel? device,  List<CartItemModel> items,  double totalAmount,  double paidAmount,  OrderStatus status,  PaymentMethod? paymentMethod,  DateTime createdAt,  DateTime? paidAt,  DateTime? completedAt,  DateTime? cancelledAt,  String? pickupCode,  String? remark)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  String deviceId,  List<CartItemModel> items,  double totalAmount,  DateTime createdAt,  DeviceModel? device,  double paidAmount,  OrderStatus status,  PaymentMethod? paymentMethod,  DateTime? paidAt,  DateTime? completedAt,  DateTime? cancelledAt,  String? pickupCode,  String? remark)  $default,) {final _that = this;
 switch (_that) {
 case _OrderModel():
-return $default(_that.id,_that.userId,_that.deviceId,_that.device,_that.items,_that.totalAmount,_that.paidAmount,_that.status,_that.paymentMethod,_that.createdAt,_that.paidAt,_that.completedAt,_that.cancelledAt,_that.pickupCode,_that.remark);case _:
+return $default(_that.id,_that.userId,_that.deviceId,_that.items,_that.totalAmount,_that.createdAt,_that.device,_that.paidAmount,_that.status,_that.paymentMethod,_that.paidAt,_that.completedAt,_that.cancelledAt,_that.pickupCode,_that.remark);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -235,10 +235,10 @@ return $default(_that.id,_that.userId,_that.deviceId,_that.device,_that.items,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  String deviceId,  DeviceModel? device,  List<CartItemModel> items,  double totalAmount,  double paidAmount,  OrderStatus status,  PaymentMethod? paymentMethod,  DateTime createdAt,  DateTime? paidAt,  DateTime? completedAt,  DateTime? cancelledAt,  String? pickupCode,  String? remark)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  String deviceId,  List<CartItemModel> items,  double totalAmount,  DateTime createdAt,  DeviceModel? device,  double paidAmount,  OrderStatus status,  PaymentMethod? paymentMethod,  DateTime? paidAt,  DateTime? completedAt,  DateTime? cancelledAt,  String? pickupCode,  String? remark)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderModel() when $default != null:
-return $default(_that.id,_that.userId,_that.deviceId,_that.device,_that.items,_that.totalAmount,_that.paidAmount,_that.status,_that.paymentMethod,_that.createdAt,_that.paidAt,_that.completedAt,_that.cancelledAt,_that.pickupCode,_that.remark);case _:
+return $default(_that.id,_that.userId,_that.deviceId,_that.items,_that.totalAmount,_that.createdAt,_that.device,_that.paidAmount,_that.status,_that.paymentMethod,_that.paidAt,_that.completedAt,_that.cancelledAt,_that.pickupCode,_that.remark);case _:
   return null;
 
 }
@@ -250,7 +250,7 @@ return $default(_that.id,_that.userId,_that.deviceId,_that.device,_that.items,_t
 @JsonSerializable()
 
 class _OrderModel extends OrderModel {
-  const _OrderModel({required this.id, required this.userId, required this.deviceId, this.device, required final  List<CartItemModel> items, required this.totalAmount, this.paidAmount = 0.0, this.status = OrderStatus.pending, this.paymentMethod, required this.createdAt, this.paidAt, this.completedAt, this.cancelledAt, this.pickupCode, this.remark}): _items = items,super._();
+  const _OrderModel({required this.id, required this.userId, required this.deviceId, required final  List<CartItemModel> items, required this.totalAmount, required this.createdAt, this.device, this.paidAmount = 0.0, this.status = OrderStatus.pending, this.paymentMethod, this.paidAt, this.completedAt, this.cancelledAt, this.pickupCode, this.remark}): _items = items,super._();
   factory _OrderModel.fromJson(Map<String, dynamic> json) => _$OrderModelFromJson(json);
 
 /// 订单ID
@@ -259,8 +259,6 @@ class _OrderModel extends OrderModel {
 @override final  String userId;
 /// 设备ID
 @override final  String deviceId;
-/// 设备信息
-@override final  DeviceModel? device;
 /// 订单包含的商品列表
  final  List<CartItemModel> _items;
 /// 订单包含的商品列表
@@ -272,14 +270,16 @@ class _OrderModel extends OrderModel {
 
 /// 订单总金额
 @override final  double totalAmount;
+/// 订单创建时间
+@override final  DateTime createdAt;
+/// 设备信息
+@override final  DeviceModel? device;
 /// 支付金额（可能包含优惠）
 @override@JsonKey() final  double paidAmount;
 /// 订单状态
 @override@JsonKey() final  OrderStatus status;
 /// 支付方式
 @override final  PaymentMethod? paymentMethod;
-/// 订单创建时间
-@override final  DateTime createdAt;
 /// 支付时间
 @override final  DateTime? paidAt;
 /// 订单完成时间
@@ -304,16 +304,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&(identical(other.device, device) || other.device == device)&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.paidAmount, paidAmount) || other.paidAmount == paidAmount)&&(identical(other.status, status) || other.status == status)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.paidAt, paidAt) || other.paidAt == paidAt)&&(identical(other.completedAt, completedAt) || other.completedAt == completedAt)&&(identical(other.cancelledAt, cancelledAt) || other.cancelledAt == cancelledAt)&&(identical(other.pickupCode, pickupCode) || other.pickupCode == pickupCode)&&(identical(other.remark, remark) || other.remark == remark));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.device, device) || other.device == device)&&(identical(other.paidAmount, paidAmount) || other.paidAmount == paidAmount)&&(identical(other.status, status) || other.status == status)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.paidAt, paidAt) || other.paidAt == paidAt)&&(identical(other.completedAt, completedAt) || other.completedAt == completedAt)&&(identical(other.cancelledAt, cancelledAt) || other.cancelledAt == cancelledAt)&&(identical(other.pickupCode, pickupCode) || other.pickupCode == pickupCode)&&(identical(other.remark, remark) || other.remark == remark));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,deviceId,device,const DeepCollectionEquality().hash(_items),totalAmount,paidAmount,status,paymentMethod,createdAt,paidAt,completedAt,cancelledAt,pickupCode,remark);
+int get hashCode => Object.hash(runtimeType,id,userId,deviceId,const DeepCollectionEquality().hash(_items),totalAmount,createdAt,device,paidAmount,status,paymentMethod,paidAt,completedAt,cancelledAt,pickupCode,remark);
 
 @override
 String toString() {
-  return 'OrderModel(id: $id, userId: $userId, deviceId: $deviceId, device: $device, items: $items, totalAmount: $totalAmount, paidAmount: $paidAmount, status: $status, paymentMethod: $paymentMethod, createdAt: $createdAt, paidAt: $paidAt, completedAt: $completedAt, cancelledAt: $cancelledAt, pickupCode: $pickupCode, remark: $remark)';
+  return 'OrderModel(id: $id, userId: $userId, deviceId: $deviceId, items: $items, totalAmount: $totalAmount, createdAt: $createdAt, device: $device, paidAmount: $paidAmount, status: $status, paymentMethod: $paymentMethod, paidAt: $paidAt, completedAt: $completedAt, cancelledAt: $cancelledAt, pickupCode: $pickupCode, remark: $remark)';
 }
 
 
@@ -324,7 +324,7 @@ abstract mixin class _$OrderModelCopyWith<$Res> implements $OrderModelCopyWith<$
   factory _$OrderModelCopyWith(_OrderModel value, $Res Function(_OrderModel) _then) = __$OrderModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String userId, String deviceId, DeviceModel? device, List<CartItemModel> items, double totalAmount, double paidAmount, OrderStatus status, PaymentMethod? paymentMethod, DateTime createdAt, DateTime? paidAt, DateTime? completedAt, DateTime? cancelledAt, String? pickupCode, String? remark
+ String id, String userId, String deviceId, List<CartItemModel> items, double totalAmount, DateTime createdAt, DeviceModel? device, double paidAmount, OrderStatus status, PaymentMethod? paymentMethod, DateTime? paidAt, DateTime? completedAt, DateTime? cancelledAt, String? pickupCode, String? remark
 });
 
 
@@ -341,19 +341,19 @@ class __$OrderModelCopyWithImpl<$Res>
 
 /// Create a copy of OrderModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? deviceId = null,Object? device = freezed,Object? items = null,Object? totalAmount = null,Object? paidAmount = null,Object? status = null,Object? paymentMethod = freezed,Object? createdAt = null,Object? paidAt = freezed,Object? completedAt = freezed,Object? cancelledAt = freezed,Object? pickupCode = freezed,Object? remark = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? deviceId = null,Object? items = null,Object? totalAmount = null,Object? createdAt = null,Object? device = freezed,Object? paidAmount = null,Object? status = null,Object? paymentMethod = freezed,Object? paidAt = freezed,Object? completedAt = freezed,Object? cancelledAt = freezed,Object? pickupCode = freezed,Object? remark = freezed,}) {
   return _then(_OrderModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,deviceId: null == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
-as String,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
-as DeviceModel?,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
+as String,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
 as List<CartItemModel>,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
-as double,paidAmount: null == paidAmount ? _self.paidAmount : paidAmount // ignore: cast_nullable_to_non_nullable
+as double,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
+as DeviceModel?,paidAmount: null == paidAmount ? _self.paidAmount : paidAmount // ignore: cast_nullable_to_non_nullable
 as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as OrderStatus,paymentMethod: freezed == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as PaymentMethod?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,paidAt: freezed == paidAt ? _self.paidAt : paidAt // ignore: cast_nullable_to_non_nullable
+as PaymentMethod?,paidAt: freezed == paidAt ? _self.paidAt : paidAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,completedAt: freezed == completedAt ? _self.completedAt : completedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,cancelledAt: freezed == cancelledAt ? _self.cancelledAt : cancelledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,pickupCode: freezed == pickupCode ? _self.pickupCode : pickupCode // ignore: cast_nullable_to_non_nullable

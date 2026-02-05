@@ -43,7 +43,7 @@ final class ProductSortProvider extends $NotifierProvider<ProductSort, String> {
   }
 }
 
-String _$productSortHash() => r'daec5f67480228199732b09dda7e44a4c8c7c06b';
+String _$productSortHash() => r'6b1fa51548cccea89e5b66710c4a958e6e93be83';
 
 /// 产品排序方式
 
@@ -219,7 +219,7 @@ final class ProductCategoryProvider
   }
 }
 
-String _$productCategoryHash() => r'4270be1e80b39a52ecbf2d9cfc27151a9aae1933';
+String _$productCategoryHash() => r'0180c3a43f21860b248d1e6b77156a95bccca8aa';
 
 /// 当前选中的产品分类
 

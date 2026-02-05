@@ -19,14 +19,14 @@ mixin _$PaymentModel {
  String get id;/// 订单ID
  String get orderId;/// 支付方式：wechat、alipay
  String get paymentMethod;/// 支付金额
- double get amount;/// 支付状态
+ double get amount;/// 支付创建时间
+ DateTime get createdAt;/// 支付过期时间
+ DateTime get expireAt;/// 支付状态
  PaymentStatus get status;/// 支付二维码URL
  String? get qrCodeUrl;/// 支付二维码内容
  String? get qrCodeData;/// 第三方支付交易号
- String? get transactionId;/// 支付创建时间
- DateTime get createdAt;/// 支付完成时间
- DateTime? get paidAt;/// 支付过期时间
- DateTime get expireAt;/// 支付备注
+ String? get transactionId;/// 支付完成时间
+ DateTime? get paidAt;/// 支付备注
  String? get remark;
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
@@ -40,16 +40,16 @@ $PaymentModelCopyWith<PaymentModel> get copyWith => _$PaymentModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.status, status) || other.status == status)&&(identical(other.qrCodeUrl, qrCodeUrl) || other.qrCodeUrl == qrCodeUrl)&&(identical(other.qrCodeData, qrCodeData) || other.qrCodeData == qrCodeData)&&(identical(other.transactionId, transactionId) || other.transactionId == transactionId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.paidAt, paidAt) || other.paidAt == paidAt)&&(identical(other.expireAt, expireAt) || other.expireAt == expireAt)&&(identical(other.remark, remark) || other.remark == remark));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.expireAt, expireAt) || other.expireAt == expireAt)&&(identical(other.status, status) || other.status == status)&&(identical(other.qrCodeUrl, qrCodeUrl) || other.qrCodeUrl == qrCodeUrl)&&(identical(other.qrCodeData, qrCodeData) || other.qrCodeData == qrCodeData)&&(identical(other.transactionId, transactionId) || other.transactionId == transactionId)&&(identical(other.paidAt, paidAt) || other.paidAt == paidAt)&&(identical(other.remark, remark) || other.remark == remark));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,orderId,paymentMethod,amount,status,qrCodeUrl,qrCodeData,transactionId,createdAt,paidAt,expireAt,remark);
+int get hashCode => Object.hash(runtimeType,id,orderId,paymentMethod,amount,createdAt,expireAt,status,qrCodeUrl,qrCodeData,transactionId,paidAt,remark);
 
 @override
 String toString() {
-  return 'PaymentModel(id: $id, orderId: $orderId, paymentMethod: $paymentMethod, amount: $amount, status: $status, qrCodeUrl: $qrCodeUrl, qrCodeData: $qrCodeData, transactionId: $transactionId, createdAt: $createdAt, paidAt: $paidAt, expireAt: $expireAt, remark: $remark)';
+  return 'PaymentModel(id: $id, orderId: $orderId, paymentMethod: $paymentMethod, amount: $amount, createdAt: $createdAt, expireAt: $expireAt, status: $status, qrCodeUrl: $qrCodeUrl, qrCodeData: $qrCodeData, transactionId: $transactionId, paidAt: $paidAt, remark: $remark)';
 }
 
 
@@ -60,7 +60,7 @@ abstract mixin class $PaymentModelCopyWith<$Res>  {
   factory $PaymentModelCopyWith(PaymentModel value, $Res Function(PaymentModel) _then) = _$PaymentModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String orderId, String paymentMethod, double amount, PaymentStatus status, String? qrCodeUrl, String? qrCodeData, String? transactionId, DateTime createdAt, DateTime? paidAt, DateTime expireAt, String? remark
+ String id, String orderId, String paymentMethod, double amount, DateTime createdAt, DateTime expireAt, PaymentStatus status, String? qrCodeUrl, String? qrCodeData, String? transactionId, DateTime? paidAt, String? remark
 });
 
 
@@ -77,20 +77,20 @@ class _$PaymentModelCopyWithImpl<$Res>
 
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orderId = null,Object? paymentMethod = null,Object? amount = null,Object? status = null,Object? qrCodeUrl = freezed,Object? qrCodeData = freezed,Object? transactionId = freezed,Object? createdAt = null,Object? paidAt = freezed,Object? expireAt = null,Object? remark = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orderId = null,Object? paymentMethod = null,Object? amount = null,Object? createdAt = null,Object? expireAt = null,Object? status = null,Object? qrCodeUrl = freezed,Object? qrCodeData = freezed,Object? transactionId = freezed,Object? paidAt = freezed,Object? remark = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orderId: null == orderId ? _self.orderId : orderId // ignore: cast_nullable_to_non_nullable
 as String,paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
 as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as double,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,expireAt: null == expireAt ? _self.expireAt : expireAt // ignore: cast_nullable_to_non_nullable
+as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as PaymentStatus,qrCodeUrl: freezed == qrCodeUrl ? _self.qrCodeUrl : qrCodeUrl // ignore: cast_nullable_to_non_nullable
 as String?,qrCodeData: freezed == qrCodeData ? _self.qrCodeData : qrCodeData // ignore: cast_nullable_to_non_nullable
 as String?,transactionId: freezed == transactionId ? _self.transactionId : transactionId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,paidAt: freezed == paidAt ? _self.paidAt : paidAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,expireAt: null == expireAt ? _self.expireAt : expireAt // ignore: cast_nullable_to_non_nullable
-as DateTime,remark: freezed == remark ? _self.remark : remark // ignore: cast_nullable_to_non_nullable
+as String?,paidAt: freezed == paidAt ? _self.paidAt : paidAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,remark: freezed == remark ? _self.remark : remark // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -176,10 +176,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orderId,  String paymentMethod,  double amount,  PaymentStatus status,  String? qrCodeUrl,  String? qrCodeData,  String? transactionId,  DateTime createdAt,  DateTime? paidAt,  DateTime expireAt,  String? remark)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String orderId,  String paymentMethod,  double amount,  DateTime createdAt,  DateTime expireAt,  PaymentStatus status,  String? qrCodeUrl,  String? qrCodeData,  String? transactionId,  DateTime? paidAt,  String? remark)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PaymentModel() when $default != null:
-return $default(_that.id,_that.orderId,_that.paymentMethod,_that.amount,_that.status,_that.qrCodeUrl,_that.qrCodeData,_that.transactionId,_that.createdAt,_that.paidAt,_that.expireAt,_that.remark);case _:
+return $default(_that.id,_that.orderId,_that.paymentMethod,_that.amount,_that.createdAt,_that.expireAt,_that.status,_that.qrCodeUrl,_that.qrCodeData,_that.transactionId,_that.paidAt,_that.remark);case _:
   return orElse();
 
 }
@@ -197,10 +197,10 @@ return $default(_that.id,_that.orderId,_that.paymentMethod,_that.amount,_that.st
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orderId,  String paymentMethod,  double amount,  PaymentStatus status,  String? qrCodeUrl,  String? qrCodeData,  String? transactionId,  DateTime createdAt,  DateTime? paidAt,  DateTime expireAt,  String? remark)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String orderId,  String paymentMethod,  double amount,  DateTime createdAt,  DateTime expireAt,  PaymentStatus status,  String? qrCodeUrl,  String? qrCodeData,  String? transactionId,  DateTime? paidAt,  String? remark)  $default,) {final _that = this;
 switch (_that) {
 case _PaymentModel():
-return $default(_that.id,_that.orderId,_that.paymentMethod,_that.amount,_that.status,_that.qrCodeUrl,_that.qrCodeData,_that.transactionId,_that.createdAt,_that.paidAt,_that.expireAt,_that.remark);case _:
+return $default(_that.id,_that.orderId,_that.paymentMethod,_that.amount,_that.createdAt,_that.expireAt,_that.status,_that.qrCodeUrl,_that.qrCodeData,_that.transactionId,_that.paidAt,_that.remark);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -217,10 +217,10 @@ return $default(_that.id,_that.orderId,_that.paymentMethod,_that.amount,_that.st
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orderId,  String paymentMethod,  double amount,  PaymentStatus status,  String? qrCodeUrl,  String? qrCodeData,  String? transactionId,  DateTime createdAt,  DateTime? paidAt,  DateTime expireAt,  String? remark)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String orderId,  String paymentMethod,  double amount,  DateTime createdAt,  DateTime expireAt,  PaymentStatus status,  String? qrCodeUrl,  String? qrCodeData,  String? transactionId,  DateTime? paidAt,  String? remark)?  $default,) {final _that = this;
 switch (_that) {
 case _PaymentModel() when $default != null:
-return $default(_that.id,_that.orderId,_that.paymentMethod,_that.amount,_that.status,_that.qrCodeUrl,_that.qrCodeData,_that.transactionId,_that.createdAt,_that.paidAt,_that.expireAt,_that.remark);case _:
+return $default(_that.id,_that.orderId,_that.paymentMethod,_that.amount,_that.createdAt,_that.expireAt,_that.status,_that.qrCodeUrl,_that.qrCodeData,_that.transactionId,_that.paidAt,_that.remark);case _:
   return null;
 
 }
@@ -232,7 +232,7 @@ return $default(_that.id,_that.orderId,_that.paymentMethod,_that.amount,_that.st
 @JsonSerializable()
 
 class _PaymentModel extends PaymentModel {
-  const _PaymentModel({required this.id, required this.orderId, required this.paymentMethod, required this.amount, this.status = PaymentStatus.pending, this.qrCodeUrl, this.qrCodeData, this.transactionId, required this.createdAt, this.paidAt, required this.expireAt, this.remark}): super._();
+  const _PaymentModel({required this.id, required this.orderId, required this.paymentMethod, required this.amount, required this.createdAt, required this.expireAt, this.status = PaymentStatus.pending, this.qrCodeUrl, this.qrCodeData, this.transactionId, this.paidAt, this.remark}): super._();
   factory _PaymentModel.fromJson(Map<String, dynamic> json) => _$PaymentModelFromJson(json);
 
 /// 支付ID
@@ -243,6 +243,10 @@ class _PaymentModel extends PaymentModel {
 @override final  String paymentMethod;
 /// 支付金额
 @override final  double amount;
+/// 支付创建时间
+@override final  DateTime createdAt;
+/// 支付过期时间
+@override final  DateTime expireAt;
 /// 支付状态
 @override@JsonKey() final  PaymentStatus status;
 /// 支付二维码URL
@@ -251,12 +255,8 @@ class _PaymentModel extends PaymentModel {
 @override final  String? qrCodeData;
 /// 第三方支付交易号
 @override final  String? transactionId;
-/// 支付创建时间
-@override final  DateTime createdAt;
 /// 支付完成时间
 @override final  DateTime? paidAt;
-/// 支付过期时间
-@override final  DateTime expireAt;
 /// 支付备注
 @override final  String? remark;
 
@@ -273,16 +273,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.status, status) || other.status == status)&&(identical(other.qrCodeUrl, qrCodeUrl) || other.qrCodeUrl == qrCodeUrl)&&(identical(other.qrCodeData, qrCodeData) || other.qrCodeData == qrCodeData)&&(identical(other.transactionId, transactionId) || other.transactionId == transactionId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.paidAt, paidAt) || other.paidAt == paidAt)&&(identical(other.expireAt, expireAt) || other.expireAt == expireAt)&&(identical(other.remark, remark) || other.remark == remark));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.expireAt, expireAt) || other.expireAt == expireAt)&&(identical(other.status, status) || other.status == status)&&(identical(other.qrCodeUrl, qrCodeUrl) || other.qrCodeUrl == qrCodeUrl)&&(identical(other.qrCodeData, qrCodeData) || other.qrCodeData == qrCodeData)&&(identical(other.transactionId, transactionId) || other.transactionId == transactionId)&&(identical(other.paidAt, paidAt) || other.paidAt == paidAt)&&(identical(other.remark, remark) || other.remark == remark));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,orderId,paymentMethod,amount,status,qrCodeUrl,qrCodeData,transactionId,createdAt,paidAt,expireAt,remark);
+int get hashCode => Object.hash(runtimeType,id,orderId,paymentMethod,amount,createdAt,expireAt,status,qrCodeUrl,qrCodeData,transactionId,paidAt,remark);
 
 @override
 String toString() {
-  return 'PaymentModel(id: $id, orderId: $orderId, paymentMethod: $paymentMethod, amount: $amount, status: $status, qrCodeUrl: $qrCodeUrl, qrCodeData: $qrCodeData, transactionId: $transactionId, createdAt: $createdAt, paidAt: $paidAt, expireAt: $expireAt, remark: $remark)';
+  return 'PaymentModel(id: $id, orderId: $orderId, paymentMethod: $paymentMethod, amount: $amount, createdAt: $createdAt, expireAt: $expireAt, status: $status, qrCodeUrl: $qrCodeUrl, qrCodeData: $qrCodeData, transactionId: $transactionId, paidAt: $paidAt, remark: $remark)';
 }
 
 
@@ -293,7 +293,7 @@ abstract mixin class _$PaymentModelCopyWith<$Res> implements $PaymentModelCopyWi
   factory _$PaymentModelCopyWith(_PaymentModel value, $Res Function(_PaymentModel) _then) = __$PaymentModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String orderId, String paymentMethod, double amount, PaymentStatus status, String? qrCodeUrl, String? qrCodeData, String? transactionId, DateTime createdAt, DateTime? paidAt, DateTime expireAt, String? remark
+ String id, String orderId, String paymentMethod, double amount, DateTime createdAt, DateTime expireAt, PaymentStatus status, String? qrCodeUrl, String? qrCodeData, String? transactionId, DateTime? paidAt, String? remark
 });
 
 
@@ -310,20 +310,20 @@ class __$PaymentModelCopyWithImpl<$Res>
 
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orderId = null,Object? paymentMethod = null,Object? amount = null,Object? status = null,Object? qrCodeUrl = freezed,Object? qrCodeData = freezed,Object? transactionId = freezed,Object? createdAt = null,Object? paidAt = freezed,Object? expireAt = null,Object? remark = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orderId = null,Object? paymentMethod = null,Object? amount = null,Object? createdAt = null,Object? expireAt = null,Object? status = null,Object? qrCodeUrl = freezed,Object? qrCodeData = freezed,Object? transactionId = freezed,Object? paidAt = freezed,Object? remark = freezed,}) {
   return _then(_PaymentModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,orderId: null == orderId ? _self.orderId : orderId // ignore: cast_nullable_to_non_nullable
 as String,paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
 as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as double,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,expireAt: null == expireAt ? _self.expireAt : expireAt // ignore: cast_nullable_to_non_nullable
+as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as PaymentStatus,qrCodeUrl: freezed == qrCodeUrl ? _self.qrCodeUrl : qrCodeUrl // ignore: cast_nullable_to_non_nullable
 as String?,qrCodeData: freezed == qrCodeData ? _self.qrCodeData : qrCodeData // ignore: cast_nullable_to_non_nullable
 as String?,transactionId: freezed == transactionId ? _self.transactionId : transactionId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,paidAt: freezed == paidAt ? _self.paidAt : paidAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,expireAt: null == expireAt ? _self.expireAt : expireAt // ignore: cast_nullable_to_non_nullable
-as DateTime,remark: freezed == remark ? _self.remark : remark // ignore: cast_nullable_to_non_nullable
+as String?,paidAt: freezed == paidAt ? _self.paidAt : paidAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,remark: freezed == remark ? _self.remark : remark // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

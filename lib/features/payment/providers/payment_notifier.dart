@@ -1,24 +1,24 @@
 import 'dart:async';
 
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/utils/logger_utils.dart';
 import '../../order/entities/order_model.dart';
 import '../../order/repositories/order_repository.dart';
+import '../repositories/payment_repository.dart';
 import 'payment_state.dart';
 
 part 'payment_notifier.g.dart';
 
 @riverpod
 class PaymentNotifier extends _$PaymentNotifier {
-  Timer? _pollingTimer;
   Timer? _countdownTimer;
 
   @override
   PaymentState build(OrderModel order) {
     // 初始化
     ref.onDispose(() {
-      _pollingTimer?.cancel();
       _countdownTimer?.cancel();
     });
 
@@ -28,77 +28,99 @@ class PaymentNotifier extends _$PaymentNotifier {
     return PaymentState(order: order);
   }
 
-  void _init() {
-    generatePaymentQrCode();
-    startPaymentPolling();
+  Future<void> _init() async {
     startCountdown();
+    await initializePaymentSheet();
   }
 
-  /// 生成支付二维码
-  Future<void> generatePaymentQrCode() async {
+  /// 初始化支付面板
+  Future<void> initializePaymentSheet() async {
     try {
-      state = state.copyWith(isLoading: true);
+      state = state.copyWith(isLoading: true, errorMessage: null);
 
-      if (state.order == null) return;
-
-      final paymentMethod = state.order!.paymentMethod;
-      final orderId = state.order!.id;
-      final amount = state.order!.totalAmount;
-
-      String qrCode = '';
-      if (paymentMethod == PaymentMethod.wechatPay) {
-        qrCode = 'weixin://wxpay/bizpayurl?pr=$orderId&amount=$amount';
-      } else if (paymentMethod == PaymentMethod.alipay) {
-        qrCode =
-            'alipays://platformapi/startapp?appId=20000067&orderNo=$orderId&amount=$amount';
+      if (state.order == null) {
+        return;
       }
 
-      state = state.copyWith(paymentQrCode: qrCode);
-      LoggerUtils.i('PaymentNotifier: QR code generated');
+      final paymentRepo = ref.read(paymentRepositoryProvider);
+      // 使用 CNY 作为默认货币，实际应根据业务需求调整
+      final data = await paymentRepo.createPaymentIntent(
+        state.order!.id,
+        state.order!.totalAmount,
+        'CNY',
+      );
+
+      // 设置 Stripe publishableKey
+      if (data['publishableKey'] != null) {
+        Stripe.publishableKey = data['publishableKey'] as String;
+      }
+
+      // 初始化 Payment Sheet
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          merchantDisplayName: 'Lunchbox App',
+          paymentIntentClientSecret: data['paymentIntent'] as String?,
+          customerEphemeralKeySecret: data['ephemeralKey'] as String?,
+          customerId: data['customer'] as String?,
+          // 如果有需要，可以配置 applePay, googlePay 等
+        ),
+      );
+
+      state = state.copyWith(isPaymentSheetReady: true, isLoading: false);
+      LoggerUtils.i('PaymentNotifier: Payment sheet initialized');
     } catch (e) {
-      LoggerUtils.e('PaymentNotifier: Failed to generate QR code', e);
-    } finally {
-      state = state.copyWith(isLoading: false);
+      LoggerUtils.e('PaymentNotifier: Failed to initialize payment sheet', e);
+      state = state.copyWith(isLoading: false, errorMessage: '支付初始化失败: $e');
     }
   }
 
-  /// 开始支付状态轮询
-  void startPaymentPolling() {
-    if (state.order == null) return;
+  /// 显示支付面板并支付
+  Future<void> presentPaymentSheet() async {
+    try {
+      if (!state.isPaymentSheetReady) {
+        await initializePaymentSheet();
+        if (!state.isPaymentSheetReady) {
+          return;
+        }
+      }
 
-    state = state.copyWith(isPolling: true);
+      await Stripe.instance.presentPaymentSheet();
 
-    _pollingTimer?.cancel();
-    _pollingTimer = Timer.periodic(const Duration(seconds: 3), (timer) async {
+      LoggerUtils.i('PaymentNotifier: Payment completed via Stripe');
+
+      // 支付成功，更新订单状态
+      // 实际项目中可能需要通过后端 webhook 确认，这里主动查询一次
       await checkPaymentStatus();
-    });
-
-    LoggerUtils.i('PaymentNotifier: Payment polling started');
-  }
-
-  /// 停止支付状态轮询
-  void stopPaymentPolling() {
-    _pollingTimer?.cancel();
-    state = state.copyWith(isPolling: false);
-    LoggerUtils.i('PaymentNotifier: Payment polling stopped');
+    } on StripeException catch (e) {
+      LoggerUtils.e('PaymentNotifier: Stripe payment error', e);
+      if (e.error.code == FailureCode.Canceled) {
+        // 用户取消支付，不做处理
+        return;
+      }
+      state = state.copyWith(errorMessage: '支付失败: ${e.error.localizedMessage}');
+    } catch (e) {
+      LoggerUtils.e('PaymentNotifier: Unexpected payment error', e);
+      state = state.copyWith(errorMessage: '支付发生错误: $e');
+    }
   }
 
   /// 检查支付状态
   Future<void> checkPaymentStatus() async {
-    if (state.order == null) return;
+    if (state.order == null) {
+      return;
+    }
 
     try {
+      state = state.copyWith(isLoading: true);
       final orderRepository = ref.read(orderRepositoryProvider);
       final updatedOrder = await orderRepository.getOrderById(state.order!.id);
 
-      if (updatedOrder.status == OrderStatus.paid) {
-        stopPaymentPolling();
-        _countdownTimer?.cancel();
-        state = state.copyWith(order: updatedOrder);
-        // UI层应该监听 order 状态的变化来决定是否跳转
-      }
+      state = state.copyWith(order: updatedOrder, isLoading: false);
+
+      // 如果订单状态已更新为已支付，UI 层会相应处理
     } catch (e) {
       LoggerUtils.e('PaymentNotifier: Failed to check payment status', e);
+      state = state.copyWith(isLoading: false);
     }
   }
 
@@ -109,7 +131,6 @@ class PaymentNotifier extends _$PaymentNotifier {
       if (state.countdown > 0) {
         state = state.copyWith(countdown: state.countdown - 1);
       } else {
-        stopPaymentPolling();
         timer.cancel();
       }
     });
@@ -118,7 +139,6 @@ class PaymentNotifier extends _$PaymentNotifier {
   /// 取消支付
   Future<void> cancelPayment() async {
     try {
-      stopPaymentPolling();
       _countdownTimer?.cancel();
 
       if (state.order != null) {

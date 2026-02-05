@@ -23,24 +23,27 @@ CartRepository cartRepository(Ref ref) {
 /// 购物车仓库类
 /// 负责处理购物车相关的数据访问和业务逻辑
 class CartRepository extends BaseRepository {
-
-  CartRepository(this._storage, ApiProvider apiProvider, MockProvider mockProvider) : super(apiProvider, mockProvider);
-  static const String CART_STORAGE_KEY = 'cart_items';
-  static const String CURRENT_DEVICE_KEY = 'current_device_id';
+  CartRepository(
+    this._storage,
+    ApiProvider apiProvider,
+    MockProvider mockProvider,
+  ) : super(apiProvider, mockProvider);
+  static const String cartStorageKey = 'cart_items';
+  static const String currentDeviceKey = 'current_device_id';
 
   final StorageService _storage;
 
   /// 获取当前购物车中的所有商品
   List<CartItemModel> getCartItems() {
-    final cartJson = _storage.read<String>(CART_STORAGE_KEY);
+    final cartJson = _storage.read<String>(cartStorageKey);
     if (cartJson == null) {
       return [];
     }
 
     try {
-      final List<dynamic> decoded = jsonDecode(cartJson);
+      final List<dynamic> decoded = jsonDecode(cartJson) as List<dynamic>;
       return decoded
-          .map((item) => CartItemModel.fromJson(Map<String, dynamic>.from(item)))
+          .map((item) => CartItemModel.fromJson(item as Map<String, dynamic>))
           .toList();
     } catch (e) {
       LoggerUtils.e('Failed to parse cart items', e);
@@ -50,12 +53,12 @@ class CartRepository extends BaseRepository {
 
   /// 设置当前设备ID
   void setCurrentDeviceId(String deviceId) {
-    _storage.write(CURRENT_DEVICE_KEY, deviceId);
+    _storage.write(currentDeviceKey, deviceId);
   }
 
   /// 获取当前设备ID
   String? getCurrentDeviceId() {
-    return _storage.read<String>(CURRENT_DEVICE_KEY);
+    return _storage.read<String>(currentDeviceKey);
   }
 
   /// 添加商品到购物车
@@ -101,8 +104,7 @@ class CartRepository extends BaseRepository {
 
   /// 从购物车移除商品
   void removeFromCart(String itemId) {
-    final cartItems = getCartItems();
-    cartItems.removeWhere((item) => item.id == itemId);
+    final cartItems = getCartItems()..removeWhere((item) => item.id == itemId);
     _saveCartItems(cartItems);
   }
 
@@ -129,7 +131,7 @@ class CartRepository extends BaseRepository {
 
   /// 清空购物车
   void clearCart() {
-    _storage.remove(CART_STORAGE_KEY);
+    _storage.remove(cartStorageKey);
   }
 
   /// 获取购物车总金额
@@ -232,7 +234,7 @@ class CartRepository extends BaseRepository {
     try {
       final jsonList = cartItems.map((item) => item.toJson()).toList();
       final jsonString = jsonEncode(jsonList);
-      _storage.write(CART_STORAGE_KEY, jsonString);
+      _storage.write(cartStorageKey, jsonString);
     } catch (e) {
       LoggerUtils.e('Failed to save cart items', e);
     }

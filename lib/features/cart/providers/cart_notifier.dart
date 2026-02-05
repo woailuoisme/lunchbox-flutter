@@ -31,8 +31,7 @@ class CartNotifier extends _$CartNotifier {
 
   Future<void> addToCart(ProductModel product, {int quantity = 1}) async {
     try {
-      final repository = ref.read(cartRepositoryProvider);
-      repository.addToCart(product, quantity: quantity);
+      ref.read(cartRepositoryProvider).addToCart(product, quantity: quantity);
       await loadCart();
       LoggerUtils.i('CartNotifier: Added ${product.name} to cart');
     } catch (e) {
@@ -42,10 +41,13 @@ class CartNotifier extends _$CartNotifier {
 
   Future<void> updateQuantity(CartItemModel item, int quantity) async {
     try {
-      final repository = ref.read(cartRepositoryProvider);
-      repository.updateCartItemQuantity(item.id, quantity);
+      ref
+          .read(cartRepositoryProvider)
+          .updateCartItemQuantity(item.id, quantity);
       await loadCart();
-      LoggerUtils.i('CartNotifier: Updated quantity for ${item.product.name} to $quantity');
+      LoggerUtils.i(
+        'CartNotifier: Updated quantity for ${item.product.name} to $quantity',
+      );
     } catch (e) {
       LoggerUtils.e('CartNotifier: Failed to update quantity', e);
     }
@@ -53,7 +55,7 @@ class CartNotifier extends _$CartNotifier {
 
   Future<void> increaseQuantity(CartItemModel item) async {
     if (item.quantity >= item.product.stock) {
-      // TODO: Show toast/snackbar (handled by UI listener usually, or we can use a side effect provider)
+      // Show toast/snackbar (handled by UI listener usually, or we can use a side effect provider)
       LoggerUtils.w('Stock limit reached for ${item.product.name}');
       return;
     }
@@ -70,8 +72,7 @@ class CartNotifier extends _$CartNotifier {
 
   Future<void> removeItem(String itemId) async {
     try {
-      final repository = ref.read(cartRepositoryProvider);
-      repository.removeFromCart(itemId);
+      ref.read(cartRepositoryProvider).removeFromCart(itemId);
       await loadCart();
       LoggerUtils.i('CartNotifier: Removed item $itemId');
     } catch (e) {
@@ -81,8 +82,7 @@ class CartNotifier extends _$CartNotifier {
 
   Future<void> clearCart() async {
     try {
-      final repository = ref.read(cartRepositoryProvider);
-      repository.clearCart();
+      ref.read(cartRepositoryProvider).clearCart();
       await loadCart();
       LoggerUtils.i('CartNotifier: Cleared cart');
     } catch (e) {

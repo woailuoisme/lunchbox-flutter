@@ -3,11 +3,10 @@
 library;
 
 class BaseModel {
-
   /// 构造函数
   BaseModel({required this.id, DateTime? createdAt, DateTime? updatedAt})
-      : createdAt = createdAt ?? DateTime.now(),
-        updatedAt = updatedAt ?? DateTime.now();
+    : createdAt = createdAt ?? DateTime.now(),
+      updatedAt = updatedAt ?? DateTime.now();
 
   /// 从JSON映射创建BaseModel实例
   factory BaseModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +17,7 @@ class BaseModel {
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
   }
+
   /// 数据ID（通用标识符）
   final String id;
 

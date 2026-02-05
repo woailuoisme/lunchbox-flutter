@@ -5,7 +5,7 @@ import '../../device/entities/device_model.dart';
 part 'profile_state.freezed.dart';
 
 @freezed
-class ProfileState with _$ProfileState {
+abstract class ProfileState with _$ProfileState {
   const factory ProfileState({
     UserModel? currentUser,
     @Default([]) List<DeviceModel> favoriteDevices,

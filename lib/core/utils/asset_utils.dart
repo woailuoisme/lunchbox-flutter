@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+
 import '../values/app_assets.dart';
+import 'logger_utils.dart';
 
 /// 资源工具类
 /// 提供资源加载和处理的辅助方法
 class AssetUtils {
+  AssetUtils._();
+
   /// 加载图片，如果失败则显示占位图
   static Widget loadImage(
     String assetPath, {
@@ -54,10 +58,7 @@ class AssetUtils {
   }
 
   /// 获取产品占位图
-  static Widget getProductPlaceholder({
-    double? width,
-    double? height,
-  }) {
+  static Widget getProductPlaceholder({double? width, double? height}) {
     return Container(
       width: width,
       height: height,
@@ -71,9 +72,7 @@ class AssetUtils {
   }
 
   /// 获取头像占位图
-  static Widget getAvatarPlaceholder({
-    double? size,
-  }) {
+  static Widget getAvatarPlaceholder({double? size}) {
     return Container(
       width: size,
       height: size,
@@ -109,7 +108,10 @@ class AssetUtils {
 
   /// 检查资源是否存在
   /// 需要传入 BuildContext
-  static Future<bool> assetExists(BuildContext context, String assetPath) async {
+  static Future<bool> assetExists(
+    BuildContext context,
+    String assetPath,
+  ) async {
     try {
       await DefaultAssetBundle.of(context).load(assetPath);
       return true;
@@ -131,9 +133,11 @@ class AssetUtils {
 
     for (final imagePath in imagesToCache) {
       try {
-        await precacheImage(AssetImage(imagePath), context);
+        if (context.mounted) {
+          await precacheImage(AssetImage(imagePath), context);
+        }
       } catch (e) {
-        // 忽略预加载失败的图片
+        LoggerUtils.e('Failed to precache image: $imagePath', e);
       }
     }
   }
@@ -165,19 +169,9 @@ class AssetUtils {
         color = Colors.grey;
     }
 
-    return Icon(
-      icon,
-      size: 80,
-      color: color.withOpacity(0.5),
-    );
+    return Icon(icon, size: 80, color: color.withValues(alpha: 0.5));
   }
 }
 
 /// 空状态类型
-enum EmptyStateType {
-  cart,
-  order,
-  search,
-  favorite,
-  data,
-}
+enum EmptyStateType { cart, order, search, favorite, data }

@@ -6,6 +6,7 @@ import '../../features/auth/models/user_model.dart';
 import '../../features/cart/entities/cart_item_model.dart';
 import '../../features/city/entities/city_model.dart';
 import '../../features/device/entities/device_model.dart';
+import '../../features/device/entities/location_model.dart';
 import '../../features/order/entities/order_model.dart';
 import '../../features/product/entities/product_model.dart';
 import '../models/api_response_model.dart';
@@ -100,28 +101,26 @@ class MockProvider {
       final lat = baseLat + (random.nextDouble() - 0.5) * 0.01;
       final lng = baseLng + (random.nextDouble() - 0.5) * 0.01;
 
-      // 计算距离（米）
-      final distance = random.nextInt(5000).toDouble();
-
       return DeviceModel(
         id: 'device_${index + 1}',
         name: '自动售货机${index + 1}',
         cityId: cityId ?? '1',
-        address: '测试地址${index + 1}',
-        longitude: lng,
-        latitude: lat,
         status: random.nextBool() ? 'online' : 'offline',
-        distance: distance,
-        supportCashPayment: random.nextBool(),
-        lastOnlineTime: DateTime.now().subtract(
-          Duration(minutes: random.nextInt(60)),
+        location: LocationModel(
+          latitude: lat,
+          longitude: lng,
+          address: '测试地址${index + 1}',
         ),
-        updateTime: DateTime.now(),
+        productIds: List.generate(5, (i) => 'product_${i + 1}'),
+        lastUpdated: DateTime.now()
+            .subtract(Duration(minutes: random.nextInt(60)))
+            .toIso8601String(),
       );
     });
 
-    // 按距离排序
-    devices.sort((a, b) => (a.distance ?? 0).compareTo(b.distance ?? 0));
+    // 注意：DeviceModel 不再包含 distance 字段，排序逻辑需要在 Repository 层处理，或者在 MockProvider 中模拟返回已排序列表（如果需要）
+    // 这里我们简单返回列表，不进行距离排序
+    // devices.sort((a, b) => (a.distance ?? 0).compareTo(b.distance ?? 0));
 
     return ApiResponseModel.success(devices);
   }
@@ -138,23 +137,25 @@ class MockProvider {
 
     // 生成包含产品的设备详情
     final random = Random(int.parse(deviceId.split('_').last));
-    final products = generateMockProducts(random.nextInt(15) + 10);
+    // final products = generateMockProducts(random.nextInt(15) + 10); // DeviceModel 不再包含 products
 
     final device = DeviceModel(
       id: deviceId,
       name: '自动售货机${deviceId.split('_').last}',
       cityId: '1',
-      address: '测试详细地址${deviceId.split('_').last}',
-      longitude: 116.3974 + (random.nextDouble() - 0.5) * 0.01,
-      latitude: 39.9093 + (random.nextDouble() - 0.5) * 0.01,
       status: random.nextBool() ? 'online' : 'offline',
-      distance: random.nextInt(5000).toDouble(),
-      products: products,
-      supportCashPayment: random.nextBool(),
-      lastOnlineTime: DateTime.now().subtract(
-        Duration(minutes: random.nextInt(60)),
+      location: LocationModel(
+        latitude: 39.9093 + (random.nextDouble() - 0.5) * 0.01,
+        longitude: 116.3974 + (random.nextDouble() - 0.5) * 0.01,
+        address: '测试详细地址${deviceId.split('_').last}',
       ),
-      updateTime: DateTime.now(),
+      productIds: List.generate(
+        random.nextInt(15) + 10,
+        (i) => 'product_${i + 1}',
+      ),
+      lastUpdated: DateTime.now()
+          .subtract(Duration(minutes: random.nextInt(60)))
+          .toIso8601String(),
     );
 
     return ApiResponseModel.success(device);
@@ -542,7 +543,10 @@ class MockProvider {
       );
     }).toList();
 
-    final totalAmount = items.fold(0.0, (sum, item) => sum + item.totalPrice);
+    final totalAmount = items.fold<double>(
+      0,
+      (sum, item) => sum + item.totalPrice,
+    );
 
     final order = OrderModel(
       id: 'order_${DateTime.now().millisecondsSinceEpoch}',

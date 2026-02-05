@@ -46,4 +46,6 @@ class AppRoutes {
 
   // 设置
   static const String settings = '/settings';
+  static const String about = '/about';
+  static const String deviceInfo = '/device-info';
 }

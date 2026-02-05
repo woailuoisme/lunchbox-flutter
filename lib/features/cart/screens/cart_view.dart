@@ -14,18 +14,15 @@ class CartView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(cartNotifierProvider);
-    final notifier = ref.read(cartNotifierProvider.notifier);
+    final state = ref.watch(cartProvider);
+    final notifier = ref.read(cartProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('购物车'),
         actions: [
           if (state.cartItems.isNotEmpty)
-            TextButton(
-              onPressed: () => notifier.clearCart(),
-              child: const Text('清空'),
-            ),
+            TextButton(onPressed: notifier.clearCart, child: const Text('清空')),
         ],
       ),
       body: Builder(
@@ -67,18 +64,11 @@ class CartView extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.shopping_cart_outlined,
-            size: 80.sp,
-            color: Colors.grey,
-          ),
+          Icon(Icons.shopping_cart_outlined, size: 80.sp, color: Colors.grey),
           SizedBox(height: 16.h),
           Text(
             '购物车是空的',
-            style: TextStyle(
-              fontSize: 18.sp,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 18.sp, color: Colors.grey[600]),
           ),
           SizedBox(height: 24.h),
           ElevatedButton(
@@ -118,7 +108,7 @@ class CartView extends ConsumerWidget {
               ),
             ),
             SizedBox(width: 12.w),
-            
+
             // 商品信息
             Expanded(
               child: Column(
@@ -143,7 +133,7 @@ class CartView extends ConsumerWidget {
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  
+
                   // 数量控制
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,7 +158,10 @@ class CartView extends ConsumerWidget {
                         ],
                       ),
                       IconButton(
-                        icon: const Icon(Icons.delete_outline, color: Colors.grey),
+                        icon: const Icon(
+                          Icons.delete_outline,
+                          color: Colors.grey,
+                        ),
                         onPressed: () => notifier.removeItem(item.id),
                       ),
                     ],
@@ -181,8 +174,11 @@ class CartView extends ConsumerWidget {
       ),
     );
   }
-  
-  Widget _buildQuantityButton({required IconData icon, required VoidCallback onPressed}) {
+
+  Widget _buildQuantityButton({
+    required IconData icon,
+    required VoidCallback onPressed,
+  }) {
     return InkWell(
       onTap: onPressed,
       child: Container(
@@ -204,7 +200,7 @@ class CartView extends ConsumerWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             offset: const Offset(0, -2),
             blurRadius: 10,
           ),
@@ -231,10 +227,12 @@ class CartView extends ConsumerWidget {
             ],
           ),
           ElevatedButton(
-            onPressed: state.isEmpty ? null : () {
-              // 结算逻辑 - 导航到订单确认页
-              // context.push('/order/confirm');
-            },
+            onPressed: state.isEmpty
+                ? null
+                : () {
+                    // 结算逻辑 - 导航到订单确认页
+                    // context.push('/order/confirm');
+                  },
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
             ),

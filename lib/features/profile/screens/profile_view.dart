@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../routes/app_routes.dart';
 import '../providers/profile_notifier.dart';
+import '../providers/profile_state.dart';
 
 /// 用户中心视图
 class ProfileView extends ConsumerWidget {
@@ -13,8 +14,8 @@ class ProfileView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(profileNotifierProvider);
-    final notifier = ref.read(profileNotifierProvider.notifier);
+    final ProfileState state = ref.watch(profileProvider);
+    final notifier = ref.read(profileProvider.notifier);
 
     return Scaffold(
       body: CustomScrollView(
@@ -41,7 +42,7 @@ class ProfileView extends ConsumerWidget {
   /// 构建用户信息头部
   Widget _buildUserHeader(
     BuildContext context,
-    state,
+    ProfileState state,
     ProfileNotifier notifier,
   ) {
     final user = state.currentUser;
@@ -56,7 +57,7 @@ class ProfileView extends ConsumerWidget {
               end: Alignment.bottomCenter,
               colors: [
                 Theme.of(context).primaryColor,
-                Theme.of(context).primaryColor.withOpacity(0.8),
+                Theme.of(context).primaryColor.withValues(alpha: 0.8),
               ],
             ),
           ),
@@ -110,7 +111,7 @@ class ProfileView extends ConsumerWidget {
                     user?.username ?? '',
                     style: TextStyle(
                       fontSize: 14.sp,
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                     ),
                   ),
                 ],
@@ -123,7 +124,7 @@ class ProfileView extends ConsumerWidget {
   }
 
   /// 构建功能菜单区域
-  Widget _buildMenuSection(BuildContext context, state) {
+  Widget _buildMenuSection(BuildContext context, ProfileState state) {
     return ColoredBox(
       color: Colors.white,
       child: Column(
@@ -236,7 +237,7 @@ class ProfileView extends ConsumerWidget {
   }
 
   void _showLogoutDialog(BuildContext context, ProfileNotifier notifier) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('确认退出'),
@@ -263,7 +264,7 @@ class ProfileView extends ConsumerWidget {
   }
 
   void _showClearCacheDialog(BuildContext context) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('清除缓存'),
@@ -275,7 +276,7 @@ class ProfileView extends ConsumerWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              // TODO: 实现清除缓存逻辑
+              // TODO(User): 实现清除缓存逻辑
               Navigator.pop(context);
             },
             child: const Text('确定'),
@@ -286,7 +287,7 @@ class ProfileView extends ConsumerWidget {
   }
 
   void _showAboutDialog(BuildContext context) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('关于我们'),

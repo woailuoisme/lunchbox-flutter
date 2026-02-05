@@ -19,16 +19,16 @@ mixin _$ProductModel {
  String get id;/// 产品名称
  String get name;/// 产品描述
  String get description;/// 产品价格
- double get price;/// 产品原价（用于促销显示）
- double? get originalPrice;/// 产品图片URL
- String get imageUrl;/// 产品库存
+ double get price;/// 产品图片URL
+ String get imageUrl;/// 产品更新时间
+ DateTime get updateTime;/// 产品原价（用于促销显示）
+ double? get originalPrice;/// 产品库存
  int get stock;/// 产品类别
  String get category;/// 产品是否在售
  bool get isAvailable;/// 产品是否为热门
  bool get isHot;/// 产品是否为促销商品
  bool get isPromotion;/// 产品规格信息
- String? get specifications;/// 产品更新时间
- DateTime get updateTime;
+ String? get specifications;
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -41,16 +41,16 @@ $ProductModelCopyWith<ProductModel> get copyWith => _$ProductModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.originalPrice, originalPrice) || other.originalPrice == originalPrice)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.stock, stock) || other.stock == stock)&&(identical(other.category, category) || other.category == category)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable)&&(identical(other.isHot, isHot) || other.isHot == isHot)&&(identical(other.isPromotion, isPromotion) || other.isPromotion == isPromotion)&&(identical(other.specifications, specifications) || other.specifications == specifications)&&(identical(other.updateTime, updateTime) || other.updateTime == updateTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.updateTime, updateTime) || other.updateTime == updateTime)&&(identical(other.originalPrice, originalPrice) || other.originalPrice == originalPrice)&&(identical(other.stock, stock) || other.stock == stock)&&(identical(other.category, category) || other.category == category)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable)&&(identical(other.isHot, isHot) || other.isHot == isHot)&&(identical(other.isPromotion, isPromotion) || other.isPromotion == isPromotion)&&(identical(other.specifications, specifications) || other.specifications == specifications));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,price,originalPrice,imageUrl,stock,category,isAvailable,isHot,isPromotion,specifications,updateTime);
+int get hashCode => Object.hash(runtimeType,id,name,description,price,imageUrl,updateTime,originalPrice,stock,category,isAvailable,isHot,isPromotion,specifications);
 
 @override
 String toString() {
-  return 'ProductModel(id: $id, name: $name, description: $description, price: $price, originalPrice: $originalPrice, imageUrl: $imageUrl, stock: $stock, category: $category, isAvailable: $isAvailable, isHot: $isHot, isPromotion: $isPromotion, specifications: $specifications, updateTime: $updateTime)';
+  return 'ProductModel(id: $id, name: $name, description: $description, price: $price, imageUrl: $imageUrl, updateTime: $updateTime, originalPrice: $originalPrice, stock: $stock, category: $category, isAvailable: $isAvailable, isHot: $isHot, isPromotion: $isPromotion, specifications: $specifications)';
 }
 
 
@@ -61,7 +61,7 @@ abstract mixin class $ProductModelCopyWith<$Res>  {
   factory $ProductModelCopyWith(ProductModel value, $Res Function(ProductModel) _then) = _$ProductModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String description, double price, double? originalPrice, String imageUrl, int stock, String category, bool isAvailable, bool isHot, bool isPromotion, String? specifications, DateTime updateTime
+ String id, String name, String description, double price, String imageUrl, DateTime updateTime, double? originalPrice, int stock, String category, bool isAvailable, bool isHot, bool isPromotion, String? specifications
 });
 
 
@@ -78,22 +78,22 @@ class _$ProductModelCopyWithImpl<$Res>
 
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? description = null,Object? price = null,Object? originalPrice = freezed,Object? imageUrl = null,Object? stock = null,Object? category = null,Object? isAvailable = null,Object? isHot = null,Object? isPromotion = null,Object? specifications = freezed,Object? updateTime = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? description = null,Object? price = null,Object? imageUrl = null,Object? updateTime = null,Object? originalPrice = freezed,Object? stock = null,Object? category = null,Object? isAvailable = null,Object? isHot = null,Object? isPromotion = null,Object? specifications = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as double,originalPrice: freezed == originalPrice ? _self.originalPrice : originalPrice // ignore: cast_nullable_to_non_nullable
-as double?,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
+as double,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String,updateTime: null == updateTime ? _self.updateTime : updateTime // ignore: cast_nullable_to_non_nullable
+as DateTime,originalPrice: freezed == originalPrice ? _self.originalPrice : originalPrice // ignore: cast_nullable_to_non_nullable
+as double?,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
 as int,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as String,isAvailable: null == isAvailable ? _self.isAvailable : isAvailable // ignore: cast_nullable_to_non_nullable
 as bool,isHot: null == isHot ? _self.isHot : isHot // ignore: cast_nullable_to_non_nullable
 as bool,isPromotion: null == isPromotion ? _self.isPromotion : isPromotion // ignore: cast_nullable_to_non_nullable
 as bool,specifications: freezed == specifications ? _self.specifications : specifications // ignore: cast_nullable_to_non_nullable
-as String?,updateTime: null == updateTime ? _self.updateTime : updateTime // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as String?,
   ));
 }
 
@@ -178,10 +178,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String description,  double price,  double? originalPrice,  String imageUrl,  int stock,  String category,  bool isAvailable,  bool isHot,  bool isPromotion,  String? specifications,  DateTime updateTime)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String description,  double price,  String imageUrl,  DateTime updateTime,  double? originalPrice,  int stock,  String category,  bool isAvailable,  bool isHot,  bool isPromotion,  String? specifications)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProductModel() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.price,_that.originalPrice,_that.imageUrl,_that.stock,_that.category,_that.isAvailable,_that.isHot,_that.isPromotion,_that.specifications,_that.updateTime);case _:
+return $default(_that.id,_that.name,_that.description,_that.price,_that.imageUrl,_that.updateTime,_that.originalPrice,_that.stock,_that.category,_that.isAvailable,_that.isHot,_that.isPromotion,_that.specifications);case _:
   return orElse();
 
 }
@@ -199,10 +199,10 @@ return $default(_that.id,_that.name,_that.description,_that.price,_that.original
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String description,  double price,  double? originalPrice,  String imageUrl,  int stock,  String category,  bool isAvailable,  bool isHot,  bool isPromotion,  String? specifications,  DateTime updateTime)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String description,  double price,  String imageUrl,  DateTime updateTime,  double? originalPrice,  int stock,  String category,  bool isAvailable,  bool isHot,  bool isPromotion,  String? specifications)  $default,) {final _that = this;
 switch (_that) {
 case _ProductModel():
-return $default(_that.id,_that.name,_that.description,_that.price,_that.originalPrice,_that.imageUrl,_that.stock,_that.category,_that.isAvailable,_that.isHot,_that.isPromotion,_that.specifications,_that.updateTime);case _:
+return $default(_that.id,_that.name,_that.description,_that.price,_that.imageUrl,_that.updateTime,_that.originalPrice,_that.stock,_that.category,_that.isAvailable,_that.isHot,_that.isPromotion,_that.specifications);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -219,10 +219,10 @@ return $default(_that.id,_that.name,_that.description,_that.price,_that.original
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String description,  double price,  double? originalPrice,  String imageUrl,  int stock,  String category,  bool isAvailable,  bool isHot,  bool isPromotion,  String? specifications,  DateTime updateTime)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String description,  double price,  String imageUrl,  DateTime updateTime,  double? originalPrice,  int stock,  String category,  bool isAvailable,  bool isHot,  bool isPromotion,  String? specifications)?  $default,) {final _that = this;
 switch (_that) {
 case _ProductModel() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.price,_that.originalPrice,_that.imageUrl,_that.stock,_that.category,_that.isAvailable,_that.isHot,_that.isPromotion,_that.specifications,_that.updateTime);case _:
+return $default(_that.id,_that.name,_that.description,_that.price,_that.imageUrl,_that.updateTime,_that.originalPrice,_that.stock,_that.category,_that.isAvailable,_that.isHot,_that.isPromotion,_that.specifications);case _:
   return null;
 
 }
@@ -234,7 +234,7 @@ return $default(_that.id,_that.name,_that.description,_that.price,_that.original
 @JsonSerializable()
 
 class _ProductModel extends ProductModel {
-  const _ProductModel({required this.id, required this.name, required this.description, required this.price, this.originalPrice, required this.imageUrl, this.stock = 0, this.category = 'food', this.isAvailable = true, this.isHot = false, this.isPromotion = false, this.specifications, required this.updateTime}): super._();
+  const _ProductModel({required this.id, required this.name, required this.description, required this.price, required this.imageUrl, required this.updateTime, this.originalPrice, this.stock = 0, this.category = 'food', this.isAvailable = true, this.isHot = false, this.isPromotion = false, this.specifications}): super._();
   factory _ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);
 
 /// 产品ID
@@ -245,10 +245,12 @@ class _ProductModel extends ProductModel {
 @override final  String description;
 /// 产品价格
 @override final  double price;
-/// 产品原价（用于促销显示）
-@override final  double? originalPrice;
 /// 产品图片URL
 @override final  String imageUrl;
+/// 产品更新时间
+@override final  DateTime updateTime;
+/// 产品原价（用于促销显示）
+@override final  double? originalPrice;
 /// 产品库存
 @override@JsonKey() final  int stock;
 /// 产品类别
@@ -261,8 +263,6 @@ class _ProductModel extends ProductModel {
 @override@JsonKey() final  bool isPromotion;
 /// 产品规格信息
 @override final  String? specifications;
-/// 产品更新时间
-@override final  DateTime updateTime;
 
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
@@ -277,16 +277,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.originalPrice, originalPrice) || other.originalPrice == originalPrice)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.stock, stock) || other.stock == stock)&&(identical(other.category, category) || other.category == category)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable)&&(identical(other.isHot, isHot) || other.isHot == isHot)&&(identical(other.isPromotion, isPromotion) || other.isPromotion == isPromotion)&&(identical(other.specifications, specifications) || other.specifications == specifications)&&(identical(other.updateTime, updateTime) || other.updateTime == updateTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.updateTime, updateTime) || other.updateTime == updateTime)&&(identical(other.originalPrice, originalPrice) || other.originalPrice == originalPrice)&&(identical(other.stock, stock) || other.stock == stock)&&(identical(other.category, category) || other.category == category)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable)&&(identical(other.isHot, isHot) || other.isHot == isHot)&&(identical(other.isPromotion, isPromotion) || other.isPromotion == isPromotion)&&(identical(other.specifications, specifications) || other.specifications == specifications));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,price,originalPrice,imageUrl,stock,category,isAvailable,isHot,isPromotion,specifications,updateTime);
+int get hashCode => Object.hash(runtimeType,id,name,description,price,imageUrl,updateTime,originalPrice,stock,category,isAvailable,isHot,isPromotion,specifications);
 
 @override
 String toString() {
-  return 'ProductModel(id: $id, name: $name, description: $description, price: $price, originalPrice: $originalPrice, imageUrl: $imageUrl, stock: $stock, category: $category, isAvailable: $isAvailable, isHot: $isHot, isPromotion: $isPromotion, specifications: $specifications, updateTime: $updateTime)';
+  return 'ProductModel(id: $id, name: $name, description: $description, price: $price, imageUrl: $imageUrl, updateTime: $updateTime, originalPrice: $originalPrice, stock: $stock, category: $category, isAvailable: $isAvailable, isHot: $isHot, isPromotion: $isPromotion, specifications: $specifications)';
 }
 
 
@@ -297,7 +297,7 @@ abstract mixin class _$ProductModelCopyWith<$Res> implements $ProductModelCopyWi
   factory _$ProductModelCopyWith(_ProductModel value, $Res Function(_ProductModel) _then) = __$ProductModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String description, double price, double? originalPrice, String imageUrl, int stock, String category, bool isAvailable, bool isHot, bool isPromotion, String? specifications, DateTime updateTime
+ String id, String name, String description, double price, String imageUrl, DateTime updateTime, double? originalPrice, int stock, String category, bool isAvailable, bool isHot, bool isPromotion, String? specifications
 });
 
 
@@ -314,22 +314,22 @@ class __$ProductModelCopyWithImpl<$Res>
 
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? description = null,Object? price = null,Object? originalPrice = freezed,Object? imageUrl = null,Object? stock = null,Object? category = null,Object? isAvailable = null,Object? isHot = null,Object? isPromotion = null,Object? specifications = freezed,Object? updateTime = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? description = null,Object? price = null,Object? imageUrl = null,Object? updateTime = null,Object? originalPrice = freezed,Object? stock = null,Object? category = null,Object? isAvailable = null,Object? isHot = null,Object? isPromotion = null,Object? specifications = freezed,}) {
   return _then(_ProductModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as double,originalPrice: freezed == originalPrice ? _self.originalPrice : originalPrice // ignore: cast_nullable_to_non_nullable
-as double?,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
+as double,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String,updateTime: null == updateTime ? _self.updateTime : updateTime // ignore: cast_nullable_to_non_nullable
+as DateTime,originalPrice: freezed == originalPrice ? _self.originalPrice : originalPrice // ignore: cast_nullable_to_non_nullable
+as double?,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
 as int,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as String,isAvailable: null == isAvailable ? _self.isAvailable : isAvailable // ignore: cast_nullable_to_non_nullable
 as bool,isHot: null == isHot ? _self.isHot : isHot // ignore: cast_nullable_to_non_nullable
 as bool,isPromotion: null == isPromotion ? _self.isPromotion : isPromotion // ignore: cast_nullable_to_non_nullable
 as bool,specifications: freezed == specifications ? _self.specifications : specifications // ignore: cast_nullable_to_non_nullable
-as String?,updateTime: null == updateTime ? _self.updateTime : updateTime // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as String?,
   ));
 }
 

@@ -24,12 +24,7 @@ CityRepository cityRepository(Ref ref) {
 /// 城市仓库类
 /// 负责处理城市相关的数据访问和业务逻辑
 class CityRepository extends BaseRepository {
-
-  CityRepository(
-    super.apiService,
-    super.mockService,
-    this._storageService,
-  );
+  CityRepository(super.apiService, super.mockService, this._storageService);
   final StorageService _storageService;
 
   /// 获取所有城市列表
@@ -38,12 +33,14 @@ class CityRepository extends BaseRepository {
       if (useMockData) {
         return mockService.getCities();
       } else {
-        return apiService.get(
-          '/api/cities',
-          (json) => List<CityModel>.from(
-            json['data'].map((item) => CityModel.fromJson(item)),
-          ),
-        );
+        return apiService.get('/api/cities', (json) {
+          final data = (json! as Map<String, dynamic>)['data'] as List;
+          return List<CityModel>.from(
+            data.map(
+              (item) => CityModel.fromJson(item as Map<String, dynamic>),
+            ),
+          );
+        });
       }
     }, '获取所有城市');
   }
@@ -82,7 +79,7 @@ class CityRepository extends BaseRepository {
         AppConstants.keySelectedCity,
       );
       if (jsonStr != null) {
-        return CityModel.fromJson(json.decode(jsonStr));
+        return CityModel.fromJson(json.decode(jsonStr) as Map<String, dynamic>);
       }
       return null;
     } catch (e) {
@@ -108,10 +105,10 @@ class CityRepository extends BaseRepository {
           citiesResponse.data!.firstWhere((city) => city.id == cityId),
         );
       } else {
-        return apiService.get(
-          '/api/cities/$cityId',
-          (json) => CityModel.fromJson(json['data']),
-        );
+        return apiService.get('/api/cities/$cityId', (json) {
+          final data = (json! as Map<String, dynamic>)['data'];
+          return CityModel.fromJson(data as Map<String, dynamic>);
+        });
       }
     }, '获取城市详情');
   }

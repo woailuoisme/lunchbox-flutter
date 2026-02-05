@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 
 import '../providers/profile_notifier.dart';
+import '../providers/profile_state.dart';
 
 /// 个人信息编辑视图
 class ProfileEditView extends ConsumerStatefulWidget {
@@ -32,8 +33,8 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(profileNotifierProvider);
-    final notifier = ref.read(profileNotifierProvider.notifier);
+    final state = ref.watch(profileProvider);
+    final notifier = ref.read(profileProvider.notifier);
 
     // 初始化表单数据
     if (nicknameController.text.isEmpty && state.currentUser != null) {
@@ -112,7 +113,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   }
 
   /// 构建头像区域
-  Widget _buildAvatarSection(BuildContext context, state) {
+  Widget _buildAvatarSection(BuildContext context, ProfileState state) {
     final user = state.currentUser;
 
     return GestureDetector(

@@ -272,7 +272,7 @@ final class FilteredDevicesProvider
   }
 }
 
-String _$filteredDevicesHash() => r'34b61eeeb92b85f39eb7a28f3dcb48e960e9e350';
+String _$filteredDevicesHash() => r'f0b17ba1ae9a4ab057388a97a620ee2af04455f7';
 
 /// 当前选中的设备
 

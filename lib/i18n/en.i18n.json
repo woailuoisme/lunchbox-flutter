@@ -1,0 +1,27 @@
+{
+  "common": {
+    "login": "Login",
+    "register": "Register",
+    "username": "Username",
+    "password": "Password",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "error": "Error",
+    "success": "Success",
+    "loading": "Loading..."
+  },
+  "auth": {
+    "loginTitle": "Welcome Back",
+    "loginButton": "Login",
+    "registerButton": "Register",
+    "forgotPassword": "Forgot Password?",
+    "loginFailed": "Login Failed",
+    "loginSuccess": "Login Successful"
+  },
+  "time": {
+    "justNow": "Just now",
+    "minutesAgo": "${minutes}m ago",
+    "hoursAgo": "${hours}h ago",
+    "daysAgo": "${days}d ago"
+  }
+}

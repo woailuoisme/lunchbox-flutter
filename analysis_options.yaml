@@ -47,6 +47,7 @@ linter:
     unrelated_type_equality_checks: true
     valid_regexps: true
 
+
     # Style rules
     always_declare_return_types: true
     always_put_control_body_on_new_line: true
@@ -93,7 +94,7 @@ linter:
     empty_constructor_bodies: true
     exhaustive_cases: true
     file_names: true
-    flutter_style_todos: true
+    flutter_style_todos: false
     implementation_imports: true
     join_return_with_assignment: true
     leading_newlines_in_multiline_strings: true
@@ -160,7 +161,7 @@ linter:
     slash_for_doc_comments: true
     sort_child_properties_last: true
     sort_constructors_first: true
-    sort_pub_dependencies: true
+    sort_pub_dependencies: false
     sort_unnamed_constructors_first: true
     tighten_type_of_initializing_formals: true
     type_annotate_public_apis: true

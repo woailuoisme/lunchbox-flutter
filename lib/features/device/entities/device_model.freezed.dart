@@ -15,20 +15,14 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DeviceModel {
 
-/// 设备ID
- String get id;/// 设备名称
- String get name;/// 设备所在城市ID
- String get cityId;/// 设备地址
- String get address;/// 设备经度
- double get longitude;/// 设备纬度
- double get latitude;/// 设备状态：online、offline、maintenance
- String get status;/// 设备距离用户的距离（单位：米）
- double? get distance;/// 设备包含的产品列表
- List<ProductModel>? get products;/// 设备是否支持现金支付
- bool get supportCashPayment;/// 设备是否支持移动支付
- bool get supportMobilePayment;/// 设备最后在线时间
- DateTime? get lastOnlineTime;/// 设备更新时间
- DateTime get updateTime;
+/// Unique device identifier
+ String get id;/// Device name
+ String get name;/// ID of the city where the device is located
+@JsonKey(name: 'city_id') String get cityId;/// Current operational status (as string for JSON)
+ String get status;/// Geographic location of the device
+ LocationModel get location;/// List of product IDs available in this device
+@JsonKey(name: 'product_ids') List<String> get productIds;/// Timestamp of the last update (as ISO 8601 string)
+@JsonKey(name: 'last_updated') String get lastUpdated;
 /// Create a copy of DeviceModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -41,16 +35,16 @@ $DeviceModelCopyWith<DeviceModel> get copyWith => _$DeviceModelCopyWithImpl<Devi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DeviceModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.address, address) || other.address == address)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.status, status) || other.status == status)&&(identical(other.distance, distance) || other.distance == distance)&&const DeepCollectionEquality().equals(other.products, products)&&(identical(other.supportCashPayment, supportCashPayment) || other.supportCashPayment == supportCashPayment)&&(identical(other.supportMobilePayment, supportMobilePayment) || other.supportMobilePayment == supportMobilePayment)&&(identical(other.lastOnlineTime, lastOnlineTime) || other.lastOnlineTime == lastOnlineTime)&&(identical(other.updateTime, updateTime) || other.updateTime == updateTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DeviceModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.status, status) || other.status == status)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other.productIds, productIds)&&(identical(other.lastUpdated, lastUpdated) || other.lastUpdated == lastUpdated));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,cityId,address,longitude,latitude,status,distance,const DeepCollectionEquality().hash(products),supportCashPayment,supportMobilePayment,lastOnlineTime,updateTime);
+int get hashCode => Object.hash(runtimeType,id,name,cityId,status,location,const DeepCollectionEquality().hash(productIds),lastUpdated);
 
 @override
 String toString() {
-  return 'DeviceModel(id: $id, name: $name, cityId: $cityId, address: $address, longitude: $longitude, latitude: $latitude, status: $status, distance: $distance, products: $products, supportCashPayment: $supportCashPayment, supportMobilePayment: $supportMobilePayment, lastOnlineTime: $lastOnlineTime, updateTime: $updateTime)';
+  return 'DeviceModel(id: $id, name: $name, cityId: $cityId, status: $status, location: $location, productIds: $productIds, lastUpdated: $lastUpdated)';
 }
 
 
@@ -61,11 +55,11 @@ abstract mixin class $DeviceModelCopyWith<$Res>  {
   factory $DeviceModelCopyWith(DeviceModel value, $Res Function(DeviceModel) _then) = _$DeviceModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String cityId, String address, double longitude, double latitude, String status, double? distance, List<ProductModel>? products, bool supportCashPayment, bool supportMobilePayment, DateTime? lastOnlineTime, DateTime updateTime
+ String id, String name,@JsonKey(name: 'city_id') String cityId, String status, LocationModel location,@JsonKey(name: 'product_ids') List<String> productIds,@JsonKey(name: 'last_updated') String lastUpdated
 });
 
 
-
+$LocationModelCopyWith<$Res> get location;
 
 }
 /// @nodoc
@@ -78,25 +72,28 @@ class _$DeviceModelCopyWithImpl<$Res>
 
 /// Create a copy of DeviceModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? cityId = null,Object? address = null,Object? longitude = null,Object? latitude = null,Object? status = null,Object? distance = freezed,Object? products = freezed,Object? supportCashPayment = null,Object? supportMobilePayment = null,Object? lastOnlineTime = freezed,Object? updateTime = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? cityId = null,Object? status = null,Object? location = null,Object? productIds = null,Object? lastUpdated = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,cityId: null == cityId ? _self.cityId : cityId // ignore: cast_nullable_to_non_nullable
-as String,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String,longitude: null == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
-as double,latitude: null == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
-as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,distance: freezed == distance ? _self.distance : distance // ignore: cast_nullable_to_non_nullable
-as double?,products: freezed == products ? _self.products : products // ignore: cast_nullable_to_non_nullable
-as List<ProductModel>?,supportCashPayment: null == supportCashPayment ? _self.supportCashPayment : supportCashPayment // ignore: cast_nullable_to_non_nullable
-as bool,supportMobilePayment: null == supportMobilePayment ? _self.supportMobilePayment : supportMobilePayment // ignore: cast_nullable_to_non_nullable
-as bool,lastOnlineTime: freezed == lastOnlineTime ? _self.lastOnlineTime : lastOnlineTime // ignore: cast_nullable_to_non_nullable
-as DateTime?,updateTime: null == updateTime ? _self.updateTime : updateTime // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as LocationModel,productIds: null == productIds ? _self.productIds : productIds // ignore: cast_nullable_to_non_nullable
+as List<String>,lastUpdated: null == lastUpdated ? _self.lastUpdated : lastUpdated // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
-
+/// Create a copy of DeviceModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$LocationModelCopyWith<$Res> get location {
+  
+  return $LocationModelCopyWith<$Res>(_self.location, (value) {
+    return _then(_self.copyWith(location: value));
+  });
+}
 }
 
 
@@ -178,10 +175,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String cityId,  String address,  double longitude,  double latitude,  String status,  double? distance,  List<ProductModel>? products,  bool supportCashPayment,  bool supportMobilePayment,  DateTime? lastOnlineTime,  DateTime updateTime)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name, @JsonKey(name: 'city_id')  String cityId,  String status,  LocationModel location, @JsonKey(name: 'product_ids')  List<String> productIds, @JsonKey(name: 'last_updated')  String lastUpdated)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DeviceModel() when $default != null:
-return $default(_that.id,_that.name,_that.cityId,_that.address,_that.longitude,_that.latitude,_that.status,_that.distance,_that.products,_that.supportCashPayment,_that.supportMobilePayment,_that.lastOnlineTime,_that.updateTime);case _:
+return $default(_that.id,_that.name,_that.cityId,_that.status,_that.location,_that.productIds,_that.lastUpdated);case _:
   return orElse();
 
 }
@@ -199,10 +196,10 @@ return $default(_that.id,_that.name,_that.cityId,_that.address,_that.longitude,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String cityId,  String address,  double longitude,  double latitude,  String status,  double? distance,  List<ProductModel>? products,  bool supportCashPayment,  bool supportMobilePayment,  DateTime? lastOnlineTime,  DateTime updateTime)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name, @JsonKey(name: 'city_id')  String cityId,  String status,  LocationModel location, @JsonKey(name: 'product_ids')  List<String> productIds, @JsonKey(name: 'last_updated')  String lastUpdated)  $default,) {final _that = this;
 switch (_that) {
 case _DeviceModel():
-return $default(_that.id,_that.name,_that.cityId,_that.address,_that.longitude,_that.latitude,_that.status,_that.distance,_that.products,_that.supportCashPayment,_that.supportMobilePayment,_that.lastOnlineTime,_that.updateTime);case _:
+return $default(_that.id,_that.name,_that.cityId,_that.status,_that.location,_that.productIds,_that.lastUpdated);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -219,10 +216,10 @@ return $default(_that.id,_that.name,_that.cityId,_that.address,_that.longitude,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String cityId,  String address,  double longitude,  double latitude,  String status,  double? distance,  List<ProductModel>? products,  bool supportCashPayment,  bool supportMobilePayment,  DateTime? lastOnlineTime,  DateTime updateTime)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name, @JsonKey(name: 'city_id')  String cityId,  String status,  LocationModel location, @JsonKey(name: 'product_ids')  List<String> productIds, @JsonKey(name: 'last_updated')  String lastUpdated)?  $default,) {final _that = this;
 switch (_that) {
 case _DeviceModel() when $default != null:
-return $default(_that.id,_that.name,_that.cityId,_that.address,_that.longitude,_that.latitude,_that.status,_that.distance,_that.products,_that.supportCashPayment,_that.supportMobilePayment,_that.lastOnlineTime,_that.updateTime);case _:
+return $default(_that.id,_that.name,_that.cityId,_that.status,_that.location,_that.productIds,_that.lastUpdated);case _:
   return null;
 
 }
@@ -234,44 +231,30 @@ return $default(_that.id,_that.name,_that.cityId,_that.address,_that.longitude,_
 @JsonSerializable()
 
 class _DeviceModel extends DeviceModel {
-  const _DeviceModel({required this.id, required this.name, required this.cityId, required this.address, required this.longitude, required this.latitude, this.status = 'online', this.distance, final  List<ProductModel>? products, this.supportCashPayment = true, this.supportMobilePayment = true, this.lastOnlineTime, required this.updateTime}): _products = products,super._();
+  const _DeviceModel({required this.id, required this.name, @JsonKey(name: 'city_id') required this.cityId, required this.status, required this.location, @JsonKey(name: 'product_ids') required final  List<String> productIds, @JsonKey(name: 'last_updated') required this.lastUpdated}): _productIds = productIds,super._();
   factory _DeviceModel.fromJson(Map<String, dynamic> json) => _$DeviceModelFromJson(json);
 
-/// 设备ID
+/// Unique device identifier
 @override final  String id;
-/// 设备名称
+/// Device name
 @override final  String name;
-/// 设备所在城市ID
-@override final  String cityId;
-/// 设备地址
-@override final  String address;
-/// 设备经度
-@override final  double longitude;
-/// 设备纬度
-@override final  double latitude;
-/// 设备状态：online、offline、maintenance
-@override@JsonKey() final  String status;
-/// 设备距离用户的距离（单位：米）
-@override final  double? distance;
-/// 设备包含的产品列表
- final  List<ProductModel>? _products;
-/// 设备包含的产品列表
-@override List<ProductModel>? get products {
-  final value = _products;
-  if (value == null) return null;
-  if (_products is EqualUnmodifiableListView) return _products;
+/// ID of the city where the device is located
+@override@JsonKey(name: 'city_id') final  String cityId;
+/// Current operational status (as string for JSON)
+@override final  String status;
+/// Geographic location of the device
+@override final  LocationModel location;
+/// List of product IDs available in this device
+ final  List<String> _productIds;
+/// List of product IDs available in this device
+@override@JsonKey(name: 'product_ids') List<String> get productIds {
+  if (_productIds is EqualUnmodifiableListView) return _productIds;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(value);
+  return EqualUnmodifiableListView(_productIds);
 }
 
-/// 设备是否支持现金支付
-@override@JsonKey() final  bool supportCashPayment;
-/// 设备是否支持移动支付
-@override@JsonKey() final  bool supportMobilePayment;
-/// 设备最后在线时间
-@override final  DateTime? lastOnlineTime;
-/// 设备更新时间
-@override final  DateTime updateTime;
+/// Timestamp of the last update (as ISO 8601 string)
+@override@JsonKey(name: 'last_updated') final  String lastUpdated;
 
 /// Create a copy of DeviceModel
 /// with the given fields replaced by the non-null parameter values.
@@ -286,16 +269,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DeviceModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.address, address) || other.address == address)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.status, status) || other.status == status)&&(identical(other.distance, distance) || other.distance == distance)&&const DeepCollectionEquality().equals(other._products, _products)&&(identical(other.supportCashPayment, supportCashPayment) || other.supportCashPayment == supportCashPayment)&&(identical(other.supportMobilePayment, supportMobilePayment) || other.supportMobilePayment == supportMobilePayment)&&(identical(other.lastOnlineTime, lastOnlineTime) || other.lastOnlineTime == lastOnlineTime)&&(identical(other.updateTime, updateTime) || other.updateTime == updateTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DeviceModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.status, status) || other.status == status)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other._productIds, _productIds)&&(identical(other.lastUpdated, lastUpdated) || other.lastUpdated == lastUpdated));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,cityId,address,longitude,latitude,status,distance,const DeepCollectionEquality().hash(_products),supportCashPayment,supportMobilePayment,lastOnlineTime,updateTime);
+int get hashCode => Object.hash(runtimeType,id,name,cityId,status,location,const DeepCollectionEquality().hash(_productIds),lastUpdated);
 
 @override
 String toString() {
-  return 'DeviceModel(id: $id, name: $name, cityId: $cityId, address: $address, longitude: $longitude, latitude: $latitude, status: $status, distance: $distance, products: $products, supportCashPayment: $supportCashPayment, supportMobilePayment: $supportMobilePayment, lastOnlineTime: $lastOnlineTime, updateTime: $updateTime)';
+  return 'DeviceModel(id: $id, name: $name, cityId: $cityId, status: $status, location: $location, productIds: $productIds, lastUpdated: $lastUpdated)';
 }
 
 
@@ -306,11 +289,11 @@ abstract mixin class _$DeviceModelCopyWith<$Res> implements $DeviceModelCopyWith
   factory _$DeviceModelCopyWith(_DeviceModel value, $Res Function(_DeviceModel) _then) = __$DeviceModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String cityId, String address, double longitude, double latitude, String status, double? distance, List<ProductModel>? products, bool supportCashPayment, bool supportMobilePayment, DateTime? lastOnlineTime, DateTime updateTime
+ String id, String name,@JsonKey(name: 'city_id') String cityId, String status, LocationModel location,@JsonKey(name: 'product_ids') List<String> productIds,@JsonKey(name: 'last_updated') String lastUpdated
 });
 
 
-
+@override $LocationModelCopyWith<$Res> get location;
 
 }
 /// @nodoc
@@ -323,26 +306,29 @@ class __$DeviceModelCopyWithImpl<$Res>
 
 /// Create a copy of DeviceModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? cityId = null,Object? address = null,Object? longitude = null,Object? latitude = null,Object? status = null,Object? distance = freezed,Object? products = freezed,Object? supportCashPayment = null,Object? supportMobilePayment = null,Object? lastOnlineTime = freezed,Object? updateTime = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? cityId = null,Object? status = null,Object? location = null,Object? productIds = null,Object? lastUpdated = null,}) {
   return _then(_DeviceModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,cityId: null == cityId ? _self.cityId : cityId // ignore: cast_nullable_to_non_nullable
-as String,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String,longitude: null == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
-as double,latitude: null == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
-as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,distance: freezed == distance ? _self.distance : distance // ignore: cast_nullable_to_non_nullable
-as double?,products: freezed == products ? _self._products : products // ignore: cast_nullable_to_non_nullable
-as List<ProductModel>?,supportCashPayment: null == supportCashPayment ? _self.supportCashPayment : supportCashPayment // ignore: cast_nullable_to_non_nullable
-as bool,supportMobilePayment: null == supportMobilePayment ? _self.supportMobilePayment : supportMobilePayment // ignore: cast_nullable_to_non_nullable
-as bool,lastOnlineTime: freezed == lastOnlineTime ? _self.lastOnlineTime : lastOnlineTime // ignore: cast_nullable_to_non_nullable
-as DateTime?,updateTime: null == updateTime ? _self.updateTime : updateTime // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as LocationModel,productIds: null == productIds ? _self._productIds : productIds // ignore: cast_nullable_to_non_nullable
+as List<String>,lastUpdated: null == lastUpdated ? _self.lastUpdated : lastUpdated // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
-
+/// Create a copy of DeviceModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$LocationModelCopyWith<$Res> get location {
+  
+  return $LocationModelCopyWith<$Res>(_self.location, (value) {
+    return _then(_self.copyWith(location: value));
+  });
+}
 }
 
 // dart format on

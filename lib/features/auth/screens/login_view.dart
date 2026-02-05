@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../core/values/app_colors.dart';
+import '../../../i18n/translations.g.dart';
 import '../../../routes/app_routes.dart';
-import '../providers/auth_notifier.dart';
+import '../models/password.dart';
+import '../models/username.dart';
+import '../providers/login_notifier.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -16,45 +20,10 @@ class LoginView extends ConsumerStatefulWidget {
 }
 
 class _LoginViewState extends ConsumerState<LoginView> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
   bool _obscurePassword = true;
-  bool _isLoading = false;
 
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _handleLogin() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() => _isLoading = true);
-
-    try {
-      await ref
-          .read(authProvider.notifier)
-          .login(_usernameController.text.trim(), _passwordController.text);
-      // Navigation is handled by router redirect based on auth state
-    } catch (e) {
-      if (mounted) {
-        toastification.show(
-          context: context,
-          type: ToastificationType.error,
-          style: ToastificationStyle.fillColored,
-          title: const Text('登录失败'),
-          description: Text(e.toString()),
-          alignment: Alignment.topCenter,
-          autoCloseDuration: const Duration(seconds: 3),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
-    }
+  void _handleLogin() {
+    ref.read(loginProvider.notifier).login();
   }
 
   void _togglePasswordVisibility() {
@@ -63,29 +32,40 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(loginProvider, (previous, next) {
+      if (next.status.isFailure) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.error,
+          style: ToastificationStyle.fillColored,
+          title: Text(t.auth.loginFailed),
+          description: Text(next.errorMessage ?? t.common.error),
+          alignment: Alignment.topCenter,
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+      }
+    });
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: 60.h),
-                _buildHeader(),
-                SizedBox(height: 60.h),
-                _buildLoginForm(),
-                SizedBox(height: 24.h),
-                _buildLoginButton(),
-                SizedBox(height: 16.h),
-                _buildForgotPassword(),
-                SizedBox(height: 32.h),
-                _buildRegisterHint(),
-                SizedBox(height: 24.h),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(height: 60.h),
+              _buildHeader(),
+              SizedBox(height: 60.h),
+              _buildLoginForm(),
+              SizedBox(height: 24.h),
+              _buildLoginButton(),
+              SizedBox(height: 16.h),
+              _buildForgotPassword(),
+              SizedBox(height: 32.h),
+              _buildRegisterHint(),
+              SizedBox(height: 24.h),
+            ],
           ),
         ),
       ),
@@ -123,19 +103,21 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Widget _buildLoginForm() {
+    final state = ref.watch(loginProvider);
+
     return Column(
       children: [
         TextFormField(
-          controller: _usernameController,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return '请输入用户名';
-            }
-            return null;
-          },
+          initialValue: state.username.value,
+          onChanged: (value) =>
+              ref.read(loginProvider.notifier).usernameChanged(value),
           decoration: InputDecoration(
-            labelText: '用户名',
+            labelText: t.common.username,
             hintText: '请输入用户名或手机号',
+            errorText:
+                state.username.displayError == UsernameValidationError.empty
+                ? '请输入用户名'
+                : null,
             prefixIcon: const Icon(Icons.person_outline),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
@@ -146,17 +128,17 @@ class _LoginViewState extends ConsumerState<LoginView> {
         ),
         SizedBox(height: 16.h),
         TextFormField(
-          controller: _passwordController,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return '请输入密码';
-            }
-            return null;
-          },
+          initialValue: state.password.value,
+          onChanged: (value) =>
+              ref.read(loginProvider.notifier).passwordChanged(value),
           obscureText: _obscurePassword,
           decoration: InputDecoration(
-            labelText: '密码',
+            labelText: t.common.password,
             hintText: '请输入密码',
+            errorText:
+                state.password.displayError == PasswordValidationError.empty
+                ? '请输入密码'
+                : null,
             prefixIcon: const Icon(Icons.lock_outline),
             suffixIcon: IconButton(
               icon: Icon(
@@ -178,8 +160,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Widget _buildLoginButton() {
+    final state = ref.watch(loginProvider);
+    final isLoading = state.status.isInProgress;
+
     return ElevatedButton(
-      onPressed: _isLoading ? null : _handleLogin,
+      onPressed: state.isValid && !isLoading ? _handleLogin : null,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
@@ -189,7 +174,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         ),
         elevation: 0,
       ),
-      child: _isLoading
+      child: isLoading
           ? SizedBox(
               width: 20.w,
               height: 20.w,
@@ -199,7 +184,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
               ),
             )
           : Text(
-              '登录',
+              t.auth.loginButton,
               style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
             ),
     );
@@ -209,9 +194,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        onPressed: () => context.push(AppRoutes.FORGOT_PASSWORD),
+        onPressed: () => context.push(AppRoutes.forgotPassword),
         child: Text(
-          '忘记密码？',
+          t.auth.forgotPassword,
           style: TextStyle(fontSize: 14.sp, color: AppColors.primary),
         ),
       ),
@@ -227,7 +212,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
         ),
         TextButton(
-          onPressed: () => context.push(AppRoutes.REGISTER),
+          onPressed: () => context.push(AppRoutes.register),
           child: Text(
             '立即注册',
             style: TextStyle(

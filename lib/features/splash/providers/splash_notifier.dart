@@ -76,7 +76,7 @@ class SplashNotifier extends _$SplashNotifier {
 
       // Step 5: Complete
       await _updateProgress(1);
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future<void>.delayed(const Duration(milliseconds: 500));
 
       _determineNavigationPath(isLoggedIn, storageService);
 

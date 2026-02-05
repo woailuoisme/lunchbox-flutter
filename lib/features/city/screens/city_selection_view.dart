@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../core/values/app_colors.dart';
-import '../../../shared/widgets/error_widget.dart' as app_error; // 防止命名冲突
-import '../../../shared/widgets/loading_widget.dart';
+import '../../../core/widgets/error_widget.dart' as app_error; // 防止命名冲突
+import '../../../core/widgets/loading_widget.dart';
 import '../entities/city_model.dart';
 import '../providers/city_providers.dart';
 
@@ -29,13 +29,14 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
 
   @override
   void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
+    _searchController
+      ..removeListener(_onSearchChanged)
+      ..dispose();
     super.dispose();
   }
 
   void _onSearchChanged() {
-    ref.read(citySearchQueryProvider.notifier).update(_searchController.text);
+    ref.read(citySearchQueryProvider.notifier).query = _searchController.text;
   }
 
   void _showAllCities() {
@@ -73,10 +74,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('选择城市'),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text('选择城市'), elevation: 0),
       body: Column(
         children: [
           // 搜索框
@@ -86,9 +84,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
           _buildHotCities(),
 
           // 城市列表
-          Expanded(
-            child: _buildCityList(),
-          ),
+          Expanded(child: _buildCityList()),
         ],
       ),
     );
@@ -97,7 +93,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
   /// 构建搜索框
   Widget _buildSearchBar() {
     final searchQuery = ref.watch(citySearchQueryProvider);
-    
+
     return Container(
       padding: EdgeInsets.all(16.w),
       color: Colors.white,
@@ -118,7 +114,10 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
             borderRadius: BorderRadius.circular(12.r),
             borderSide: BorderSide.none,
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 12.h,
+          ),
         ),
       ),
     );
@@ -135,8 +134,10 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
 
     return hotCitiesAsync.when(
       data: (cities) {
-        if (cities.isEmpty) return const SizedBox.shrink();
-        
+        if (cities.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
         return Container(
           color: Colors.white,
           padding: EdgeInsets.all(16.w),
@@ -162,7 +163,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
         );
       },
       loading: () => const SizedBox.shrink(), // 热门城市加载中不占位，或者显示骨架屏
-      error: (_, __) => const SizedBox.shrink(),
+      error: (_, _) => const SizedBox.shrink(),
     );
   }
 
@@ -180,10 +181,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
         ),
         child: Text(
           city.name,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: AppColors.textPrimary,
-          ),
+          style: TextStyle(fontSize: 14.sp, color: AppColors.textPrimary),
         ),
       ),
     );
@@ -192,56 +190,61 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
   /// 构建城市列表
   Widget _buildCityList() {
     final allCitiesAsync = ref.watch(allCitiesProvider);
-    
+
     // 如果是搜索状态，使用 filteredCitiesProvider
     // 如果不是搜索状态，使用 groupedCitiesProvider (如果我们需要分组显示)
     // 原始代码在搜索时显示列表，未搜索时也显示列表（但可能分组）
     // 这里为了简单，我们统一使用 filteredCitiesProvider，它在无搜索词时返回所有城市
-    // 
+    //
     // 实际上，如果我们需要分组显示（按首字母），我们需要判断 searchQuery
-    
+
     final searchQuery = ref.watch(citySearchQueryProvider);
-    
+
     if (searchQuery.isEmpty) {
       // 分组显示逻辑
       final groupedCities = ref.watch(groupedCitiesProvider);
       // groupedCitiesProvider 依赖 allCitiesProvider，所以如果 allCities 还在加载，它可能为空
       // 我们还是应该依赖 allCitiesAsync 的状态
-      
+
       return allCitiesAsync.when(
         data: (_) {
-           if (groupedCities.isEmpty) return _buildEmptyState();
-           
-           return RefreshIndicator(
-             onRefresh: () async {
-               ref.invalidate(allCitiesProvider);
-               ref.invalidate(hotCitiesProvider);
-               await ref.read(allCitiesProvider.future);
-             },
-             child: ListView.builder(
-               itemCount: groupedCities.length,
-               itemBuilder: (context, index) {
-                 final initial = groupedCities.keys.elementAt(index);
-                 final cities = groupedCities[initial]!;
-                 return _buildGroupedItem(initial, cities);
-               },
-             ),
-           );
+          if (groupedCities.isEmpty) {
+            return _buildEmptyState();
+          }
+
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref
+                ..invalidate(allCitiesProvider)
+                ..invalidate(hotCitiesProvider);
+              await ref.read(allCitiesProvider.future);
+            },
+            child: ListView.builder(
+              itemCount: groupedCities.length,
+              itemBuilder: (context, index) {
+                final initial = groupedCities.keys.elementAt(index);
+                final cities = groupedCities[initial]!;
+                return _buildGroupedItem(initial, cities);
+              },
+            ),
+          );
         },
         loading: () => const LoadingWidget(),
         error: (err, stack) => app_error.ErrorWidget(
-          message: err.toString(), 
+          message: err.toString(),
           onRetry: () => ref.refresh(allCitiesProvider),
         ),
       );
     } else {
       // 搜索结果列表
       final filteredCities = ref.watch(filteredCitiesProvider);
-      
+
       return allCitiesAsync.when(
         data: (_) {
-          if (filteredCities.isEmpty) return _buildEmptyState();
-          
+          if (filteredCities.isEmpty) {
+            return _buildEmptyState();
+          }
+
           return ListView.builder(
             itemCount: filteredCities.length,
             itemBuilder: (context, index) {
@@ -284,7 +287,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
   /// 构建城市列表项
   Widget _buildCityItem(CityModel city) {
     final selectedCityAsync = ref.watch(selectedCityProvider);
-    final selectedCity = selectedCityAsync.valueOrNull;
+    final selectedCity = selectedCityAsync.asData?.value;
     final isSelected = selectedCity?.id == city.id;
 
     return ColoredBox(
@@ -299,11 +302,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
           ),
         ),
         trailing: isSelected
-            ? Icon(
-                Icons.check_circle,
-                color: AppColors.primary,
-                size: 24.sp,
-              )
+            ? Icon(Icons.check_circle, color: AppColors.primary, size: 24.sp)
             : null,
         onTap: () => _selectCity(city),
       ),
@@ -324,16 +323,10 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
           SizedBox(height: 16.h),
           Text(
             '未找到相关城市',
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: AppColors.textSecondary,
-            ),
+            style: TextStyle(fontSize: 16.sp, color: AppColors.textSecondary),
           ),
           SizedBox(height: 8.h),
-          TextButton(
-            onPressed: _showAllCities,
-            child: const Text('查看所有城市'),
-          ),
+          TextButton(onPressed: _showAllCities, child: const Text('查看所有城市')),
         ],
       ),
     );

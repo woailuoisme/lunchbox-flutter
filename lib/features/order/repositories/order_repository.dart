@@ -24,11 +24,14 @@ OrderRepository orderRepository(Ref ref) {
 /// 订单仓库类
 /// 负责处理订单相关的数据访问和业务逻辑
 class OrderRepository extends BaseRepository {
-
-  OrderRepository(this._storageService, ApiProvider apiProvider, MockProvider mockProvider) : super(apiProvider, mockProvider);
+  OrderRepository(
+    this._storageService,
+    ApiProvider apiProvider,
+    MockProvider mockProvider,
+  ) : super(apiProvider, mockProvider);
   final StorageService _storageService;
 
-  /// 创建新订单
+  /// 创建订单
   Future<OrderModel> createOrder({
     required String deviceId,
     required List<CartItemModel> cartItems,
@@ -36,11 +39,11 @@ class OrderRepository extends BaseRepository {
     String? remark,
   }) async {
     return handleResponse(() async {
-      final orderData = {
+      final orderData = <String, dynamic>{
         'deviceId': deviceId,
         'items': cartItems
             .map(
-              (item) => {
+              (item) => <String, dynamic>{
                 'productId': item.productId,
                 'quantity': item.quantity,
                 'price': item.product.price,
@@ -49,29 +52,32 @@ class OrderRepository extends BaseRepository {
             .toList(),
         'paymentMethod': paymentMethod,
         'remark': remark,
-        'totalAmount': cartItems.fold(
+        'totalAmount': cartItems.fold<double>(
           0,
           (total, item) => total + item.totalPrice,
         ),
       };
 
       if (useMockData) {
-        final userId = _storageService.read<String>(AppConstants.keyUserId) ?? 'user_1';
+        final userId =
+            _storageService.read<String>(AppConstants.keyUserId) ?? 'user_1';
         final method = paymentMethod == 'wechat'
             ? PaymentMethod.wechatPay
             : PaymentMethod.alipay;
 
-        return await mockProvider.createOrder(
+        return mockService.createOrder(
           userId,
           deviceId,
           (orderData['items']! as List).cast<Map<String, dynamic>>(),
           method,
         );
       } else {
-        return await apiProvider.post(
+        return apiService.post(
           '/api/orders',
           orderData,
-          (json) => OrderModel.fromJson(json['data']),
+          (json) => OrderModel.fromJson(
+            (json! as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+          ),
         );
       }
     }, '创建订单');
@@ -84,19 +90,17 @@ class OrderRepository extends BaseRepository {
     String? status,
   }) async {
     return handleListResponse(() async {
-      final params = {
-        'page': page,
-        'pageSize': pageSize,
-        'status': ?status,
-      };
+      final params = {'page': page, 'pageSize': pageSize, 'status': ?status};
 
       if (useMockData) {
-        return await mockProvider.getUserOrders(params);
+        return mockService.getUserOrders(params);
       } else {
-        return await apiProvider.get(
+        return apiService.get(
           '/api/orders',
           (json) => List<OrderModel>.from(
-            json['data'].map((item) => OrderModel.fromJson(item)),
+            ((json! as Map<String, dynamic>)['data'] as List).map(
+              (item) => OrderModel.fromJson(item as Map<String, dynamic>),
+            ),
           ),
           queryParameters: params,
         );
@@ -108,11 +112,13 @@ class OrderRepository extends BaseRepository {
   Future<OrderModel> getOrderById(String orderId) async {
     return handleResponse(() async {
       if (useMockData) {
-        return await mockProvider.getOrderById(orderId);
+        return mockService.getOrderById(orderId);
       } else {
-        return await apiProvider.get(
+        return apiService.get(
           '/api/orders/$orderId',
-          (json) => OrderModel.fromJson(json['data']),
+          (json) => OrderModel.fromJson(
+            (json! as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+          ),
         );
       }
     }, '获取订单详情');
@@ -125,10 +131,10 @@ class OrderRepository extends BaseRepository {
         // 在Mock数据中模拟取消订单
         return ApiResponseModel.success(true);
       } else {
-        return await apiProvider.put(
+        return apiService.put(
           '/api/orders/$orderId/cancel',
-          {},
-          (json) => json['data'],
+          <String, dynamic>{},
+          (json) => json['data'] as bool,
         );
       }
     }, '取消订单');
@@ -151,10 +157,11 @@ class OrderRepository extends BaseRepository {
         };
         return ApiResponseModel.success(paymentInfo);
       } else {
-        return await apiProvider.post(
+        return apiService.post(
           '/api/orders/$orderId/pay',
           paymentData,
-          (json) => json['data'],
+          (json) =>
+              (json! as Map<String, dynamic>)['data'] as Map<String, dynamic>,
         );
       }
     }, '支付订单');
@@ -171,9 +178,9 @@ class OrderRepository extends BaseRepository {
         final mockStatus = statuses[random.nextInt(3)];
         return ApiResponseModel.success(mockStatus);
       } else {
-        return await apiProvider.get(
+        return apiService.get(
           '/api/orders/$orderId/payment/status',
-          (json) => json['data']['status'],
+          (json) => (json! as Map<String, dynamic>)['data']['status'] as String,
           queryParameters: {'paymentId': paymentId},
         );
       }
@@ -202,9 +209,10 @@ class OrderRepository extends BaseRepository {
         };
         return ApiResponseModel.success(stats);
       } else {
-        return await apiProvider.get(
+        return apiService.get(
           '/api/devices/$deviceId/orders/statistics',
-          (json) => json['data'],
+          (json) =>
+              (json! as Map<String, dynamic>)['data'] as Map<String, dynamic>,
         );
       }
     }, '获取设备订单统计');

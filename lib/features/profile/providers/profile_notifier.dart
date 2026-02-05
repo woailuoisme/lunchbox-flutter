@@ -43,7 +43,7 @@ class ProfileNotifier extends _$ProfileNotifier {
   void loadFavoriteDevices() {
     try {
       final storageService = ref.read(storageServiceProvider);
-      final data = storageService.read<List>(_keyFavoriteDevices);
+      final data = storageService.read<List<dynamic>>(_keyFavoriteDevices);
       if (data != null) {
         final devices = data
             .map((json) => DeviceModel.fromJson(json as Map<String, dynamic>))
@@ -61,7 +61,9 @@ class ProfileNotifier extends _$ProfileNotifier {
   /// 添加收藏设备
   Future<void> addFavoriteDevice(DeviceModel device) async {
     try {
-      if (isFavorite(device.id)) return;
+      if (isFavorite(device.id)) {
+        return;
+      }
 
       final updatedList = [...state.favoriteDevices, device];
       state = state.copyWith(favoriteDevices: updatedList);
@@ -109,7 +111,9 @@ class ProfileNotifier extends _$ProfileNotifier {
   /// 更新用户信息
   Future<void> updateUserInfo({String? nickname, String? avatar}) async {
     try {
-      if (state.currentUser == null) return;
+      if (state.currentUser == null) {
+        return;
+      }
 
       state = state.copyWith(isLoading: true);
       final updatedUser = state.currentUser!.copyWith(
@@ -117,7 +121,7 @@ class ProfileNotifier extends _$ProfileNotifier {
         avatar: avatar ?? state.currentUser!.avatar,
       );
 
-      // TODO: 实际应该调用 API 更新用户信息
+      // TODO(User): 实际应该调用 API 更新用户信息
       state = state.copyWith(currentUser: updatedUser);
       LoggerUtils.i('ProfileNotifier: User info updated');
     } catch (e) {

@@ -9,7 +9,6 @@ import '../providers/device_providers.dart';
 
 /// 设备详情视图
 class DeviceDetailView extends ConsumerWidget {
-
   const DeviceDetailView({required this.deviceId, super.key});
   final String deviceId;
 
@@ -34,7 +33,7 @@ class DeviceDetailView extends ConsumerWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         Theme.of(context).primaryColor,
-                        Theme.of(context).primaryColor.withOpacity(0.8),
+                        Theme.of(context).primaryColor.withValues(alpha: 0.8),
                       ],
                     ),
                   ),
@@ -42,7 +41,7 @@ class DeviceDetailView extends ConsumerWidget {
                     child: Icon(
                       Icons.storefront,
                       size: 80.sp,
-                      color: Colors.white.withOpacity(0.5),
+                      color: Colors.white.withValues(alpha: 0.5),
                     ),
                   ),
                 ),
@@ -84,10 +83,7 @@ class DeviceDetailView extends ConsumerWidget {
           children: [
             Text(
               '设备信息',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12.h),
 
@@ -134,8 +130,12 @@ class DeviceDetailView extends ConsumerWidget {
   }
 
   /// 构建信息行
-  Widget _buildInfoRow(IconData icon, String label, String value,
-      {Color? valueColor}) {
+  Widget _buildInfoRow(
+    IconData icon,
+    String label,
+    String value, {
+    Color? valueColor,
+  }) {
     return Row(
       children: [
         Icon(icon, size: 20.sp, color: Colors.grey),
@@ -147,8 +147,9 @@ class DeviceDetailView extends ConsumerWidget {
             style: TextStyle(
               fontSize: 14.sp,
               color: valueColor ?? Colors.black87,
-              fontWeight:
-                  valueColor != null ? FontWeight.bold : FontWeight.normal,
+              fontWeight: valueColor != null
+                  ? FontWeight.bold
+                  : FontWeight.normal,
             ),
           ),
         ),
@@ -169,8 +170,11 @@ class DeviceDetailView extends ConsumerWidget {
               child: Center(
                 child: Column(
                   children: [
-                    Icon(Icons.inventory_2_outlined,
-                        size: 48.sp, color: Colors.grey),
+                    Icon(
+                      Icons.inventory_2_outlined,
+                      size: 48.sp,
+                      color: Colors.grey,
+                    ),
                     SizedBox(height: 8.h),
                     Text(
                       '暂无商品',
@@ -188,10 +192,7 @@ class DeviceDetailView extends ConsumerWidget {
           children: [
             Text(
               '商品列表',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12.h),
             GridView.builder(
@@ -228,7 +229,7 @@ class DeviceDetailView extends ConsumerWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          // TODO: 跳转到产品详情
+          // TODO(User): 跳转到产品详情
           // context.push('/product/${product.id}');
         },
         child: Column(
@@ -316,7 +317,7 @@ class DeviceDetailView extends ConsumerWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -341,7 +342,7 @@ class DeviceDetailView extends ConsumerWidget {
   void _showReportDialog(BuildContext context) {
     final TextEditingController textController = TextEditingController();
 
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('上报设备故障'),
@@ -361,12 +362,12 @@ class DeviceDetailView extends ConsumerWidget {
           ElevatedButton(
             onPressed: () {
               if (textController.text.isNotEmpty) {
-                // TODO: 实现故障上报逻辑
+                // TODO(User): 实现故障上报逻辑
                 // ref.read(deviceRepositoryProvider).reportIssue(...)
                 Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('故障上报成功')),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('故障上报成功')));
               }
             },
             child: const Text('提交'),

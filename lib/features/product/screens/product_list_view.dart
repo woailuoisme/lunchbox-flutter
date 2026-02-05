@@ -10,16 +10,13 @@ import '../providers/product_providers.dart';
 
 /// 产品列表视图
 class ProductListView extends ConsumerWidget {
-
   const ProductListView({required this.deviceId, super.key});
   final String deviceId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsync = ref.watch(filteredProductsProvider(deviceId));
-    final sort = ref.watch(productSortProvider);
     final availableOnly = ref.watch(productFilterAvailableProvider);
-    final category = ref.watch(productCategoryProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -29,7 +26,7 @@ class ProductListView extends ConsumerWidget {
           PopupMenuButton<String>(
             icon: const Icon(Icons.sort),
             onSelected: (value) {
-              ref.read(productSortProvider.notifier).set(value);
+              ref.read(productSortProvider.notifier).update(value);
             },
             itemBuilder: (context) => [
               const PopupMenuItem(value: 'default', child: Text('默认排序')),
@@ -122,7 +119,9 @@ class ProductListView extends ConsumerWidget {
 
     return categoriesAsync.when(
       data: (categories) {
-        if (categories.isEmpty) return const SizedBox.shrink();
+        if (categories.isEmpty) {
+          return const SizedBox.shrink();
+        }
 
         return Container(
           height: 50.h,
@@ -141,7 +140,7 @@ class ProductListView extends ConsumerWidget {
                   label: Text(_getCategoryName(category)),
                   selected: isSelected,
                   onSelected: (_) {
-                    ref.read(productCategoryProvider.notifier).set(category);
+                    ref.read(productCategoryProvider.notifier).update(category);
                   },
                 ),
               );
@@ -153,7 +152,7 @@ class ProductListView extends ConsumerWidget {
         height: 50,
         child: Center(child: CircularProgressIndicator()),
       ),
-      error: (_, __) => const SizedBox.shrink(),
+      error: (_, _) => const SizedBox.shrink(),
     );
   }
 

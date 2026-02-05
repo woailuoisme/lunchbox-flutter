@@ -18,11 +18,11 @@ mixin _$CartItemModel {
 /// 购物车项ID
  String get id;/// 产品ID
  String get productId;/// 产品信息
- ProductModel get product;/// 购买数量
+ ProductModel get product;/// 添加时间
+ DateTime get addedTime;/// 购买数量
  int get quantity;/// 是否选中
  bool get isSelected;/// 设备ID（从哪个设备添加）
- String? get deviceId;/// 添加时间
- DateTime get addedTime;
+ String? get deviceId;
 /// Create a copy of CartItemModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -35,16 +35,16 @@ $CartItemModelCopyWith<CartItemModel> get copyWith => _$CartItemModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CartItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.isSelected, isSelected) || other.isSelected == isSelected)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&(identical(other.addedTime, addedTime) || other.addedTime == addedTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CartItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.product, product) || other.product == product)&&(identical(other.addedTime, addedTime) || other.addedTime == addedTime)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.isSelected, isSelected) || other.isSelected == isSelected)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,productId,product,quantity,isSelected,deviceId,addedTime);
+int get hashCode => Object.hash(runtimeType,id,productId,product,addedTime,quantity,isSelected,deviceId);
 
 @override
 String toString() {
-  return 'CartItemModel(id: $id, productId: $productId, product: $product, quantity: $quantity, isSelected: $isSelected, deviceId: $deviceId, addedTime: $addedTime)';
+  return 'CartItemModel(id: $id, productId: $productId, product: $product, addedTime: $addedTime, quantity: $quantity, isSelected: $isSelected, deviceId: $deviceId)';
 }
 
 
@@ -55,7 +55,7 @@ abstract mixin class $CartItemModelCopyWith<$Res>  {
   factory $CartItemModelCopyWith(CartItemModel value, $Res Function(CartItemModel) _then) = _$CartItemModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String productId, ProductModel product, int quantity, bool isSelected, String? deviceId, DateTime addedTime
+ String id, String productId, ProductModel product, DateTime addedTime, int quantity, bool isSelected, String? deviceId
 });
 
 
@@ -72,16 +72,16 @@ class _$CartItemModelCopyWithImpl<$Res>
 
 /// Create a copy of CartItemModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? productId = null,Object? product = null,Object? quantity = null,Object? isSelected = null,Object? deviceId = freezed,Object? addedTime = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? productId = null,Object? product = null,Object? addedTime = null,Object? quantity = null,Object? isSelected = null,Object? deviceId = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String,product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
-as ProductModel,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as ProductModel,addedTime: null == addedTime ? _self.addedTime : addedTime // ignore: cast_nullable_to_non_nullable
+as DateTime,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,isSelected: null == isSelected ? _self.isSelected : isSelected // ignore: cast_nullable_to_non_nullable
 as bool,deviceId: freezed == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
-as String?,addedTime: null == addedTime ? _self.addedTime : addedTime // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as String?,
   ));
 }
 /// Create a copy of CartItemModel
@@ -175,10 +175,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String productId,  ProductModel product,  int quantity,  bool isSelected,  String? deviceId,  DateTime addedTime)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String productId,  ProductModel product,  DateTime addedTime,  int quantity,  bool isSelected,  String? deviceId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CartItemModel() when $default != null:
-return $default(_that.id,_that.productId,_that.product,_that.quantity,_that.isSelected,_that.deviceId,_that.addedTime);case _:
+return $default(_that.id,_that.productId,_that.product,_that.addedTime,_that.quantity,_that.isSelected,_that.deviceId);case _:
   return orElse();
 
 }
@@ -196,10 +196,10 @@ return $default(_that.id,_that.productId,_that.product,_that.quantity,_that.isSe
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String productId,  ProductModel product,  int quantity,  bool isSelected,  String? deviceId,  DateTime addedTime)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String productId,  ProductModel product,  DateTime addedTime,  int quantity,  bool isSelected,  String? deviceId)  $default,) {final _that = this;
 switch (_that) {
 case _CartItemModel():
-return $default(_that.id,_that.productId,_that.product,_that.quantity,_that.isSelected,_that.deviceId,_that.addedTime);case _:
+return $default(_that.id,_that.productId,_that.product,_that.addedTime,_that.quantity,_that.isSelected,_that.deviceId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -216,10 +216,10 @@ return $default(_that.id,_that.productId,_that.product,_that.quantity,_that.isSe
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String productId,  ProductModel product,  int quantity,  bool isSelected,  String? deviceId,  DateTime addedTime)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String productId,  ProductModel product,  DateTime addedTime,  int quantity,  bool isSelected,  String? deviceId)?  $default,) {final _that = this;
 switch (_that) {
 case _CartItemModel() when $default != null:
-return $default(_that.id,_that.productId,_that.product,_that.quantity,_that.isSelected,_that.deviceId,_that.addedTime);case _:
+return $default(_that.id,_that.productId,_that.product,_that.addedTime,_that.quantity,_that.isSelected,_that.deviceId);case _:
   return null;
 
 }
@@ -231,7 +231,7 @@ return $default(_that.id,_that.productId,_that.product,_that.quantity,_that.isSe
 @JsonSerializable()
 
 class _CartItemModel extends CartItemModel {
-  const _CartItemModel({required this.id, required this.productId, required this.product, this.quantity = 1, this.isSelected = true, this.deviceId, required this.addedTime}): super._();
+  const _CartItemModel({required this.id, required this.productId, required this.product, required this.addedTime, this.quantity = 1, this.isSelected = true, this.deviceId}): super._();
   factory _CartItemModel.fromJson(Map<String, dynamic> json) => _$CartItemModelFromJson(json);
 
 /// 购物车项ID
@@ -240,14 +240,14 @@ class _CartItemModel extends CartItemModel {
 @override final  String productId;
 /// 产品信息
 @override final  ProductModel product;
+/// 添加时间
+@override final  DateTime addedTime;
 /// 购买数量
 @override@JsonKey() final  int quantity;
 /// 是否选中
 @override@JsonKey() final  bool isSelected;
 /// 设备ID（从哪个设备添加）
 @override final  String? deviceId;
-/// 添加时间
-@override final  DateTime addedTime;
 
 /// Create a copy of CartItemModel
 /// with the given fields replaced by the non-null parameter values.
@@ -262,16 +262,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CartItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.product, product) || other.product == product)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.isSelected, isSelected) || other.isSelected == isSelected)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&(identical(other.addedTime, addedTime) || other.addedTime == addedTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CartItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.product, product) || other.product == product)&&(identical(other.addedTime, addedTime) || other.addedTime == addedTime)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.isSelected, isSelected) || other.isSelected == isSelected)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,productId,product,quantity,isSelected,deviceId,addedTime);
+int get hashCode => Object.hash(runtimeType,id,productId,product,addedTime,quantity,isSelected,deviceId);
 
 @override
 String toString() {
-  return 'CartItemModel(id: $id, productId: $productId, product: $product, quantity: $quantity, isSelected: $isSelected, deviceId: $deviceId, addedTime: $addedTime)';
+  return 'CartItemModel(id: $id, productId: $productId, product: $product, addedTime: $addedTime, quantity: $quantity, isSelected: $isSelected, deviceId: $deviceId)';
 }
 
 
@@ -282,7 +282,7 @@ abstract mixin class _$CartItemModelCopyWith<$Res> implements $CartItemModelCopy
   factory _$CartItemModelCopyWith(_CartItemModel value, $Res Function(_CartItemModel) _then) = __$CartItemModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String productId, ProductModel product, int quantity, bool isSelected, String? deviceId, DateTime addedTime
+ String id, String productId, ProductModel product, DateTime addedTime, int quantity, bool isSelected, String? deviceId
 });
 
 
@@ -299,16 +299,16 @@ class __$CartItemModelCopyWithImpl<$Res>
 
 /// Create a copy of CartItemModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? productId = null,Object? product = null,Object? quantity = null,Object? isSelected = null,Object? deviceId = freezed,Object? addedTime = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? productId = null,Object? product = null,Object? addedTime = null,Object? quantity = null,Object? isSelected = null,Object? deviceId = freezed,}) {
   return _then(_CartItemModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String,product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
-as ProductModel,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as ProductModel,addedTime: null == addedTime ? _self.addedTime : addedTime // ignore: cast_nullable_to_non_nullable
+as DateTime,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,isSelected: null == isSelected ? _self.isSelected : isSelected // ignore: cast_nullable_to_non_nullable
 as bool,deviceId: freezed == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
-as String?,addedTime: null == addedTime ? _self.addedTime : addedTime // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as String?,
   ));
 }
 

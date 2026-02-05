@@ -13,8 +13,8 @@ class FavoriteDevicesView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(profileNotifierProvider);
-    final notifier = ref.read(profileNotifierProvider.notifier);
+    final state = ref.watch(profileProvider);
+    final notifier = ref.read(profileProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(title: const Text('收藏设备')),
@@ -76,7 +76,7 @@ class FavoriteDevicesView extends ConsumerWidget {
                 height: 48.w,
                 decoration: BoxDecoration(
                   color: device.isOnline
-                      ? Theme.of(context).primaryColor.withOpacity(0.1)
+                      ? Theme.of(context).primaryColor.withValues(alpha: 0.1)
                       : Colors.grey[200],
                   borderRadius: BorderRadius.circular(12.r),
                 ),

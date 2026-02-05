@@ -16,8 +16,12 @@ targets:
         generate_for:
           - lib/features/**/data/models/*.dart
           - lib/features/**/domain/entities/*.dart
+          - lib/features/**/models/*.dart
+          - lib/features/**/entities/*.dart
+          - lib/features/**/providers/*.dart
           - lib/shared/models/*.dart
           - lib/core/errors/*.dart
+          - lib/core/network/response/*.dart
         options:
           # Freezed options
           union_key: type
@@ -27,7 +31,10 @@ targets:
         enabled: true
         generate_for:
           - lib/features/**/data/models/*.dart
+          - lib/features/**/models/*.dart
+          - lib/features/**/entities/*.dart
           - lib/shared/models/*.dart
+          - lib/core/network/response/*.dart
         options:
           # JSON serializable options
           any_map: false

@@ -46,44 +46,44 @@
     - 实现 toEntity 转换方法
     - _需求：19.1, 19.2_
   
-  - [-] 3.2 实现 Device 和 Location 数据模型
+  - [x] 3.2 实现 Device 和 Location 数据模型
     - 创建 Device 和 Location 领域实体
     - 创建 DeviceModel 和 LocationModel 数据模型
     - 定义 DeviceStatus 枚举
     - 实现 toEntity 转换方法
     - _需求：19.1, 19.2_
   
-  - [~] 3.3 实现 Product 数据模型
+  - [x] 3.3 实现 Product 数据模型
     - 创建 Product 领域实体
     - 创建 ProductModel 数据模型
     - 实现 toEntity 转换方法
     - _需求：19.1, 19.2_
   
-  - [~] 3.4 实现 Cart 状态模型
+  - [x] 3.4 实现 Cart 状态模型
     - 创建 CartState 和 CartItem 类（使用 freezed）
     - 实现 totalPrice 和 totalItems 计算属性
     - 实现 empty 工厂方法
     - _需求：10.2, 10.6_
   
-  - [~] 3.5 实现 Order 数据模型
+  - [x] 3.5 实现 Order 数据模型
     - 创建 Order 和 OrderItem 领域实体
     - 创建 OrderModel 和 OrderItemModel 数据模型
     - 定义 OrderStatus 和 PaymentMethod 枚举
     - 实现 toEntity 转换方法
     - _需求：19.1, 19.2_
   
-  - [ ]* 3.6 编写数据模型的属性测试
+  - [x] 3.6 编写数据模型的属性测试
     - **属性 11：JSON 序列化往返一致性**
     - **验证：需求 19.2**
   
-  - [~] 3.7 运行代码生成
+  - [x] 3.7 运行代码生成
     - 执行 dart run build_runner build --delete-conflicting-outputs
     - 验证所有生成的代码无错误
     - _需求：19.5_
 
 
-- [~] 4. 设备管理功能（Device Feature）
-  - [~] 4.1 实现 Device 数据层
+- [x] 4. 设备管理功能（Device Feature）
+  - [x] 4.1 实现 Device 数据层
     - 创建 DeviceRemoteDataSource 接口和实现
     - 创建 DeviceLocalDataSource 接口和实现（缓存）
     - 创建 DeviceRepository 接口（domain 层）
@@ -91,34 +91,34 @@
     - 使用 Either 处理所有错误情况
     - _需求：7.1, 7.2, 7.3, 9.4_
   
-  - [~] 4.2 实现 Device 用例
+  - [x] 4.2 实现 Device 用例
     - 创建 GetDevicesUseCase
     - 创建 GetDeviceByIdUseCase
     - 创建 ReportDeviceIssueUseCase
     - _需求：7.4_
   
-  - [~] 4.3 实现 Device Provider
+  - [x] 4.3 实现 Device Provider
     - 创建 deviceRepositoryProvider
     - 创建 DeviceListNotifier（AsyncNotifier）
     - 实现 refresh 方法
     - 创建 deviceByIdProvider（family）
     - _需求：1.1, 1.2, 9.1, 9.5_
   
-  - [~] 4.4 实现设备列表 UI
+  - [x] 4.4 实现设备列表 UI
     - 创建 DeviceListScreen
     - 创建 DeviceCard widget
     - 实现加载、错误和数据状态的 UI
     - 集成下拉刷新功能
     - _需求：9.1_
   
-  - [~] 4.5 实现设备详情 UI
+  - [x] 4.5 实现设备详情 UI
     - 创建 DeviceDetailScreen
     - 显示设备信息、状态、位置
     - 实现报告问题功能
     - 使用 ToastService 显示反馈
     - _需求：9.2, 9.3_
   
-  - [ ]* 4.6 编写设备管理单元测试
+  - [x] 4.6 编写设备管理单元测试
     - 测试 DeviceRepository 的成功和失败情况
     - 测试 DeviceListNotifier 的状态管理
     - 测试错误处理和缓存逻辑
@@ -135,40 +135,40 @@
     - _需求：15.3_
 
 - [~] 5. 产品浏览与购物功能（Product & Cart Feature）
-  - [~] 5.1 实现 Product 数据层
+  - [x] 5.1 实现 Product 数据层
     - 创建 ProductRemoteDataSource 接口和实现
     - 创建 ProductLocalDataSource 接口和实现
     - 创建 ProductRepository 接口和实现
     - 使用 Either 处理错误
     - _需求：7.1, 7.2, 7.3_
   
-  - [~] 5.2 实现 Product Provider
+  - [x] 5.2 实现 Product Provider
     - 创建 productRepositoryProvider
     - 创建 ProductListNotifier（AsyncNotifier，按设备和类别）
     - 创建 productByIdProvider（family）
     - _需求：1.1, 10.1_
   
-  - [~] 5.3 实现购物车状态管理
+  - [x] 5.3 实现购物车状态管理
     - 创建 CartNotifier（Notifier）
     - 实现 addItem、removeItem、updateQuantity、clear 方法
     - 实现购物车不变量逻辑
     - _需求：10.2, 10.6_
   
-  - [~] 5.4 实现产品列表 UI
+  - [x] 5.4 实现产品列表 UI
     - 创建 ProductListScreen
     - 创建 ProductCard widget
     - 实现按类别筛选
     - 集成添加到购物车功能
     - _需求：10.1, 10.2_
   
-  - [~] 5.5 实现产品详情 UI
+  - [x] 5.5 实现产品详情 UI
     - 创建 ProductDetailScreen
     - 显示产品详细信息、价格、库存
     - 实现添加到购物车功能
     - 使用 ToastService 显示反馈
     - _需求：10.2_
   
-  - [~] 5.6 实现购物车 UI
+  - [x] 5.6 实现购物车 UI
     - 创建 CartScreen
     - 创建 CartItemWidget
     - 实现数量增减和删除功能
@@ -176,7 +176,7 @@
     - 实现空购物车状态
     - _需求：10.3, 10.6, 10.7_
   
-  - [ ]* 5.7 编写购物车单元测试
+  - [x] 5.7 编写购物车单元测试
     - 测试 CartNotifier 的所有操作
     - 测试购物车计算逻辑
     - _需求：15.1_
@@ -187,14 +187,14 @@
     - **验证：需求 10.2, 10.6**
 
 - [~] 6. 订单和支付功能（Order & Payment Feature）
-  - [~] 6.1 实现 Order 数据层
+  - [x] 6.1 实现 Order 数据层
     - 创建 OrderRemoteDataSource 接口和实现
     - 创建 OrderLocalDataSource 接口和实现
     - 创建 OrderRepository 接口和实现
     - 使用 Either 和 TaskEither 处理错误
     - _需求：7.1, 7.2, 10.4_
   
-  - [~] 6.2 实现 Payment 数据层
+  - [x] 6.2 实现 Payment 数据层
     - 创建 PaymentRemoteDataSource 接口和实现
     - 创建 PaymentRepository 接口和实现
     - 集成微信支付和支付宝 SDK
@@ -233,7 +233,7 @@
     - 显示订单状态和详情
     - _需求：11.5, 13.1_
   
-  - [ ]* 6.8 编写订单和支付单元测试
+  - [x] 6.8 编写订单和支付单元测试
     - 测试 OrderRepository 的创建流程
     - 测试 PaymentNotifier 的状态管理
     - 测试支付状态转换逻辑

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 
 import '../../../routes/app_routes.dart';
 import '../providers/onboarding_notifier.dart';
-import '../providers/onboarding_state.dart';
 
 /// Onboarding 引导页视图
 class OnboardingView extends ConsumerWidget {
@@ -13,194 +13,86 @@ class OnboardingView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(onboardingNotifierProvider);
-    final notifier = ref.read(onboardingNotifierProvider.notifier);
+    final notifier = ref.read(onboardingProvider.notifier);
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            // 跳过按钮
-            _buildSkipButton(context, notifier),
+    final bodyStyle = TextStyle(fontSize: 16.sp, color: Colors.grey[600]);
 
-            // 引导页内容
-            Expanded(
-              child: PageView(
-                onPageChanged: notifier.onPageChanged,
-                children: [
-                  _buildOnboardingPage(
-                    context: context,
-                    icon: Icons.lunch_dining,
-                    title: '欢迎使用饭盒售货机',
-                    description: '随时随地，轻松购买美味午餐',
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  _buildOnboardingPage(
-                    context: context,
-                    icon: Icons.location_on,
-                    title: '查找附近设备',
-                    description: '快速定位最近的售货机，节省您的时间',
-                    color: Colors.orange,
-                  ),
-                  _buildOnboardingPage(
-                    context: context,
-                    icon: Icons.payment,
-                    title: '便捷支付',
-                    description: '支持微信、支付宝等多种支付方式',
-                    color: Colors.green,
-                  ),
-                ],
-              ),
-            ),
+    final pageDecoration = PageDecoration(
+      titleTextStyle: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+      bodyTextStyle: bodyStyle,
+      bodyPadding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+      pageColor: Theme.of(context).scaffoldBackgroundColor,
+      imagePadding: EdgeInsets.only(top: 24.h),
+      imageFlex: 2,
+    );
 
-            // 页面指示器和按钮
-            _buildBottomSection(context, state, notifier),
-          ],
+    return IntroductionScreen(
+      globalBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      allowImplicitScrolling: true,
+
+      pages: [
+        PageViewModel(
+          title: '欢迎使用饭盒售货机',
+          body: '随时随地，轻松购买美味午餐',
+          image: _buildImage(
+            context,
+            Icons.lunch_dining,
+            Theme.of(context).primaryColor,
+          ),
+          decoration: pageDecoration,
         ),
-      ),
-    );
-  }
-
-  /// 构建跳过按钮
-  Widget _buildSkipButton(BuildContext context, OnboardingNotifier notifier) {
-    return Padding(
-      padding: EdgeInsets.all(16.w),
-      child: Align(
-        alignment: Alignment.topRight,
-        child: TextButton(
-          onPressed: () {
-            notifier.skipOnboarding();
-            context.go(AppRoutes.login);
-          },
-          child: Text(
-            '跳过',
-            style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
-          ),
+        PageViewModel(
+          title: '查找附近设备',
+          body: '快速定位最近的售货机，节省您的时间',
+          image: _buildImage(context, Icons.location_on, Colors.orange),
+          decoration: pageDecoration,
         ),
+        PageViewModel(
+          title: '便捷支付',
+          body: '支持信用卡等多种便捷支付方式',
+          image: _buildImage(context, Icons.credit_card, Colors.green),
+          decoration: pageDecoration,
+        ),
+      ],
+      onDone: () {
+        notifier.completeOnboarding();
+        context.go(AppRoutes.login);
+      },
+      onSkip: () {
+        notifier.completeOnboarding();
+        context.go(AppRoutes.login);
+      },
+      showSkipButton: true,
+      skipOrBackFlex: 0,
+      nextFlex: 0,
+      skip: const Text('跳过', style: TextStyle(fontWeight: FontWeight.w600)),
+      next: const Icon(Icons.arrow_forward),
+      done: const Text('开始使用', style: TextStyle(fontWeight: FontWeight.w600)),
+      curve: Curves.fastLinearToSlowEaseIn,
+      controlsMargin: EdgeInsets.all(16.w),
+      controlsPadding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      dotsDecorator: DotsDecorator(
+        size: Size(10.0.w, 10.0.w),
+        color: const Color(0xFFBDBDBD),
+        activeSize: Size(22.0.w, 10.0.w),
+        activeShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(25.0.r)),
+        ),
+        activeColor: Theme.of(context).primaryColor,
       ),
     );
   }
 
-  /// 构建引导页
-  Widget _buildOnboardingPage({
-    required BuildContext context,
-    required IconData icon,
-    required String title,
-    required String description,
-    required Color color,
-  }) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 40.w),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // 图标
-          Container(
-            width: 120.w,
-            height: 120.w,
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, size: 60.sp, color: color),
-          ),
-
-          SizedBox(height: 40.h),
-
-          // 标题
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-
-          SizedBox(height: 16.h),
-
-          // 描述
-          Text(
-            description,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: Colors.grey[600],
-              height: 1.5,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// 构建底部区域
-  Widget _buildBottomSection(
-    BuildContext context,
-    OnboardingState state,
-    OnboardingNotifier notifier,
-  ) {
-    return Padding(
-      padding: EdgeInsets.all(24.w),
-      child: Column(
-        children: [
-          // 页面指示器
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              state.totalPages,
-              (index) => _buildPageIndicator(
-                context: context,
-                isActive: index == state.currentPage,
-              ),
-            ),
-          ),
-
-          SizedBox(height: 24.h),
-
-          // 下一步/开始按钮
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                if (state.isLastPage) {
-                  notifier.completeOnboarding();
-                  context.go(AppRoutes.login);
-                } else {
-                  notifier.nextPage();
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-              ),
-              child: Text(
-                state.isLastPage ? '开始使用' : '下一步',
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// 构建页面指示器
-  Widget _buildPageIndicator({
-    required BuildContext context,
-    required bool isActive,
-  }) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      margin: EdgeInsets.symmetric(horizontal: 4.w),
-      width: isActive ? 24.w : 8.w,
-      height: 8.h,
-      decoration: BoxDecoration(
-        color: isActive ? Theme.of(context).primaryColor : Colors.grey[300],
-        borderRadius: BorderRadius.circular(4.r),
+  Widget _buildImage(BuildContext context, IconData icon, Color color) {
+    return Center(
+      child: Container(
+        width: 120.w,
+        height: 120.w,
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, size: 60.sp, color: color),
       ),
     );
   }

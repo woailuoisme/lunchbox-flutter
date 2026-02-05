@@ -16,7 +16,6 @@ AuthRepository authRepository(Ref ref) {
 }
 
 class AuthRepository {
-
   AuthRepository(this._remoteDataSource, this._storageService);
   final AuthRemoteDataSource _remoteDataSource;
   final StorageService _storageService;
@@ -31,23 +30,23 @@ class AuthRepository {
         password: password,
       );
 
-      final token = response.data['token'] as String;
-      final userId = response.data['userId'] as String;
+      final data = response.data as Map<String, dynamic>;
+      final token = data['token'] as String;
+      final userId = data['userId'] as String;
 
       await _storageService.write(AppConstants.keyAuthToken, token);
       await _storageService.write(AppConstants.keyUserId, userId);
 
-      if (response.data.containsKey('permissions')) {
+      if (data.containsKey('permissions')) {
         final permissions =
-            (response.data['permissions'] as List<dynamic>?)?.cast<String>() ??
-            [];
+            (data['permissions'] as List<dynamic>?)?.cast<String>() ?? [];
         await _storageService.write(
           AppConstants.keyUserPermissions,
           permissions,
         );
       }
 
-      final user = UserModel.fromJson(response.data['user']);
+      final user = UserModel.fromJson(data['user'] as Map<String, dynamic>);
 
       LoggerUtils.i(
         'AuthRepository: Login successful for user: ${user.username}',
@@ -71,23 +70,23 @@ class AuthRepository {
         nickname: nickname,
       );
 
-      final token = response.data['token'] as String;
-      final userId = response.data['userId'] as String;
+      final data = response.data as Map<String, dynamic>;
+      final token = data['token'] as String;
+      final userId = data['userId'] as String;
 
       await _storageService.write(AppConstants.keyAuthToken, token);
       await _storageService.write(AppConstants.keyUserId, userId);
 
-      if (response.data.containsKey('permissions')) {
+      if (data.containsKey('permissions')) {
         final permissions =
-            (response.data['permissions'] as List<dynamic>?)?.cast<String>() ??
-            [];
+            (data['permissions'] as List<dynamic>?)?.cast<String>() ?? [];
         await _storageService.write(
           AppConstants.keyUserPermissions,
           permissions,
         );
       }
 
-      final user = UserModel.fromJson(response.data['user']);
+      final user = UserModel.fromJson(data['user'] as Map<String, dynamic>);
 
       LoggerUtils.i(
         'AuthRepository: Registration successful for user: ${user.username}',
@@ -123,7 +122,7 @@ class AuthRepository {
       }
 
       final response = await _remoteDataSource.getUserInfo();
-      final user = UserModel.fromJson(response.data);
+      final user = UserModel.fromJson(response.data as Map<String, dynamic>);
 
       LoggerUtils.i('AuthRepository: Current user fetched successfully');
       return user;
@@ -140,7 +139,7 @@ class AuthRepository {
   Future<UserModel> updateUserInfo(Map<String, dynamic> data) async {
     try {
       final response = await _remoteDataSource.updateUserInfo(data);
-      final user = UserModel.fromJson(response.data);
+      final user = UserModel.fromJson(response.data as Map<String, dynamic>);
 
       LoggerUtils.i('AuthRepository: User info updated successfully');
       return user;

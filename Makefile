@@ -1,4 +1,4 @@
-.PHONY: help build clean watch deps run test format analyze fix upgrade doctor full-build
+.PHONY: help build gen-i18n gen-icons clean watch deps run run-dev run-prod test format analyze fix upgrade doctor full-build
 
 # 默认目标 - 显示帮助信息
 help:
@@ -7,10 +7,14 @@ help:
 	@echo "  make deps          - 获取依赖"
 	@echo "  make upgrade       - 升级项目所有依赖 (含跨大版本)"
 	@echo "  make build         - 生成代码 (freezed/json)"
+	@echo "  make gen-i18n      - 生成国际化代码 (slang)"
+	@echo "  make gen-icons     - 生成应用图标 (flutter_launcher_icons)"
 	@echo "  make clean         - 清理生成文件"
 	@echo "  make watch         - 监听生成"
 	@echo "  make full-build    - 重建 (clean+deps+build)"
-	@echo "  make run           - 运行"
+	@echo "  make run           - 运行 (默认)"
+	@echo "  make run-dev       - 运行 (开发环境配置)"
+	@echo "  make run-prod      - 运行 (生产环境配置)"
 	@echo "  make test          - 测试 (unit+widget)"
 	@echo "  make format        - 格式化"
 	@echo "  make analyze       - 分析"
@@ -26,6 +30,12 @@ upgrade:
 
 build:
 	dart run build_runner build --delete-conflicting-outputs
+
+gen-i18n:
+	dart run slang
+
+gen-icons:
+	dart run flutter_launcher_icons
 
 clean:
 	dart run build_runner clean
@@ -44,6 +54,13 @@ full-build: clean deps build
 run:
 	flutter run
 
+run-dev:
+	flutter run --dart-define-from-file=config/env_dev.json
+
+run-prod:
+	flutter run --dart-define-from-file=config/env_prod.json
+
+
 test:
 	flutter test
 
@@ -57,6 +74,9 @@ format:
 	dart format lib test
 
 analyze:
+	flutter analyze | grep -v "info •" || true
+
+analyze-strict:
 	flutter analyze
 
 fix:

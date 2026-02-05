@@ -13,6 +13,10 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => $checkedCreate(
     final val = _UserModel(
       id: $checkedConvert('id', (v) => v as String),
       username: $checkedConvert('username', (v) => v as String),
+      registeredAt: $checkedConvert(
+        'registered_at',
+        (v) => DateTime.parse(v as String),
+      ),
       phone: $checkedConvert('phone', (v) => v as String?),
       email: $checkedConvert('email', (v) => v as String?),
       nickname: $checkedConvert('nickname', (v) => v as String? ?? ''),
@@ -21,10 +25,6 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => $checkedCreate(
       birthday: $checkedConvert(
         'birthday',
         (v) => v == null ? null : DateTime.parse(v as String),
-      ),
-      registeredAt: $checkedConvert(
-        'registered_at',
-        (v) => DateTime.parse(v as String),
       ),
       lastLoginAt: $checkedConvert(
         'last_login_at',
@@ -57,13 +57,13 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'username': instance.username,
+      'registered_at': instance.registeredAt.toIso8601String(),
       'phone': ?instance.phone,
       'email': ?instance.email,
       'nickname': instance.nickname,
       'avatar': ?instance.avatar,
       'gender': instance.gender,
       'birthday': ?instance.birthday?.toIso8601String(),
-      'registered_at': instance.registeredAt.toIso8601String(),
       'last_login_at': ?instance.lastLoginAt?.toIso8601String(),
       'points': instance.points,
       'member_level': instance.memberLevel,

@@ -11,7 +11,8 @@ class ProductSort extends _$ProductSort {
   @override
   String build() => 'default';
 
-  void set(String sort) => state = sort;
+  // ignore: use_setters_to_change_properties
+  void update(String sort) => state = sort;
 }
 
 /// 仅显示有货过滤
@@ -29,6 +30,7 @@ class ProductSearchQuery extends _$ProductSearchQuery {
   @override
   String build() => '';
 
+  // ignore: use_setters_to_change_properties
   void update(String query) => state = query;
 }
 
@@ -38,7 +40,8 @@ class ProductCategory extends _$ProductCategory {
   @override
   String build() => 'all';
 
-  void set(String category) => state = category;
+  // ignore: use_setters_to_change_properties
+  void update(String category) => state = category;
 }
 
 /// 获取指定设备的产品分类列表

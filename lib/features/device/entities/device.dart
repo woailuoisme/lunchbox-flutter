@@ -7,7 +7,7 @@ part 'device.freezed.dart';
 /// Device domain entity
 /// Represents a physical vending machine in the system
 @freezed
-class Device with _$Device {
+abstract class Device with _$Device {
   const factory Device({
     /// Unique device identifier
     required String id,

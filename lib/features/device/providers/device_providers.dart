@@ -14,6 +14,7 @@ class DeviceSort extends _$DeviceSort {
   @override
   String build() => 'distance';
 
+  // ignore: use_setters_to_change_properties
   void set(String sort) => state = sort;
 }
 
@@ -32,6 +33,7 @@ class DeviceSearchQuery extends _$DeviceSearchQuery {
   @override
   String build() => '';
 
+  // ignore: use_setters_to_change_properties
   void update(String query) => state = query;
 }
 
@@ -75,15 +77,17 @@ Future<List<DeviceModel>> filteredDevices(Ref ref) async {
     filtered = filtered
         .where(
           (d) =>
-              d.name.contains(searchQuery) || d.address.contains(searchQuery),
+              d.name.contains(searchQuery) ||
+              (d.location.address?.contains(searchQuery) ?? false),
         )
         .toList();
   }
 
   // 排序
   if (sort == 'distance') {
-    // 按距离排序 - 需要当前位置，这里暂时假设已有距离字段或模拟
-    filtered.sort((a, b) => (a.distance ?? 0).compareTo(b.distance ?? 0));
+    // TODO(User): 实现距离计算和排序。需要引入用户位置 Provider。
+    // 目前 DeviceModel 不包含 distance 字段。
+    // filtered.sort((a, b) => (a.distance ?? 0).compareTo(b.distance ?? 0));
   } else if (sort == 'name') {
     filtered.sort((a, b) => a.name.compareTo(b.name));
   }
@@ -97,6 +101,7 @@ class SelectedDevice extends _$SelectedDevice {
   @override
   DeviceModel? build() => null;
 
+  // ignore: use_setters_to_change_properties
   void set(DeviceModel? device) => state = device;
 }
 
