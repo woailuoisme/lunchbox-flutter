@@ -34,7 +34,7 @@ class PaymentRepository {
 
       final response = await _client.createPaymentIntent(orderId, paymentData);
       if (response.success && response.data != null) {
-        return response.data!;
+        return response.data! as Map<String, dynamic>;
       }
       throw Failure.server(
         message: response.message,
@@ -51,7 +51,8 @@ class PaymentRepository {
     return TaskEither.tryCatch(() async {
       final response = await _client.checkPaymentStatus(orderId, paymentId);
       if (response.success && response.data != null) {
-        return response.data!['status'] as String;
+        final data = response.data! as Map<String, dynamic>;
+        return data['status'] as String;
       }
       throw Failure.server(
         message: response.message,

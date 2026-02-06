@@ -41,7 +41,7 @@ class UserRepository {
       });
 
       if (response.success && response.data != null) {
-        final data = response.data!;
+        final data = response.data! as Map<String, dynamic>;
         final user = UserModel.fromJson(data['user'] as Map<String, dynamic>);
         final token = data['token'] as String;
         _saveUserInfo(user);
@@ -78,7 +78,7 @@ class UserRepository {
         // Assuming register returns user data similar to login or just user
         // The original code mapped data['data'] to UserModel
         // RestClient.register returns ApiResponseModel<Map<String, dynamic>>
-        final data = response.data!;
+        final data = response.data! as Map<String, dynamic>;
         // Adjust based on actual API response structure
         if (data.containsKey('user')) {
           return UserModel.fromJson(data['user'] as Map<String, dynamic>);

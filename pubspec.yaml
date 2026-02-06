@@ -177,6 +177,10 @@ melos:
       run: ./scripts/melos.sh build:ios
       description: 构建 iOS IPA
 
+    run:offline:
+      run: ./scripts/melos.sh run:offline
+      description: 离线运行 (指定设备)
+
     clean:
       run: ./scripts/melos.sh clean
       description: 清理构建文件

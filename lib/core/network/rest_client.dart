@@ -27,14 +27,10 @@ abstract class RestClient {
   // ===========================================================================
 
   @POST('/api/auth/login')
-  Future<ApiResponse<Map<String, dynamic>>> login(
-    @Body() Map<String, dynamic> body,
-  );
+  Future<ApiResponse<dynamic>> login(@Body() Map<String, dynamic> body);
 
   @POST('/api/auth/register')
-  Future<ApiResponse<Map<String, dynamic>>> register(
-    @Body() Map<String, dynamic> body,
-  );
+  Future<ApiResponse<dynamic>> register(@Body() Map<String, dynamic> body);
 
   @POST('/api/auth/logout')
   Future<ApiResponse<void>> logout();
@@ -51,9 +47,7 @@ abstract class RestClient {
   Future<ApiResponse<bool>> changePassword(@Body() Map<String, dynamic> body);
 
   @POST('/api/auth/refresh')
-  Future<ApiResponse<Map<String, dynamic>>> refreshToken(
-    @Body() Map<String, dynamic> body,
-  );
+  Future<ApiResponse<dynamic>> refreshToken(@Body() Map<String, dynamic> body);
 
   @POST('/api/auth/send-code')
   Future<ApiResponse<void>> sendVerificationCode(
@@ -61,9 +55,7 @@ abstract class RestClient {
   );
 
   @POST('/api/auth/verify-code')
-  Future<ApiResponse<Map<String, dynamic>>> verifyCode(
-    @Body() Map<String, dynamic> body,
-  );
+  Future<ApiResponse<dynamic>> verifyCode(@Body() Map<String, dynamic> body);
 
   @POST('/api/users/favorite-devices')
   Future<ApiResponse<bool>> addFavoriteDevice(
@@ -104,12 +96,10 @@ abstract class RestClient {
   Future<ApiResponse<DeviceModel>> getDeviceStatus(@Path('id') String id);
 
   @GET('/api/devices/{id}/statistics')
-  Future<ApiResponse<Map<String, dynamic>>> getDeviceStatistics(
-    @Path('id') String id,
-  );
+  Future<ApiResponse<dynamic>> getDeviceStatistics(@Path('id') String id);
 
   @GET('/api/devices/{deviceId}/orders/statistics')
-  Future<ApiResponse<Map<String, dynamic>>> getDeviceOrderStatistics(
+  Future<ApiResponse<dynamic>> getDeviceOrderStatistics(
     @Path('deviceId') String deviceId,
   );
 
@@ -158,19 +148,19 @@ abstract class RestClient {
   Future<ApiResponse<bool>> cancelOrder(@Path('id') String id);
 
   @POST('/api/orders/{id}/pay')
-  Future<ApiResponse<Map<String, dynamic>>> payOrder(
+  Future<ApiResponse<dynamic>> payOrder(
     @Path('id') String id,
     @Body() Map<String, dynamic> body,
   );
 
   @GET('/api/orders/{id}/payment/status')
-  Future<ApiResponse<Map<String, dynamic>>> checkPaymentStatus(
+  Future<ApiResponse<dynamic>> checkPaymentStatus(
     @Path('id') String id,
     @Query('paymentId') String? paymentId,
   );
 
   @POST('/api/orders/{id}/payment/intent')
-  Future<ApiResponse<Map<String, dynamic>>> createPaymentIntent(
+  Future<ApiResponse<dynamic>> createPaymentIntent(
     @Path('id') String id,
     @Body() Map<String, dynamic> body,
   );

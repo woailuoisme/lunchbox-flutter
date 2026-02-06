@@ -34,7 +34,7 @@ class AuthRepository {
       });
 
       if (response.success && response.data != null) {
-        final data = response.data!;
+        final data = response.data! as Map<String, dynamic>;
         final token = data['token'] as String;
         final userId = data['userId'] as String;
 
@@ -78,7 +78,7 @@ class AuthRepository {
       });
 
       if (response.success && response.data != null) {
-        final data = response.data!;
+        final data = response.data! as Map<String, dynamic>;
         final token = data['token'] as String;
         final userId = data['userId'] as String;
 

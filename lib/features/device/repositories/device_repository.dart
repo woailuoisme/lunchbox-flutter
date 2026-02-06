@@ -153,7 +153,7 @@ class DeviceRepository {
     return TaskEither.tryCatch(() async {
       final response = await _client.getDeviceStatistics(deviceId);
       if (response.success && response.data != null) {
-        return response.data!;
+        return response.data! as Map<String, dynamic>;
       }
       throw Failure.server(
         message: response.message,

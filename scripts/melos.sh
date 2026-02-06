@@ -23,6 +23,7 @@ function show_help() {
     echo "  gen:icons     生成应用图标"
     echo "  build:apk     构建 Android APK (可接环境参数: dev/staging/prod)"
     echo "  build:ios     构建 iOS IPA (可接环境参数: dev/staging/prod)"
+    echo "  run:offline   离线运行 (指定设备)"
     echo "  clean         清理构建文件"
     echo "  prepare       准备开发环境 (bootstrap + build + i18n)"
 }
@@ -79,6 +80,10 @@ case $COMMAND in
     build:ios)
         log_info "构建 iOS IPA..."
         ./scripts/build_ios.sh "$2"
+        ;;
+    run:offline)
+        log_info "离线运行 (指定设备: ADDK6R3A12003434)..."
+        flutter run --offline -d ADDK6R3A12003434
         ;;
     clean)
         log_info "清理构建文件..."

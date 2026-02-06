@@ -20,14 +20,13 @@ class _RestClient implements RestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<Map<String, dynamic>>> login(
-      Map<String, dynamic> body,) async {
+  Future<ApiResponse<dynamic>> login(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
-    final _options = _setStreamType<ApiResponse<Map<String, dynamic>>>(
+    final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -38,12 +37,11 @@ class _RestClient implements RestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<Map<String, dynamic>> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<Map<String, dynamic>>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) =>
-        Map<String, dynamic>.fromJson(json as Map<String, dynamic>),
+            (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -53,14 +51,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ApiResponse<Map<String, dynamic>>> register(
-      Map<String, dynamic> body,) async {
+  Future<ApiResponse<dynamic>> register(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
-    final _options = _setStreamType<ApiResponse<Map<String, dynamic>>>(
+    final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -71,12 +68,11 @@ class _RestClient implements RestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<Map<String, dynamic>> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<Map<String, dynamic>>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) =>
-        Map<String, dynamic>.fromJson(json as Map<String, dynamic>),
+            (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -206,14 +202,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ApiResponse<Map<String, dynamic>>> refreshToken(
-      Map<String, dynamic> body,) async {
+  Future<ApiResponse<dynamic>> refreshToken(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
-    final _options = _setStreamType<ApiResponse<Map<String, dynamic>>>(
+    final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -224,12 +219,11 @@ class _RestClient implements RestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<Map<String, dynamic>> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<Map<String, dynamic>>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) =>
-        Map<String, dynamic>.fromJson(json as Map<String, dynamic>),
+            (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -268,14 +262,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ApiResponse<Map<String, dynamic>>> verifyCode(
-      Map<String, dynamic> body,) async {
+  Future<ApiResponse<dynamic>> verifyCode(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
-    final _options = _setStreamType<ApiResponse<Map<String, dynamic>>>(
+    final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -286,12 +279,11 @@ class _RestClient implements RestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<Map<String, dynamic>> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<Map<String, dynamic>>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) =>
-        Map<String, dynamic>.fromJson(json as Map<String, dynamic>),
+            (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -561,13 +553,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ApiResponse<Map<String, dynamic>>> getDeviceStatistics(
-      String id,) async {
+  Future<ApiResponse<dynamic>> getDeviceStatistics(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<Map<String, dynamic>>>(
+    final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -578,12 +569,11 @@ class _RestClient implements RestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<Map<String, dynamic>> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<Map<String, dynamic>>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) =>
-        Map<String, dynamic>.fromJson(json as Map<String, dynamic>),
+            (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -593,13 +583,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ApiResponse<Map<String, dynamic>>> getDeviceOrderStatistics(
-      String deviceId,) async {
+  Future<ApiResponse<dynamic>> getDeviceOrderStatistics(String deviceId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<Map<String, dynamic>>>(
+    final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -610,12 +599,11 @@ class _RestClient implements RestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<Map<String, dynamic>> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<Map<String, dynamic>>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) =>
-        Map<String, dynamic>.fromJson(json as Map<String, dynamic>),
+            (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -892,14 +880,14 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ApiResponse<Map<String, dynamic>>> payOrder(String id,
+  Future<ApiResponse<dynamic>> payOrder(String id,
       Map<String, dynamic> body,) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
-    final _options = _setStreamType<ApiResponse<Map<String, dynamic>>>(
+    final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -910,12 +898,11 @@ class _RestClient implements RestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<Map<String, dynamic>> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<Map<String, dynamic>>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) =>
-        Map<String, dynamic>.fromJson(json as Map<String, dynamic>),
+            (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -925,14 +912,14 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ApiResponse<Map<String, dynamic>>> checkPaymentStatus(String id,
+  Future<ApiResponse<dynamic>> checkPaymentStatus(String id,
       String? paymentId,) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'paymentId': paymentId};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<Map<String, dynamic>>>(
+    final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -943,12 +930,11 @@ class _RestClient implements RestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<Map<String, dynamic>> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<Map<String, dynamic>>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) =>
-        Map<String, dynamic>.fromJson(json as Map<String, dynamic>),
+            (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -958,14 +944,14 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ApiResponse<Map<String, dynamic>>> createPaymentIntent(String id,
+  Future<ApiResponse<dynamic>> createPaymentIntent(String id,
       Map<String, dynamic> body,) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
-    final _options = _setStreamType<ApiResponse<Map<String, dynamic>>>(
+    final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -976,12 +962,11 @@ class _RestClient implements RestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<Map<String, dynamic>> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<Map<String, dynamic>>.fromJson(
+      _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) =>
-        Map<String, dynamic>.fromJson(json as Map<String, dynamic>),
+            (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
