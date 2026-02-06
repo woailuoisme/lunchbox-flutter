@@ -248,7 +248,9 @@ class AuthRepository {
 
   Failure _handleError(Object error, StackTrace stackTrace) {
     LoggerUtils.e('AuthRepository Error', error, stackTrace);
-    if (error is Failure) return error;
+    if (error is Failure) {
+      return error;
+    }
     if (error is DioException) {
       return Failure.network(
         message: error.message ?? 'Unknown network error',

@@ -99,8 +99,8 @@ class OrderNotifier extends _$OrderNotifier {
     final repository = ref.read(orderRepositoryProvider);
     final result = await repository.cancelOrder(orderId).run();
 
-    result.fold(
-      (failure) {
+    await result.fold(
+      (failure) async {
         LoggerUtils.e('OrderNotifier: Failed to cancel order', failure);
         throw Exception(failure.toUserMessage());
       },

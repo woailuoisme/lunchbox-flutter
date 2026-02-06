@@ -1,164 +1,137 @@
-# 饭盒售货机应用
+# 饭盒售货机应用 (Lunchbox)
 
 ## 项目概述
 
-** 是一个高可靠、高客服用、产品级的自动饭盒售货机产品购买应用程序。该应用为用户提供了便捷的午餐购买体验，支持多种支付方式，并实现了设备管理和地理位置服务等功能。
+Lunchbox 是一个高可靠、产品级的自动饭盒售货机移动端应用程序。该应用为用户提供了便捷的午餐购买体验，支持
+Stripe 全球支付，并集成了设备管理、地理位置服务及现代化的状态管理架构。
 
 ## 项目特点
 
-- **高可靠性**：稳定运行在各种环境下的售货机设备上
-- **优质用户体验**：简洁直观的界面设计，流畅的操作流程
-- **多平台支持**：支持Android和iOS平台
-- **双支付渠道**：支持微信支付和支付宝支付
-- **地理位置上报**：实时获取并上报设备位置信息
-- **远程设备管理**：实现对设备的远程监控和管理
+- **高性能架构**：基于 Riverpod 的响应式状态管理，确保应用运行流畅且易于维护。
+- **现代化技术栈**：采用 Feature-First 目录结构，代码解耦，便于团队协作开发。
+- **Stripe 支付集成**：支持全球化的 Stripe 支付流程，提供安全可靠的交易体验。
+- **多平台支持**：完美适配 Android 和 iOS 平台。
+- **地理位置服务**：实时获取设备位置，支持基于 Google Maps 的设备搜索。
+- **国际化支持**：使用 slang 实现多语言切换（支持中简、中繁、英文）。
 
 ## 技术栈
 
-- **前端框架**：Flutter
-- **状态管理**：GetX (MVVM架构)
-- **网络请求**：Dio
-- **本地存储**：SharedPreferences
+### 核心框架
+
+- **前端框架**：Flutter ^3.10.8
+- **状态管理**：[Riverpod](https://riverpod.dev/) (使用 riverpod_generator 生成代码)
+- **路由管理**：[GoRouter](https://pub.dev/packages/go_router)
+- **工程管理**：[Melos](https://melos.invertase.dev/) (多包管理与脚本自动化)
+
+### 数据与网络
+
+- **网络请求**：[Dio](https://pub.dev/packages/dio) + [Retrofit](https://pub.dev/packages/retrofit)
+- **本地数据库**：[Drift](https://drift.simonbinder.eu/) (高效的 SQLite 封装)
+- **键值存储**：SharedPreferences
+- **函数式编程**：[fpdart](https://pub.dev/packages/fpdart) (用于 Either 错误处理)
+
+### UI 与 动画
+
+- **主题管理**：FlexColorScheme
+- **图标库**：Lucide Icons, Font Awesome
+- **动画效果**：Lottie, Flutter Animate
+- **响应式布局**：Flutter ScreenUtil
 - **图片加载**：CachedNetworkImage
-- **支付功能**：二维码生成 (qr_flutter)
-- **动画效果**：Lottie
-- **屏幕适配**：flutter_screenutil
-- **地理位置**：geolocator
-- **设备信息**：device_info_plus
-- **日志记录**：logger
+- **骨架屏**：Skeletonizer
+
+### 业务功能
+
+- **支付系统**：Flutter Stripe (独占支持)
+- **地图服务**：Google Maps Flutter
+- **国际化**：Slang
+- **表单验证**：Formz
 
 ## 架构设计
 
-### 架构模式
+### 目录结构 (Feature-First)
 
-本项目采用 **MVVM (Model-View-ViewModel)** 架构模式，通过GetX框架实现：
-
-- **Model**：数据模型层，负责数据的定义和存储
-- **View**：视图层，负责UI展示和用户交互
-- **ViewModel**：业务逻辑层，处理数据和UI之间的交互
-
-### 项目结构
+项目采用按功能模块划分的目录结构，提高代码的可维护性和可扩展性：
 
 ```
 lib/
-├── app/
-│   ├── data/            # 数据层（模型、提供者、仓库）
-│   ├── modules/         # 功能模块（各页面）
-│   ├── routes/          # 路由管理
-│   ├── services/        # 服务层（API、定位、支付等）
-│   └── utils/           # 工具类（常量、扩展、助手等）
-├── core/                # 核心功能
-├── presentation/        # 展示层组件
+├── core/                # 核心基础设施 (网络、错误处理、服务、工具类)
+├── features/            # 业务功能模块 (按功能划分)
+│   ├── auth/            # 认证模块 (登录、注册、状态)
+│   ├── product/         # 产品模块 (列表、详情)
+│   ├── order/           # 订单模块 (创建、查询)
+│   ├── payment/         # 支付模块 (Stripe 集成)
+│   └── ...              # 其他功能 (设备、购物车、个人中心等)
+├── i18n/                # 国际化资源文件
+├── routes/              # 基于 GoRouter 的路由配置
+├── shared/              # 跨模块共享的组件和模型
 └── main.dart            # 应用入口
 ```
 
+### 核心设计模式
+
+- **Repository Pattern**：隔离数据源与业务逻辑。
+- **Notifier/State Pattern**：通过 Riverpod Notifier 统一管理 UI 状态。
+- **Functional Error Handling**：使用 `Either<Failure, Success>` 显式处理错误，避免异常抛出导致的应用崩溃。
+
 ## 核心功能
 
-### 1. 设备管理
+### 1. 智能设备管理
 
-- 设备状态监控
-- 设备信息展示
-- 设备故障上报
+- 实时监控售货机状态。
+- 基于地理位置的设备搜索与地图展示。
 
-### 2. 产品浏览与购买
+### 2. 购物流程
 
-- 产品分类展示
-- 产品详情查看
-- 购物车管理
-- 订单创建与提交
+- 响应式购物车管理。
+- 动态产品分类与搜索。
+- 丝滑的下单体验，支持订单详情追踪。
 
-### 3. 支付系统
+### 3. Stripe 支付系统
 
-- 微信支付
-- 支付宝支付
-- 支付状态管理
-- 交易记录查询
+- 深度集成 Stripe 支付网关。
+- 支持支付意图 (Payment Intent) 与支付表单 (Payment Sheet)。
 
-### 4. 位置服务
+### 4. 国际化 (i18n)
 
-- 设备地理位置上报
-- 基于位置的服务
+- 完整支持多语言环境，实时切换不闪退。
 
-### 5. 用户中心
+## 开发与构建
 
-- 订单历史查询
-- 个人信息管理
-- 帮助中心
+项目使用 Melos 管理常用开发脚本，提高开发效率。
 
-## 数据模型
+### 环境准备
 
-### 数据结构层级
-
-采用 "城市 > 设备 > 产品" 的层级结构：
-
-1. **城市 (City)**：包含多个设备，是地理分区单位
-2. **设备 (Device)**：位于特定城市，包含多个产品，是物理销售点
-3. **产品 (Product)**：位于特定设备中，是可购买的商品
-
-### 主要数据模型
-
-- **用户 (User)**：用户基本信息和认证状态
-- **订单 (Order)**：购买记录和状态
-- **支付 (Payment)**：支付信息和交易状态
-- **位置 (Location)**：地理坐标和相关信息
-
-## 安装指南
-
-### 环境要求
-
-- Flutter 3.10.0 或更高版本
-- Dart 3.0 或更高版本
-- Android Studio / Xcode
-
-### 安装步骤
-
-1. 克隆项目
+1. 安装 Melos：
    ```bash
-   git clone https://your-repository-url/e_lunchbox.git
+   dart pub global activate melos
    ```
 
-2. 进入项目目录
+2. 初始化项目（安装依赖并生成代码）：
    ```bash
-   cd e_lunchbox
+   melos run prepare
    ```
 
-3. 安装依赖
-   ```bash
-   flutter pub get
-   ```
+### 常用命令
 
-## 运行指南
+| 命令                       | 描述                         |
+|:-------------------------|:---------------------------|
+| `melos run build:runner` | 运行 build_runner 生成代码 (一次性) |
+| `melos run watch`        | 运行 build_runner 监听模式       |
+| `melos run gen:i18n`     | 生成国际化代码                    |
+| `melos run analyze`      | 运行静态代码分析                   |
+| `melos run test`         | 运行所有单元测试                   |
 
-### 运行在Android设备上
+### 运行应用
+
 ```bash
-flutter run --release --target-platform android-arm64
+# 运行到 Android
+flutter run --target-platform android-arm64
+
+# 运行到 iOS (无签名)
+flutter run --no-codesign
 ```
-
-### 运行在iOS设备上
-```bash
-flutter run --release --no-codesign
-```
-
-### 构建APK
-```bash
-flutter build apk --release
-```
-
-### 构建IPA
-```bash
-flutter build ios --release
-```
-
-## 贡献指南
-
-欢迎提交Issue和Pull Request来帮助改进这个项目！
-
-1. Fork项目仓库
-2. 创建你的特性分支 (`git checkout -b feature/amazing-feature`)
-3. 提交你的更改 (`git commit -m 'Add some amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 打开一个Pull Request
 
 ## 许可证
 
-本项目采用MIT许可证。详情请查看LICENSE文件。
+本项目采用 MIT 许可证。详情请查看 [LICENSE](file:///Users/seaside/Projects/flutter/lunchbox/LICENSE)
+文件。

@@ -143,7 +143,7 @@ class ProfileNotifier extends _$ProfileNotifier {
   Future<void> logout() async {
     try {
       final authRepository = ref.read(authRepositoryProvider);
-      authRepository.logout();
+      await authRepository.logout().run();
       state = state.copyWith(currentUser: null);
       LoggerUtils.i('ProfileNotifier: User logged out');
     } catch (e) {

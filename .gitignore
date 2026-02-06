@@ -33,6 +33,11 @@ migrate_working_dir/
 /build/
 /coverage/
 
+/.vscode
+/.kiro
+/.trae
+/.agents
+
 # Symbolication related
 app.*.symbols
 

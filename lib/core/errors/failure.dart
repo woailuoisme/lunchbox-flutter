@@ -22,7 +22,7 @@ part 'failure.freezed.dart';
 ///
 /// **Validates: Requirements 5.1, 5.6**
 @freezed
-sealed class Failure with _$Failure {
+sealed class Failure with _$Failure implements Exception {
   /// Network-related failures (connection timeout, no internet, etc.)
   ///
   /// [message] - Human-readable error message

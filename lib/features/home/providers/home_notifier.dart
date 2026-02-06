@@ -63,15 +63,15 @@ class HomeNotifier extends _$HomeNotifier {
           )
           .run();
 
-      result.fold(
-        (failure) {
+      await result.fold(
+        (failure) async {
           LoggerUtils.e(
             'HomeNotifier: Failed to load nearby devices: ${failure.toString()}',
           );
           // 如果获取附近设备失败，尝试获取城市的所有设备
-          _loadCityDevices();
+          await _loadCityDevices();
         },
-        (devices) {
+        (devices) async {
           state = state.copyWith(nearbyDevices: devices);
           LoggerUtils.i(
             'HomeNotifier: Loaded ${devices.length} nearby devices',
@@ -80,7 +80,7 @@ class HomeNotifier extends _$HomeNotifier {
       );
     } catch (e) {
       LoggerUtils.e('HomeNotifier: Failed to load nearby devices', e);
-      _loadCityDevices();
+      await _loadCityDevices();
     } finally {
       state = state.copyWith(isLoading: false);
     }

@@ -4,7 +4,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:fpdart/fpdart.dart' as _i3;
-import 'package:lunchbox/core/errors/failure.dart' as _i4;
+import 'package:lunchbox/core/errors/errors.dart' as _i4;
 import 'package:lunchbox/features/product/entities/product_model.dart' as _i5;
 import 'package:lunchbox/features/product/repositories/product_repository.dart'
     as _i2;

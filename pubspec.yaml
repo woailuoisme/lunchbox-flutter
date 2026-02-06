@@ -115,7 +115,6 @@ dependency_overrides:
   test_api: 0.7.9
 
 flutter:
-  # 启用 Material Design
   uses-material-design: true
 
   # 资源配置
@@ -135,41 +134,53 @@ melos:
     - .
   scripts:
     analyze:
-      run: flutter analyze
+      run: ./scripts/melos.sh analyze
       description: 运行静态代码分析
 
+    analyze-strict:
+      run: ./scripts/melos.sh analyze-strict
+      description: 严格模式代码分析 (警告/提示均视为失败)
+
     format:
-      run: dart format lib test
+      run: ./scripts/melos.sh format
       description: 格式化代码
 
     fix:
-      run: dart fix --apply
+      run: ./scripts/melos.sh fix
       description: 自动修复代码问题
 
     test:
-      run: flutter test
+      run: ./scripts/melos.sh test
       description: 运行测试
 
     build:runner:
-      run: dart run build_runner build --delete-conflicting-outputs
+      run: ./scripts/melos.sh build
       description: 运行 build_runner 生成代码
 
     watch:
-      run: dart run build_runner watch --delete-conflicting-outputs
+      run: ./scripts/melos.sh watch
       description: 运行 build_runner 监听模式
 
     gen:i18n:
-      run: dart run slang
+      run: ./scripts/melos.sh gen:i18n
       description: 生成国际化代码
 
     gen:icons:
-      run: dart run flutter_launcher_icons
+      run: ./scripts/melos.sh gen:icons
       description: 生成应用图标
     
+    build:apk:
+      run: ./scripts/melos.sh build:apk
+      description: 构建 Android APK
+    
+    build:ios:
+      run: ./scripts/melos.sh build:ios
+      description: 构建 iOS IPA
+
     clean:
-      run: flutter clean
+      run: ./scripts/melos.sh clean
       description: 清理构建文件
 
     prepare:
-      run: melos bootstrap && melos run build:runner && melos run gen:i18n
+      run: ./scripts/melos.sh prepare
       description: 准备开发环境 (bootstrap + build + i18n)

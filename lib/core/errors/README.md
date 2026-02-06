@@ -1,75 +1,82 @@
-# Error Handling Module
+# 错误处理模块
 
-This module provides the error handling infrastructure for the Lunchbox application using fpdart's `Either` type and freezed sealed classes.
+本模块为 Lunchbox 应用提供了基于 fpdart 的 `Either` 类型和 freezed 密封类（sealed classes）的错误处理基础设施。
 
-## Overview
+## 概览
 
-The error handling system is based on functional programming principles:
-- **Type-safe errors**: All errors are represented as sealed classes
-- **Explicit error handling**: Functions return `Either<Failure, Success>` instead of throwing exceptions
-- **Pattern matching**: Use freezed's `when` and `map` methods for exhaustive error handling
+错误处理系统基于函数式编程原则：
 
-## Components
+- **类型安全的错误**：所有错误都表示为密封类
+- **显式的错误处理**：函数返回 `Either<Failure, Success>` 而不是抛出异常
+- **模式匹配**：使用 freezed 的 `when` 和 `map` 方法进行详尽的错误处理
 
-### Failure Types
+## 组件
 
-The `Failure` sealed class defines all possible error types in the application:
+### Failure 类型
+
+`Failure` 密封类定义了应用中所有可能的错误类型：
 
 #### NetworkFailure
-Network-related failures (connection timeout, no internet, etc.)
+
+网络相关错误（连接超时、无网络等）
 ```dart
 const failure = Failure.network(
-  message: 'Connection timeout',
-  statusCode: 408, // Optional
+  message: '连接超时',
+  statusCode: 408, // 可选
 );
 ```
 
 #### ServerFailure
-Server-side failures (5xx errors, API errors)
+
+服务端错误（5xx 错误、API 错误）
 ```dart
 const failure = Failure.server(
-  message: 'Internal server error',
+  message: '内部服务器错误',
   statusCode: 500,
 );
 ```
 
 #### CacheFailure
-Local cache/storage failures
+
+本地缓存/存储错误
 ```dart
 const failure = Failure.cache(
-  message: 'Failed to read from cache',
+  message: '读取缓存失败',
 );
 ```
 
 #### NotFoundFailure
-Resource not found failures (404 errors)
+
+资源未找到错误（404 错误）
 ```dart
 const failure = Failure.notFound(
-  resource: 'Device',
+  resource: '设备',
 );
 ```
 
 #### UnauthorizedFailure
-Authentication/authorization failures (401, 403 errors)
+
+认证/授权错误（401, 403 错误）
 ```dart
 const failure = Failure.unauthorized();
 ```
 
 #### ValidationFailure
-Input validation failures
+
+输入验证错误
 ```dart
 const failure = Failure.validation(
-  message: 'Validation failed',
+  message: '验证失败',
   fieldErrors: {
-    'email': 'Invalid email format',
-    'password': 'Password too short',
+    'email': '无效的邮箱格式',
+    'password': '密码太短',
   },
 );
 ```
 
-## Usage Examples
+## 使用示例
 
-### Repository Pattern
+### Repository 模式
 
 ```dart
 abstract class DeviceRepository {
@@ -89,12 +96,12 @@ class DeviceRepositoryImpl implements DeviceRepository {
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout) {
         return left(Failure.network(
-          message: 'Connection timeout',
+          message: '连接超时',
           statusCode: e.response?.statusCode,
         ));
       }
       return left(Failure.server(
-        message: e.message ?? 'Server error',
+        message: e.message ?? '服务器错误',
         statusCode: e.response?.statusCode ?? 500,
       ));
     } catch (e) {
@@ -104,7 +111,7 @@ class DeviceRepositoryImpl implements DeviceRepository {
 }
 ```
 
-### Provider Pattern
+### Provider 模式
 
 ```dart
 @riverpod
@@ -115,14 +122,14 @@ class DeviceList extends _$DeviceList {
     final result = await repository.getDevices();
     
     return result.fold(
-      (failure) => throw failure, // AsyncValue will catch this
+      (failure) => throw failure, // AsyncValue 会捕获这个异常
       (devices) => devices,
     );
   }
 }
 ```
 
-### UI Error Handling
+### UI 错误处理
 
 ```dart
 class DeviceListScreen extends ConsumerWidget {
@@ -148,10 +155,10 @@ class DeviceListScreen extends ConsumerWidget {
 }
 ```
 
-### Pattern Matching
+### 模式匹配
 
 ```dart
-// Using when for exhaustive matching
+// 使用 when 进行详尽匹配
 final message = failure.when(
   network: (msg, code) => '网络错误：$msg',
   server: (msg, code) => '服务器错误：$msg',
@@ -161,7 +168,7 @@ final message = failure.when(
   validation: (msg, errors) => '验证错误：$msg',
 );
 
-// Using maybeWhen for partial matching
+// 使用 maybeWhen 进行部分匹配
 final message = failure.maybeWhen(
   network: (msg, code) => '网络问题',
   unauthorized: () => '请重新登录',
@@ -169,80 +176,82 @@ final message = failure.maybeWhen(
 );
 ```
 
-### Extension Methods
+### 扩展方法
 
-#### Convert to User Message
+#### 转换为用户消息
 ```dart
-final failure = Failure.network(message: 'Connection failed');
-print(failure.toUserMessage()); // "网络错误：Connection failed"
+final failure = Failure.network(message: '连接失败');
+print(failure.toUserMessage()); // "网络错误：连接失败"
 ```
 
-#### Type Checking
+#### 类型检查
 ```dart
 if (failure.isNetworkFailure) {
-  // Handle network error
+  // 处理网络错误
 }
 ```
 
-#### Either Extensions
+#### Either 扩展
 ```dart
-// Get value or throw
+// 获取值或抛出异常
 final data = result.getOrThrow();
 
-// Get value or null
+// 获取值或返回 null
 final data = result.getOrNull();
 
-// Get value or default
+// 获取值或返回默认值
 final data = result.getOrDefault(defaultValue);
 
-// Map failure
+// 映射失败
 final mapped = result.mapFailure(
   (f) => Failure.cache(message: f.toUserMessage())
 );
 
-// Get failure or null
+// 获取失败或返回 null
 final failure = result.getFailureOrNull();
 if (failure != null) {
-  print('Error: ${failure.toUserMessage()}');
+  print('错误: ${failure.toUserMessage()}');
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Always use Either for operations that can fail**
-   - Repository methods should return `Either<Failure, T>`
-   - Don't throw exceptions in repository layer
+1. **对于可能失败的操作始终使用 Either**
+    * Repository 方法应返回 `Either<Failure, T>`
+    * 不要在 Repository 层抛出异常
 
-2. **Use pattern matching for error handling**
-   - Use `when` or `maybeWhen` to handle different error types
-   - Provide user-friendly messages for each error type
+2. **使用模式匹配进行错误处理**
+    * 使用 `when` 或 `maybeWhen` 处理不同的错误类型
+    * 为每种错误类型提供用户友好的消息
 
-3. **Convert failures to user messages in UI layer**
-   - Use `toUserMessage()` extension method
-   - Display localized error messages to users
+3. **在 UI 层将 Failure 转换为用户消息**
+    * 使用 `toUserMessage()` 扩展方法
+    * 向用户显示本地化的错误消息
 
-4. **Log errors appropriately**
-   - Log technical details for debugging
-   - Show user-friendly messages to users
+4. **适当地记录错误**
+    * 记录技术细节以便调试
+    * 向用户显示友好的消息
 
-5. **Handle unauthorized errors globally**
-   - Redirect to login screen
-   - Clear authentication state
+5. **全局处理未授权错误**
+    * 重定向到登录页面
+    * 清除认证状态
 
-## Testing
+## 测试
 
-The module includes comprehensive unit tests:
-- `failure_test.dart`: Tests for Failure class and pattern matching
-- `failure_extensions_test.dart`: Tests for extension methods
+本模块包含全面的单元测试：
 
-Run tests:
+* `failure_test.dart`：测试 Failure 类和模式匹配
+* `failure_extensions_test.dart`：测试扩展方法
+
+运行测试：
 ```bash
 flutter test test/core/errors/
 ```
 
-## Requirements Validation
+## 需求验证
 
-This module validates the following requirements:
-- **Requirement 5.1**: Repository operations return `Either<Failure, Success>`
-- **Requirement 5.5**: Failures map to user-friendly messages
-- **Requirement 5.6**: Sealed class for type-safe error hierarchy
+本模块验证了以下需求：
+
+* **需求 5.1**：Repository 操作返回 `Either<Failure, Success>`
+* **需求 5.5**：Failure 映射到用户友好的消息
+* **需求 5.6**：用于类型安全错误层级的密封类
