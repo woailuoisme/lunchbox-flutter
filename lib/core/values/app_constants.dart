@@ -4,6 +4,7 @@
 class AppConstants {
   // API 配置
   static const bool dioDebug = true;
+  static const bool useTestMode = true; // 是否启用测试模式（跳过服务器验证）
   static const String baseUrl = String.fromEnvironment(
     'BASE_URL',
     defaultValue: 'https://api.elunchbox.com',

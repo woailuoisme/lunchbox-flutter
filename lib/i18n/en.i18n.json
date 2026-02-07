@@ -24,6 +24,12 @@
     "appName": "E-Lunchbox",
     "logout": "Logout"
   },
+  "navigation": {
+    "home": "Home",
+    "device": "Device",
+    "orders": "Orders",
+    "profile": "Profile"
+  },
   "auth": {
     "loginTitle": "Welcome Back",
     "loginButton": "Login",
@@ -58,6 +64,49 @@
     "banner3Title": "Best Offers",
     "banner3Subtitle": "Limited Time Only",
     "noDevices": "No devices nearby",
+    "welcome": "Hello, User",
+    "selfPickup": "Self Pickup",
+    "selfPickupHint": "Scan code to pick up/Take away",
+    "teamOrder": "Team Order",
+    "teamOrderHint": "Group ordering/Team meal",
+    "recommendTitle": "Recommended for Me",
+    "grid": {
+      "welfare": "Welfare",
+      "service": "Service",
+      "coupon": "Coupons",
+      "lottery": "Lucky Draw",
+      "invite": "Invite Friends"
+    },
+    "lottery": {
+      "title": "Lucky Draw",
+      "prizes": "My Prizes",
+      "rules": "Draw Rules",
+      "remaining": "Remaining: {count}",
+      "spin": "Spin",
+      "rule1": "Free draws daily, complete tasks for more",
+      "rule2": "Coupons valid for 48h, Coins added automatically",
+      "rule3": "Platform reserves all rights",
+      "prizeUnit": "Coins",
+      "prizeList": "Prize List",
+      "back": "Back",
+      "prizeStats": {
+        "total": "Total",
+        "used": "Used",
+        "available": "Available"
+      },
+      "tabs": {
+        "all": "All",
+        "available": "Available",
+        "used": "Used",
+        "expired": "Expired"
+      },
+      "prizeCard": {
+        "source": "Coin rewards, can be used in Coin Mall",
+        "getTime": "Got at: {time}",
+        "expiryTime": "Expiry: {time}",
+        "statusExpired": "Expired"
+      }
+    },
     "status": {
       "open": "Open",
       "closed": "Closed",
@@ -271,5 +320,50 @@
     "maintenance": "Maintenance",
     "unknown": "Unknown",
     "cashPayment": "Cash Payment"
+  },
+  "network": {
+    "errors": {
+      "connectionTimeout": "Connection timeout, please check your network",
+      "sendTimeout": "Send timeout, please check your network",
+      "receiveTimeout": "Receive timeout, please check your network",
+      "badCertificate": "Bad certificate",
+      "cancel": "Request cancelled",
+      "connectionError": "Connection error, please check your network",
+      "unknown": "Unknown error: ${error}",
+      "retryLater": "Please try again later",
+      "badRequest": "Bad request",
+      "unauthorized": "Unauthorized, please login again",
+      "forbidden": "Forbidden",
+      "notFound": "Resource not found",
+      "timeout": "Request timeout, please try again",
+      "conflict": "Conflict",
+      "validationFailed": "Validation failed",
+      "tooManyRequests": "Too many requests, please try again later",
+      "internalServerError": "Internal server error",
+      "badGateway": "Bad gateway",
+      "serviceUnavailable": "Service unavailable",
+      "gatewayTimeout": "Gateway timeout",
+      "serverError": "Server error (${code})",
+      "requestError": "Request error (${code})",
+      "failed": "Network request failed"
+    }
+  },
+  "coupon": {
+    "title": "Coupon",
+    "tabs": {
+      "available": "Available",
+      "received": "Received",
+      "expired": "Expired"
+    },
+    "unit": "$",
+    "condition": "Coupon\nOver ${amount}",
+    "conditionNoThreshold": "Coupon\nNo threshold",
+    "validForever": "Valid Forever",
+    "btnReceive": "Receive",
+    "btnReceived": "Received",
+    "btnUse": "Use",
+    "btnExpired": "Expired",
+    "discount": "$ ${amount} Coupon",
+    "discountOff": "$ ${amount} Off"
   }
 }

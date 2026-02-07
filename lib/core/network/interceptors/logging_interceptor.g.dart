@@ -48,7 +48,7 @@ final class LoggingInterceptorProvider
         argument: null,
         retry: null,
         name: r'loggingInterceptorProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -77,4 +77,4 @@ final class LoggingInterceptorProvider
 }
 
 String _$loggingInterceptorHash() =>
-    r'118c4b4eb66ba9f74769836c8c6987d5817c775a';
+    r'91245f9ff500478cec280598a8f23ed64165e00e';

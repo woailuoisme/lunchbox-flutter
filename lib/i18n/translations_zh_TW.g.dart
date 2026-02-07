@@ -36,11 +36,13 @@ class TranslationsZhTw extends Translations with BaseTranslations<AppLocale, Tra
 
 	late final TranslationsZhTw _root = this; // ignore: unused_field
 
-	@override
+  @override
 	TranslationsZhTw $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsZhTw(meta: meta ?? this.$meta);
 
 	// Translations
 	@override late final _TranslationsCommonZhTw common = _TranslationsCommonZhTw._(_root);
+  @override late final _TranslationsNavigationZhTw navigation = _TranslationsNavigationZhTw
+      ._(_root);
 	@override late final _TranslationsAuthZhTw auth = _TranslationsAuthZhTw._(_root);
   @override late final _TranslationsHomeZhTw home = _TranslationsHomeZhTw._(
       _root);
@@ -69,6 +71,8 @@ class TranslationsZhTw extends Translations with BaseTranslations<AppLocale, Tra
   @override late final _TranslationsDeviceZhTw device = _TranslationsDeviceZhTw
       ._(_root);
 	@override late final _TranslationsTimeZhTw time = _TranslationsTimeZhTw._(_root);
+  @override late final _TranslationsCouponZhTw coupon = _TranslationsCouponZhTw
+      ._(_root);
 }
 
 // Path: common
@@ -110,11 +114,29 @@ class _TranslationsCommonZhTw extends TranslationsCommonZhCn {
 
   @override String get unknownError => '未知錯誤';
 
-  @override String get developing => '頁面正在開發中';
+  @override String get developing => '頁面正在开发中';
 
   @override String get appName => '飯盒售貨機';
 
   @override String get logout => '登出';
+}
+
+// Path: navigation
+class _TranslationsNavigationZhTw extends TranslationsNavigationZhCn {
+  _TranslationsNavigationZhTw._(TranslationsZhTw root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override String get home => '首頁';
+
+  @override String get device => '設備';
+
+  @override String get orders => '訂單';
+
+  @override String get profile => '個人中心';
 }
 
 // Path: auth
@@ -191,6 +213,22 @@ class _TranslationsHomeZhTw extends TranslationsHomeZhCn {
   @override String get banner3Subtitle => '限時特價';
 
   @override String get noDevices => '附近暫無設備';
+
+  @override String get welcome => '您好，好小乖用戶';
+
+  @override String get selfPickup => '自取點餐';
+
+  @override String get selfPickupHint => '掃碼取餐/打包帶走';
+
+  @override String get teamOrder => '團隊點餐';
+
+  @override String get teamOrderHint => '多人訂購/團隊點餐';
+
+  @override String get recommendTitle => '為我推薦';
+  @override late final _TranslationsHomeGridZhTw grid = _TranslationsHomeGridZhTw
+      ._(_root);
+  @override late final _TranslationsHomeLotteryZhTw lottery = _TranslationsHomeLotteryZhTw
+      ._(_root);
   @override late final _TranslationsHomeStatusZhTw status = _TranslationsHomeStatusZhTw
       ._(_root);
 }
@@ -663,6 +701,99 @@ class _TranslationsTimeZhTw extends TranslationsTimeZhCn {
 	@override String daysAgo({required Object days}) => '${days}天前';
 }
 
+// Path: coupon
+class _TranslationsCouponZhTw extends TranslationsCouponZhCn {
+  _TranslationsCouponZhTw._(TranslationsZhTw root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override String get title => '優惠券';
+  @override late final _TranslationsCouponTabsZhTw tabs = _TranslationsCouponTabsZhTw
+      ._(_root);
+
+  @override String get unit => 'NT\$';
+
+  @override String condition({required Object amount}) =>
+      '滿減券\n滿${amount}元可用';
+
+  @override String get conditionNoThreshold => '滿減券\n滿0元可用';
+
+  @override String get validForever => '長期有效';
+
+  @override String get btnReceive => '立即領取';
+
+  @override String get btnReceived => '已領取';
+
+  @override String get btnUse => '去使用';
+
+  @override String get btnExpired => '已過期';
+
+  @override String discount({required Object amount}) => '${amount}元優惠券';
+
+  @override String discountOff({required Object amount}) => '${amount}元減免券';
+}
+
+// Path: home.grid
+class _TranslationsHomeGridZhTw extends TranslationsHomeGridZhCn {
+  _TranslationsHomeGridZhTw._(TranslationsZhTw root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override String get welfare => '社群福利';
+
+  @override String get service => '客服中心';
+
+  @override String get coupon => '領優惠券';
+
+  @override String get lottery => '幸運抽獎';
+
+  @override String get invite => '邀請好友';
+}
+
+// Path: home.lottery
+class _TranslationsHomeLotteryZhTw extends TranslationsHomeLotteryZhCn {
+  _TranslationsHomeLotteryZhTw._(TranslationsZhTw root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override String get title => '幸運抽獎';
+
+  @override String get prizes => '我的獎品';
+
+  @override String get rules => '抽獎規則';
+
+  @override String get remaining => '剩餘次數: {count}';
+
+  @override String get spin => '抽獎';
+
+  @override String get rule1 => '每日有免費抽獎次數，次數用完後可領取任務獲得';
+
+  @override String get rule2 => '優惠券48小時內有效，乖乖幣自動到帳';
+
+  @override String get rule3 => '活動最終解釋權歸平台所有';
+
+  @override String get prizeUnit => '乖乖幣';
+
+  @override String get prizeList => '獎品說明';
+
+  @override String get back => '返回';
+  @override late final _TranslationsHomeLotteryPrizeStatsZhTw prizeStats = _TranslationsHomeLotteryPrizeStatsZhTw
+      ._(_root);
+  @override late final _TranslationsHomeLotteryTabsZhTw tabs = _TranslationsHomeLotteryTabsZhTw
+      ._(_root);
+  @override late final _TranslationsHomeLotteryPrizeCardZhTw prizeCard = _TranslationsHomeLotteryPrizeCardZhTw
+      ._(_root);
+}
+
 // Path: home.status
 class _TranslationsHomeStatusZhTw extends TranslationsHomeStatusZhCn {
   _TranslationsHomeStatusZhTw._(TranslationsZhTw root)
@@ -703,6 +834,76 @@ class _TranslationsOrderStatusZhTw extends TranslationsOrderStatusZhCn {
   @override String get failed => '支付失敗';
 }
 
+// Path: coupon.tabs
+class _TranslationsCouponTabsZhTw extends TranslationsCouponTabsZhCn {
+  _TranslationsCouponTabsZhTw._(TranslationsZhTw root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override String get available => '可領取';
+
+  @override String get received => '已領取';
+
+  @override String get expired => '已過期';
+}
+
+// Path: home.lottery.prizeStats
+class _TranslationsHomeLotteryPrizeStatsZhTw
+    extends TranslationsHomeLotteryPrizeStatsZhCn {
+  _TranslationsHomeLotteryPrizeStatsZhTw._(TranslationsZhTw root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override String get total => '總獎品';
+
+  @override String get used => '已使用';
+
+  @override String get available => '可用';
+}
+
+// Path: home.lottery.tabs
+class _TranslationsHomeLotteryTabsZhTw extends TranslationsHomeLotteryTabsZhCn {
+  _TranslationsHomeLotteryTabsZhTw._(TranslationsZhTw root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override String get all => '全部';
+
+  @override String get available => '可用';
+
+  @override String get used => '已使用';
+
+  @override String get expired => '已過期';
+}
+
+// Path: home.lottery.prizeCard
+class _TranslationsHomeLotteryPrizeCardZhTw
+    extends TranslationsHomeLotteryPrizeCardZhCn {
+  _TranslationsHomeLotteryPrizeCardZhTw._(TranslationsZhTw root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override String get source => '乖乖幣獎勵，可在乖乖幣商城使用';
+
+  @override String get getTime => '獲得時間: {time}';
+
+  @override String get expiryTime => '有效期至: {time}';
+
+  @override String get statusExpired => '已過期';
+}
+
 /// The flat map containing all translations for locale <zh-TW>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -731,9 +932,13 @@ extension on TranslationsZhTw {
       'common.refresh' => '重新整理',
       'common.loadFailed' => '載入失敗',
       'common.unknownError' => '未知錯誤',
-      'common.developing' => '頁面正在開發中',
+      'common.developing' => '頁面正在开发中',
       'common.appName' => '飯盒售貨機',
       'common.logout' => '登出',
+      'navigation.home' => '首頁',
+      'navigation.device' => '設備',
+      'navigation.orders' => '訂單',
+      'navigation.profile' => '個人中心',
 			'auth.loginTitle' => '歡迎回來',
 			'auth.loginButton' => '登入',
 			'auth.registerButton' => '註冊',
@@ -765,6 +970,39 @@ extension on TranslationsZhTw {
       'home.banner3Title' => '超值優惠',
       'home.banner3Subtitle' => '限時特價',
       'home.noDevices' => '附近暫無設備',
+      'home.welcome' => '您好，好小乖用戶',
+      'home.selfPickup' => '自取點餐',
+      'home.selfPickupHint' => '掃碼取餐/打包帶走',
+      'home.teamOrder' => '團隊點餐',
+      'home.teamOrderHint' => '多人訂購/團隊點餐',
+      'home.recommendTitle' => '為我推薦',
+      'home.grid.welfare' => '社群福利',
+      'home.grid.service' => '客服中心',
+      'home.grid.coupon' => '領優惠券',
+      'home.grid.lottery' => '幸運抽獎',
+      'home.grid.invite' => '邀請好友',
+      'home.lottery.title' => '幸運抽獎',
+      'home.lottery.prizes' => '我的獎品',
+      'home.lottery.rules' => '抽獎規則',
+      'home.lottery.remaining' => '剩餘次數: {count}',
+      'home.lottery.spin' => '抽獎',
+      'home.lottery.rule1' => '每日有免費抽獎次數，次數用完後可領取任務獲得',
+      'home.lottery.rule2' => '優惠券48小時內有效，乖乖幣自動到帳',
+      'home.lottery.rule3' => '活動最終解釋權歸平台所有',
+      'home.lottery.prizeUnit' => '乖乖幣',
+      'home.lottery.prizeList' => '獎品說明',
+      'home.lottery.back' => '返回',
+      'home.lottery.prizeStats.total' => '總獎品',
+      'home.lottery.prizeStats.used' => '已使用',
+      'home.lottery.prizeStats.available' => '可用',
+      'home.lottery.tabs.all' => '全部',
+      'home.lottery.tabs.available' => '可用',
+      'home.lottery.tabs.used' => '已使用',
+      'home.lottery.tabs.expired' => '已過期',
+      'home.lottery.prizeCard.source' => '乖乖幣獎勵，可在乖乖幣商城使用',
+      'home.lottery.prizeCard.getTime' => '獲得時間: {time}',
+      'home.lottery.prizeCard.expiryTime' => '有效期至: {time}',
+      'home.lottery.prizeCard.statusExpired' => '已過期',
       'home.status.open' => '營業中',
       'home.status.closed' => '休息中',
       'home.status.mobilePayment' => '支援行動支付',
@@ -947,6 +1185,21 @@ extension on TranslationsZhTw {
 			'time.minutesAgo' => ({required Object minutes}) => '${minutes}分鐘前',
 			'time.hoursAgo' => ({required Object hours}) => '${hours}小時前',
 			'time.daysAgo' => ({required Object days}) => '${days}天前',
+      'coupon.title' => '優惠券',
+      'coupon.tabs.available' => '可領取',
+      'coupon.tabs.received' => '已領取',
+      'coupon.tabs.expired' => '已過期',
+      'coupon.unit' => 'NT\$',
+      'coupon.condition' =>
+          ({required Object amount}) => '滿減券\n滿${amount}元可用',
+      'coupon.conditionNoThreshold' => '滿減券\n滿0元可用',
+      'coupon.validForever' => '長期有效',
+      'coupon.btnReceive' => '立即領取',
+      'coupon.btnReceived' => '已領取',
+      'coupon.btnUse' => '去使用',
+      'coupon.btnExpired' => '已過期',
+      'coupon.discount' => ({required Object amount}) => '${amount}元優惠券',
+      'coupon.discountOff' => ({required Object amount}) => '${amount}元減免券',
 			_ => null,
 		};
 	}

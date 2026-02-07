@@ -4,369 +4,616 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/core/values/app_colors.dart';
-import 'package:lunchbox/features/device/entities/device_model.dart';
-import 'package:lunchbox/features/device/entities/location_model.dart';
-import 'package:lunchbox/features/home/providers/home_notifier.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:lunchbox/routes/app_routes.dart';
 
 /// 首页视图
-class HomeView extends ConsumerWidget {
+///
+/// 按照设计图重构，包含轮播图、欢迎区、点餐入口、功能矩阵和推荐列表
+class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(homeProvider);
-    final notifier = ref.watch(homeProvider.notifier);
+  ConsumerState<HomeView> createState() => _HomeViewState();
+}
 
-    // 骨架屏数据准备
-    final bool showSkeleton = state.isLoading && state.nearbyDevices.isEmpty;
-    final List<DeviceModel> displayDevices = showSkeleton
-        ? List.generate(
-            3,
-            (index) => const DeviceModel(
-              id: 'dummy',
-              name: 'Loading Device Name',
-              cityId: 'dummy',
-              status: 'online',
-              location: LocationModel(
-                latitude: 0,
-                longitude: 0,
-                address: 'Loading Address...',
-              ),
-              productIds: [],
-              lastUpdated: '',
-            ),
-          )
-        : state.nearbyDevices;
+class _HomeViewState extends ConsumerState<HomeView> {
+  int _currentHeaderIndex = 0;
+  final CarouselSliderController _headerController = CarouselSliderController();
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: InkWell(
-          onTap: notifier.changeCity,
+      backgroundColor: const Color(0xFFF8F8F8),
+      body: CustomScrollView(
+        slivers: [
+          // 顶部状态栏占位和轮播图
+          SliverToBoxAdapter(child: _buildHeader()),
+
+          // 欢迎区和点餐入口
+          SliverToBoxAdapter(child: _buildWelcomeAndActions()),
+
+          // 功能矩阵
+          SliverToBoxAdapter(child: _buildFunctionGrid()),
+
+          // 为我推荐标题
+          SliverToBoxAdapter(child: _buildRecommendHeader()),
+
+          // 推荐列表 (使用 CarouselSlider 实现横向轮播)
+          SliverToBoxAdapter(child: _buildRecommendCarousel()),
+
+          SliverToBoxAdapter(child: SizedBox(height: 20.h)),
+        ],
+      ),
+    );
+  }
+
+  /// 构建头部轮播图
+  ///
+  /// 使用 carousel_slider 实现自动播放的横幅展示，包含自定义指示器和文字阴影效果
+  Widget _buildHeader() {
+    final List<Map<String, String>> headerItems = [
+      {
+        'image': 'https://picsum.photos/seed/header1/800/400',
+        'title': '持久 锁鲜 保鲜',
+        'subtitle': '10年无人餐饮技术',
+      },
+      {
+        'image': 'https://picsum.photos/seed/header2/800/400',
+        'title': '新鲜美味 准时送达',
+        'subtitle': '智能取餐柜 快捷高效',
+      },
+      {
+        'image': 'https://picsum.photos/seed/header3/800/400',
+        'title': '团队订餐 更多优惠',
+        'subtitle': '多人拼单 更划算',
+      },
+    ];
+
+    return Stack(
+      children: [
+        CarouselSlider(
+          carouselController: _headerController,
+          options: CarouselOptions(
+            height: 260.h,
+            viewportFraction: 1,
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 5),
+            onPageChanged: (index, reason) {
+              setState(() {
+                _currentHeaderIndex = index;
+              });
+            },
+          ),
+          items: headerItems.map((item) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          child: Image.network(
+                            item['image']!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      // 渐变蒙层，提升文字可读性
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withValues(alpha: 0.5),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      // 运营文字叠加
+                      Positioned(
+                        left: 24.w,
+                        bottom: 60.h,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item['title']!,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 28.sp,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(
+                              item['subtitle']!,
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.9),
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          }).toList(),
+        ),
+        // 自定义指示器
+        Positioned(
+          bottom: 25.h,
+          left: 0,
+          right: 0,
           child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                state.currentCity?.name ?? t.home.selectCity,
-                style: TextStyle(fontSize: 18.sp),
-              ),
-              SizedBox(width: 4.w),
-              Icon(Icons.arrow_drop_down, size: 24.sp),
-            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: headerItems.asMap().entries.map((entry) {
+              final isSelected = _currentHeaderIndex == entry.key;
+              return GestureDetector(
+                onTap: () => _headerController.animateToPage(entry.key),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  width: isSelected ? 20.w : 8.w,
+                  height: 8.h,
+                  margin: EdgeInsets.symmetric(horizontal: 4.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4.r),
+                    color: Colors.white.withValues(
+                      alpha: isSelected ? 1.0 : 0.5,
+                    ),
+                    boxShadow: isSelected
+                        ? [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.2),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : null,
+                  ),
+                ),
+              );
+            }).toList(),
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            onPressed: () => context.push('/cart'),
+      ],
+    );
+  }
+
+  /// 构建欢迎区和点餐入口
+  Widget _buildWelcomeAndActions() {
+    return Padding(
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            t.home.welcome,
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          SizedBox(height: 4.h),
+          Row(
+            children: [
+              Icon(Icons.location_on, size: 14.sp, color: AppColors.primary),
+              SizedBox(width: 4.w),
+              Text(
+                '20号机  距你8.9km',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                '更多门店',
+                style: TextStyle(fontSize: 12.sp, color: Colors.blue),
+              ),
+              Icon(Icons.keyboard_arrow_down, size: 14.sp, color: Colors.blue),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          Row(
+            children: [
+              Expanded(
+                child: _buildActionButton(
+                  title: t.home.selfPickup,
+                  subtitle: t.home.selfPickupHint,
+                  icon: Icons.storefront,
+                  color: AppColors.primary,
+                  onTap: () {
+                    // TODO: 导航到自取页面
+                  },
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: _buildActionButton(
+                  title: t.home.teamOrder,
+                  subtitle: t.home.teamOrderHint,
+                  icon: Icons.group,
+                  color: const Color(0xFFFF8A80),
+                  onTap: () {
+                    context.push(AppRoutes.teamOrdering);
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: notifier.refreshData,
-        child: Skeletonizer(
-          enabled: showSkeleton,
-          child: CustomScrollView(
-            slivers: [
-              // 顶部轮播图
-              SliverToBoxAdapter(child: _buildCarousel(context)),
+    );
+  }
 
-              // 附近设备标题
-              SliverToBoxAdapter(
-                child: _buildSectionTitle(t.home.nearbyDevices),
+  /// 构建点餐按钮
+  ///
+  /// 为自取和团队点餐提供大尺寸入口，采用圆角卡片样式
+  Widget _buildActionButton({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required Color color,
+    VoidCallback? onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(16.r),
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.white, size: 24.sp),
+            SizedBox(width: 8.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      fontSize: 10.sp,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
-
-              // 设备列表
-              _buildDeviceList(displayDevices, notifier, context),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  /// 构建轮播图
-  Widget _buildCarousel(BuildContext context) {
-    final List<Map<String, String>> banners = [
+  /// 构建功能矩阵
+  ///
+  /// 展示福利、客服、领券等五个核心功能入口
+  Widget _buildFunctionGrid() {
+    final items = [
       {
-        'title': t.home.banner1Title,
-        'subtitle': t.home.banner1Subtitle,
-        'color': '0xFFF44336',
+        'icon': Icons.card_giftcard,
+        'label': t.home.grid.welfare,
+        'color': const Color(0xFFFF7043),
       },
       {
-        'title': t.home.banner2Title,
-        'subtitle': t.home.banner2Subtitle,
-        'color': '0xFF2196F3',
+        'icon': Icons.headset_mic,
+        'label': t.home.grid.service,
+        'color': const Color(0xFFFF5252),
       },
       {
-        'title': t.home.banner3Title,
-        'subtitle': t.home.banner3Subtitle,
-        'color': '0xFF4CAF50',
+        'icon': Icons.confirmation_number,
+        'label': t.home.grid.coupon,
+        'color': const Color(0xFFFFA726),
+      },
+      {
+        'icon': Icons.stars,
+        'label': t.home.grid.lottery,
+        'color': const Color(0xFFEF5350),
+      },
+      {
+        'icon': Icons.person_add,
+        'label': t.home.grid.invite,
+        'color': const Color(0xFFEC407A),
       },
     ];
 
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 16.h),
-      child: CarouselSlider(
-        options: CarouselOptions(
-          height: 150.h,
-          autoPlay: true,
-          enlargeCenterPage: true,
-          viewportFraction: 0.9,
-          aspectRatio: 2,
-        ),
-        items: banners.map((banner) {
-          return Builder(
-            builder: (BuildContext context) {
-              return Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.symmetric(horizontal: 5),
-                decoration: BoxDecoration(
-                  color: Color(int.parse(banner['color']!)),
-                  borderRadius: BorderRadius.circular(16.r),
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(int.parse(banner['color']!)),
-                      Color(int.parse(banner['color']!)).withValues(alpha: 0.7),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: items.map((item) {
+          return GestureDetector(
+            onTap: () {
+              if (item['label'] == t.home.grid.lottery) {
+                context.push(AppRoutes.lottery);
+              } else if (item['label'] == t.home.grid.welfare) {
+                context.push(AppRoutes.community);
+              } else if (item['label'] == t.home.grid.coupon) {
+                context.push(AppRoutes.coupons);
+              } else if (item['label'] == t.home.grid.invite) {
+                context.push(AppRoutes.invite);
+              }
+            },
+            child: Column(
+              children: [
+                Container(
+                  width: 48.w,
+                  height: 48.w,
+                  decoration: BoxDecoration(
+                    color: (item['color']! as Color).withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    item['icon']! as IconData,
+                    color: item['color']! as Color,
+                    size: 26.sp,
                   ),
                 ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 24.w,
-                      top: 24.h,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            banner['title']!,
-                            style: TextStyle(
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(height: 8.h),
-                          Text(
-                            banner['subtitle']!,
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: Colors.white.withValues(alpha: 0.9),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      right: 24.w,
-                      bottom: 24.h,
-                      child: Icon(
-                        Icons.lunch_dining,
-                        size: 80.sp,
-                        color: Colors.white.withValues(alpha: 0.3),
-                      ),
-                    ),
-                  ],
+                SizedBox(height: 8.h),
+                Text(
+                  item['label']! as String,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: const Color(0xFF333333),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              );
-            },
+              ],
+            ),
           );
         }).toList(),
       ),
     );
   }
 
-  /// 构建分区标题
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 18.sp,
-          fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
-        ),
+  /// 构建推荐标题
+  ///
+  /// 居中展示“为我推荐”文字及红色装饰线
+  Widget _buildRecommendHeader() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 16.h),
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          Text(
+            t.home.recommendTitle,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          SizedBox(height: 4.h),
+          Container(width: 20.w, height: 2.h, color: AppColors.primary),
+        ],
       ),
     );
   }
 
-  /// 构建设备列表
-  Widget _buildDeviceList(
-    List<DeviceModel> devices,
-    HomeNotifier notifier,
-    BuildContext context,
-  ) {
-    if (devices.isEmpty) {
-      return SliverFillRemaining(child: _buildEmptyState(notifier));
-    }
+  /// 构建推荐轮播
+  ///
+  /// 使用 carousel_slider 实现商品推荐的横向滑动效果，突出显示当前项
+  Widget _buildRecommendCarousel() {
+    final products = [
+      {'name': '客家酸甜咕噜肉饭', 'price': '14.99', 'originalPrice': '21.4'},
+      {'name': '古法爆汁红烧肉饭', 'price': '15.59', 'originalPrice': '22.23'},
+      {'name': '经典台式卤肉饭', 'price': '13.99', 'originalPrice': '19.9'},
+      {'name': '香菇滑鸡饭', 'price': '14.59', 'originalPrice': '20.8'},
+    ];
 
-    return SliverList(
-      delegate: SliverChildBuilderDelegate((context, index) {
-        final device = devices[index];
-        return _buildDeviceCard(context, device);
-      }, childCount: devices.length),
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 240.h,
+        viewportFraction: 0.75,
+        enlargeCenterPage: true,
+        enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+        autoPlay: true,
+        autoPlayAnimationDuration: const Duration(milliseconds: 1000),
+        autoPlayCurve: Curves.easeInOutCubic,
+      ),
+      items: products.asMap().entries.map((entry) {
+        return _buildRecommendCard(entry.key, entry.value);
+      }).toList(),
     );
   }
 
-  /// 构建设备卡片
-  Widget _buildDeviceCard(BuildContext context, DeviceModel device) {
+  /// 构建推荐卡片
+  ///
+  /// 展示商品图片、名称、价格及抢购按钮
+  Widget _buildRecommendCard(int index, Map<String, String> product) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      margin: EdgeInsets.symmetric(vertical: 10.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: const [
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
           BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 8,
-            offset: Offset(0, 2),
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
-      child: InkWell(
-        onTap: () => context.push('/device/${device.id}', extra: device),
-        borderRadius: BorderRadius.circular(12.r),
-        child: Padding(
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.r),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Stack(
                 children: [
-                  // 设备图标
-                  Container(
-                    width: 48.w,
-                    height: 48.w,
-                    decoration: BoxDecoration(
-                      color: device.isOnline
-                          ? AppColors.primary.withValues(alpha: 0.1)
-                          : AppColors.textHint.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Icon(
-                      Icons.storefront,
-                      color: device.isOnline
-                          ? AppColors.primary
-                          : AppColors.textHint,
-                      size: 24.sp,
+                  Positioned.fill(
+                    child: Image.network(
+                      'https://picsum.photos/seed/${index + 10}/400/300',
+                      fit: BoxFit.cover,
                     ),
                   ),
-
-                  SizedBox(width: 12.w),
-
-                  // 设备信息
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          device.name,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          device.address,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: AppColors.textSecondary,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // 距离
-                  if (device.distanceText.isNotEmpty)
-                    Container(
+                  Positioned(
+                    top: 10.h,
+                    left: 10.w,
+                    child: Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: 8.w,
                         vertical: 4.h,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.background,
+                        color: Colors.red.withValues(alpha: 0.85),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Text(
-                        device.distanceText,
+                        '今日推荐',
                         style: TextStyle(
-                          fontSize: 12.sp,
-                          color: AppColors.textSecondary,
+                          color: Colors.white,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                ],
-              ),
-
-              SizedBox(height: 12.h),
-
-              // 状态标签
-              Row(
-                children: [
-                  _buildStatusChip(
-                    device.isOnline ? t.home.status.open : t.home.status.closed,
-                    device.isOnline ? AppColors.success : AppColors.textHint,
                   ),
-                  SizedBox(width: 8.w),
-                  if (device.supportMobilePayment)
-                    _buildStatusChip(
-                      t.home.status.mobilePayment,
-                      AppColors.info,
-                    ),
                 ],
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.all(12.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      product['name']!,
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              children: [
+                                Text(
+                                  '¥',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(width: 2.w),
+                                Text(
+                                  product['price']!,
+                                  style: TextStyle(
+                                    fontSize: 20.sp,
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              '¥${product['originalPrice']}',
+                              style: TextStyle(
+                                fontSize: 11.sp,
+                                color: AppColors.textHint,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 14.w,
+                            vertical: 8.h,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [AppColors.primary, Color(0xFFFFB74D)],
+                            ),
+                            borderRadius: BorderRadius.circular(25.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.primary.withValues(alpha: 0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            '马上抢',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
-    );
-  }
-
-  /// 构建状态标签
-  Widget _buildStatusChip(String label, Color color) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(4.r),
-        border: Border.all(color: color.withValues(alpha: 0.5)),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(fontSize: 10.sp, color: color),
-      ),
-    );
-  }
-
-  /// 构建空状态
-  Widget _buildEmptyState(HomeNotifier notifier) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.location_off, size: 64.sp, color: AppColors.textHint),
-          SizedBox(height: 16.h),
-          Text(
-            t.home.noDevices,
-            style: TextStyle(fontSize: 16.sp, color: AppColors.textSecondary),
-          ),
-          SizedBox(height: 24.h),
-          ElevatedButton(
-            onPressed: notifier.refreshData,
-            child: Text(t.common.retry),
-          ),
-        ],
       ),
     );
   }

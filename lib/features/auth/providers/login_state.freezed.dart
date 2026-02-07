@@ -210,8 +210,11 @@ return $default(_that.username,_that.password,_that.status,_that.isValid,_that.e
 
 
 class _LoginState implements LoginState {
-  const _LoginState({this.username = const Username.pure(), this.password = const Password.pure(), this.status = FormzSubmissionStatus.initial, this.isValid = false, this.errorMessage});
-  
+  const _LoginState(
+      {this.username = const Username.pure(), this.password = const Password
+          .pure(), this.status = FormzSubmissionStatus
+          .initial, this.isValid = true, this.errorMessage});
+
 
 @override@JsonKey() final  Username username;
 @override@JsonKey() final  Password password;

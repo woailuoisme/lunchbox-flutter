@@ -16,6 +16,16 @@ class AppRoutes {
 
   // 主页面
   static const String home = '/home';
+  static const String eat = '/eat';
+
+  // 首页功能入口
+  static const String teamOrdering = '/team-ordering';
+  static const String community = '/community';
+  static const String coupons = '/coupons';
+  static const String invite = '/invite';
+  static const String inviteRules = 'rules'; // 子路由路径，完整为 /invite/rules
+  static const String lottery = '/lottery';
+  static const String myPrizes = 'prizes'; // 子路由路径，完整为 /lottery/prizes
 
   // 城市选择
   static const String citySelection = '/city-selection';

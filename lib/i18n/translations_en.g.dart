@@ -51,6 +51,8 @@ class TranslationsEn extends Translations
 	// Translations
   @override late final _TranslationsCommonEn common = _TranslationsCommonEn._(
       _root);
+  @override late final _TranslationsNavigationEn navigation = _TranslationsNavigationEn
+      ._(_root);
   @override late final _TranslationsAuthEn auth = _TranslationsAuthEn._(_root);
   @override late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
   @override late final _TranslationsProductEn product = _TranslationsProductEn
@@ -74,6 +76,10 @@ class TranslationsEn extends Translations
       ._(_root);
   @override late final _TranslationsCityEn city = _TranslationsCityEn._(_root);
   @override late final _TranslationsDeviceEn device = _TranslationsDeviceEn._(
+      _root);
+  @override late final _TranslationsNetworkEn network = _TranslationsNetworkEn
+      ._(_root);
+  @override late final _TranslationsCouponEn coupon = _TranslationsCouponEn._(
       _root);
 }
 
@@ -131,6 +137,24 @@ class _TranslationsCommonEn extends TranslationsCommonZhCn {
   @override String get appName => 'E-Lunchbox';
 
   @override String get logout => 'Logout';
+}
+
+// Path: navigation
+class _TranslationsNavigationEn extends TranslationsNavigationZhCn {
+  _TranslationsNavigationEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get home => 'Home';
+
+  @override String get device => 'Device';
+
+  @override String get orders => 'Orders';
+
+  @override String get profile => 'Profile';
 }
 
 // Path: auth
@@ -214,6 +238,22 @@ class _TranslationsHomeEn extends TranslationsHomeZhCn {
   @override String get banner3Subtitle => 'Limited Time Only';
 
   @override String get noDevices => 'No devices nearby';
+
+  @override String get welcome => 'Hello, User';
+
+  @override String get selfPickup => 'Self Pickup';
+
+  @override String get selfPickupHint => 'Scan code to pick up/Take away';
+
+  @override String get teamOrder => 'Team Order';
+
+  @override String get teamOrderHint => 'Group ordering/Team meal';
+
+  @override String get recommendTitle => 'Recommended for Me';
+  @override late final _TranslationsHomeGridEn grid = _TranslationsHomeGridEn._(
+      _root);
+  @override late final _TranslationsHomeLotteryEn lottery = _TranslationsHomeLotteryEn
+      ._(_root);
   @override late final _TranslationsHomeStatusEn status = _TranslationsHomeStatusEn
       ._(_root);
 }
@@ -711,6 +751,113 @@ class _TranslationsDeviceEn extends TranslationsDeviceZhCn {
   @override String get cashPayment => 'Cash Payment';
 }
 
+// Path: network
+class _TranslationsNetworkEn extends TranslationsNetworkZhCn {
+  _TranslationsNetworkEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override late final _TranslationsNetworkErrorsEn errors = _TranslationsNetworkErrorsEn
+      ._(_root);
+}
+
+// Path: coupon
+class _TranslationsCouponEn extends TranslationsCouponZhCn {
+  _TranslationsCouponEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get title => 'Coupon';
+  @override late final _TranslationsCouponTabsEn tabs = _TranslationsCouponTabsEn
+      ._(_root);
+
+  @override String get unit => '\$';
+
+  @override String condition({required Object amount}) =>
+      'Coupon\nOver ${amount}';
+
+  @override String get conditionNoThreshold => 'Coupon\nNo threshold';
+
+  @override String get validForever => 'Valid Forever';
+
+  @override String get btnReceive => 'Receive';
+
+  @override String get btnReceived => 'Received';
+
+  @override String get btnUse => 'Use';
+
+  @override String get btnExpired => 'Expired';
+
+  @override String discount({required Object amount}) => '\$ ${amount} Coupon';
+
+  @override String discountOff({required Object amount}) => '\$ ${amount} Off';
+}
+
+// Path: home.grid
+class _TranslationsHomeGridEn extends TranslationsHomeGridZhCn {
+  _TranslationsHomeGridEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get welfare => 'Welfare';
+
+  @override String get service => 'Service';
+
+  @override String get coupon => 'Coupons';
+
+  @override String get lottery => 'Lucky Draw';
+
+  @override String get invite => 'Invite Friends';
+}
+
+// Path: home.lottery
+class _TranslationsHomeLotteryEn extends TranslationsHomeLotteryZhCn {
+  _TranslationsHomeLotteryEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get title => 'Lucky Draw';
+
+  @override String get prizes => 'My Prizes';
+
+  @override String get rules => 'Draw Rules';
+
+  @override String get remaining => 'Remaining: {count}';
+
+  @override String get spin => 'Spin';
+
+  @override String get rule1 => 'Free draws daily, complete tasks for more';
+
+  @override String get rule2 =>
+      'Coupons valid for 48h, Coins added automatically';
+
+  @override String get rule3 => 'Platform reserves all rights';
+
+  @override String get prizeUnit => 'Coins';
+
+  @override String get prizeList => 'Prize List';
+
+  @override String get back => 'Back';
+  @override late final _TranslationsHomeLotteryPrizeStatsEn prizeStats = _TranslationsHomeLotteryPrizeStatsEn
+      ._(_root);
+  @override late final _TranslationsHomeLotteryTabsEn tabs = _TranslationsHomeLotteryTabsEn
+      ._(_root);
+  @override late final _TranslationsHomeLotteryPrizeCardEn prizeCard = _TranslationsHomeLotteryPrizeCardEn
+      ._(_root);
+}
+
 // Path: home.status
 class _TranslationsHomeStatusEn extends TranslationsHomeStatusZhCn {
   _TranslationsHomeStatusEn._(TranslationsEn root)
@@ -751,6 +898,139 @@ class _TranslationsOrderStatusEn extends TranslationsOrderStatusZhCn {
   @override String get failed => 'Failed';
 }
 
+// Path: network.errors
+class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
+  _TranslationsNetworkErrorsEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get connectionTimeout =>
+      'Connection timeout, please check your network';
+
+  @override String get sendTimeout => 'Send timeout, please check your network';
+
+  @override String get receiveTimeout =>
+      'Receive timeout, please check your network';
+
+  @override String get badCertificate => 'Bad certificate';
+
+  @override String get cancel => 'Request cancelled';
+
+  @override String get connectionError =>
+      'Connection error, please check your network';
+
+  @override String unknown({required Object error}) =>
+      'Unknown error: ${error}';
+
+  @override String get retryLater => 'Please try again later';
+
+  @override String get badRequest => 'Bad request';
+
+  @override String get unauthorized => 'Unauthorized, please login again';
+
+  @override String get forbidden => 'Forbidden';
+
+  @override String get notFound => 'Resource not found';
+
+  @override String get timeout => 'Request timeout, please try again';
+
+  @override String get conflict => 'Conflict';
+
+  @override String get validationFailed => 'Validation failed';
+
+  @override String get tooManyRequests =>
+      'Too many requests, please try again later';
+
+  @override String get internalServerError => 'Internal server error';
+
+  @override String get badGateway => 'Bad gateway';
+
+  @override String get serviceUnavailable => 'Service unavailable';
+
+  @override String get gatewayTimeout => 'Gateway timeout';
+
+  @override String serverError({required Object code}) =>
+      'Server error (${code})';
+
+  @override String requestError({required Object code}) =>
+      'Request error (${code})';
+
+  @override String get failed => 'Network request failed';
+}
+
+// Path: coupon.tabs
+class _TranslationsCouponTabsEn extends TranslationsCouponTabsZhCn {
+  _TranslationsCouponTabsEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get available => 'Available';
+
+  @override String get received => 'Received';
+
+  @override String get expired => 'Expired';
+}
+
+// Path: home.lottery.prizeStats
+class _TranslationsHomeLotteryPrizeStatsEn
+    extends TranslationsHomeLotteryPrizeStatsZhCn {
+  _TranslationsHomeLotteryPrizeStatsEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get total => 'Total';
+
+  @override String get used => 'Used';
+
+  @override String get available => 'Available';
+}
+
+// Path: home.lottery.tabs
+class _TranslationsHomeLotteryTabsEn extends TranslationsHomeLotteryTabsZhCn {
+  _TranslationsHomeLotteryTabsEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get all => 'All';
+
+  @override String get available => 'Available';
+
+  @override String get used => 'Used';
+
+  @override String get expired => 'Expired';
+}
+
+// Path: home.lottery.prizeCard
+class _TranslationsHomeLotteryPrizeCardEn
+    extends TranslationsHomeLotteryPrizeCardZhCn {
+  _TranslationsHomeLotteryPrizeCardEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get source => 'Coin rewards, can be used in Coin Mall';
+
+  @override String get getTime => 'Got at: {time}';
+
+  @override String get expiryTime => 'Expiry: {time}';
+
+  @override String get statusExpired => 'Expired';
+}
+
 /// The flat map containing all translations for locale <en>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -782,6 +1062,10 @@ extension on TranslationsEn {
       'common.developing' => 'Page is under development',
       'common.appName' => 'E-Lunchbox',
       'common.logout' => 'Logout',
+      'navigation.home' => 'Home',
+      'navigation.device' => 'Device',
+      'navigation.orders' => 'Orders',
+      'navigation.profile' => 'Profile',
 			'auth.loginTitle' => 'Welcome Back',
 			'auth.loginButton' => 'Login',
 			'auth.registerButton' => 'Register',
@@ -813,6 +1097,39 @@ extension on TranslationsEn {
       'home.banner3Title' => 'Best Offers',
       'home.banner3Subtitle' => 'Limited Time Only',
       'home.noDevices' => 'No devices nearby',
+      'home.welcome' => 'Hello, User',
+      'home.selfPickup' => 'Self Pickup',
+      'home.selfPickupHint' => 'Scan code to pick up/Take away',
+      'home.teamOrder' => 'Team Order',
+      'home.teamOrderHint' => 'Group ordering/Team meal',
+      'home.recommendTitle' => 'Recommended for Me',
+      'home.grid.welfare' => 'Welfare',
+      'home.grid.service' => 'Service',
+      'home.grid.coupon' => 'Coupons',
+      'home.grid.lottery' => 'Lucky Draw',
+      'home.grid.invite' => 'Invite Friends',
+      'home.lottery.title' => 'Lucky Draw',
+      'home.lottery.prizes' => 'My Prizes',
+      'home.lottery.rules' => 'Draw Rules',
+      'home.lottery.remaining' => 'Remaining: {count}',
+      'home.lottery.spin' => 'Spin',
+      'home.lottery.rule1' => 'Free draws daily, complete tasks for more',
+      'home.lottery.rule2' => 'Coupons valid for 48h, Coins added automatically',
+      'home.lottery.rule3' => 'Platform reserves all rights',
+      'home.lottery.prizeUnit' => 'Coins',
+      'home.lottery.prizeList' => 'Prize List',
+      'home.lottery.back' => 'Back',
+      'home.lottery.prizeStats.total' => 'Total',
+      'home.lottery.prizeStats.used' => 'Used',
+      'home.lottery.prizeStats.available' => 'Available',
+      'home.lottery.tabs.all' => 'All',
+      'home.lottery.tabs.available' => 'Available',
+      'home.lottery.tabs.used' => 'Used',
+      'home.lottery.tabs.expired' => 'Expired',
+      'home.lottery.prizeCard.source' => 'Coin rewards, can be used in Coin Mall',
+      'home.lottery.prizeCard.getTime' => 'Got at: {time}',
+      'home.lottery.prizeCard.expiryTime' => 'Expiry: {time}',
+      'home.lottery.prizeCard.statusExpired' => 'Expired',
       'home.status.open' => 'Open',
       'home.status.closed' => 'Closed',
       'home.status.mobilePayment' => 'Mobile Payment Supported',
@@ -1002,6 +1319,47 @@ extension on TranslationsEn {
       'device.maintenance' => 'Maintenance',
       'device.unknown' => 'Unknown',
       'device.cashPayment' => 'Cash Payment',
+      'network.errors.connectionTimeout' => 'Connection timeout, please check your network',
+      'network.errors.sendTimeout' => 'Send timeout, please check your network',
+      'network.errors.receiveTimeout' => 'Receive timeout, please check your network',
+      'network.errors.badCertificate' => 'Bad certificate',
+      'network.errors.cancel' => 'Request cancelled',
+      'network.errors.connectionError' => 'Connection error, please check your network',
+      'network.errors.unknown' =>
+          ({required Object error}) => 'Unknown error: ${error}',
+      'network.errors.retryLater' => 'Please try again later',
+      'network.errors.badRequest' => 'Bad request',
+      'network.errors.unauthorized' => 'Unauthorized, please login again',
+      'network.errors.forbidden' => 'Forbidden',
+      'network.errors.notFound' => 'Resource not found',
+      'network.errors.timeout' => 'Request timeout, please try again',
+      'network.errors.conflict' => 'Conflict',
+      'network.errors.validationFailed' => 'Validation failed',
+      'network.errors.tooManyRequests' => 'Too many requests, please try again later',
+      'network.errors.internalServerError' => 'Internal server error',
+      'network.errors.badGateway' => 'Bad gateway',
+      'network.errors.serviceUnavailable' => 'Service unavailable',
+      'network.errors.gatewayTimeout' => 'Gateway timeout',
+      'network.errors.serverError' =>
+          ({required Object code}) => 'Server error (${code})',
+      'network.errors.requestError' =>
+          ({required Object code}) => 'Request error (${code})',
+      'network.errors.failed' => 'Network request failed',
+      'coupon.title' => 'Coupon',
+      'coupon.tabs.available' => 'Available',
+      'coupon.tabs.received' => 'Received',
+      'coupon.tabs.expired' => 'Expired',
+      'coupon.unit' => '\$',
+      'coupon.condition' =>
+          ({required Object amount}) => 'Coupon\nOver ${amount}',
+      'coupon.conditionNoThreshold' => 'Coupon\nNo threshold',
+      'coupon.validForever' => 'Valid Forever',
+      'coupon.btnReceive' => 'Receive',
+      'coupon.btnReceived' => 'Received',
+      'coupon.btnUse' => 'Use',
+      'coupon.btnExpired' => 'Expired',
+      'coupon.discount' => ({required Object amount}) => '\$ ${amount} Coupon',
+      'coupon.discountOff' => ({required Object amount}) => '\$ ${amount} Off',
 			_ => null,
 		};
 	}

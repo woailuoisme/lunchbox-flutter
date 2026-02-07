@@ -41,7 +41,7 @@ final class AuthInterceptorProvider
         argument: null,
         retry: null,
         name: r'authInterceptorProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -68,4 +68,4 @@ final class AuthInterceptorProvider
   }
 }
 
-String _$authInterceptorHash() => r'ed229bc74053c6c1b45fa5105fbaee462e35ce2b';
+String _$authInterceptorHash() => r'2520123955472973719710a876b1d4ac0af7d324';

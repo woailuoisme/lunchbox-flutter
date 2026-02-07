@@ -48,7 +48,7 @@ final class ErrorHandlingInterceptorProvider
         argument: null,
         retry: null,
         name: r'errorHandlingInterceptorProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -77,4 +77,4 @@ final class ErrorHandlingInterceptorProvider
 }
 
 String _$errorHandlingInterceptorHash() =>
-    r'6373d0b89338ff73004e8b0469d17af81312be05';
+    r'f9231ecb6bb009df9c0c66b8987abebb5ce4ddff';

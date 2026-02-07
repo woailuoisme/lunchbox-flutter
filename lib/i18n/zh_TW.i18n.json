@@ -20,9 +20,15 @@
     "refresh": "重新整理",
     "loadFailed": "載入失敗",
     "unknownError": "未知錯誤",
-    "developing": "頁面正在開發中",
+    "developing": "頁面正在开发中",
     "appName": "飯盒售貨機",
     "logout": "登出"
+  },
+  "navigation": {
+    "home": "首頁",
+    "device": "設備",
+    "orders": "訂單",
+    "profile": "個人中心"
   },
   "auth": {
     "loginTitle": "歡迎回來",
@@ -58,6 +64,49 @@
     "banner3Title": "超值優惠",
     "banner3Subtitle": "限時特價",
     "noDevices": "附近暫無設備",
+    "welcome": "您好，好小乖用戶",
+    "selfPickup": "自取點餐",
+    "selfPickupHint": "掃碼取餐/打包帶走",
+    "teamOrder": "團隊點餐",
+    "teamOrderHint": "多人訂購/團隊點餐",
+    "recommendTitle": "為我推薦",
+    "grid": {
+      "welfare": "社群福利",
+      "service": "客服中心",
+      "coupon": "領優惠券",
+      "lottery": "幸運抽獎",
+      "invite": "邀請好友"
+    },
+    "lottery": {
+      "title": "幸運抽獎",
+      "prizes": "我的獎品",
+      "rules": "抽獎規則",
+      "remaining": "剩餘次數: {count}",
+      "spin": "抽獎",
+      "rule1": "每日有免費抽獎次數，次數用完後可領取任務獲得",
+      "rule2": "優惠券48小時內有效，乖乖幣自動到帳",
+      "rule3": "活動最終解釋權歸平台所有",
+      "prizeUnit": "乖乖幣",
+      "prizeList": "獎品說明",
+      "back": "返回",
+      "prizeStats": {
+        "total": "總獎品",
+        "used": "已使用",
+        "available": "可用"
+      },
+      "tabs": {
+        "all": "全部",
+        "available": "可用",
+        "used": "已使用",
+        "expired": "已過期"
+      },
+      "prizeCard": {
+        "source": "乖乖幣獎勵，可在乖乖幣商城使用",
+        "getTime": "獲得時間: {time}",
+        "expiryTime": "有效期至: {time}",
+        "statusExpired": "已過期"
+      }
+    },
     "status": {
       "open": "營業中",
       "closed": "休息中",
@@ -267,5 +316,23 @@
     "minutesAgo": "${minutes}分鐘前",
     "hoursAgo": "${hours}小時前",
     "daysAgo": "${days}天前"
+  },
+  "coupon": {
+    "title": "優惠券",
+    "tabs": {
+      "available": "可領取",
+      "received": "已領取",
+      "expired": "已過期"
+    },
+    "unit": "NT$",
+    "condition": "滿減券\n滿${amount}元可用",
+    "conditionNoThreshold": "滿減券\n滿0元可用",
+    "validForever": "長期有效",
+    "btnReceive": "立即領取",
+    "btnReceived": "已領取",
+    "btnUse": "去使用",
+    "btnExpired": "已過期",
+    "discount": "${amount}元優惠券",
+    "discountOff": "${amount}元減免券"
   }
 }

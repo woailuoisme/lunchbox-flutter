@@ -97,11 +97,40 @@ GoRouter goRouter(Ref ref) {
         builder: (context, state) => const CitySelectionView(),
       ),
 
-      // 设备相关
+      // 首页功能入口
       GoRoute(
-        path: AppRoutes.deviceList,
-        builder: (context, state) => const DeviceListView(),
+        path: AppRoutes.teamOrdering,
+        builder: (context, state) => const TeamOrderingView(),
       ),
+      GoRoute(
+        path: AppRoutes.community,
+        builder: (context, state) => const CommunityView(),
+      ),
+      GoRoute(
+        path: AppRoutes.coupons,
+        builder: (context, state) => const CouponsView(),
+      ),
+      GoRoute(
+        path: AppRoutes.invite,
+        builder: (context, state) => const InviteFriendsView(),
+        routes: [
+          GoRoute(
+            path: AppRoutes.inviteRules,
+            builder: (context, state) => const InviteRulesView(),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: AppRoutes.lottery,
+        builder: (context, state) => const LotteryView(),
+        routes: [
+          GoRoute(
+            path: AppRoutes.myPrizes,
+            builder: (context, state) => const MyPrizesView(),
+          ),
+        ],
+      ),
+
       GoRoute(
         path: '${AppRoutes.deviceList}/:id',
         builder: (context, state) {
@@ -191,7 +220,7 @@ GoRouter goRouter(Ref ref) {
       // 验证需求：2.6
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
-          return ScaffoldWithNavbar(navigationShell: navigationShell);
+          return GNavScaffold(navigationShell: navigationShell);
         },
         branches: [
           // 首页分支
@@ -200,6 +229,16 @@ GoRouter goRouter(Ref ref) {
               GoRoute(
                 path: AppRoutes.home,
                 builder: (context, state) => const HomeView(),
+              ),
+            ],
+          ),
+
+          // 吃饭分支
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.eat,
+                builder: (context, state) => const DeviceListView(),
               ),
             ],
           ),
@@ -219,7 +258,7 @@ GoRouter goRouter(Ref ref) {
             routes: [
               GoRoute(
                 path: AppRoutes.profile,
-                builder: (context, state) => const ProfileViewRiverpod(),
+                builder: (context, state) => const ProfileView(),
               ),
             ],
           ),

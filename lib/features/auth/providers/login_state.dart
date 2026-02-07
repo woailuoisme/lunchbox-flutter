@@ -12,7 +12,7 @@ abstract class LoginState with _$LoginState {
     @Default(Username.pure()) Username username,
     @Default(Password.pure()) Password password,
     @Default(FormzSubmissionStatus.initial) FormzSubmissionStatus status,
-    @Default(false) bool isValid,
+    @Default(true) bool isValid,
     String? errorMessage,
   }) = _LoginState;
 }

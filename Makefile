@@ -1,4 +1,4 @@
-.PHONY: help build gen-i18n gen-icons clean watch deps run run-dev run-prod run-offline attach test format analyze fix upgrade doctor full-build install clean-all ready pre-release
+.PHONY: help build gen-i18n slang gen-icons clean watch deps run run-dev run-prod run-offline attach test format analyze fix upgrade doctor full-build install clean-all ready pre-release
 
 # 默认目标 - 显示帮助信息
 help:
@@ -9,6 +9,7 @@ help:
 	@echo "  make build         - 生成代码 (freezed/json)"
 	@echo "  make install       - 安装调试版 APK 到设备"
 	@echo "  make gen-i18n      - 生成国际化代码 (slang)"
+	@echo "  make slang         - 生成国际化代码 (同 gen-i18n)"
 	@echo "  make gen-icons     - 生成应用图标 (flutter_launcher_icons)"
 	@echo "  make clean         - 清理生成文件"
 	@echo "  make watch         - 监听生成"
@@ -36,6 +37,8 @@ build:
 
 gen-i18n:
 	dart run slang
+
+slang: gen-i18n
 
 gen-icons:
 	dart run flutter_launcher_icons

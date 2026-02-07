@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'error_handling_interceptor.g.dart';
@@ -11,7 +12,7 @@ part 'error_handling_interceptor.g.dart';
 /// failures, and server errors.
 ///
 /// **Validates: Requirements 23.1, 23.2**
-@riverpod
+@Riverpod(keepAlive: true)
 ErrorHandlingInterceptor errorHandlingInterceptor(Ref ref) {
   return ErrorHandlingInterceptor();
 }
@@ -38,28 +39,30 @@ class ErrorHandlingInterceptor extends Interceptor {
 
     switch (err.type) {
       case DioExceptionType.connectionTimeout:
-        message = '连接超时，请检查网络连接';
+        message = t.network.errors.connectionTimeout;
         break;
       case DioExceptionType.sendTimeout:
-        message = '发送请求超时，请检查网络连接';
+        message = t.network.errors.sendTimeout;
         break;
       case DioExceptionType.receiveTimeout:
-        message = '接收响应超时，请检查网络连接';
+        message = t.network.errors.receiveTimeout;
         break;
       case DioExceptionType.badCertificate:
-        message = '证书验证失败';
+        message = t.network.errors.badCertificate;
         break;
       case DioExceptionType.badResponse:
         message = _handleBadResponse(err);
         break;
       case DioExceptionType.cancel:
-        message = '请求已取消';
+        message = t.network.errors.cancel;
         break;
       case DioExceptionType.connectionError:
-        message = '网络连接失败，请检查网络设置';
+        message = t.network.errors.connectionError;
         break;
       case DioExceptionType.unknown:
-        message = '未知错误：${err.message ?? "请稍后重试"}';
+        message = t.network.errors.unknown(
+          error: err.message ?? t.network.errors.retryLater,
+        );
         break;
     }
 
@@ -89,17 +92,17 @@ class ErrorHandlingInterceptor extends Interceptor {
 
     switch (statusCode) {
       case 400:
-        return serverMessage ?? '请求参数错误';
+        return serverMessage ?? t.network.errors.badRequest;
       case 401:
-        return serverMessage ?? '未授权，请重新登录';
+        return serverMessage ?? t.network.errors.unauthorized;
       case 403:
-        return serverMessage ?? '没有权限访问该资源';
+        return serverMessage ?? t.network.errors.forbidden;
       case 404:
-        return serverMessage ?? '请求的资源不存在';
+        return serverMessage ?? t.network.errors.notFound;
       case 408:
-        return '请求超时，请重试';
+        return t.network.errors.timeout;
       case 409:
-        return serverMessage ?? '请求冲突';
+        return serverMessage ?? t.network.errors.conflict;
       case 422:
         if (data is Map<String, dynamic> && data['errors'] is Map) {
           final errors = data['errors'] as Map<String, dynamic>;
@@ -115,24 +118,26 @@ class ErrorHandlingInterceptor extends Interceptor {
             return errorMessages.join('\n');
           }
         }
-        return serverMessage ?? '请求数据验证失败';
+        return serverMessage ?? t.network.errors.validationFailed;
       case 429:
-        return '请求过于频繁，请稍后重试';
+        return t.network.errors.tooManyRequests;
       case 500:
-        return serverMessage ?? '服务器内部错误';
+        return serverMessage ?? t.network.errors.internalServerError;
       case 502:
-        return '网关错误，请稍后重试';
+        return t.network.errors.badGateway;
       case 503:
-        return '服务暂时不可用，请稍后重试';
+        return t.network.errors.serviceUnavailable;
       case 504:
-        return '网关超时，请稍后重试';
+        return t.network.errors.gatewayTimeout;
       default:
         if (statusCode != null && statusCode >= 500) {
-          return serverMessage ?? '服务器错误（$statusCode）';
+          return serverMessage ??
+              t.network.errors.serverError(code: statusCode.toString());
         } else if (statusCode != null && statusCode >= 400) {
-          return serverMessage ?? '请求错误（$statusCode）';
+          return serverMessage ??
+              t.network.errors.requestError(code: statusCode.toString());
         }
-        return serverMessage ?? '网络请求失败';
+        return serverMessage ?? t.network.errors.failed;
     }
   }
 }

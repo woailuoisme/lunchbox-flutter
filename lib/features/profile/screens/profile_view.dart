@@ -1,314 +1,251 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lunchbox/features/profile/providers/profile_notifier.dart';
-import 'package:lunchbox/features/profile/providers/profile_state.dart';
-import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:lunchbox/routes/app_routes.dart';
 
-/// 用户中心视图
+/// 用户中心视图 (我的)
+///
+/// 按照最新 UI 截图重构，包含红色渐变头部、资产概览和功能列表
 class ProfileView extends ConsumerWidget {
   const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ProfileState state = ref.watch(profileProvider);
-    final notifier = ref.read(profileProvider.notifier);
-
     return Scaffold(
+      backgroundColor: const Color(0xFFF8F8F8),
       body: CustomScrollView(
         slivers: [
-          // 用户信息头部
-          _buildUserHeader(context, state, notifier),
+          // 红色渐变背景头部
+          SliverToBoxAdapter(child: _buildHeader()),
 
-          // 功能菜单
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                SizedBox(height: 8.h),
-                _buildMenuSection(context, state),
-                SizedBox(height: 8.h),
-                _buildSettingsSection(context, notifier),
-              ],
-            ),
-          ),
+          // 功能列表菜单
+          SliverToBoxAdapter(child: _buildMenuSection()),
+
+          SliverToBoxAdapter(child: SizedBox(height: 40.h)),
         ],
       ),
     );
   }
 
-  /// 构建用户信息头部
-  Widget _buildUserHeader(
-    BuildContext context,
-    ProfileState state,
-    ProfileNotifier notifier,
-  ) {
-    final user = state.currentUser;
-    return SliverAppBar(
-      expandedHeight: 200.h,
-      pinned: true,
-      flexibleSpace: FlexibleSpaceBar(
-        background: DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Theme.of(context).primaryColor,
-                Theme.of(context).primaryColor.withValues(alpha: 0.8),
-              ],
-            ),
-          ),
-          child: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.all(24.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // 头像
-                  GestureDetector(
-                    onTap: () => context.push(AppRoutes.profileEdit),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 3),
-                      ),
-                      child: CircleAvatar(
-                        radius: 40.r,
-                        backgroundColor: Colors.white,
-                        backgroundImage: user?.avatar != null
-                            ? CachedNetworkImageProvider(user!.avatar!)
-                            : null,
-                        child: user?.avatar == null
-                            ? Icon(
-                                Icons.person,
-                                size: 40.sp,
-                                color: Colors.grey,
-                              )
-                            : null,
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 12.h),
-
-                  // 用户名
-                  Text(
-                    user?.nickname ?? t.profile.notLoggedIn,
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-
-                  SizedBox(height: 4.h),
-
-                  // 用户名
-                  Text(
-                    user?.username ?? '',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.white.withValues(alpha: 0.9),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+  /// 构建红色渐变头部
+  ///
+  /// 包含背景渐变、状态栏占位、用户信息以及资产信息（钱包、币、券）
+  Widget _buildHeader() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFFFF5252),
+            const Color(0xFFFF8A80).withValues(alpha: 0.9),
+          ],
         ),
       ),
-    );
-  }
-
-  /// 构建功能菜单区域
-  Widget _buildMenuSection(BuildContext context, ProfileState state) {
-    return ColoredBox(
-      color: Colors.white,
       child: Column(
         children: [
-          _buildMenuItem(
-            icon: Icons.receipt_long,
-            title: t.order.myOrders,
-            onTap: () => context.push(AppRoutes.orderList),
+          SizedBox(height: 50.h),
+          // 标题栏
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(width: 40),
+                Text(
+                  '我的',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.more_horiz, color: Colors.white, size: 24.sp),
+                    SizedBox(width: 12.w),
+                    Icon(
+                      Icons.radio_button_checked,
+                      color: Colors.white,
+                      size: 24.sp,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          _buildDivider(),
-          _buildMenuItem(
-            icon: Icons.favorite,
-            title: t.profile.favoriteDevices,
-            trailing: state.favoriteDevices.isNotEmpty
-                ? Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 8.w,
-                      vertical: 2.h,
+          SizedBox(height: 30.h),
+          // 用户信息
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            child: Row(
+              children: [
+                Container(
+                  width: 64.w,
+                  height: 64.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.5),
+                      width: 2,
                     ),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(10.r),
+                    image: const DecorationImage(
+                      image: NetworkImage(
+                        'https://picsum.photos/seed/user/200',
+                      ),
+                      fit: BoxFit.cover,
                     ),
-                    child: Text(
-                      '${state.favoriteDevices.length}',
-                      style: TextStyle(fontSize: 12.sp, color: Colors.white),
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: Text(
+                    'Hi! 166****2309',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
                     ),
-                  )
-                : const SizedBox.shrink(),
-            onTap: () => context.push(AppRoutes.favoriteDevices),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 6.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(10.r),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: Text(
+                    '退出',
+                    style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 40.h),
+          // 资产信息容器 (磨砂玻璃效果感)
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(vertical: 24.h),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.r),
+                topRight: Radius.circular(20.r),
+              ),
+            ),
+            child: Row(
+              children: [
+                _buildAssetItem('999962.07', '钱包余额'),
+                _buildAssetItem('300', '乖乖币'),
+                _buildAssetItem('9', '优惠券'),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  /// 构建设置区域
-  Widget _buildSettingsSection(BuildContext context, ProfileNotifier notifier) {
+  /// 构建资产单项
+  ///
+  /// 展示资产数值及名称，使用白色文字以配合红色背景
+  Widget _buildAssetItem(String value, String label) {
+    return Expanded(
+      child: Column(
+        children: [
+          Text(
+            value,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.8),
+              fontSize: 11.sp,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 构建功能列表菜单
+  ///
+  /// 垂直展示钱包、优惠券、设置等功能项
+  Widget _buildMenuSection() {
     return ColoredBox(
       color: Colors.white,
       child: Column(
         children: [
-          _buildMenuItem(
-            icon: Icons.person_outline,
-            title: t.profile.personalInfo,
-            onTap: () => context.push(AppRoutes.profileEdit),
+          _buildMenuTile(
+            icon: Icons.account_balance_wallet_outlined,
+            title: '我的钱包',
+            trailingText: '999962.07',
+            trailingColor: const Color(0xFFFF5252),
           ),
-          _buildDivider(),
-          _buildMenuItem(
-            icon: Icons.cleaning_services_outlined,
-            title: t.settings.clearCache,
-            onTap: () => _showClearCacheDialog(context),
-          ),
-          _buildDivider(),
-          _buildMenuItem(
-            icon: Icons.info_outline,
-            title: t.settings.aboutUs,
-            onTap: () => _showAboutDialog(context),
-          ),
-          _buildDivider(),
-          _buildMenuItem(
-            icon: Icons.logout,
-            title: t.profile.logout,
-            titleColor: Colors.red,
-            onTap: () => _showLogoutDialog(context, notifier),
-          ),
+          _buildMenuTile(icon: Icons.assignment_outlined, title: '优惠券'),
+          _buildMenuTile(icon: Icons.help_outline, title: '问题反馈'),
+          _buildMenuTile(icon: Icons.person_outline, title: '个人信息'),
+          _buildMenuTile(icon: Icons.handshake_outlined, title: '合作商加盟'),
+          _buildMenuTile(icon: Icons.info_outline, title: '关于我们'),
+          _buildMenuTile(icon: Icons.settings_outlined, title: '设置'),
         ],
       ),
     );
   }
 
   /// 构建菜单项
-  Widget _buildMenuItem({
+  ///
+  /// 单个功能行，包含图标、标题、可选的尾部文字及右箭头
+  Widget _buildMenuTile({
     required IconData icon,
     required String title,
-    Widget? trailing,
-    Color? titleColor,
-    VoidCallback? onTap,
+    String? trailingText,
+    Color? trailingColor,
   }) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-        child: Row(
-          children: [
-            Icon(icon, size: 24.sp, color: titleColor ?? Colors.grey[700]),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  color: titleColor ?? Colors.black87,
-                ),
+    return Container(
+      height: 60.h,
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: const Color(0xFFF5F5F5), width: 1.h),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 24.sp, color: const Color(0xFF666666)),
+          SizedBox(width: 16.w),
+          Text(
+            title,
+            style: TextStyle(fontSize: 15.sp, color: const Color(0xFF333333)),
+          ),
+          const Spacer(),
+          if (trailingText != null)
+            Text(
+              trailingText,
+              style: TextStyle(
+                fontSize: 16.sp,
+                color: trailingColor ?? const Color(0xFF999999),
+                fontWeight: FontWeight.bold,
               ),
             ),
-            if (trailing != null)
-              trailing
-            else
-              Icon(Icons.chevron_right, size: 20.sp, color: Colors.grey[400]),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// 构建分割线
-  Widget _buildDivider() {
-    return Divider(height: 1.h, indent: 52.w, endIndent: 16.w);
-  }
-
-  void _showLogoutDialog(BuildContext context, ProfileNotifier notifier) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.profile.confirmLogout),
-        content: Text(t.profile.confirmLogoutContent),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(t.common.cancel),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              notifier.logout();
-              Navigator.pop(context);
-              context.go(AppRoutes.login);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
-            child: Text(t.common.logout),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showClearCacheDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.settings.clearCache),
-        content: Text(t.profile.clearCacheConfirm),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(t.common.cancel),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // TODO(User): 实现清除缓存逻辑
-              Navigator.pop(context);
-            },
-            child: Text(t.common.confirm),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showAboutDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.settings.aboutUs),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(t.common.appName),
-            const SizedBox(height: 8),
-            Text(
-              t.profile.version(version: '1.0.0'),
-              style: TextStyle(color: Colors.grey[600]),
-            ),
-            const SizedBox(height: 16),
-            Text(t.profile.appDescription),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(t.common.ok),
+          SizedBox(width: 4.w),
+          Icon(
+            Icons.chevron_right,
+            size: 20.sp,
+            color: const Color(0xFFCCCCCC),
           ),
         ],
       ),

@@ -11,7 +11,7 @@ part 'auth_interceptor.g.dart';
 /// and handles token refresh when receiving 401 Unauthorized responses.
 ///
 /// **Validates: Requirements 23.1, 23.2**
-@riverpod
+@Riverpod(keepAlive: true)
 AuthInterceptor authInterceptor(Ref ref) {
   return AuthInterceptor(ref);
 }

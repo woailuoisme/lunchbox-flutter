@@ -32,7 +32,21 @@ class LoginNotifier extends _$LoginNotifier {
   }
 
   Future<void> login() async {
-    if (!state.isValid) {
+    if (state.status.isInProgress) {
+      return;
+    }
+
+    // 强制验证表单（将 pure 状态转为 dirty）
+    final username = Username.dirty(state.username.value);
+    final password = Password.dirty(state.password.value);
+    final isValid = Formz.validate([username, password]);
+
+    if (!isValid) {
+      state = state.copyWith(
+        username: username,
+        password: password,
+        isValid: false,
+      );
       return;
     }
 

@@ -11,7 +11,7 @@ part 'logging_interceptor.g.dart';
 /// including headers, body, status codes, and timing.
 ///
 /// **Validates: Requirements 23.1, 23.2**
-@riverpod
+@Riverpod(keepAlive: true)
 LoggingInterceptor loggingInterceptor(Ref ref) {
   return LoggingInterceptor();
 }

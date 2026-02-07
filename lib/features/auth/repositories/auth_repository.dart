@@ -28,6 +28,31 @@ class AuthRepository {
     required String password,
   }) {
     return TaskEither.tryCatch(() async {
+      // 测试模式逻辑
+      if (AppConstants.useTestMode &&
+          username == 'admin' &&
+          password == 'admin') {
+        LoggerUtils.i('AuthRepository: Using test mode login');
+        final testUser = UserModel(
+          id: 'test_admin_id',
+          username: 'admin',
+          nickname: '测试管理员',
+          registeredAt: DateTime(2024),
+        );
+
+        await _storageService.write(
+          AppConstants.keyAuthToken,
+          'test_token_admin',
+        );
+        await _storageService.write(AppConstants.keyUserId, testUser.id);
+        await _storageService.write(AppConstants.keyUserPermissions, [
+          'admin',
+          'user',
+        ]);
+
+        return testUser;
+      }
+
       final response = await _client.login({
         'username': username,
         'password': password,

@@ -60,14 +60,19 @@ class _LoginViewState extends ConsumerState<LoginView> {
               SizedBox(height: 24.h),
               _buildLoginButton(),
               SizedBox(height: 16.h),
-              _buildForgotPassword(),
-              SizedBox(height: 32.h),
-              _buildRegisterHint(),
+              _buildFooterLinks(),
               SizedBox(height: 24.h),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildFooterLinks() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [_buildRegisterHint(), _buildForgotPassword()],
     );
   }
 
@@ -110,16 +115,38 @@ class _LoginViewState extends ConsumerState<LoginView> {
           initialValue: state.username.value,
           onChanged: (value) =>
               ref.read(loginProvider.notifier).usernameChanged(value),
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.w500,
+          ),
           decoration: InputDecoration(
             labelText: t.common.username,
+            labelStyle: const TextStyle(color: AppColors.textSecondary),
             hintText: t.auth.enterUsernameHint,
+            hintStyle: const TextStyle(color: AppColors.textHint),
             errorText:
                 state.username.displayError == UsernameValidationError.empty
                 ? t.auth.enterUsername
                 : null,
-            prefixIcon: const Icon(Icons.person_outline),
+            prefixIcon: const Icon(
+              Icons.person_outline,
+              color: AppColors.primary,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
+              borderSide: const BorderSide(color: AppColors.divider),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: const BorderSide(
+                color: AppColors.divider,
+                width: 1.5,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: const BorderSide(color: AppColors.primary, width: 2),
             ),
           ),
           keyboardType: TextInputType.text,
@@ -131,24 +158,47 @@ class _LoginViewState extends ConsumerState<LoginView> {
           onChanged: (value) =>
               ref.read(loginProvider.notifier).passwordChanged(value),
           obscureText: _obscurePassword,
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.w500,
+          ),
           decoration: InputDecoration(
             labelText: t.common.password,
+            labelStyle: const TextStyle(color: AppColors.textSecondary),
             hintText: t.auth.enterPassword,
+            hintStyle: const TextStyle(color: AppColors.textHint),
             errorText:
                 state.password.displayError == PasswordValidationError.empty
                 ? t.auth.enterPassword
                 : null,
-            prefixIcon: const Icon(Icons.lock_outline),
+            prefixIcon: const Icon(
+              Icons.lock_outline,
+              color: AppColors.primary,
+            ),
             suffixIcon: IconButton(
               icon: Icon(
                 _obscurePassword
                     ? Icons.visibility_outlined
                     : Icons.visibility_off_outlined,
+                color: AppColors.textSecondary,
               ),
               onPressed: _togglePasswordVisibility,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
+              borderSide: const BorderSide(color: AppColors.divider),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: const BorderSide(
+                color: AppColors.divider,
+                width: 1.5,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: const BorderSide(color: AppColors.primary, width: 2),
             ),
           ),
           textInputAction: TextInputAction.done,
@@ -163,10 +213,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
     final isLoading = state.status.isInProgress;
 
     return ElevatedButton(
-      onPressed: state.isValid && !isLoading ? _handleLogin : null,
+      onPressed: state.isValid ? _handleLogin : null,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
+        disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.5),
+        disabledForegroundColor: Colors.white.withValues(alpha: 0.8),
         padding: EdgeInsets.symmetric(vertical: 16.h),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
@@ -190,21 +242,23 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Widget _buildForgotPassword() {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: TextButton(
-        onPressed: () => context.push(AppRoutes.forgotPassword),
-        child: Text(
-          t.auth.forgotPassword,
-          style: TextStyle(fontSize: 14.sp, color: AppColors.primary),
-        ),
+    return TextButton(
+      onPressed: () => context.push(AppRoutes.forgotPassword),
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.zero,
+        minimumSize: Size.zero,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      child: Text(
+        t.auth.forgotPassword,
+        style: TextStyle(fontSize: 14.sp, color: AppColors.primary),
       ),
     );
   }
 
   Widget _buildRegisterHint() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           t.auth.dontHaveAccount,
@@ -212,6 +266,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
         ),
         TextButton(
           onPressed: () => context.push(AppRoutes.register),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.only(left: 4.w),
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
           child: Text(
             t.common.register,
             style: TextStyle(
