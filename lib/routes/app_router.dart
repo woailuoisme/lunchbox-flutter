@@ -1,10 +1,15 @@
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/core/providers/providers.dart';
 import 'package:lunchbox/features/auth/auth.dart';
+import 'package:lunchbox/features/cart/cart.dart';
+import 'package:lunchbox/features/city/city.dart';
 import 'package:lunchbox/features/device/device.dart';
+import 'package:lunchbox/features/help/help.dart';
 import 'package:lunchbox/features/home/home.dart';
 import 'package:lunchbox/features/onboarding/onboarding.dart';
 import 'package:lunchbox/features/order/order.dart';
+import 'package:lunchbox/features/payment/payment.dart';
+import 'package:lunchbox/features/product/product.dart';
 import 'package:lunchbox/features/profile/profile.dart';
 import 'package:lunchbox/features/settings/settings.dart';
 import 'package:lunchbox/features/splash/splash.dart';
@@ -39,7 +44,9 @@ GoRouter goRouter(Ref ref) {
     // 验证需求：2.4
     redirect: (context, state) {
       final isAuthRoute =
-          state.matchedLocation.startsWith('/auth') ||
+          state.matchedLocation == AppRoutes.login ||
+          state.matchedLocation == AppRoutes.register ||
+          state.matchedLocation == AppRoutes.forgotPassword ||
           state.matchedLocation == AppRoutes.splash ||
           state.matchedLocation == AppRoutes.onboarding;
 
@@ -75,8 +82,26 @@ GoRouter goRouter(Ref ref) {
         path: AppRoutes.login,
         builder: (context, state) => const LoginView(),
       ),
+      GoRoute(
+        path: AppRoutes.register,
+        builder: (context, state) => const RegisterView(),
+      ),
+      GoRoute(
+        path: AppRoutes.forgotPassword,
+        builder: (context, state) => const ForgotPasswordView(),
+      ),
 
-      // 设备详情页（需要认证，但不在底部导航中）
+      // 城市选择
+      GoRoute(
+        path: AppRoutes.citySelection,
+        builder: (context, state) => const CitySelectionView(),
+      ),
+
+      // 设备相关
+      GoRoute(
+        path: AppRoutes.deviceList,
+        builder: (context, state) => const DeviceListView(),
+      ),
       GoRoute(
         path: '${AppRoutes.deviceList}/:id',
         builder: (context, state) {
@@ -84,6 +109,68 @@ GoRouter goRouter(Ref ref) {
           return DeviceDetailView(deviceId: id);
         },
       ),
+
+      // 产品列表
+      GoRoute(
+        path: '${AppRoutes.productList}/:deviceId',
+        builder: (context, state) {
+          final deviceId = state.pathParameters['deviceId']!;
+          return ProductListView(deviceId: deviceId);
+        },
+      ),
+
+      // 产品详情
+      GoRoute(
+        path: '${AppRoutes.productDetail}/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return ProductDetailView(productId: id);
+        },
+      ),
+
+      // 购物车
+      GoRoute(
+        path: AppRoutes.cart,
+        builder: (context, state) => const CartView(),
+      ),
+
+      // 订单确认
+      GoRoute(
+        path: AppRoutes.orderConfirm,
+        builder: (context, state) => const OrderConfirmView(),
+      ),
+
+      // 订单详情
+      GoRoute(
+        path: '${AppRoutes.orderDetail}/:id',
+        builder: (context, state) => const OrderDetailView(),
+      ),
+
+      // 支付
+      GoRoute(
+        path: AppRoutes.payment,
+        builder: (context, state) {
+          final order = state.extra! as OrderModel;
+          return PaymentView(order: order);
+        },
+      ),
+
+      // 个人资料相关
+      GoRoute(
+        path: AppRoutes.profileEdit,
+        builder: (context, state) => const ProfileEditView(),
+      ),
+      GoRoute(
+        path: AppRoutes.favoriteDevices,
+        builder: (context, state) => const FavoriteDevicesView(),
+      ),
+
+      // 帮助中心
+      GoRoute(
+        path: AppRoutes.help,
+        builder: (context, state) => const HelpView(),
+      ),
+
       // 设置相关路由
       GoRoute(
         path: AppRoutes.settings,

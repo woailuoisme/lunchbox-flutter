@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
 import 'package:lunchbox/features/device/providers/device_providers.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 设备列表视图
 class DeviceListView extends ConsumerWidget {
@@ -16,7 +17,7 @@ class DeviceListView extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('附近设备'),
+        title: Text(t.device.nearby),
         actions: [
           // 排序按钮
           PopupMenuButton<String>(
@@ -25,8 +26,11 @@ class DeviceListView extends ConsumerWidget {
               ref.read(deviceSortProvider.notifier).set(value);
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(value: 'distance', child: Text('按距离排序')),
-              const PopupMenuItem(value: 'name', child: Text('按名称排序')),
+              PopupMenuItem(
+                value: 'distance',
+                child: Text(t.device.sortByDistance),
+              ),
+              PopupMenuItem(value: 'name', child: Text(t.device.sortByName)),
             ],
           ),
           // 过滤按钮
@@ -37,7 +41,7 @@ class DeviceListView extends ConsumerWidget {
             onPressed: () {
               ref.read(deviceFilterOnlineProvider.notifier).toggle();
             },
-            tooltip: '仅显示在线设备',
+            tooltip: t.device.filterOnline,
           ),
         ],
       ),
@@ -51,7 +55,7 @@ class DeviceListView extends ConsumerWidget {
                   Icon(Icons.devices_other, size: 64.sp, color: Colors.grey),
                   SizedBox(height: 16.h),
                   Text(
-                    '附近暂无设备',
+                    t.device.noDevicesNearby,
                     style: TextStyle(fontSize: 16.sp, color: Colors.grey),
                   ),
                   SizedBox(height: 16.h),
@@ -59,7 +63,7 @@ class DeviceListView extends ConsumerWidget {
                     onPressed: () {
                       ref.invalidate(rawDevicesProvider);
                     },
-                    child: const Text('刷新'),
+                    child: Text(t.common.refresh),
                   ),
                 ],
               ),
@@ -88,7 +92,7 @@ class DeviceListView extends ConsumerWidget {
               Icon(Icons.error_outline, size: 64.sp, color: Colors.red),
               SizedBox(height: 16.h),
               Text(
-                '加载失败',
+                t.common.loadFailed,
                 style: TextStyle(fontSize: 16.sp, color: Colors.red),
               ),
               Text(error.toString()),
@@ -97,7 +101,7 @@ class DeviceListView extends ConsumerWidget {
                 onPressed: () {
                   ref.invalidate(rawDevicesProvider);
                 },
-                child: const Text('重试'),
+                child: Text(t.common.retry),
               ),
             ],
           ),
@@ -181,13 +185,19 @@ class DeviceListView extends ConsumerWidget {
                   if (device.supportMobilePayment) ...[
                     Icon(Icons.phone_android, size: 16.sp, color: Colors.green),
                     SizedBox(width: 4.w),
-                    Text('移动支付', style: TextStyle(fontSize: 12.sp)),
+                    Text(
+                      t.device.mobilePayment,
+                      style: TextStyle(fontSize: 12.sp),
+                    ),
                     SizedBox(width: 12.w),
                   ],
                   if (device.supportCashPayment) ...[
                     Icon(Icons.payments, size: 16.sp, color: Colors.orange),
                     SizedBox(width: 4.w),
-                    Text('现金支付', style: TextStyle(fontSize: 12.sp)),
+                    Text(
+                      t.device.cashPayment,
+                      style: TextStyle(fontSize: 12.sp),
+                    ),
                   ],
                 ],
               ),
@@ -206,19 +216,19 @@ class DeviceListView extends ConsumerWidget {
     switch (device.status) {
       case 'online':
         color = Colors.green;
-        text = '在线';
+        text = t.device.online;
         break;
       case 'offline':
         color = Colors.grey;
-        text = '离线';
+        text = t.device.offline;
         break;
       case 'maintenance':
         color = Colors.orange;
-        text = '维护中';
+        text = t.device.maintenance;
         break;
       default:
         color = Colors.grey;
-        text = '未知';
+        text = t.device.unknown;
     }
 
     return Container(

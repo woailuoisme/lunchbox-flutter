@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
 import 'package:lunchbox/features/cart/providers/cart_notifier.dart';
 import 'package:lunchbox/features/cart/providers/cart_state.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 购物车视图
 class CartView extends ConsumerWidget {
@@ -19,10 +20,13 @@ class CartView extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('购物车'),
+        title: Text(t.cart.title),
         actions: [
           if (state.cartItems.isNotEmpty)
-            TextButton(onPressed: notifier.clearCart, child: const Text('清空')),
+            TextButton(
+              onPressed: notifier.clearCart,
+              child: Text(t.cart.clear),
+            ),
         ],
       ),
       body: Builder(
@@ -67,13 +71,13 @@ class CartView extends ConsumerWidget {
           Icon(Icons.shopping_cart_outlined, size: 80.sp, color: Colors.grey),
           SizedBox(height: 16.h),
           Text(
-            '购物车是空的',
+            t.cart.empty,
             style: TextStyle(fontSize: 18.sp, color: Colors.grey[600]),
           ),
           SizedBox(height: 24.h),
           ElevatedButton(
             onPressed: () => context.go('/home'),
-            child: const Text('去逛逛'),
+            child: Text(t.cart.goShopping),
           ),
         ],
       ),
@@ -213,7 +217,7 @@ class CartView extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '总计:',
+                t.cart.total,
                 style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
               ),
               Text(
@@ -236,7 +240,7 @@ class CartView extends ConsumerWidget {
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
             ),
-            child: Text('去结算(${state.totalQuantity})'),
+            child: Text('${t.cart.checkout}(${state.totalQuantity})'),
           ),
         ],
       ),

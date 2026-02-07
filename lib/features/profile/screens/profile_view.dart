@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/profile/providers/profile_notifier.dart';
 import 'package:lunchbox/features/profile/providers/profile_state.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 
 /// 用户中心视图
@@ -95,7 +96,7 @@ class ProfileView extends ConsumerWidget {
 
                   // 用户名
                   Text(
-                    user?.nickname ?? '未登录',
+                    user?.nickname ?? t.profile.notLoggedIn,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
@@ -130,13 +131,13 @@ class ProfileView extends ConsumerWidget {
         children: [
           _buildMenuItem(
             icon: Icons.receipt_long,
-            title: '我的订单',
+            title: t.order.myOrders,
             onTap: () => context.push(AppRoutes.orderList),
           ),
           _buildDivider(),
           _buildMenuItem(
             icon: Icons.favorite,
-            title: '收藏设备',
+            title: t.profile.favoriteDevices,
             trailing: state.favoriteDevices.isNotEmpty
                 ? Container(
                     padding: EdgeInsets.symmetric(
@@ -168,25 +169,25 @@ class ProfileView extends ConsumerWidget {
         children: [
           _buildMenuItem(
             icon: Icons.person_outline,
-            title: '个人信息',
+            title: t.profile.personalInfo,
             onTap: () => context.push(AppRoutes.profileEdit),
           ),
           _buildDivider(),
           _buildMenuItem(
             icon: Icons.cleaning_services_outlined,
-            title: '清除缓存',
+            title: t.settings.clearCache,
             onTap: () => _showClearCacheDialog(context),
           ),
           _buildDivider(),
           _buildMenuItem(
             icon: Icons.info_outline,
-            title: '关于我们',
+            title: t.settings.aboutUs,
             onTap: () => _showAboutDialog(context),
           ),
           _buildDivider(),
           _buildMenuItem(
             icon: Icons.logout,
-            title: '退出登录',
+            title: t.profile.logout,
             titleColor: Colors.red,
             onTap: () => _showLogoutDialog(context, notifier),
           ),
@@ -239,12 +240,12 @@ class ProfileView extends ConsumerWidget {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('确认退出'),
-        content: const Text('确定要退出登录吗？'),
+        title: Text(t.profile.confirmLogout),
+        content: Text(t.profile.confirmLogoutContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('取消'),
+            child: Text(t.common.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -255,7 +256,7 @@ class ProfileView extends ConsumerWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: const Text('退出'),
+            child: Text(t.common.logout),
           ),
         ],
       ),
@@ -266,19 +267,19 @@ class ProfileView extends ConsumerWidget {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('清除缓存'),
-        content: const Text('确定要清除所有缓存数据吗？'),
+        title: Text(t.settings.clearCache),
+        content: Text(t.profile.clearCacheConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('取消'),
+            child: Text(t.common.cancel),
           ),
           ElevatedButton(
             onPressed: () {
               // TODO(User): 实现清除缓存逻辑
               Navigator.pop(context);
             },
-            child: const Text('确定'),
+            child: Text(t.common.confirm),
           ),
         ],
       ),
@@ -289,22 +290,25 @@ class ProfileView extends ConsumerWidget {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('关于我们'),
+        title: Text(t.settings.aboutUs),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('饭盒售货机'),
+            Text(t.common.appName),
             const SizedBox(height: 8),
-            Text('版本：1.0.0', style: TextStyle(color: Colors.grey[600])),
+            Text(
+              t.profile.version(version: '1.0.0'),
+              style: TextStyle(color: Colors.grey[600]),
+            ),
             const SizedBox(height: 16),
-            const Text('一个便捷的自动售货机购买应用'),
+            Text(t.profile.appDescription),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('确定'),
+            child: Text(t.common.ok),
           ),
         ],
       ),

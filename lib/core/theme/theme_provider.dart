@@ -24,14 +24,14 @@ class ThemeNotifier extends _$ThemeNotifier {
     );
   }
 
-  void setThemeMode(ThemeMode mode) {
+  Future<void> setThemeMode(ThemeMode mode) async {
     state = state.copyWith(mode: mode);
-    ref.read(sharedPreferencesProvider).setInt(_themeModeKey, mode.index);
+    await ref.read(sharedPreferencesProvider).setInt(_themeModeKey, mode.index);
   }
 
-  void setScheme(FlexScheme scheme) {
+  Future<void> setScheme(FlexScheme scheme) async {
     state = state.copyWith(scheme: scheme);
-    ref.read(sharedPreferencesProvider).setInt(_schemeKey, scheme.index);
+    await ref.read(sharedPreferencesProvider).setInt(_schemeKey, scheme.index);
   }
 
   // 使用 AppColors 定义自定义配色方案

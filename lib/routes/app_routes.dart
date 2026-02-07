@@ -44,6 +44,9 @@ class AppRoutes {
   static const String profileEdit = '/profile-edit';
   static const String favoriteDevices = '/favorite-devices';
 
+  // 帮助
+  static const String help = '/help';
+
   // 设置
   static const String settings = '/settings';
   static const String about = '/about';

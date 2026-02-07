@@ -85,7 +85,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         ),
         SizedBox(height: 24.h),
         Text(
-          '饭盒售货机',
+          t.auth.loginTitle,
           style: TextStyle(
             fontSize: 28.sp,
             fontWeight: FontWeight.bold,
@@ -94,7 +94,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         ),
         SizedBox(height: 8.h),
         Text(
-          '便捷购买，美味随行',
+          t.auth.slogan,
           style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
         ),
       ],
@@ -112,10 +112,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
               ref.read(loginProvider.notifier).usernameChanged(value),
           decoration: InputDecoration(
             labelText: t.common.username,
-            hintText: '请输入用户名或手机号',
+            hintText: t.auth.enterUsernameHint,
             errorText:
                 state.username.displayError == UsernameValidationError.empty
-                ? '请输入用户名'
+                ? t.auth.enterUsername
                 : null,
             prefixIcon: const Icon(Icons.person_outline),
             border: OutlineInputBorder(
@@ -133,10 +133,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
           obscureText: _obscurePassword,
           decoration: InputDecoration(
             labelText: t.common.password,
-            hintText: '请输入密码',
+            hintText: t.auth.enterPassword,
             errorText:
                 state.password.displayError == PasswordValidationError.empty
-                ? '请输入密码'
+                ? t.auth.enterPassword
                 : null,
             prefixIcon: const Icon(Icons.lock_outline),
             suffixIcon: IconButton(
@@ -207,13 +207,13 @@ class _LoginViewState extends ConsumerState<LoginView> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          '还没有账号？',
+          t.auth.dontHaveAccount,
           style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
         ),
         TextButton(
           onPressed: () => context.push(AppRoutes.register),
           child: Text(
-            '立即注册',
+            t.common.register,
             style: TextStyle(
               fontSize: 14.sp,
               color: AppColors.primary,

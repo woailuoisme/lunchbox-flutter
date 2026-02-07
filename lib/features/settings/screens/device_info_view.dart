@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/settings/providers/settings_providers.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 设备信息页面
 class DeviceInfoView extends ConsumerWidget {
@@ -18,7 +19,7 @@ class DeviceInfoView extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('设备信息'),
+        title: Text(t.settings.deviceInfo),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -38,7 +39,7 @@ class DeviceInfoView extends ConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (Object err, StackTrace? stack) =>
-            Center(child: Text('加载失败: $err')),
+            Center(child: Text('${t.common.loadFailed}: $err')),
       ),
     );
   }
@@ -47,35 +48,35 @@ class DeviceInfoView extends ConsumerWidget {
     if (kIsWeb) {
       final webInfo = device as WebBrowserInfo;
       return {
-        '浏览器': webInfo.browserName.name,
-        '平台': webInfo.platform,
-        'User Agent': webInfo.userAgent,
-        '语言': webInfo.language,
-        '内存': webInfo.deviceMemory != null
+        t.device_info.browser: webInfo.browserName.name,
+        t.device_info.platform: webInfo.platform,
+        t.device_info.userAgent: webInfo.userAgent,
+        t.device_info.language: webInfo.language,
+        t.device_info.memory: webInfo.deviceMemory != null
             ? '${webInfo.deviceMemory} GB'
-            : '未知',
+            : t.common.unknownError,
       };
     } else if (Platform.isAndroid) {
       final androidInfo = device as AndroidDeviceInfo;
       return {
-        '品牌': androidInfo.brand,
-        '型号': androidInfo.model,
-        '系统版本': 'Android ${androidInfo.version.release}',
-        'SDK版本': androidInfo.version.sdkInt.toString(),
-        '厂商': androidInfo.manufacturer,
-        '硬件': androidInfo.hardware,
-        '主机': androidInfo.host,
-        'ID': androidInfo.id,
+        t.device_info.brand: androidInfo.brand,
+        t.device_info.model: androidInfo.model,
+        t.device_info.systemVersion: 'Android ${androidInfo.version.release}',
+        t.device_info.sdkVersion: androidInfo.version.sdkInt.toString(),
+        t.device_info.manufacturer: androidInfo.manufacturer,
+        t.device_info.hardware: androidInfo.hardware,
+        t.device_info.host: androidInfo.host,
+        t.device_info.id: androidInfo.id,
       };
     } else if (Platform.isIOS) {
       final iosInfo = device as IosDeviceInfo;
       return {
-        '名名称': iosInfo.name,
-        '型号': iosInfo.model,
-        '系统名': iosInfo.systemName,
-        '系统版本': iosInfo.systemVersion,
-        '机器码': iosInfo.utsname.machine,
-        '唯一ID': iosInfo.identifierForVendor,
+        t.device_info.name: iosInfo.name,
+        t.device_info.model: iosInfo.model,
+        t.device_info.systemName: iosInfo.systemName,
+        t.device_info.systemVersion: iosInfo.systemVersion,
+        t.device_info.machine: iosInfo.utsname.machine,
+        t.device_info.uniqueId: iosInfo.identifierForVendor,
       };
     }
     return device.data;

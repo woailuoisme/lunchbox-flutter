@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lunchbox/features/onboarding/providers/onboarding_notifier.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 
 /// Onboarding 引导页视图
@@ -12,6 +13,9 @@ class OnboardingView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 使用 watch 确保 OnboardingNotifier 在视图生命周期内不被 AutoDispose 销毁
+    // 只有 watch 会建立监听关系并保持 Provider 活跃
+    ref.watch(onboardingProvider);
     final notifier = ref.read(onboardingProvider.notifier);
 
     final bodyStyle = TextStyle(fontSize: 16.sp, color: Colors.grey[600]);
@@ -31,8 +35,8 @@ class OnboardingView extends ConsumerWidget {
 
       pages: [
         PageViewModel(
-          title: '欢迎使用饭盒售货机',
-          body: '随时随地，轻松购买美味午餐',
+          title: t.onboarding.welcomeTitle,
+          body: t.onboarding.welcomeBody,
           image: _buildImage(
             context,
             Icons.lunch_dining,
@@ -41,32 +45,42 @@ class OnboardingView extends ConsumerWidget {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: '查找附近设备',
-          body: '快速定位最近的售货机，节省您的时间',
+          title: t.onboarding.findDevicesTitle,
+          body: t.onboarding.findDevicesBody,
           image: _buildImage(context, Icons.location_on, Colors.orange),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: '便捷支付',
-          body: '支持信用卡等多种便捷支付方式',
+          title: t.onboarding.paymentTitle,
+          body: t.onboarding.paymentBody,
           image: _buildImage(context, Icons.credit_card, Colors.green),
           decoration: pageDecoration,
         ),
       ],
-      onDone: () {
-        notifier.completeOnboarding();
-        context.go(AppRoutes.login);
+      onDone: () async {
+        await notifier.completeOnboarding();
+        if (context.mounted) {
+          context.go(AppRoutes.login);
+        }
       },
-      onSkip: () {
-        notifier.completeOnboarding();
-        context.go(AppRoutes.login);
+      onSkip: () async {
+        await notifier.completeOnboarding();
+        if (context.mounted) {
+          context.go(AppRoutes.login);
+        }
       },
       showSkipButton: true,
       skipOrBackFlex: 0,
       nextFlex: 0,
-      skip: const Text('跳过', style: TextStyle(fontWeight: FontWeight.w600)),
+      skip: Text(
+        t.common.skip,
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
       next: const Icon(Icons.arrow_forward),
-      done: const Text('开始使用', style: TextStyle(fontWeight: FontWeight.w600)),
+      done: Text(
+        t.onboarding.getStarted,
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: EdgeInsets.all(16.w),
       controlsPadding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),

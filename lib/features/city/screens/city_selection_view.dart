@@ -7,6 +7,7 @@ import 'package:lunchbox/core/widgets/error_widget.dart' as app_error; // 防止
 import 'package:lunchbox/core/widgets/loading_widget.dart';
 import 'package:lunchbox/features/city/entities/city_model.dart';
 import 'package:lunchbox/features/city/providers/city_providers.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:toastification/toastification.dart';
 
 /// 城市选择视图
@@ -50,8 +51,8 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
         toastification.show(
           context: context,
           type: ToastificationType.success,
-          title: const Text('城市已切换'),
-          description: Text('已切换到 ${city.name}'),
+          title: Text(t.city.switchSuccess),
+          description: Text(t.city.switchedTo(name: city.name)),
           autoCloseDuration: const Duration(seconds: 2),
         );
         context.pop();
@@ -61,8 +62,8 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
         toastification.show(
           context: context,
           type: ToastificationType.error,
-          title: const Text('切换失败'),
-          description: const Text('无法保存选择的城市，请重试'),
+          title: Text(t.city.switchFailed),
+          description: Text(t.city.saveFailed),
           autoCloseDuration: const Duration(seconds: 3),
         );
       }
@@ -73,7 +74,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('选择城市'), elevation: 0),
+      appBar: AppBar(title: Text(t.city.title), elevation: 0),
       body: Column(
         children: [
           // 搜索框
@@ -99,7 +100,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
       child: TextField(
         controller: _searchController,
         decoration: InputDecoration(
-          hintText: '搜索城市',
+          hintText: t.city.search,
           prefixIcon: const Icon(Icons.search),
           suffixIcon: searchQuery.isNotEmpty
               ? IconButton(
@@ -144,7 +145,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '热门城市',
+                t.city.hot,
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,

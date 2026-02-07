@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
 import 'package:lunchbox/features/profile/providers/profile_notifier.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 
 /// 收藏设备视图
@@ -16,7 +17,7 @@ class FavoriteDevicesView extends ConsumerWidget {
     final notifier = ref.read(profileProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('收藏设备')),
+      appBar: AppBar(title: Text(t.profile.favoriteDevices)),
       body: state.favoriteDevices.isEmpty
           ? _buildEmptyState(context)
           : ListView.builder(
@@ -39,13 +40,13 @@ class FavoriteDevicesView extends ConsumerWidget {
           Icon(Icons.favorite_border, size: 80.sp, color: Colors.grey),
           SizedBox(height: 16.h),
           Text(
-            '暂无收藏设备',
+            t.profile.noFavoriteDevices,
             style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
           ),
           SizedBox(height: 24.h),
           ElevatedButton(
             onPressed: () => context.pop(),
-            child: const Text('去逛逛'),
+            child: Text(t.cart.goShopping),
           ),
         ],
       ),
@@ -118,7 +119,7 @@ class FavoriteDevicesView extends ConsumerWidget {
                         ),
                         SizedBox(width: 4.w),
                         Text(
-                          device.isOnline ? '营业中' : '已打烊',
+                          device.isOnline ? t.device.online : t.device.offline,
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: Colors.grey[600],
@@ -176,16 +177,16 @@ class FavoriteDevicesView extends ConsumerWidget {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('取消收藏'),
-        content: Text('确定要取消收藏"${device.name}"吗？'),
+        title: Text(t.profile.removeFavorite),
+        content: Text(t.profile.removeFavoriteConfirm(name: device.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('取消'),
+            child: Text(t.common.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('确定'),
+            child: Text(t.common.confirm),
           ),
         ],
       ),

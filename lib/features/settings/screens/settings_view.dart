@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lunchbox/core/providers/locale_provider.dart';
+import 'package:lunchbox/core/theme/theme_provider.dart';
 import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/settings/providers/settings_providers.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:upgrader/upgrader.dart';
@@ -13,12 +16,14 @@ class SettingsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final packageInfoAsync = ref.watch(fetchPackageInfoProvider);
+    final currentLocale = ref.watch(localeProvider);
+    final themeState = ref.watch(themeProvider);
 
     return UpgradeAlert(
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
-          title: const Text('设置'),
+          title: Text(t.settings.title),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -26,10 +31,56 @@ class SettingsView extends ConsumerWidget {
         body: ListView(
           children: [
             const SizedBox(height: 16),
-            _buildSectionHeader('通用'),
+            _buildSectionHeader(t.settings.general),
             _buildSectionList([
               _buildListTile(
-                title: '检查更新',
+                title: t.settings.theme,
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _getThemeModeName(themeState.mode),
+                      style: const TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: AppColors.textHint,
+                    ),
+                  ],
+                ),
+                onTap: () => _showThemePicker(context, ref, themeState.mode),
+              ),
+              _buildListTile(
+                title: t.settings.language,
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      currentLocale == AppLocale.en
+                          ? t.settings.english
+                          : t.settings.chinese,
+                      style: const TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: AppColors.textHint,
+                    ),
+                  ],
+                ),
+                onTap: () => _showLanguagePicker(context, ref),
+              ),
+              _buildListTile(
+                title: t.settings.checkUpdate,
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                   size: 16,
@@ -37,31 +88,35 @@ class SettingsView extends ConsumerWidget {
                 ),
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('正在检查更新...'),
-                      duration: Duration(seconds: 1),
+                    SnackBar(
+                      content: Text(t.settings.checkingUpdate),
+                      duration: const Duration(seconds: 1),
                     ),
                   );
                 },
               ),
               _buildListTile(
-                title: '清除缓存',
+                title: t.settings.clearCache,
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                   size: 16,
                   color: AppColors.textHint,
                 ),
                 onTap: () {
-                  // TODO(User): 实现清除缓存
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(t.settings.cacheCleared),
+                      duration: const Duration(seconds: 1),
+                    ),
+                  );
                 },
               ),
             ]),
-
             const SizedBox(height: 24),
-            _buildSectionHeader('关于'),
+            _buildSectionHeader(t.settings.about),
             _buildSectionList([
               _buildListTile(
-                title: '设备信息',
+                title: t.settings.deviceInfo,
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                   size: 16,
@@ -72,7 +127,7 @@ class SettingsView extends ConsumerWidget {
                 ),
               ),
               _buildListTile(
-                title: '关于我们',
+                title: t.settings.aboutUs,
                 trailing: packageInfoAsync.when(
                   data: (PackageInfo info) => Row(
                     mainAxisSize: MainAxisSize.min,
@@ -98,9 +153,9 @@ class SettingsView extends ConsumerWidget {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                   error: (Object err, StackTrace? stack) => const Icon(
-                    Icons.arrow_forward_ios,
+                    Icons.error_outline,
+                    color: Colors.red,
                     size: 16,
-                    color: AppColors.textHint,
                   ),
                 ),
                 onTap: () =>
@@ -110,6 +165,121 @@ class SettingsView extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+
+  String _getThemeModeName(ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.light:
+        return t.settings.themeLight;
+      case ThemeMode.dark:
+        return t.settings.themeDark;
+      case ThemeMode.system:
+        return t.settings.themeSystem;
+    }
+  }
+
+  void _showThemePicker(
+    BuildContext context,
+    WidgetRef ref,
+    ThemeMode currentMode,
+  ) {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text(t.settings.themeSystem),
+                trailing: currentMode == ThemeMode.system
+                    ? const Icon(Icons.check, color: AppColors.primary)
+                    : null,
+                onTap: () async {
+                  await ref
+                      .read(themeProvider.notifier)
+                      .setThemeMode(ThemeMode.system);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+              ListTile(
+                title: Text(t.settings.themeLight),
+                trailing: currentMode == ThemeMode.light
+                    ? const Icon(Icons.check, color: AppColors.primary)
+                    : null,
+                onTap: () async {
+                  await ref
+                      .read(themeProvider.notifier)
+                      .setThemeMode(ThemeMode.light);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+              ListTile(
+                title: Text(t.settings.themeDark),
+                trailing: currentMode == ThemeMode.dark
+                    ? const Icon(Icons.check, color: AppColors.primary)
+                    : null,
+                onTap: () async {
+                  await ref
+                      .read(themeProvider.notifier)
+                      .setThemeMode(ThemeMode.dark);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showLanguagePicker(BuildContext context, WidgetRef ref) {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text(t.settings.english),
+                onTap: () async {
+                  await ref
+                      .read(localeProvider.notifier)
+                      .setLocale(AppLocale.en);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+              ListTile(
+                title: Text(t.settings.chinese),
+                onTap: () async {
+                  await ref
+                      .read(localeProvider.notifier)
+                      .setLocale(AppLocale.zhCn);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

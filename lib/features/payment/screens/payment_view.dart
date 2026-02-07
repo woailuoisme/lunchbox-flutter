@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/features/payment/providers/payment_notifier.dart';
 import 'package:lunchbox/features/payment/providers/payment_state.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 支付视图
 class PaymentView extends ConsumerWidget {
@@ -25,7 +26,7 @@ class PaymentView extends ConsumerWidget {
           context.go('/orders');
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(const SnackBar(content: Text('支付成功')));
+          ).showSnackBar(SnackBar(content: Text(t.payment.success)));
         }
       }
     });
@@ -39,14 +40,14 @@ class PaymentView extends ConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('收银台'),
+          title: Text(t.payment.checkout),
           leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () => _handleCancel(context, notifier),
           ),
         ),
         body: state.order == null
-            ? const Center(child: Text('订单信息不存在'))
+            ? Center(child: Text(t.payment.orderNotFound))
             : SingleChildScrollView(
                 child: Column(
                   children: [
@@ -97,7 +98,7 @@ class PaymentView extends ConsumerWidget {
                                   ),
                                 )
                               : Text(
-                                  '立即支付',
+                                  t.payment.payNow,
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold,
@@ -113,7 +114,7 @@ class PaymentView extends ConsumerWidget {
                       Padding(
                         padding: EdgeInsets.only(top: 16.h),
                         child: Text(
-                          '正在初始化支付组件...',
+                          t.payment.initializing,
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 14.sp,
@@ -139,12 +140,12 @@ class PaymentView extends ConsumerWidget {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('取消支付'),
-        content: const Text('确定要取消支付吗？订单将被取消'),
+        title: Text(t.payment.cancelTitle),
+        content: Text(t.payment.cancelContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('继续支付'),
+            child: Text(t.payment.continuePay),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
@@ -152,7 +153,7 @@ class PaymentView extends ConsumerWidget {
               backgroundColor: Theme.of(context).colorScheme.error,
               foregroundColor: Colors.white,
             ),
-            child: const Text('取消支付'),
+            child: Text(t.payment.cancelPay),
           ),
         ],
       ),
@@ -175,7 +176,7 @@ class PaymentView extends ConsumerWidget {
       child: Column(
         children: [
           Text(
-            '支付金额',
+            t.payment.amount,
             style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
           ),
           SizedBox(height: 8.h),
@@ -201,7 +202,7 @@ class PaymentView extends ConsumerWidget {
     return Column(
       children: [
         Text(
-          '支付剩余时间',
+          t.payment.remainingTime,
           style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
         ),
         SizedBox(height: 8.h),

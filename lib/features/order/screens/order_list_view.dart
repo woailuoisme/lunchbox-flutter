@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/features/order/providers/order_notifier.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 
 /// 订单列表视图
@@ -16,7 +17,7 @@ class OrderListView extends ConsumerWidget {
     final notifier = ref.read(orderProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('我的订单')),
+      appBar: AppBar(title: Text(t.order.myOrders)),
       body: Column(
         children: [
           // 状态筛选标签
@@ -56,11 +57,11 @@ class OrderListView extends ConsumerWidget {
   /// 构建状态筛选标签
   Widget _buildStatusTabs(String selectedStatus, OrderNotifier notifier) {
     final statuses = [
-      {'value': 'all', 'label': '全部'},
-      {'value': 'pending', 'label': '待支付'},
-      {'value': 'paid', 'label': '已支付'},
-      {'value': 'completed', 'label': '已完成'},
-      {'value': 'cancelled', 'label': '已取消'},
+      {'value': 'all', 'label': t.order.status.all},
+      {'value': 'pending', 'label': t.order.status.pending},
+      {'value': 'paid', 'label': t.order.status.paid},
+      {'value': 'completed', 'label': t.order.status.completed},
+      {'value': 'cancelled', 'label': t.order.status.cancelled},
     ];
 
     return Container(
@@ -96,7 +97,7 @@ class OrderListView extends ConsumerWidget {
           Icon(Icons.receipt_long_outlined, size: 80.sp, color: Colors.grey),
           SizedBox(height: 16.h),
           Text(
-            '暂无订单',
+            t.order.noOrders,
             style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
           ),
         ],
@@ -126,7 +127,7 @@ class OrderListView extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '订单号：${order.id}',
+                    '${t.order.orderIdLabel}${order.id}',
                     style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
                   ),
                   Container(
@@ -142,7 +143,7 @@ class OrderListView extends ConsumerWidget {
                       border: Border.all(color: _getStatusColor(order.status)),
                     ),
                     child: Text(
-                      notifier.getStatusText(order.status),
+                      _getOrderStatusText(order.status),
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: _getStatusColor(order.status),
@@ -169,7 +170,7 @@ class OrderListView extends ConsumerWidget {
                       child: Text(
                         order.items.first.product.name +
                             (order.items.length > 1
-                                ? ' 等${order.items.length}件商品'
+                                ? t.order.itemsCount(count: order.items.length)
                                 : ''),
                         style: TextStyle(fontSize: 14.sp),
                         maxLines: 1,
@@ -186,7 +187,7 @@ class OrderListView extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '订单金额',
+                    t.order.orderAmount,
                     style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
                   ),
                   Text(
@@ -216,7 +217,7 @@ class OrderListView extends ConsumerWidget {
                           vertical: 8.h,
                         ),
                       ),
-                      child: const Text('取消订单'),
+                      child: Text(t.order.cancelOrder),
                     ),
                     SizedBox(width: 8.w),
                     ElevatedButton(
@@ -233,7 +234,7 @@ class OrderListView extends ConsumerWidget {
                           vertical: 8.h,
                         ),
                       ),
-                      child: const Text('去支付'),
+                      child: Text(t.order.payNow),
                     ),
                   ],
                   if (order.status == OrderStatus.paid ||
@@ -243,7 +244,7 @@ class OrderListView extends ConsumerWidget {
                         AppRoutes.orderDetail,
                         extra: {'order': order},
                       ),
-                      child: const Text('查看详情'),
+                      child: Text(t.order.viewDetail),
                     ),
                 ],
               ),
@@ -254,6 +255,23 @@ class OrderListView extends ConsumerWidget {
     );
   }
 
+  String _getOrderStatusText(OrderStatus status) {
+    switch (status) {
+      case OrderStatus.pending:
+        return t.order.status.pending;
+      case OrderStatus.paid:
+        return t.order.status.paid;
+      case OrderStatus.completed:
+        return t.order.status.completed;
+      case OrderStatus.cancelled:
+        return t.order.status.cancelled;
+      case OrderStatus.refunded:
+        return t.order.status.refunded;
+      case OrderStatus.failed:
+        return t.order.status.failed;
+    }
+  }
+
   Future<void> _showCancelDialog(
     BuildContext context,
     OrderNotifier notifier,
@@ -262,12 +280,12 @@ class OrderListView extends ConsumerWidget {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('确认取消'),
-        content: const Text('确定要取消这个订单吗？'),
+        title: Text(t.order.cancelConfirmTitle),
+        content: Text(t.order.cancelConfirmContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('取消'),
+            child: Text(t.common.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
@@ -275,7 +293,7 @@ class OrderListView extends ConsumerWidget {
               backgroundColor: Theme.of(context).colorScheme.error,
               foregroundColor: Colors.white,
             ),
-            child: const Text('确定'),
+            child: Text(t.common.confirm),
           ),
         ],
       ),
@@ -286,7 +304,7 @@ class OrderListView extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text('订单已取消')));
+        ).showSnackBar(SnackBar(content: Text(t.order.orderCancelled)));
       }
     }
   }

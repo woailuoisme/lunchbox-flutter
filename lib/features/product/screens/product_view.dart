@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 class ProductView extends ConsumerWidget {
   const ProductView({super.key});
@@ -7,9 +8,9 @@ class ProductView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: const Text('商品详情'), centerTitle: true),
-      body: const Center(
-        child: Text('商品详情页面正在开发中', style: TextStyle(fontSize: 20)),
+      appBar: AppBar(title: Text(t.product.detail), centerTitle: true),
+      body: Center(
+        child: Text(t.common.developing, style: const TextStyle(fontSize: 20)),
       ),
     );
   }

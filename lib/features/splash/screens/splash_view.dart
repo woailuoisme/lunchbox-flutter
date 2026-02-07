@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/splash/providers/splash_notifier.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 class SplashView extends ConsumerWidget {
   const SplashView({super.key});
@@ -80,7 +81,7 @@ class SplashView extends ConsumerWidget {
     return Column(
       children: [
         Text(
-          '饭盒售货机',
+          t.common.appName,
           style: TextStyle(
             fontSize: 28.sp,
             fontWeight: FontWeight.bold,
@@ -130,18 +131,18 @@ class SplashView extends ConsumerWidget {
 
   Widget _buildLoadingText(BuildContext context, SplashState state) {
     final progress = state.initializationProgress;
-    String message = '正在启动...';
+    String message = t.splash.starting;
 
     if (progress >= 0.2 && progress < 0.4) {
-      message = '检查服务状态...';
+      message = t.splash.checkingServices;
     } else if (progress >= 0.4 && progress < 0.6) {
-      message = '加载配置...';
+      message = t.splash.loadingConfig;
     } else if (progress >= 0.6 && progress < 0.8) {
-      message = '检查登录状态...';
+      message = t.splash.checkingAuth;
     } else if (progress >= 0.8 && progress < 1.0) {
-      message = '准备数据...';
+      message = t.splash.preparingData;
     } else if (progress >= 1.0) {
-      message = '启动完成';
+      message = t.splash.ready;
     }
 
     return Text(
@@ -167,7 +168,7 @@ class SplashView extends ConsumerWidget {
             Icon(Icons.error_outline, size: 80.sp, color: Colors.white),
             SizedBox(height: 24.h),
             Text(
-              '启动失败',
+              t.splash.failed,
               style: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.bold,
@@ -176,7 +177,7 @@ class SplashView extends ConsumerWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              state.initializationError ?? '未知错误',
+              state.initializationError ?? t.common.unknownError,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14.sp,
@@ -201,7 +202,7 @@ class SplashView extends ConsumerWidget {
                     ),
                   ),
                   child: Text(
-                    '重试',
+                    t.common.retry,
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
@@ -223,7 +224,7 @@ class SplashView extends ConsumerWidget {
                     ),
                   ),
                   child: Text(
-                    '跳过',
+                    t.common.skip,
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
 import 'package:lunchbox/features/device/providers/device_providers.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 设备详情视图
 class DeviceDetailView extends ConsumerWidget {
@@ -64,7 +65,8 @@ class DeviceDetailView extends ConsumerWidget {
           ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(child: Text('加载失败: $error')),
+        error: (error, stack) =>
+            Center(child: Text(t.device.loadFailed(error: error))),
       ),
 
       // 底部操作栏
@@ -81,22 +83,26 @@ class DeviceDetailView extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '设备信息',
+              t.device.info,
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12.h),
 
-            _buildInfoRow(Icons.location_on, '地址', device.address),
+            _buildInfoRow(Icons.location_on, t.device.address, device.address),
             SizedBox(height: 8.h),
 
             if (device.distance != null)
-              _buildInfoRow(Icons.directions_walk, '距离', device.distanceText),
+              _buildInfoRow(
+                Icons.directions_walk,
+                t.device.distance,
+                device.distanceText,
+              ),
 
             SizedBox(height: 8.h),
             _buildInfoRow(
               Icons.circle,
-              '状态',
-              device.isOnline ? '在线' : '离线',
+              t.device.status,
+              device.isOnline ? t.device.online : t.device.offline,
               valueColor: device.isOnline ? Colors.green : Colors.grey,
             ),
 
@@ -105,18 +111,21 @@ class DeviceDetailView extends ConsumerWidget {
               children: [
                 Icon(Icons.payment, size: 20.sp, color: Colors.grey),
                 SizedBox(width: 8.w),
-                Text('支付方式：', style: TextStyle(fontSize: 14.sp)),
+                Text(
+                  t.device.paymentMethods,
+                  style: TextStyle(fontSize: 14.sp),
+                ),
                 SizedBox(width: 8.w),
                 if (device.supportMobilePayment)
                   Chip(
-                    label: const Text('移动支付'),
+                    label: Text(t.device.mobilePayment),
                     labelStyle: TextStyle(fontSize: 12.sp),
                     padding: EdgeInsets.zero,
                   ),
                 SizedBox(width: 8.w),
                 if (device.supportCashPayment)
                   Chip(
-                    label: const Text('现金'),
+                    label: Text(t.device.cash),
                     labelStyle: TextStyle(fontSize: 12.sp),
                     padding: EdgeInsets.zero,
                   ),
@@ -176,7 +185,7 @@ class DeviceDetailView extends ConsumerWidget {
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      '暂无商品',
+                      t.device.noProducts,
                       style: TextStyle(fontSize: 14.sp, color: Colors.grey),
                     ),
                   ],
@@ -190,7 +199,7 @@ class DeviceDetailView extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '商品列表',
+              t.device.productList,
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12.h),
@@ -218,7 +227,8 @@ class DeviceDetailView extends ConsumerWidget {
           child: CircularProgressIndicator(),
         ),
       ),
-      error: (error, stack) => Center(child: Text('加载商品失败: $error')),
+      error: (error, stack) =>
+          Center(child: Text(t.device.loadProductsFailed(error: error))),
     );
   }
 
@@ -296,7 +306,7 @@ class DeviceDetailView extends ConsumerWidget {
                   // 库存状态
                   if (!product.hasStock)
                     Text(
-                      '已售罄',
+                      t.device.soldOut,
                       style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                     ),
                 ],
@@ -331,7 +341,7 @@ class DeviceDetailView extends ConsumerWidget {
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.symmetric(vertical: 12.h),
           ),
-          child: const Text('上报故障'),
+          child: Text(t.device.reportIssue),
         ),
       ),
     );
@@ -344,19 +354,19 @@ class DeviceDetailView extends ConsumerWidget {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('上报设备故障'),
+        title: Text(t.device.reportDeviceIssue),
         content: TextField(
           controller: textController,
           maxLines: 3,
-          decoration: const InputDecoration(
-            hintText: '请描述设备故障情况...',
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            hintText: t.device.reportIssueHint,
+            border: const OutlineInputBorder(),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('取消'),
+            child: Text(t.common.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -366,10 +376,10 @@ class DeviceDetailView extends ConsumerWidget {
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(
                   context,
-                ).showSnackBar(const SnackBar(content: Text('故障上报成功')));
+                ).showSnackBar(SnackBar(content: Text(t.device.reportSuccess)));
               }
             },
-            child: const Text('提交'),
+            child: Text(t.common.confirm),
           ),
         ],
       ),

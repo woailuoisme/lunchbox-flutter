@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 class AuthView extends ConsumerWidget {
   const AuthView({super.key});
@@ -7,9 +8,9 @@ class AuthView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: const Text('登录'), centerTitle: true),
-      body: const Center(
-        child: Text('登录页面正在开发中', style: TextStyle(fontSize: 20)),
+      appBar: AppBar(title: Text(t.common.login), centerTitle: true),
+      body: Center(
+        child: Text(t.common.developing, style: const TextStyle(fontSize: 20)),
       ),
     );
   }

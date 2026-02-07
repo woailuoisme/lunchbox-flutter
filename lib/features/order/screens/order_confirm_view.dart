@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
 import 'package:lunchbox/features/cart/providers/cart_notifier.dart';
 import 'package:lunchbox/features/order/providers/order_notifier.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 
 /// 订单确认视图
@@ -31,7 +32,7 @@ class OrderConfirmView extends ConsumerWidget {
     // If OrderNotifier needs it for creation, it can calculate it or take it from Cart.
 
     return Scaffold(
-      appBar: AppBar(title: const Text('确认订单')),
+      appBar: AppBar(title: Text(t.order.confirmOrder)),
       body: Stack(
         children: [
           Column(
@@ -85,7 +86,7 @@ class OrderConfirmView extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '商品清单',
+            t.order.items,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 12.h),
@@ -174,7 +175,7 @@ class OrderConfirmView extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '支付方式',
+            t.order.paymentMethod,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 12.h),
@@ -248,7 +249,7 @@ class OrderConfirmView extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('商品总额', style: TextStyle(fontSize: 14.sp)),
+              Text(t.order.totalAmount, style: TextStyle(fontSize: 14.sp)),
               Text(
                 '¥${totalAmount.toStringAsFixed(2)}',
                 style: TextStyle(fontSize: 14.sp),
@@ -265,7 +266,7 @@ class OrderConfirmView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '实付金额',
+                t.order.actualAmount,
                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
               ),
               Text(
@@ -310,7 +311,7 @@ class OrderConfirmView extends ConsumerWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: '合计: ',
+                      text: t.order.totalLabel,
                       style: TextStyle(fontSize: 14.sp),
                     ),
                     TextSpan(
@@ -348,7 +349,11 @@ class OrderConfirmView extends ConsumerWidget {
                       } catch (e) {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('创建订单失败: ${e.toString()}')),
+                            SnackBar(
+                              content: Text(
+                                t.order.createFailed(error: e.toString()),
+                              ),
+                            ),
                           );
                         }
                       }
@@ -361,7 +366,7 @@ class OrderConfirmView extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(24.r),
                 ),
               ),
-              child: const Text('提交订单'),
+              child: Text(t.order.submitOrder),
             ),
           ],
         ),

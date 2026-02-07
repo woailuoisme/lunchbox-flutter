@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:lunchbox/features/product/providers/product_providers.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 产品详情视图
 class ProductDetailView extends ConsumerWidget {
@@ -58,7 +59,8 @@ class ProductDetailView extends ConsumerWidget {
           ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(child: Text('加载失败: $error')),
+        error: (error, stack) =>
+            Center(child: Text('${t.common.loadFailed}: $error')),
       ),
 
       // 底部操作栏
@@ -74,10 +76,16 @@ class ProductDetailView extends ConsumerWidget {
         // 标签
         Row(
           children: [
-            if (product.isHot) _buildBadge('热销', Colors.red),
-            if (product.isPromotion) _buildBadge('促销', Colors.orange),
+            if (product.isHot) _buildBadge(t.product.hot, Colors.red),
+            if (product.isPromotion)
+              _buildBadge(t.product.promotion, Colors.orange),
             if (product.hasDiscount)
-              _buildBadge('${product.discountPercentage}% OFF', Colors.green),
+              _buildBadge(
+                t.product.discountOff(
+                  percent: product.discountPercentage.toString(),
+                ),
+                Colors.green,
+              ),
           ],
         ),
         SizedBox(height: 8.h),
@@ -118,7 +126,7 @@ class ProductDetailView extends ConsumerWidget {
         // 库存
         SizedBox(height: 8.h),
         Text(
-          product.hasStock ? '库存充足' : '暂时缺货',
+          product.hasStock ? t.product.stockFull : t.product.stockEmpty,
           style: TextStyle(
             fontSize: 14.sp,
             color: product.hasStock ? Colors.green : Colors.red,
@@ -155,7 +163,7 @@ class ProductDetailView extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '商品详情',
+          t.product.detail,
           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 8.h),
@@ -177,7 +185,7 @@ class ProductDetailView extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '规格参数',
+          t.product.specifications,
           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 8.h),
@@ -246,9 +254,9 @@ class ProductDetailView extends ConsumerWidget {
                 onPressed: (product != null && product.hasStock)
                     ? () {
                         // TODO(User): 加入购物车
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(const SnackBar(content: Text('已加入购物车')));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(t.product.addedToCart)),
+                        );
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
@@ -257,7 +265,9 @@ class ProductDetailView extends ConsumerWidget {
                   foregroundColor: Colors.white,
                 ),
                 child: Text(
-                  product != null && !product.hasStock ? '暂时缺货' : '加入购物车',
+                  product != null && !product.hasStock
+                      ? t.product.stockEmpty
+                      : t.product.addToCart,
                   style: TextStyle(fontSize: 16.sp),
                 ),
               ),

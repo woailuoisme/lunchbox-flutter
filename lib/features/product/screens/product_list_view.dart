@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/cart/providers/cart_notifier.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:lunchbox/features/product/providers/product_providers.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 产品列表视图
 class ProductListView extends ConsumerWidget {
@@ -20,7 +21,7 @@ class ProductListView extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('商品列表'),
+        title: Text(t.product.title),
         actions: [
           // 排序按钮
           PopupMenuButton<String>(
@@ -29,10 +30,19 @@ class ProductListView extends ConsumerWidget {
               ref.read(productSortProvider.notifier).update(value);
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(value: 'default', child: Text('默认排序')),
-              const PopupMenuItem(value: 'price_asc', child: Text('价格从低到高')),
-              const PopupMenuItem(value: 'price_desc', child: Text('价格从高到低')),
-              const PopupMenuItem(value: 'name', child: Text('按名称排序')),
+              PopupMenuItem(
+                value: 'default',
+                child: Text(t.product.sortDefault),
+              ),
+              PopupMenuItem(
+                value: 'price_asc',
+                child: Text(t.product.sortPriceAsc),
+              ),
+              PopupMenuItem(
+                value: 'price_desc',
+                child: Text(t.product.sortPriceDesc),
+              ),
+              PopupMenuItem(value: 'name', child: Text(t.product.sortName)),
             ],
           ),
           // 过滤按钮
@@ -43,7 +53,7 @@ class ProductListView extends ConsumerWidget {
             onPressed: () {
               ref.read(productFilterAvailableProvider.notifier).toggle();
             },
-            tooltip: '仅显示可用商品',
+            tooltip: t.product.filterOnlyAvailable,
           ),
           // 购物车按钮
           IconButton(
@@ -75,7 +85,7 @@ class ProductListView extends ConsumerWidget {
                         ),
                         SizedBox(height: 16.h),
                         Text(
-                          '暂无商品',
+                          t.order.noOrders,
                           style: TextStyle(fontSize: 16.sp, color: Colors.grey),
                         ),
                       ],
@@ -104,7 +114,8 @@ class ProductListView extends ConsumerWidget {
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stack) => Center(child: Text('加载失败: $error')),
+              error: (error, stack) =>
+                  Center(child: Text('${t.common.loadFailed}: $error')),
             ),
           ),
         ],
@@ -160,13 +171,13 @@ class ProductListView extends ConsumerWidget {
   String _getCategoryName(String category) {
     switch (category) {
       case 'all':
-        return '全部';
+        return t.product.categoryAll;
       case 'food':
-        return '食品';
+        return t.product.categoryFood;
       case 'drink':
-        return '饮料';
+        return t.product.categoryDrink;
       case 'snack':
-        return '零食';
+        return t.product.categorySnack;
       default:
         return category;
     }
@@ -213,9 +224,11 @@ class ProductListView extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (product.isHot) _buildBadge('热销', Colors.red),
-                      if (product.isPromotion) _buildBadge('促销', Colors.orange),
-                      if (!product.hasStock) _buildBadge('售罄', Colors.grey),
+                      if (product.isHot) _buildBadge(t.product.hot, Colors.red),
+                      if (product.isPromotion)
+                        _buildBadge(t.product.promotion, Colors.orange),
+                      if (!product.hasStock)
+                        _buildBadge(t.device.soldOut, Colors.grey),
                     ],
                   ),
                 ),
@@ -278,7 +291,9 @@ class ProductListView extends ConsumerWidget {
                                     .addToCart(product);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text('已添加到购物车: ${product.name}'),
+                                    content: Text(
+                                      '${t.product.addedToCart}: ${product.name}',
+                                    ),
                                   ),
                                 );
                               }
@@ -287,7 +302,9 @@ class ProductListView extends ConsumerWidget {
                           padding: EdgeInsets.zero,
                         ),
                         child: Text(
-                          product.hasStock ? '加入购物车' : '已售罄',
+                          product.hasStock
+                              ? t.product.addToCart
+                              : t.device.soldOut,
                           style: TextStyle(fontSize: 12.sp),
                         ),
                       ),

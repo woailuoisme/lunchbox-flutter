@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/settings/providers/settings_providers.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /// 关于应用页面
@@ -16,7 +17,7 @@ class AboutView extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('关于我们'),
+        title: Text(t.settings.aboutUs),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -59,20 +60,22 @@ class AboutView extends ConsumerWidget {
             ),
             SizedBox(height: 8.h),
             Text(
-              'Version ${info.version} (${info.buildNumber})',
+              t.profile.version(
+                version: '${info.version} (${info.buildNumber})',
+              ),
               style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
             ),
             SizedBox(height: 40.h),
             // Info List
             _buildInfoCard([
-              _buildInfoItem('应用名称', info.appName),
-              _buildInfoItem('包名', info.packageName),
-              _buildInfoItem('版本号', info.version),
-              _buildInfoItem('构建号', info.buildNumber),
+              _buildInfoItem(t.settings.appName, info.appName),
+              _buildInfoItem(t.settings.packageName, info.packageName),
+              _buildInfoItem(t.settings.versionName, info.version),
+              _buildInfoItem(t.settings.buildNumber, info.buildNumber),
             ]),
             const Spacer(),
             Text(
-              '© 2024 Lunchbox Team',
+              t.settings.copyright,
               style: TextStyle(fontSize: 12.sp, color: AppColors.textHint),
             ),
             SizedBox(height: 24.h),
@@ -80,7 +83,7 @@ class AboutView extends ConsumerWidget {
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (Object err, StackTrace? stack) =>
-            Center(child: Text('加载失败: $err')),
+            Center(child: Text('${t.common.loadFailed}: $err')),
       ),
     );
   }

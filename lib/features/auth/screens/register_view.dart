@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/auth/providers/auth_notifier.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:toastification/toastification.dart';
 
 class RegisterView extends ConsumerStatefulWidget {
@@ -28,6 +29,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
     super.dispose();
   }
 
+  /// 处理注册逻辑
   Future<void> _handleRegister() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -44,8 +46,15 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
             _nicknameController.text.trim(),
           );
       if (mounted) {
-        Navigator.pop(context); // Go back to login or home?
-        // Usually register logs you in.
+        toastification.show(
+          context: context,
+          type: ToastificationType.success,
+          style: ToastificationStyle.fillColored,
+          title: Text(t.auth.registerSuccess),
+          alignment: Alignment.topCenter,
+          autoCloseDuration: const Duration(seconds: 2),
+        );
+        Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
@@ -53,7 +62,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
           context: context,
           type: ToastificationType.error,
           style: ToastificationStyle.fillColored,
-          title: const Text('注册失败'),
+          title: Text(t.auth.registerFailed),
           description: Text(e.toString()),
           alignment: Alignment.topCenter,
           autoCloseDuration: const Duration(seconds: 3),
@@ -69,7 +78,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('注册')),
+      appBar: AppBar(title: Text(t.auth.registerTitle)),
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -81,28 +90,35 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                 SizedBox(height: 24.h),
                 TextFormField(
                   controller: _usernameController,
-                  decoration: const InputDecoration(labelText: '用户名'),
-                  validator: (v) => v?.isNotEmpty ?? false ? null : 'Required',
+                  decoration: InputDecoration(labelText: t.common.username),
+                  validator: (v) =>
+                      v?.isNotEmpty ?? false ? null : t.auth.required,
                 ),
                 SizedBox(height: 16.h),
                 TextFormField(
                   controller: _nicknameController,
-                  decoration: const InputDecoration(labelText: '昵称'),
-                  validator: (v) => v?.isNotEmpty ?? false ? null : 'Required',
+                  decoration: InputDecoration(labelText: t.auth.nickname),
+                  validator: (v) =>
+                      v?.isNotEmpty ?? false ? null : t.auth.required,
                 ),
                 SizedBox(height: 16.h),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: const InputDecoration(labelText: '密码'),
+                  decoration: InputDecoration(labelText: t.common.password),
                   obscureText: true,
-                  validator: (v) => v?.isNotEmpty ?? false ? null : 'Required',
+                  validator: (v) =>
+                      v?.isNotEmpty ?? false ? null : t.auth.required,
                 ),
-                SizedBox(height: 24.h),
-                ElevatedButton(
-                  onPressed: _isLoading ? null : _handleRegister,
-                  child: _isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text('注册'),
+                SizedBox(height: 32.h),
+                SizedBox(
+                  width: double.infinity,
+                  height: 48.h,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _handleRegister,
+                    child: _isLoading
+                        ? const CircularProgressIndicator()
+                        : Text(t.common.register),
+                  ),
                 ),
               ],
             ),

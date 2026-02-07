@@ -14,6 +14,18 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
 
+  // 初始化语言设置
+  final savedLocale = prefs.getString('selected_locale');
+  if (savedLocale != null) {
+    await LocaleSettings.setLocaleRaw(savedLocale);
+  } else {
+    // 默认设置为中文
+    await LocaleSettings.setLocale(AppLocale.zhCn);
+  }
+
+  // 主题设置由 themeProvider 在 build 时自动从 prefs 初始化
+  // 不需要在此显式调用，因为 ProviderScope 已 override 了 sharedPreferencesProvider
+
   runApp(
     ProviderScope(
       overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],

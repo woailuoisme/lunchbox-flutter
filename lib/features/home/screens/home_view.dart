@@ -7,6 +7,7 @@ import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
 import 'package:lunchbox/features/device/entities/location_model.dart';
 import 'package:lunchbox/features/home/providers/home_notifier.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 /// 首页视图
@@ -48,7 +49,7 @@ class HomeView extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                state.currentCity?.name ?? '选择城市',
+                state.currentCity?.name ?? t.home.selectCity,
                 style: TextStyle(fontSize: 18.sp),
               ),
               SizedBox(width: 4.w),
@@ -73,7 +74,9 @@ class HomeView extends ConsumerWidget {
               SliverToBoxAdapter(child: _buildCarousel(context)),
 
               // 附近设备标题
-              SliverToBoxAdapter(child: _buildSectionTitle('附近设备')),
+              SliverToBoxAdapter(
+                child: _buildSectionTitle(t.home.nearbyDevices),
+              ),
 
               // 设备列表
               _buildDeviceList(displayDevices, notifier, context),
@@ -87,9 +90,21 @@ class HomeView extends ConsumerWidget {
   /// 构建轮播图
   Widget _buildCarousel(BuildContext context) {
     final List<Map<String, String>> banners = [
-      {'title': '便捷购买', 'subtitle': '美味随行', 'color': '0xFFF44336'},
-      {'title': '新鲜速递', 'subtitle': '每日更新', 'color': '0xFF2196F3'},
-      {'title': '超值优惠', 'subtitle': '限时特价', 'color': '0xFF4CAF50'},
+      {
+        'title': t.home.banner1Title,
+        'subtitle': t.home.banner1Subtitle,
+        'color': '0xFFF44336',
+      },
+      {
+        'title': t.home.banner2Title,
+        'subtitle': t.home.banner2Subtitle,
+        'color': '0xFF2196F3',
+      },
+      {
+        'title': t.home.banner3Title,
+        'subtitle': t.home.banner3Subtitle,
+        'color': '0xFF4CAF50',
+      },
     ];
 
     return Container(
@@ -300,12 +315,15 @@ class HomeView extends ConsumerWidget {
               Row(
                 children: [
                   _buildStatusChip(
-                    device.isOnline ? '营业中' : '休息中',
+                    device.isOnline ? t.home.status.open : t.home.status.closed,
                     device.isOnline ? AppColors.success : AppColors.textHint,
                   ),
                   SizedBox(width: 8.w),
                   if (device.supportMobilePayment)
-                    _buildStatusChip('支持移动支付', AppColors.info),
+                    _buildStatusChip(
+                      t.home.status.mobilePayment,
+                      AppColors.info,
+                    ),
                 ],
               ),
             ],
@@ -340,13 +358,13 @@ class HomeView extends ConsumerWidget {
           Icon(Icons.location_off, size: 64.sp, color: AppColors.textHint),
           SizedBox(height: 16.h),
           Text(
-            '附近暂无设备',
+            t.home.noDevices,
             style: TextStyle(fontSize: 16.sp, color: AppColors.textSecondary),
           ),
           SizedBox(height: 24.h),
           ElevatedButton(
             onPressed: notifier.refreshData,
-            child: const Text('刷新重试'),
+            child: Text(t.common.retry),
           ),
         ],
       ),

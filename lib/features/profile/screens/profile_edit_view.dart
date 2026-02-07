@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/profile/providers/profile_notifier.dart';
 import 'package:lunchbox/features/profile/providers/profile_state.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:toastification/toastification.dart';
 
 /// 个人信息编辑视图
@@ -42,14 +43,14 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('编辑资料'),
+        title: Text(t.profile.editProfile),
         actions: [
           TextButton(
             onPressed: () {
               notifier.updateUserInfo(nickname: nicknameController.text);
               context.pop();
             },
-            child: const Text('保存'),
+            child: Text(t.common.save),
           ),
         ],
       ),
@@ -69,13 +70,13 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
               child: Column(
                 children: [
                   _buildFormField(
-                    label: '昵称',
+                    label: t.auth.nickname,
                     controller: nicknameController,
-                    hint: '请输入昵称',
+                    hint: t.auth.enterNickname,
                   ),
                   _buildDivider(),
                   _buildInfoRow(
-                    label: '用户名',
+                    label: t.common.username,
                     value: state.currentUser?.username ?? '',
                   ),
                 ],

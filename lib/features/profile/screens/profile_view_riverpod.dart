@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 用户中心视图（Riverpod 版本）
 ///
@@ -11,8 +12,8 @@ class ProfileViewRiverpod extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: const Text('我的')),
-      body: const Center(child: Text('用户中心 - 待实现')),
+      appBar: AppBar(title: Text(t.profile.title)),
+      body: Center(child: Text('${t.profile.title} - ${t.common.developing}')),
     );
   }
 }

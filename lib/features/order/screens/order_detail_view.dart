@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/features/order/providers/order_notifier.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 订单详情视图
 class OrderDetailView extends ConsumerWidget {
@@ -23,7 +24,7 @@ class OrderDetailView extends ConsumerWidget {
     final order = orderFromExtra ?? state.selectedOrder;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('订单详情')),
+      appBar: AppBar(title: Text(t.order.detail)),
       body: Builder(
         builder: (context) {
           if (order == null) {
@@ -133,7 +134,7 @@ class OrderDetailView extends ConsumerWidget {
       child: Column(
         children: [
           Text(
-            '取货码',
+            t.order.pickupCode,
             style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
           ),
           SizedBox(height: 8.h),
@@ -147,7 +148,7 @@ class OrderDetailView extends ConsumerWidget {
           ),
           SizedBox(height: 8.h),
           Text(
-            '请在设备上输入取货码取货',
+            t.order.pickupHint,
             style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
           ),
         ],
@@ -164,7 +165,7 @@ class OrderDetailView extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '商品清单',
+            t.order.items,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 12.h),
@@ -252,17 +253,20 @@ class OrderDetailView extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '订单信息',
+            t.order.info,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 12.h),
 
-          _buildInfoRow('订单号', order.id),
-          _buildInfoRow('创建时间', dateFormat.format(order.createdAt)),
+          _buildInfoRow(t.order.id, order.id),
+          _buildInfoRow(t.order.createdAt, dateFormat.format(order.createdAt)),
           if (order.paidAt != null)
-            _buildInfoRow('支付时间', dateFormat.format(order.paidAt!)),
+            _buildInfoRow(t.order.paidAt, dateFormat.format(order.paidAt!)),
           if (order.paymentMethod != null)
-            _buildInfoRow('支付方式', order.paymentMethodText ?? '未知'),
+            _buildInfoRow(
+              t.order.paymentMethod,
+              order.paymentMethodText ?? t.order.unknown,
+            ),
 
           Divider(height: 24.h),
 
@@ -270,7 +274,7 @@ class OrderDetailView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '订单总额',
+                t.order.totalAmount,
                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
               ),
               Text(
