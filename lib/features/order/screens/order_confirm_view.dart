@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
 import 'package:lunchbox/features/cart/providers/cart_notifier.dart';
 import 'package:lunchbox/features/order/providers/order_notifier.dart';
@@ -105,21 +105,12 @@ class OrderConfirmView extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 商品图片
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.r),
-            child: CachedNetworkImage(
-              imageUrl: item.product.imageUrl,
-              width: 60.w,
-              height: 60.w,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Container(color: Colors.grey[200]),
-              errorWidget: (context, url, error) => Container(
-                color: Colors.grey[200],
-                child: Icon(Icons.image_not_supported, size: 24.sp),
-              ),
-            ),
+          AppImage(
+            imageUrl: item.product.imageUrl,
+            width: 60.w,
+            height: 60.w,
+            radius: 8.r,
           ),
-
           SizedBox(width: 12.w),
 
           // 商品信息

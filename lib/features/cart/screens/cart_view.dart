@@ -1,9 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
 import 'package:lunchbox/features/cart/providers/cart_notifier.dart';
 import 'package:lunchbox/features/cart/providers/cart_state.dart';
@@ -94,22 +93,11 @@ class CartView extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 商品图片
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.r),
-              child: CachedNetworkImage(
-                imageUrl: item.product.imageUrl,
-                width: 80.w,
-                height: 80.w,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Container(
-                  color: Colors.grey[200],
-                  child: const Center(child: CircularProgressIndicator()),
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.grey[200],
-                  child: const Icon(Icons.error),
-                ),
-              ),
+            AppImage(
+              imageUrl: item.product.imageUrl,
+              width: 80.w,
+              height: 80.w,
+              radius: 8.r,
             ),
             SizedBox(width: 12.w),
 

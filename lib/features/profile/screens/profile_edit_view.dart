@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/features/profile/providers/profile_notifier.dart';
 import 'package:lunchbox/features/profile/providers/profile_state.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
@@ -134,16 +134,22 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.grey[300]!, width: 2),
                 ),
-                child: CircleAvatar(
-                  radius: 50.r,
-                  backgroundColor: Colors.grey[200],
-                  backgroundImage: user?.avatar != null
-                      ? CachedNetworkImageProvider(user!.avatar!)
-                      : null,
-                  child: user?.avatar == null
-                      ? Icon(Icons.person, size: 50.sp, color: Colors.grey)
-                      : null,
-                ),
+                child: user?.avatar != null
+                    ? AppImage(
+                        imageUrl: user!.avatar!,
+                        width: 100.r,
+                        height: 100.r,
+                        radius: 50.r,
+                      )
+                    : CircleAvatar(
+                        radius: 50.r,
+                        backgroundColor: Colors.grey[200],
+                        child: Icon(
+                          Icons.person,
+                          size: 50.sp,
+                          color: Colors.grey,
+                        ),
+                      ),
               ),
               Positioned(
                 right: 0,

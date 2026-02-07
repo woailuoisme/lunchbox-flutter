@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/core/values/app_colors.dart';
+import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 
@@ -100,14 +101,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   child: Stack(
                     children: [
                       Positioned.fill(
-                        child: ClipRRect(
+                        child: AppImage(
+                          imageUrl: item['image']!,
                           borderRadius: const BorderRadius.only(
                             bottomLeft: Radius.circular(10),
                             bottomRight: Radius.circular(10),
-                          ),
-                          child: Image.network(
-                            item['image']!,
-                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
@@ -491,9 +489,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
               child: Stack(
                 children: [
                   Positioned.fill(
-                    child: Image.network(
-                      'https://picsum.photos/seed/${index + 10}/400/300',
-                      fit: BoxFit.cover,
+                    child: AppImage(
+                      imageUrl:
+                          'https://picsum.photos/seed/${index + 10}/400/300',
                     ),
                   ),
                   Positioned(

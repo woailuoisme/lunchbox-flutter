@@ -52,7 +52,9 @@ class _LotteryViewState extends ConsumerState<LotteryView>
 
     // 1. 获取中奖结果
     final winIndex = await notifier.spin();
-    if (winIndex == null) return;
+    if (winIndex == null) {
+      return;
+    }
 
     // 2. 计算旋转角度
     // 扇区数量
@@ -120,7 +122,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   }
 
   void _showResultDialog(String prizeName) {
-    showDialog(
+    showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (context) => Dialog(
@@ -553,9 +555,10 @@ class WheelPainter extends CustomPainter {
     double angle,
     String text,
   ) {
-    canvas.save();
-    canvas.translate(center.dx, center.dy);
-    canvas.rotate(angle + math.pi / 2); // 旋转使得文字垂直向外
+    canvas
+      ..save()
+      ..translate(center.dx, center.dy)
+      ..rotate(angle + math.pi / 2); // 旋转使得文字垂直向外
 
     final textSpan = TextSpan(
       text: text,
@@ -569,9 +572,7 @@ class WheelPainter extends CustomPainter {
     final textPainter = TextPainter(
       text: textSpan,
       textDirection: TextDirection.ltr,
-    );
-
-    textPainter.layout();
+    )..layout();
 
     // 文字绘制在半径的 2/3 处
     final offset = Offset(-textPainter.width / 2, -radius * 0.75);

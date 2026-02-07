@@ -149,23 +149,23 @@ class _CouponsViewState extends State<CouponsView>
     Color primaryColor = const Color(
       0xFF66BB6A,
     ); // Green for available/received
-    Color secondaryColor = const Color(0xFF81C784);
-    String btnText = t.coupon.btnReceive;
+    // Color secondaryColor = const Color(0xFF81C784);
+    // String btnText = t.coupon.btnReceive;
     Color btnTextColor = Colors.white;
     Color btnBgColor = const Color(
       0xFFFF5252,
     ); // Use standard red for action button
 
     if (isReceived) {
-      btnText = t.coupon.btnUse;
+      // btnText = t.coupon.btnUse;
       btnBgColor = Colors.white;
       btnTextColor = const Color(0xFFFF5252);
     }
 
     if (isExpired) {
       primaryColor = Colors.grey;
-      secondaryColor = Colors.grey.withValues(alpha: 0.7);
-      btnText = t.coupon.btnExpired;
+      // secondaryColor = Colors.grey.withValues(alpha: 0.7);
+      // btnText = t.coupon.btnExpired;
       btnBgColor = Colors.transparent;
       btnTextColor = Colors.grey;
     }

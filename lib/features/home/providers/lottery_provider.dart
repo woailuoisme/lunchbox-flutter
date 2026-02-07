@@ -36,16 +36,7 @@ class LotteryNotifier extends _$LotteryNotifier {
     // 随机生成中奖索引 (0-5)
     final winIndex = DateTime.now().millisecondsSinceEpoch % wheelItems.length;
     final winItem = wheelItems[winIndex];
-    final amount = double.tryParse(winItem.replaceAll('乖乖币', '')) ?? 0;
-
-    final newPrize = LotteryPrize(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      name: winItem,
-      amount: amount,
-      type: 'coin',
-      createdAt: DateTime.now(),
-      expiredAt: DateTime.now().add(const Duration(days: 30)),
-    );
+    // final amount = double.tryParse(winItem.replaceAll('乖乖币', '')) ?? 0;
 
     // 注意：实际状态更新应在动画结束后进行，但为了简化流程，这里先预扣次数
     // 真正的“获得奖品”逻辑可能需要拆分，但这里我们在spin返回后由UI决定何时弹窗
