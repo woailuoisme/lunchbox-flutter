@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:lunchbox/core/services/permission_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -6,14 +7,18 @@ part 'location_service.g.dart';
 
 @Riverpod(keepAlive: true)
 LocationService locationService(Ref ref) {
-  return LocationService();
+  final permissionService = ref.watch(permissionServiceProvider);
+  return LocationService(permissionService);
 }
 
 class LocationService {
+  LocationService(this._permissionService);
+
+  final PermissionService _permissionService;
+
   /// 获取当前位置
   Future<Position?> getCurrentPosition() async {
     bool serviceEnabled;
-    LocationPermission permission;
 
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -22,19 +27,11 @@ class LocationService {
       return null;
     }
 
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        LoggerUtils.w('LocationService: Location permissions are denied');
-        return null;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
+    // 统一使用 PermissionService 处理权限
+    final hasPermission = await _permissionService.requestLocationPermission();
+    if (!hasPermission) {
       LoggerUtils.w(
-        'LocationService: Location permissions are permanently denied, we cannot request permissions.',
+        'LocationService: Location permissions are denied or permanently denied.',
       );
       return null;
     }

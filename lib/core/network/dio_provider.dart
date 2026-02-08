@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:lunchbox/core/network/interceptors/auth_interceptor.dart';
 import 'package:lunchbox/core/network/interceptors/error_handling_interceptor.dart';
 import 'package:lunchbox/core/values/app_constants.dart';
@@ -29,6 +32,17 @@ Dio dio(Ref ref) {
   );
 
   final dio = Dio(options);
+
+  // 如果启用了测试模式，忽略证书校验
+  if (AppConstants.useTestMode) {
+    dio.httpClientAdapter = IOHttpClientAdapter(
+      createHttpClient: () {
+        final client = HttpClient();
+        client.badCertificateCallback = (cert, host, port) => true;
+        return client;
+      },
+    );
+  }
 
   // Add interceptors in order:
   // 1. Auth interceptor - adds authentication tokens

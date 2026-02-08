@@ -1,0 +1,26 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none"
+  xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景：圆角矩形，App 主题色 -->
+  <rect x="0" y="0" width="1024" height="1024" rx="200" fill="#FF6B6B" />
+
+  <!-- 装饰：微弱的内部光泽 -->
+  <circle cx="512" cy="-200" r="800" fill="white" fill-opacity="0.1" />
+
+  <!-- 主体：饭盒图标 (白色) -->
+  <g transform="translate(212, 262) scale(0.6)">
+    <!-- 饭盒盖子 -->
+    <path d="M100 200 C100 150 140 110 190 110 H810 C860 110 900 150 900 200 V300 H100 V200 Z"
+      fill="white" />
+
+    <!-- 饭盒底座 -->
+    <path d="M100 340 H900 V700 C900 780 840 840 760 840 H240 C160 840 100 780 100 700 V340 Z"
+      fill="white" />
+
+    <!-- 装饰线条：分隔带 -->
+    <rect x="100" y="450" width="800" height="40" fill="#FF6B6B" fill-opacity="0.3" />
+
+    <!-- 装饰：筷子 -->
+    <rect x="150" y="50" width="700" height="30" rx="15" fill="white" />
+    <rect x="150" y="-10" width="700" height="30" rx="15" fill="white" />
+  </g>
+</svg>
