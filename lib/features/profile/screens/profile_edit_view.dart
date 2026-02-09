@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lunchbox/core/widgets/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:lunchbox/features/profile/providers/profile_notifier.dart';
 import 'package:lunchbox/features/profile/providers/profile_state.dart';
-import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
 
 /// 个人信息编辑视图
@@ -17,70 +17,256 @@ class ProfileEditView extends ConsumerStatefulWidget {
 }
 
 class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
-  late TextEditingController nicknameController;
+  // 临时存储编辑状态
+  String? _selectedGender;
+  DateTime? _selectedBirthday;
 
-  @override
-  void initState() {
-    super.initState();
-    nicknameController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    nicknameController.dispose();
-    super.dispose();
+  Future<void> _saveProfile() async {
+    try {
+      final notifier = ref.read(profileProvider.notifier);
+      await notifier.updateUserInfo(
+        gender: _selectedGender,
+        birthday: _selectedBirthday,
+      );
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('保存成功')));
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('保存失败: $e')));
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(profileProvider);
-    final notifier = ref.read(profileProvider.notifier);
+    final user = state.currentUser;
+    final theme = Theme.of(context);
 
-    // 初始化表单数据
-    if (nicknameController.text.isEmpty && state.currentUser != null) {
-      nicknameController.text = state.currentUser!.nickname;
+    // 初始化本地状态（如果未初始化）
+    if (user != null) {
+      _selectedGender ??= user.gender;
+      _selectedBirthday ??= user.birthday;
     }
 
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text(t.profile.editProfile),
+        title: const Text('个人信息'),
+        centerTitle: true,
+        backgroundColor:
+            theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
+        elevation: 0,
         actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Symbols.more_horiz)),
           TextButton(
-            onPressed: () {
-              notifier.updateUserInfo(nickname: nicknameController.text);
-              context.pop();
-            },
-            child: Text(t.common.save),
+            onPressed: _saveProfile,
+            child: Text(
+              '保存',
+              style: TextStyle(
+                color: theme.colorScheme.primary,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
+          SizedBox(width: 8.w),
         ],
       ),
-      body: SingleChildScrollView(
+      body: user == null
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 32.h),
+                        // 头像区域
+                        _buildAvatarSection(context, state),
+                        SizedBox(height: 32.h),
+
+                        // 基本信息卡片
+                        _buildInfoCard(
+                          context: context,
+                          title: '基本信息',
+                          children: [
+                            _buildInfoTile(
+                              context: context,
+                              icon: Symbols.phone_android,
+                              label: '手机号',
+                              value: _maskPhoneNumber(user.phone ?? ''),
+                              isEditable: false,
+                            ),
+                            _buildDivider(context),
+                            _buildInfoTile(
+                              context: context,
+                              icon: Symbols.wc,
+                              label: '性别',
+                              value: _getGenderLabel(_selectedGender),
+                              onTap: () => _showGenderPicker(context),
+                            ),
+                            _buildDivider(context),
+                            _buildInfoTile(
+                              context: context,
+                              icon: Symbols.cake,
+                              label: '生日',
+                              value: _selectedBirthday != null
+                                  ? DateFormat(
+                                      'yyyy-MM-dd',
+                                    ).format(_selectedBirthday!)
+                                  : '未设置',
+                              onTap: () => _showDatePicker(context),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16.h),
+
+                        // 其他信息卡片
+                        _buildInfoCard(
+                          context: context,
+                          title: '其他信息',
+                          children: [
+                            _buildInfoTile(
+                              context: context,
+                              icon: Symbols.mail,
+                              label: '邮箱',
+                              value: user.email ?? 'user@example.com',
+                              isEditable: false, // 假设邮箱不可编辑或需要特定流程
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 32.h),
+                      ],
+                    ),
+                  ),
+                ),
+                // 底部保存按钮
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 16.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surface,
+                    boxShadow: [
+                      BoxShadow(
+                        color: theme.shadowColor.withValues(alpha: 0.05),
+                        offset: const Offset(0, -2),
+                        blurRadius: 10,
+                      ),
+                    ],
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 48.h,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        // 保存逻辑
+                        // TODO: 调用 API 更新性别和生日
+                        toastification.show(
+                          context: context,
+                          title: const Text('保存成功'),
+                          type: ToastificationType.success,
+                          autoCloseDuration: const Duration(seconds: 2),
+                        );
+                        context.pop();
+                      },
+                      icon: Icon(
+                        Symbols.save,
+                        color: theme.colorScheme.onPrimary,
+                      ),
+                      label: Text(
+                        '保存信息',
+                        style: TextStyle(
+                          color: theme.colorScheme.onPrimary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.r),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
+
+  Widget _buildAvatarSection(BuildContext context, ProfileState state) {
+    final user = state.currentUser;
+    final theme = Theme.of(context);
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          toastification.show(
+            context: context,
+            title: const Text('头像上传功能开发中'),
+            type: ToastificationType.info,
+            autoCloseDuration: const Duration(seconds: 2),
+          );
+        },
         child: Column(
           children: [
-            SizedBox(height: 24.h),
-
-            // 头像
-            _buildAvatarSection(context, state),
-
-            SizedBox(height: 24.h),
-
-            // 表单
-            ColoredBox(
-              color: Colors.white,
-              child: Column(
-                children: [
-                  _buildFormField(
-                    label: t.auth.nickname,
-                    controller: nicknameController,
-                    hint: t.auth.enterNickname,
+            Stack(
+              children: [
+                Container(
+                  width: 100.r,
+                  height: 100.r,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: theme.colorScheme.surface,
+                      width: 4,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: theme.shadowColor.withValues(alpha: 0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        user?.avatar ?? 'https://picsum.photos/seed/user/200',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  _buildDivider(),
-                  _buildInfoRow(
-                    label: t.common.username,
-                    value: state.currentUser?.username ?? '',
+                ),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    padding: EdgeInsets.all(6.w),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Symbols.camera_alt,
+                      size: 16.sp,
+                      color: theme.colorScheme.onPrimary,
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              '点击更换头像',
+              style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
             ),
           ],
         ),
@@ -88,135 +274,168 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
     );
   }
 
-  /// 构建信息行（只读）
-  Widget _buildInfoRow({required String label, required String value}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      child: Row(
+  Widget _buildInfoCard({
+    required BuildContext context,
+    required String title,
+    required List<Widget> children,
+  }) {
+    final theme = Theme.of(context);
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 80.w,
-            child: Text(
-              label,
-              style: TextStyle(fontSize: 15.sp, color: Colors.black87),
+          Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Row(
+              children: [
+                Container(
+                  width: 4.w,
+                  height: 16.h,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(2.r),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: theme.textTheme.titleMedium?.color,
+                  ),
+                ),
+              ],
             ),
           ),
-          Expanded(
-            child: Text(
-              value,
-              style: TextStyle(fontSize: 15.sp, color: Colors.grey[600]),
-            ),
-          ),
+          ...children,
+          SizedBox(height: 8.h),
         ],
       ),
     );
   }
 
-  /// 构建头像区域
-  Widget _buildAvatarSection(BuildContext context, ProfileState state) {
-    final user = state.currentUser;
+  Widget _buildInfoTile({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required String value,
+    bool isEditable = true,
+    VoidCallback? onTap,
+  }) {
+    final theme = Theme.of(context);
+    return InkWell(
+      onTap: isEditable ? onTap : null,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        child: Row(
+          children: [
+            Icon(icon, size: 20.sp, color: theme.iconTheme.color),
+            SizedBox(width: 12.w),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 15.sp,
+                color: theme.textTheme.bodyLarge?.color,
+              ),
+            ),
+            const Spacer(),
+            Text(
+              value,
+              style: TextStyle(fontSize: 15.sp, color: theme.hintColor),
+            ),
+            if (isEditable) ...[
+              SizedBox(width: 4.w),
+              Icon(Symbols.chevron_right, size: 20.sp, color: theme.hintColor),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
 
-    return GestureDetector(
-      onTap: () {
-        toastification.show(
-          context: context,
-          title: const Text('头像上传功能开发中'),
-          type: ToastificationType.info,
-          autoCloseDuration: const Duration(seconds: 2),
-        );
-      },
-      child: Column(
-        children: [
-          Stack(
+  Widget _buildDivider(BuildContext context) {
+    final theme = Theme.of(context);
+    return Divider(
+      height: 1.h,
+      thickness: 1.h,
+      indent: 48.w,
+      endIndent: 16.w,
+      color: theme.dividerColor,
+    );
+  }
+
+  String _maskPhoneNumber(String phone) {
+    if (phone.length < 7) {
+      return phone;
+    }
+    return '${phone.substring(0, 3)}****${phone.substring(phone.length - 4)}';
+  }
+
+  String _getGenderLabel(String? gender) {
+    switch (gender) {
+      case 'male':
+        return '男';
+      case 'female':
+        return '女';
+      default:
+        return '保密';
+    }
+  }
+
+  void _showGenderPicker(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 24.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.grey[300]!, width: 2),
-                ),
-                child: user?.avatar != null
-                    ? AppImage(
-                        imageUrl: user!.avatar!,
-                        width: 100.r,
-                        height: 100.r,
-                        radius: 50.r,
-                      )
-                    : CircleAvatar(
-                        radius: 50.r,
-                        backgroundColor: Colors.grey[200],
-                        child: Icon(
-                          Icons.person,
-                          size: 50.sp,
-                          color: Colors.grey,
-                        ),
-                      ),
-              ),
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: Container(
-                  padding: EdgeInsets.all(6.w),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 2),
-                  ),
-                  child: Icon(
-                    Icons.camera_alt,
-                    size: 16.sp,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+              _buildGenderOption('男', 'male'),
+              _buildGenderOption('女', 'female'),
+              _buildGenderOption('保密', 'unknown'),
             ],
           ),
-          SizedBox(height: 8.h),
-          Text(
-            '点击更换头像',
-            style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  /// 构建表单字段
-  Widget _buildFormField({
-    required String label,
-    required TextEditingController controller,
-    required String hint,
-    TextInputType? keyboardType,
-  }) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 80.w,
-            child: Text(
-              label,
-              style: TextStyle(fontSize: 15.sp, color: Colors.black87),
-            ),
-          ),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              keyboardType: keyboardType,
-              decoration: InputDecoration(
-                hintText: hint,
-                border: InputBorder.none,
-                hintStyle: TextStyle(fontSize: 15.sp, color: Colors.grey[400]),
-              ),
-              style: TextStyle(fontSize: 15.sp),
-            ),
-          ),
-        ],
+  Widget _buildGenderOption(String label, String value) {
+    return ListTile(
+      title: Text(
+        label,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 16.sp),
       ),
+      onTap: () {
+        setState(() {
+          _selectedGender = value;
+        });
+        Navigator.pop(context);
+      },
     );
   }
 
-  /// 构建分割线
-  Widget _buildDivider() {
-    return Divider(height: 1.h, indent: 96.w, endIndent: 16.w);
+  void _showDatePicker(BuildContext context) {
+    showDatePicker(
+      context: context,
+      initialDate: _selectedBirthday ?? DateTime(1990),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      locale: const Locale('zh'),
+    ).then((picked) {
+      if (picked != null) {
+        setState(() {
+          _selectedBirthday = picked;
+        });
+      }
+    });
   }
 }

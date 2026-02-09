@@ -2,6 +2,7 @@ import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/core/values/app_constants.dart';
 import 'package:lunchbox/features/auth/repositories/auth_repository.dart';
+import 'package:lunchbox/features/profile/repositories/profile_repository.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -116,8 +117,17 @@ class SplashNotifier extends _$SplashNotifier {
 
   Future<void> _preloadUserData(AuthRepository authRepository) async {
     try {
-      final result = await authRepository.getCurrentUser().run();
+      // 临时使用 ProfileRepository Mock 数据
+      // final result = await authRepository.getCurrentUser().run();
+      LoggerUtils.i(
+        'SplashNotifier: Preloading mock user data (Network Ignored)',
+      );
+      final profileRepo = ref.read(profileRepositoryProvider.notifier);
+      final user = await profileRepo.getUserInfo();
 
+      LoggerUtils.d('SplashNotifier: User data preloaded: ${user.username}');
+
+      /*
       result.fold(
         (failure) {
           LoggerUtils.e('SplashNotifier: Failed to preload user data', failure);
@@ -130,6 +140,7 @@ class SplashNotifier extends _$SplashNotifier {
           }
         },
       );
+      */
     } catch (e, stackTrace) {
       LoggerUtils.e(
         'SplashNotifier: Failed to preload user data',

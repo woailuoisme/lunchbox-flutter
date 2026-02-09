@@ -59,7 +59,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
   @override
   void dispose() {
     _tabController.dispose();
-    for (var controller in _pagingControllers) {
+    for (final controller in _pagingControllers) {
       controller.dispose();
     }
     super.dispose();
@@ -89,7 +89,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
       switch (action) {
         case 'cancel':
           await notifier.cancelOrder(order.id);
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(const SnackBar(content: Text('订单已取消')));
@@ -97,9 +97,9 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           }
           break;
         case 'pay':
-          // For demo, we just simulate pay with WeChat
-          await notifier.payOrder(order.id, 'wechatPay');
-          if (mounted) {
+          // 使用 Stripe 支付
+          await notifier.payOrder(order.id, 'stripe');
+          if (context.mounted) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(const SnackBar(content: Text('支付成功')));
@@ -108,7 +108,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           break;
         case 'reorder':
           final newOrder = await notifier.reorder(order.id);
-          if (mounted && newOrder != null) {
+          if (context.mounted && newOrder != null) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(const SnackBar(content: Text('已重新下单')));
@@ -127,7 +127,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           );
           break;
         case 'refund':
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(const SnackBar(content: Text('退款功能暂未开放')));
@@ -135,7 +135,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           break;
         case 'delete':
           // Not implemented in backend yet
-          if (mounted) {
+          if (context.mounted) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(const SnackBar(content: Text('删除功能暂未开放')));
@@ -143,7 +143,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           break;
       }
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text('操作失败: ${e.toString()}')));
@@ -153,18 +153,18 @@ class _OrderListViewState extends ConsumerState<OrderListView>
 
   @override
   Widget build(BuildContext context) {
-    // Note: orderState and filteredOrders logic removed as PagingController handles fetching
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F8F8),
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         centerTitle: true,
         title: Text(
           '食品订单',
           style: TextStyle(
-            color: Colors.black,
+            color: theme.appBarTheme.foregroundColor,
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -173,7 +173,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
       body: Column(
         children: [
           Container(
-            color: Colors.white,
+            color: theme.cardColor,
             width: double.infinity,
             alignment: Alignment.centerLeft,
             child: TabBar(
@@ -181,15 +181,15 @@ class _OrderListViewState extends ConsumerState<OrderListView>
               isScrollable: true,
               tabAlignment: TabAlignment.start,
               padding: EdgeInsets.zero,
-              labelColor: const Color(0xFF333333),
-              unselectedLabelColor: const Color(0xFF999999),
-              indicatorColor: const Color(0xFFFF5252),
+              labelColor: theme.colorScheme.primary,
+              unselectedLabelColor: theme.hintColor,
+              indicatorColor: theme.colorScheme.primary,
               indicatorSize: TabBarIndicatorSize.label,
               indicatorWeight: 0,
               indicator: UnderlineTabIndicator(
                 borderSide: BorderSide(
                   width: 3.h,
-                  color: const Color(0xFFFF5252),
+                  color: theme.colorScheme.primary,
                 ),
                 insets: EdgeInsets.symmetric(horizontal: 14.w),
                 borderRadius: BorderRadius.circular(2.r),
@@ -274,15 +274,16 @@ class _OrderListViewState extends ConsumerState<OrderListView>
   }
 
   Widget _buildEmptyState() {
+    final theme = Theme.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.receipt_long, size: 64.sp, color: const Color(0xFFDDDDDD)),
+          Icon(Icons.receipt_long, size: 64.sp, color: theme.disabledColor),
           SizedBox(height: 16.h),
           Text(
             '暂无订单',
-            style: TextStyle(color: const Color(0xFF999999), fontSize: 14.sp),
+            style: TextStyle(color: theme.hintColor, fontSize: 14.sp),
           ),
         ],
       ),
@@ -290,7 +291,10 @@ class _OrderListViewState extends ConsumerState<OrderListView>
   }
 
   Widget _buildOrderCard(OrderModel order) {
-    if (order.items.isEmpty) return const SizedBox();
+    final theme = Theme.of(context);
+    if (order.items.isEmpty) {
+      return const SizedBox();
+    }
 
     final item = order.items.first;
     final statusText = _getStatusText(order.status);
@@ -307,7 +311,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
         margin: EdgeInsets.only(bottom: 16.h),
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.cardColor,
           borderRadius: BorderRadius.circular(16.r),
         ),
         child: Column(
@@ -321,11 +325,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                   child: Row(
                     children: [
                       if (order.storeName != null) ...[
-                        Icon(
-                          Icons.store,
-                          size: 16.sp,
-                          color: const Color(0xFF666666),
-                        ),
+                        Icon(Icons.store, size: 16.sp, color: theme.hintColor),
                         SizedBox(width: 4.w),
                         Expanded(
                           child: Text(
@@ -333,7 +333,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0xFF333333),
+                              color: theme.textTheme.bodyLarge?.color,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -346,13 +346,13 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                           '订单号：${order.id.substring(order.id.length > 8 ? order.id.length - 8 : 0)}',
                           style: TextStyle(
                             fontSize: 13.sp,
-                            color: const Color(0xFF999999),
+                            color: theme.hintColor,
                           ),
                         ),
                       Icon(
                         Icons.arrow_forward_ios,
                         size: 12.sp,
-                        color: const Color(0xFF999999),
+                        color: theme.hintColor,
                       ),
                     ],
                   ),
@@ -367,11 +367,10 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                 ),
               ],
             ),
-            Divider(height: 24.h, color: const Color(0xFFEEEEEE)),
+            Divider(height: 24.h, color: theme.dividerColor),
 
             // Content
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.r),
@@ -380,10 +379,10 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                     width: 80.w,
                     height: 80.w,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
+                    errorBuilder: (context, error, stackTrace) => Container(
                       width: 80.w,
                       height: 80.w,
-                      color: Colors.grey[300],
+                      color: theme.disabledColor,
                       child: const Icon(Icons.image_not_supported),
                     ),
                   ),
@@ -402,7 +401,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.bold,
-                                color: const Color(0xFF333333),
+                                color: theme.textTheme.bodyLarge?.color,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -413,7 +412,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0xFF333333),
+                              color: theme.textTheme.bodyLarge?.color,
                             ),
                           ),
                         ],
@@ -423,7 +422,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                         '规格：${item.product.specifications}',
                         style: TextStyle(
                           fontSize: 12.sp,
-                          color: const Color(0xFF999999),
+                          color: theme.hintColor,
                         ),
                       ),
                       SizedBox(height: 20.h),
@@ -434,7 +433,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                             '共${order.items.length}件 合计：',
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: const Color(0xFF666666),
+                              color: theme.hintColor,
                             ),
                           ),
                           Text(
@@ -442,7 +441,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                             style: TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0xFF333333),
+                              color: theme.textTheme.bodyLarge?.color,
                             ),
                           ),
                         ],
@@ -460,31 +459,32 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF0F9FF),
+                  color: theme.colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(4.r),
                 ),
                 child: Text(
                   order.pickupHint!,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: const Color(0xFF007AFF),
+                    color: theme.colorScheme.primary,
                   ),
                 ),
               ),
-            ] else if (order.remark != null && order.remark!.isNotEmpty) ...[
+            ],
+            if (order.remark != null && order.remark!.isNotEmpty) ...[
               SizedBox(height: 12.h),
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF0F0),
+                  color: theme.colorScheme.errorContainer,
                   borderRadius: BorderRadius.circular(4.r),
                 ),
                 child: Text(
                   order.remark!,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: const Color(0xFFFF5252),
+                    color: theme.colorScheme.error,
                   ),
                 ),
               ),
@@ -494,7 +494,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
             SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: _buildActionButtons(order),
+              children: _buildActionButtons(context, order),
             ),
           ],
         ),
@@ -502,67 +502,77 @@ class _OrderListViewState extends ConsumerState<OrderListView>
     );
   }
 
-  List<Widget> _buildActionButtons(OrderModel order) {
+  List<Widget> _buildActionButtons(BuildContext context, OrderModel order) {
+    final theme = Theme.of(context);
+    final buttons = <Widget>[];
+
     if (order.status == OrderStatus.paid) {
-      return [
+      buttons.add(
         _buildButton(
-          '申请退款',
-          textColor: const Color(0xFF666666),
-          borderColor: const Color(0xFFDDDDDD),
+          '退款',
+          textColor: theme.hintColor,
+          borderColor: theme.dividerColor,
           onTap: () => _handleAction(order, 'refund', context),
         ),
-        SizedBox(width: 12.w),
+      );
+      buttons.add(SizedBox(width: 8.w));
+      buttons.add(
         _buildButton(
           '查看券码',
-          textColor: const Color(0xFFFF5252),
-          borderColor: const Color(0xFFFF5252),
+          textColor: theme.colorScheme.primary,
+          borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'view_code', context),
         ),
-      ];
-    } else if (order.status == OrderStatus.cancelled ||
+      );
+    } else if (order.status == OrderStatus.completed ||
         order.status == OrderStatus.refunded) {
-      return [
+      buttons.add(
         _buildButton(
           '删除订单',
-          textColor: const Color(0xFF666666),
-          borderColor: const Color(0xFFDDDDDD),
+          textColor: theme.hintColor,
+          borderColor: theme.dividerColor,
           onTap: () => _handleAction(order, 'delete', context),
         ),
-        SizedBox(width: 12.w),
+      );
+      buttons.add(SizedBox(width: 8.w));
+      buttons.add(
         _buildButton(
           '重新购买',
-          textColor: const Color(0xFFFF5252),
-          borderColor: const Color(0xFFFF5252),
+          textColor: theme.colorScheme.primary,
+          borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'reorder', context),
         ),
-      ];
+      );
     } else if (order.status == OrderStatus.pending) {
-      return [
+      buttons.add(
         _buildButton(
           '取消订单',
-          textColor: const Color(0xFF666666),
-          borderColor: const Color(0xFFDDDDDD),
+          textColor: theme.hintColor,
+          borderColor: theme.dividerColor,
           onTap: () => _handleAction(order, 'cancel', context),
         ),
-        SizedBox(width: 12.w),
+      );
+      buttons.add(SizedBox(width: 8.w));
+      buttons.add(
         _buildButton(
           '立即支付',
-          textColor: const Color(0xFFFF5252),
-          borderColor: const Color(0xFFFF5252),
+          textColor: theme.colorScheme.primary,
+          borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'pay', context),
         ),
-      ];
-    } else if (order.status == OrderStatus.completed) {
-      return [
+      );
+    } else if (order.status == OrderStatus.cancelled) {
+      buttons.add(
         _buildButton(
           '重新购买',
-          textColor: const Color(0xFFFF5252),
-          borderColor: const Color(0xFFFF5252),
+          textColor: theme.colorScheme.primary,
+          borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'reorder', context),
         ),
-      ];
+      );
     }
-    return [];
+
+    return buttons;
   }
 
   Widget _buildButton(
@@ -574,14 +584,14 @@ class _OrderListViewState extends ConsumerState<OrderListView>
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
         decoration: BoxDecoration(
           border: Border.all(color: borderColor, width: 1),
           borderRadius: BorderRadius.circular(16.r),
         ),
         child: Text(
           text,
-          style: TextStyle(fontSize: 13.sp, color: textColor),
+          style: TextStyle(fontSize: 12.sp, color: textColor),
         ),
       ),
     );
@@ -605,17 +615,20 @@ class _OrderListViewState extends ConsumerState<OrderListView>
   }
 
   Color _getStatusColor(OrderStatus status) {
+    final theme = Theme.of(context);
     switch (status) {
       case OrderStatus.pending:
-        return const Color(0xFFFF5252);
+        return theme.colorScheme.error; // Red for pending/attention
       case OrderStatus.paid:
-        return const Color(0xFF333333);
+        return theme.colorScheme.primary; // Primary for paid
       case OrderStatus.completed:
-        return const Color(0xFF999999);
+        return theme.colorScheme.secondary; // Secondary/Greenish for completed
       case OrderStatus.cancelled:
+        return theme.hintColor; // Grey for cancelled
       case OrderStatus.refunded:
+        return theme.hintColor;
       case OrderStatus.failed:
-        return const Color(0xFF999999);
+        return theme.colorScheme.error;
     }
   }
 }

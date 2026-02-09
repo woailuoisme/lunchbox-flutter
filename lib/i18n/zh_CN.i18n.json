@@ -69,13 +69,16 @@
     "selfPickupHint": "扫码取餐/打包带走",
     "teamOrder": "团队点餐",
     "teamOrderHint": "多人订购/团队点餐",
+    "invite": "邀请有礼",
+    "inviteHint": "邀请好友得现金",
     "recommendTitle": "为我推荐",
     "grid": {
       "welfare": "社群福利",
       "service": "客服中心",
       "coupon": "领优惠券",
       "lottery": "幸运抽奖",
-      "invite": "邀请好友"
+      "invite": "邀请好友",
+      "inviteHint": "邀请好友得现金"
     },
     "lottery": {
       "title": "幸运抽奖",
@@ -128,7 +131,11 @@
       "exchange": "美食交流",
       "exchangeHint": "与美食达人分享心得",
       "priority": "活动优先",
-      "priorityHint": "优先参与各种美食活动"
+      "priorityHint": "优先参与各种美食活动",
+      "activity": "社群活动",
+      "activityHint": "定期举办线下聚会",
+      "topic": "话题讨论",
+      "topicHint": "参与话题赢取奖励"
     },
     "whyJoin": "为什么加入我们的社群？",
     "reason1": "每日美食推荐，让你不再纠结吃什么",

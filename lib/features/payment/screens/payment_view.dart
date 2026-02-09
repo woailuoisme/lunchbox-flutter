@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/features/payment/providers/payment_notifier.dart';
@@ -17,6 +18,7 @@ class PaymentView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(paymentProvider(order));
     final notifier = ref.read(paymentProvider(order).notifier);
+    final theme = Theme.of(context);
 
     // 监听支付成功
     ref.listen(paymentProvider(order), (previous, next) {
@@ -42,7 +44,7 @@ class PaymentView extends ConsumerWidget {
         appBar: AppBar(
           title: Text(t.payment.checkout),
           leading: IconButton(
-            icon: const Icon(Icons.close),
+            icon: const Icon(Symbols.close),
             onPressed: () => _handleCancel(context, notifier),
           ),
         ),
@@ -52,7 +54,7 @@ class PaymentView extends ConsumerWidget {
                 child: Column(
                   children: [
                     // 支付金额
-                    _buildPaymentAmount(state),
+                    _buildPaymentAmount(context, state),
 
                     SizedBox(height: 48.h),
 
@@ -65,7 +67,10 @@ class PaymentView extends ConsumerWidget {
                         ),
                         child: Text(
                           state.errorMessage!,
-                          style: TextStyle(color: Colors.red, fontSize: 14.sp),
+                          style: TextStyle(
+                            color: theme.colorScheme.error,
+                            fontSize: 14.sp,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -82,19 +87,22 @@ class PaymentView extends ConsumerWidget {
                               ? notifier.presentPaymentSheet
                               : null,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            foregroundColor: Colors.white,
+                            backgroundColor: theme.colorScheme.primary,
+                            foregroundColor: theme.colorScheme.onPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.r),
                             ),
+                            disabledBackgroundColor: theme.disabledColor,
+                            disabledForegroundColor: theme.colorScheme.onSurface
+                                .withValues(alpha: 0.38),
                           ),
                           child: state.isLoading
                               ? SizedBox(
                                   width: 24.w,
                                   height: 24.w,
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
+                                  child: CircularProgressIndicator(
+                                    color: theme.colorScheme.onPrimary,
+                                    strokeWidth: 2.w,
                                   ),
                                 )
                               : Text(
@@ -116,7 +124,7 @@ class PaymentView extends ConsumerWidget {
                         child: Text(
                           t.payment.initializing,
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: theme.textTheme.bodyMedium?.color,
                             fontSize: 14.sp,
                           ),
                         ),
@@ -137,6 +145,7 @@ class PaymentView extends ConsumerWidget {
     BuildContext context,
     PaymentNotifier notifier,
   ) async {
+    final theme = Theme.of(context);
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -150,8 +159,8 @@ class PaymentView extends ConsumerWidget {
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Colors.white,
+              backgroundColor: theme.colorScheme.error,
+              foregroundColor: theme.colorScheme.onError,
             ),
             child: Text(t.payment.cancelPay),
           ),
@@ -168,16 +177,20 @@ class PaymentView extends ConsumerWidget {
   }
 
   /// 构建支付金额
-  Widget _buildPaymentAmount(PaymentState state) {
+  Widget _buildPaymentAmount(BuildContext context, PaymentState state) {
+    final theme = Theme.of(context);
     return Container(
       padding: EdgeInsets.all(24.w),
       width: double.infinity,
-      color: Colors.white,
+      color: theme.cardColor,
       child: Column(
         children: [
           Text(
             t.payment.amount,
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: theme.textTheme.bodyMedium?.color,
+            ),
           ),
           SizedBox(height: 8.h),
           Text(
@@ -185,7 +198,7 @@ class PaymentView extends ConsumerWidget {
             style: TextStyle(
               fontSize: 36.sp,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: theme.textTheme.bodyLarge?.color,
             ),
           ),
         ],
@@ -199,11 +212,15 @@ class PaymentView extends ConsumerWidget {
     PaymentState state,
     PaymentNotifier notifier,
   ) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         Text(
           t.payment.remainingTime,
-          style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: theme.textTheme.bodyMedium?.color,
+          ),
         ),
         SizedBox(height: 8.h),
         Text(
@@ -211,7 +228,9 @@ class PaymentView extends ConsumerWidget {
           style: TextStyle(
             fontSize: 24.sp,
             fontWeight: FontWeight.bold,
-            color: state.countdown < 60 ? Colors.red : Colors.blue,
+            color: state.countdown < 60
+                ? theme.colorScheme.error
+                : theme.colorScheme.primary,
             fontFeatures: const [FontFeature.tabularFigures()],
           ),
         ),

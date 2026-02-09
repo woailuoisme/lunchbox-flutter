@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// 通用空状态展示组件
 class EmptyWidget extends StatelessWidget {
@@ -8,13 +10,21 @@ class EmptyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.inbox_outlined, size: 48, color: Colors.grey),
-          const SizedBox(height: 16),
-          Text(message ?? '暂无数据', style: const TextStyle(color: Colors.grey)),
+          Icon(Symbols.inbox, size: 48.sp, color: colorScheme.outline),
+          SizedBox(height: 16.h),
+          Text(
+            message ?? '暂无数据',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ),
         ],
       ),
     );

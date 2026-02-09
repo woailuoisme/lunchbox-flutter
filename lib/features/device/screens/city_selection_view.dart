@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/core/widgets/error_widget.dart' as app_error; // 防止命名冲突
 import 'package:lunchbox/core/widgets/loading_widget.dart';
 import 'package:lunchbox/features/device/entities/city_model.dart';
@@ -72,31 +71,32 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(title: Text(t.city.title), elevation: 0),
       body: Column(
         children: [
           // 搜索框
-          _buildSearchBar(),
+          _buildSearchBar(theme),
 
           // 热门城市
-          _buildHotCities(),
+          _buildHotCities(theme),
 
           // 城市列表
-          Expanded(child: _buildCityList()),
+          Expanded(child: _buildCityList(theme)),
         ],
       ),
     );
   }
 
   /// 构建搜索框
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(ThemeData theme) {
     final searchQuery = ref.watch(citySearchQueryProvider);
 
     return Container(
       padding: EdgeInsets.all(16.w),
-      color: Colors.white,
+      color: theme.colorScheme.surface,
       child: TextField(
         controller: _searchController,
         decoration: InputDecoration(
@@ -109,7 +109,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
                 )
               : const SizedBox.shrink(),
           filled: true,
-          fillColor: AppColors.background,
+          fillColor: theme.colorScheme.surfaceContainerHighest,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.r),
             borderSide: BorderSide.none,
@@ -124,7 +124,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
   }
 
   /// 构建热门城市
-  Widget _buildHotCities() {
+  Widget _buildHotCities(ThemeData theme) {
     final hotCitiesAsync = ref.watch(hotCitiesProvider);
     final searchQuery = ref.watch(citySearchQueryProvider);
 
@@ -139,7 +139,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
         }
 
         return Container(
-          color: Colors.white,
+          color: theme.colorScheme.surface,
           padding: EdgeInsets.all(16.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,14 +149,16 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               SizedBox(height: 12.h),
               Wrap(
                 spacing: 12.w,
                 runSpacing: 12.h,
-                children: cities.map(_buildCityChip).toList(),
+                children: cities
+                    .map((city) => _buildCityChip(city, theme))
+                    .toList(),
               ),
             ],
           ),
@@ -168,27 +170,27 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
   }
 
   /// 构建城市芯片
-  Widget _buildCityChip(CityModel city) {
+  Widget _buildCityChip(CityModel city, ThemeData theme) {
     return InkWell(
       onTap: () => _selectCity(city),
       borderRadius: BorderRadius.circular(8.r),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: AppColors.background,
+          color: theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(color: AppColors.divider),
+          border: Border.all(color: theme.colorScheme.outlineVariant),
         ),
         child: Text(
           city.name,
-          style: TextStyle(fontSize: 14.sp, color: AppColors.textPrimary),
+          style: TextStyle(fontSize: 14.sp, color: theme.colorScheme.onSurface),
         ),
       ),
     );
   }
 
   /// 构建城市列表
-  Widget _buildCityList() {
+  Widget _buildCityList(ThemeData theme) {
     final allCitiesAsync = ref.watch(allCitiesProvider);
 
     // 如果是搜索状态，使用 filteredCitiesProvider
@@ -209,7 +211,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
       return allCitiesAsync.when(
         data: (_) {
           if (groupedCities.isEmpty) {
-            return _buildEmptyState();
+            return _buildEmptyState(theme);
           }
 
           return RefreshIndicator(
@@ -224,7 +226,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
               itemBuilder: (context, index) {
                 final initial = groupedCities.keys.elementAt(index);
                 final cities = groupedCities[initial]!;
-                return _buildGroupedItem(initial, cities);
+                return _buildGroupedItem(initial, cities, theme);
               },
             ),
           );
@@ -242,14 +244,14 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
       return allCitiesAsync.when(
         data: (_) {
           if (filteredCities.isEmpty) {
-            return _buildEmptyState();
+            return _buildEmptyState(theme);
           }
 
           return ListView.builder(
             itemCount: filteredCities.length,
             itemBuilder: (context, index) {
               final city = filteredCities[index];
-              return _buildCityItem(city);
+              return _buildCityItem(city, theme);
             },
           );
         },
@@ -262,47 +264,57 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
     }
   }
 
-  Widget _buildGroupedItem(String initial, List<CityModel> cities) {
+  Widget _buildGroupedItem(
+    String initial,
+    List<CityModel> cities,
+    ThemeData theme,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-          color: AppColors.background,
+          color: theme.scaffoldBackgroundColor,
           width: double.infinity,
           child: Text(
             initial,
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.bold,
-              color: AppColors.textSecondary,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
-        ...cities.map(_buildCityItem),
+        ...cities.map((city) => _buildCityItem(city, theme)),
       ],
     );
   }
 
   /// 构建城市列表项
-  Widget _buildCityItem(CityModel city) {
+  Widget _buildCityItem(CityModel city, ThemeData theme) {
     final selectedCityAsync = ref.watch(selectedCityProvider);
     final selectedCity = selectedCityAsync.asData?.value;
     final isSelected = selectedCity?.id == city.id;
 
     return ColoredBox(
-      color: Colors.white,
+      color: theme.colorScheme.surface,
       child: ListTile(
         title: Text(
           city.name,
           style: TextStyle(
             fontSize: 16.sp,
-            color: isSelected ? AppColors.primary : AppColors.textPrimary,
+            color: isSelected
+                ? theme.colorScheme.primary
+                : theme.colorScheme.onSurface,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),
         ),
         trailing: isSelected
-            ? Icon(Icons.check_circle, color: AppColors.primary, size: 24.sp)
+            ? Icon(
+                Icons.check_circle,
+                color: theme.colorScheme.primary,
+                size: 24.sp,
+              )
             : null,
         onTap: () => _selectCity(city),
       ),
@@ -310,7 +322,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
   }
 
   /// 构建空状态
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(ThemeData theme) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -318,12 +330,15 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
           Icon(
             Icons.location_city_outlined,
             size: 64.sp,
-            color: AppColors.textHint,
+            color: theme.colorScheme.outline,
           ),
           SizedBox(height: 16.h),
           Text(
             '未找到相关城市',
-            style: TextStyle(fontSize: 16.sp, color: AppColors.textSecondary),
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
           SizedBox(height: 8.h),
           TextButton(onPressed: _showAllCities, child: const Text('查看所有城市')),

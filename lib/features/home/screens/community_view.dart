@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 /// 社群福利页面
@@ -11,22 +12,25 @@ class CommunityView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFFDECEB),
+      backgroundColor: colorScheme.surfaceContainer,
       appBar: AppBar(
         title: Text(t.community.title),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: colorScheme.surface,
+        foregroundColor: colorScheme.onSurface,
         elevation: 0,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHeader(),
-            _buildQrCard(),
-            _buildFeatures(),
-            _buildWhyJoin(),
+            _buildHeader(colorScheme),
+            _buildQrCard(colorScheme),
+            _buildFeatures(colorScheme),
+            _buildWhyJoin(colorScheme),
             SizedBox(height: 32.h),
           ],
         ),
@@ -35,17 +39,17 @@ class CommunityView extends StatelessWidget {
   }
 
   /// 构建顶部红色引导区域
-  Widget _buildHeader() {
+  Widget _buildHeader(ColorScheme colorScheme) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: 30.h),
-      color: const Color(0xFFFF766A),
+      color: colorScheme.primary,
       child: Column(
         children: [
           Text(
             t.community.join,
             style: TextStyle(
-              color: Colors.white,
+              color: colorScheme.onPrimary,
               fontSize: 28.sp,
               fontWeight: FontWeight.bold,
               letterSpacing: 2,
@@ -55,7 +59,7 @@ class CommunityView extends StatelessWidget {
           Text(
             t.community.share,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.9),
+              color: colorScheme.onPrimary.withValues(alpha: 0.9),
               fontSize: 14.sp,
             ),
           ),
@@ -65,18 +69,18 @@ class CommunityView extends StatelessWidget {
   }
 
   /// 构建二维码卡片
-  Widget _buildQrCard() {
+  Widget _buildQrCard(ColorScheme colorScheme) {
     return Transform.translate(
       offset: Offset(0, -20.h),
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 20.w),
         padding: EdgeInsets.all(24.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: colorScheme.shadow.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -89,23 +93,23 @@ class CommunityView extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: colorScheme.onSurface,
               ),
             ),
             SizedBox(height: 4.h),
             Text(
               t.community.dept,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+              style: TextStyle(fontSize: 12.sp, color: colorScheme.outline),
             ),
             SizedBox(height: 20.h),
             Container(
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: colorScheme.surface,
                 borderRadius: BorderRadius.circular(12.r),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
+                    color: colorScheme.shadow.withValues(alpha: 0.05),
                     blurRadius: 8,
                   ),
                 ],
@@ -127,12 +131,12 @@ class CommunityView extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
-                color: Colors.black87,
+                color: colorScheme.onSurface,
               ),
             ),
             Text(
               t.community.dept,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+              style: TextStyle(fontSize: 12.sp, color: colorScheme.outline),
             ),
           ],
         ),
@@ -141,47 +145,47 @@ class CommunityView extends StatelessWidget {
   }
 
   /// 构建功能特色列表
-  Widget _buildFeatures() {
+  Widget _buildFeatures(ColorScheme colorScheme) {
     final features = [
       {
-        'icon': '🎁',
+        'icon': Symbols.card_giftcard,
         'title': t.community.features.coupon,
         'subtitle': t.community.features.couponHint,
-        'color': Colors.orange,
+        'color': colorScheme.tertiary,
       },
       {
-        'icon': '🍕',
-        'title': t.community.features.tasting,
-        'subtitle': t.community.features.tastingHint,
-        'color': Colors.amber,
+        'icon': Symbols.group,
+        'title': t.community.features.activity,
+        'subtitle': t.community.features.activityHint,
+        'color': colorScheme.primary,
       },
       {
-        'icon': '👥',
-        'title': t.community.features.exchange,
-        'subtitle': t.community.features.exchangeHint,
-        'color': Colors.blue,
-      },
-      {
-        'icon': '🎯',
-        'title': t.community.features.priority,
-        'subtitle': t.community.features.priorityHint,
-        'color': Colors.red,
+        'icon': Symbols.forum,
+        'title': t.community.features.topic,
+        'subtitle': t.community.features.topicHint,
+        'color': colorScheme.secondary,
       },
     ];
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       padding: EdgeInsets.symmetric(vertical: 10.h),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Color(0xFFEEEEEE), width: 0.5)),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border(
+          top: BorderSide(color: colorScheme.outlineVariant, width: 0.5),
+        ),
       ),
-      child: Column(children: features.map(_buildFeatureItem).toList()),
+      child: Column(
+        children: features
+            .map((d) => _buildFeatureItem(d, colorScheme))
+            .toList(),
+      ),
     );
   }
 
   /// 构建单个特色项
-  Widget _buildFeatureItem(Map<String, dynamic> data) {
+  Widget _buildFeatureItem(Map<String, dynamic> data, ColorScheme colorScheme) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
       child: Row(
@@ -190,9 +194,10 @@ class CommunityView extends StatelessWidget {
             width: 40.w,
             height: 40.w,
             alignment: Alignment.center,
-            child: Text(
-              data['icon'] as String,
-              style: TextStyle(fontSize: 24.sp),
+            child: Icon(
+              data['icon'] as IconData,
+              size: 24.sp,
+              color: data['color'] as Color,
             ),
           ),
           SizedBox(width: 16.w),
@@ -205,12 +210,12 @@ class CommunityView extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 Text(
                   data['subtitle'] as String,
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                  style: TextStyle(fontSize: 12.sp, color: colorScheme.outline),
                 ),
               ],
             ),
@@ -221,14 +226,14 @@ class CommunityView extends StatelessWidget {
   }
 
   /// 构建“为什么加入”区域
-  Widget _buildWhyJoin() {
+  Widget _buildWhyJoin(ColorScheme colorScheme) {
     return Container(
       margin: EdgeInsets.all(20.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF1F0),
+        color: colorScheme.primaryContainer.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: const Color(0xFFFFDADA)),
+        border: Border.all(color: colorScheme.primaryContainer),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,21 +243,21 @@ class CommunityView extends StatelessWidget {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF444444),
+              color: colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 16.h),
-          _buildBulletPoint(t.community.reason1),
-          _buildBulletPoint(t.community.reason2),
-          _buildBulletPoint(t.community.reason3),
-          _buildBulletPoint(t.community.reason4),
+          _buildBulletPoint(t.community.reason1, colorScheme),
+          _buildBulletPoint(t.community.reason2, colorScheme),
+          _buildBulletPoint(t.community.reason3, colorScheme),
+          _buildBulletPoint(t.community.reason4, colorScheme),
         ],
       ),
     );
   }
 
   /// 构建圆点列表项
-  Widget _buildBulletPoint(String text) {
+  Widget _buildBulletPoint(String text, ColorScheme colorScheme) {
     return Padding(
       padding: EdgeInsets.only(bottom: 8.h),
       child: Row(
@@ -263,8 +268,8 @@ class CommunityView extends StatelessWidget {
             child: Container(
               width: 4.w,
               height: 4.w,
-              decoration: const BoxDecoration(
-                color: Color(0xFFFF766A),
+              decoration: BoxDecoration(
+                color: colorScheme.primary,
                 shape: BoxShape.circle,
               ),
             ),
@@ -275,7 +280,7 @@ class CommunityView extends StatelessWidget {
               text,
               style: TextStyle(
                 fontSize: 13.sp,
-                color: const Color(0xFF666666),
+                color: colorScheme.onSurfaceVariant,
                 height: 1.5,
               ),
             ),

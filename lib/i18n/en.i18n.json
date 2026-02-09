@@ -69,6 +69,8 @@
     "selfPickupHint": "Scan code to pick up/Take away",
     "teamOrder": "Team Order",
     "teamOrderHint": "Group ordering/Team meal",
+    "invite": "Invite & Earn",
+    "inviteHint": "Invite friends to get cash",
     "recommendTitle": "Recommended for Me",
     "grid": {
       "welfare": "Welfare",
@@ -365,5 +367,32 @@
     "btnExpired": "Expired",
     "discount": "$ ${amount} Coupon",
     "discountOff": "$ ${amount} Off"
+  },
+  "community": {
+    "title": "Community Benefits",
+    "join": "Join Community",
+    "share": "Share delicious food with foodies",
+    "org": "Dongguan CAS Cloud Computing Center",
+    "dept": "Cloud Computing Center",
+    "scanHint": "Scan to join Dongguan CAS Cloud Computing Center",
+    "features": {
+      "coupon": "Exclusive Coupons",
+      "couponHint": "Exclusive discounts for group members",
+      "tasting": "New Product Tasting",
+      "tastingHint": "Taste the latest food first",
+      "exchange": "Food Exchange",
+      "exchangeHint": "Share insights with food experts",
+      "priority": "Priority Access",
+      "priorityHint": "Priority participation in food events",
+      "activity": "Community Events",
+      "activityHint": "Regular offline gatherings",
+      "topic": "Topic Discussion",
+      "topicHint": "Participate in topics to win rewards"
+    },
+    "whyJoin": "Why join our community?",
+    "reason1": "Daily food recommendations",
+    "reason2": "Limited time offers, save money",
+    "reason3": "Professional food reviews",
+    "reason4": "Food making tutorials"
   }
 }

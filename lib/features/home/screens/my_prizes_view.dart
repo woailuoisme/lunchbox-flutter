@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/home/models/lottery_prize.dart';
 import 'package:lunchbox/features/home/providers/lottery_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// 我的奖品页面
 ///
@@ -35,32 +35,36 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
   @override
   Widget build(BuildContext context) {
     final lotteryState = ref.watch(lotteryProvider);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F8F8),
+      backgroundColor: colorScheme.surfaceContainer,
       appBar: AppBar(
         title: Text(t.home.lottery.prizes),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: colorScheme.surface,
+        foregroundColor: colorScheme.onSurface,
         elevation: 0,
         centerTitle: true,
       ),
       body: Column(
         children: [
-          _buildStatsHeader(lotteryState.prizes.length),
-          _buildTabBar(),
+          _buildStatsHeader(lotteryState.prizes.length, colorScheme),
+          _buildTabBar(colorScheme),
           Expanded(
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildPrizeList(lotteryState.prizes),
+                _buildPrizeList(lotteryState.prizes, colorScheme),
                 _buildPrizeList(
                   lotteryState.prizes.where((p) => !p.isUsed).toList(),
+                  colorScheme,
                 ), // 可用
                 _buildPrizeList(
                   lotteryState.prizes.where((p) => p.isUsed).toList(),
+                  colorScheme,
                 ), // 已使用
-                _buildPrizeList([]), // 已过期
+                _buildPrizeList([], colorScheme), // 已过期
               ],
             ),
           ),
@@ -70,17 +74,17 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
   }
 
   /// 顶部统计信息
-  Widget _buildStatsHeader(int totalCount) {
+  Widget _buildStatsHeader(int totalCount, ColorScheme colorScheme) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: colorScheme.shadow.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -106,10 +110,13 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
           SizedBox(height: 4.h),
           Text(
             '查看您获得的所有奖品',
-            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+            style: TextStyle(fontSize: 12.sp, color: colorScheme.outline),
           ),
           SizedBox(height: 20.h),
-          Divider(height: 1.h, color: Colors.grey.withValues(alpha: 0.1)),
+          Divider(
+            height: 1.h,
+            color: colorScheme.outlineVariant.withValues(alpha: 0.2),
+          ),
           SizedBox(height: 20.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -117,11 +124,13 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
               _buildStatItem(
                 totalCount.toString(),
                 t.home.lottery.prizeStats.total,
+                colorScheme,
               ),
-              _buildStatItem('0', t.home.lottery.prizeStats.used),
+              _buildStatItem('0', t.home.lottery.prizeStats.used, colorScheme),
               _buildStatItem(
                 totalCount.toString(),
                 t.home.lottery.prizeStats.available,
+                colorScheme,
               ),
             ],
           ),
@@ -130,7 +139,7 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
     );
   }
 
-  Widget _buildStatItem(String value, String label) {
+  Widget _buildStatItem(String value, String label, ColorScheme colorScheme) {
     return Column(
       children: [
         Text(
@@ -138,27 +147,27 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.primary,
+            color: colorScheme.primary,
           ),
         ),
         SizedBox(height: 4.h),
         Text(
           label,
-          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+          style: TextStyle(fontSize: 12.sp, color: colorScheme.outline),
         ),
       ],
     );
   }
 
   /// 分类 TabBar
-  Widget _buildTabBar() {
+  Widget _buildTabBar(ColorScheme colorScheme) {
     return ColoredBox(
-      color: Colors.white,
+      color: colorScheme.surface,
       child: TabBar(
         controller: _tabController,
-        labelColor: AppColors.primary,
-        unselectedLabelColor: Colors.black87,
-        indicatorColor: AppColors.primary,
+        labelColor: colorScheme.primary,
+        unselectedLabelColor: colorScheme.onSurfaceVariant,
+        indicatorColor: colorScheme.primary,
         indicatorSize: TabBarIndicatorSize.label,
         tabs: const [
           Tab(text: '全部'),
@@ -171,23 +180,23 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
   }
 
   /// 奖品列表
-  Widget _buildPrizeList(List<LotteryPrize> prizes) {
+  Widget _buildPrizeList(List<LotteryPrize> prizes, ColorScheme colorScheme) {
     return ListView.builder(
       padding: EdgeInsets.all(16.w),
       itemCount: prizes.length,
       itemBuilder: (context, index) {
         final prize = prizes[index];
-        return _buildPrizeCard(prize);
+        return _buildPrizeCard(prize, colorScheme);
       },
     );
   }
 
-  Widget _buildPrizeCard(LotteryPrize prize) {
+  Widget _buildPrizeCard(LotteryPrize prize, ColorScheme colorScheme) {
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
@@ -195,12 +204,17 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
           Container(
             width: 50.w,
             height: 50.w,
-            decoration: const BoxDecoration(
-              color: Color(0xFFFFEAEA),
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer,
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
-            child: Icon(Icons.star, color: Colors.amber, size: 30.w),
+            child: Icon(
+              Symbols.star,
+              color: Colors.amber,
+              size: 30.w,
+              fill: 1.0,
+            ),
           ),
           SizedBox(width: 16.w),
           Expanded(
@@ -219,24 +233,33 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
                     ),
                     Text(
                       prize.isUsed ? '已使用' : '可用',
-                      style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   '乖乖币奖励，可在乖乖币商城使用',
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   '获得时间: ${prize.createdAt.toString().substring(0, 16)}',
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey[400]),
+                  style: TextStyle(fontSize: 11.sp, color: colorScheme.outline),
                 ),
                 if (prize.expiredAt != null)
                   Text(
                     '有效期至: ${prize.expiredAt.toString().substring(0, 16)}',
-                    style: TextStyle(fontSize: 11.sp, color: Colors.grey[400]),
+                    style: TextStyle(
+                      fontSize: 11.sp,
+                      color: colorScheme.outline,
+                    ),
                   ),
               ],
             ),

@@ -5,6 +5,7 @@ import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:lunchbox/features/product/providers/product_providers.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// 产品详情视图
 class ProductDetailView extends ConsumerWidget {
@@ -14,8 +15,10 @@ class ProductDetailView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productAsync = ref.watch(productDetailProvider(productId));
+    final theme = Theme.of(context);
 
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: productAsync.when(
         data: (product) => CustomScrollView(
           slivers: [
@@ -23,6 +26,8 @@ class ProductDetailView extends ConsumerWidget {
             SliverAppBar(
               expandedHeight: 300.h,
               pinned: true,
+              backgroundColor: theme.appBarTheme.backgroundColor,
+              foregroundColor: theme.appBarTheme.foregroundColor,
               flexibleSpace: FlexibleSpaceBar(
                 background: AppImage(imageUrl: product.imageUrl),
               ),
@@ -35,12 +40,12 @@ class ProductDetailView extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildBasicInfo(product),
+                    _buildBasicInfo(context, product),
                     SizedBox(height: 16.h),
-                    _buildDescription(product),
+                    _buildDescription(context, product),
                     SizedBox(height: 16.h),
                     if (product.specifications != null)
-                      _buildSpecifications(product),
+                      _buildSpecifications(context, product),
                   ],
                 ),
               ),
@@ -58,22 +63,24 @@ class ProductDetailView extends ConsumerWidget {
   }
 
   /// 构建基本信息
-  Widget _buildBasicInfo(ProductModel product) {
+  Widget _buildBasicInfo(BuildContext context, ProductModel product) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // 标签
         Row(
           children: [
-            if (product.isHot) _buildBadge(t.product.hot, Colors.red),
+            if (product.isHot)
+              _buildBadge(t.product.hot, theme.colorScheme.error),
             if (product.isPromotion)
-              _buildBadge(t.product.promotion, Colors.orange),
+              _buildBadge(t.product.promotion, theme.colorScheme.tertiary),
             if (product.hasDiscount)
               _buildBadge(
                 t.product.discountOff(
                   percent: product.discountPercentage.toString(),
                 ),
-                Colors.green,
+                theme.colorScheme.secondary,
               ),
           ],
         ),
@@ -82,7 +89,11 @@ class ProductDetailView extends ConsumerWidget {
         // 产品名称
         Text(
           product.name,
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 20.sp,
+            fontWeight: FontWeight.bold,
+            color: theme.textTheme.titleLarge?.color,
+          ),
         ),
         SizedBox(height: 12.h),
 
@@ -95,7 +106,7 @@ class ProductDetailView extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.bold,
-                color: Colors.red,
+                color: theme.colorScheme.primary,
               ),
             ),
             if (product.hasDiscount) ...[
@@ -104,8 +115,9 @@ class ProductDetailView extends ConsumerWidget {
                 '¥${product.originalPrice!.toStringAsFixed(2)}',
                 style: TextStyle(
                   fontSize: 14.sp,
-                  color: Colors.grey,
+                  color: theme.hintColor,
                   decoration: TextDecoration.lineThrough,
+                  decorationColor: theme.hintColor,
                 ),
               ),
             ],
@@ -118,7 +130,9 @@ class ProductDetailView extends ConsumerWidget {
           product.hasStock ? t.product.stockFull : t.product.stockEmpty,
           style: TextStyle(
             fontSize: 14.sp,
-            color: product.hasStock ? Colors.green : Colors.red,
+            color: product.hasStock
+                ? theme.colorScheme.primary
+                : theme.colorScheme.error,
           ),
         ),
       ],
@@ -143,7 +157,8 @@ class ProductDetailView extends ConsumerWidget {
   }
 
   /// 构建描述
-  Widget _buildDescription(ProductModel product) {
+  Widget _buildDescription(BuildContext context, ProductModel product) {
+    final theme = Theme.of(context);
     if (product.description.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -153,14 +168,18 @@ class ProductDetailView extends ConsumerWidget {
       children: [
         Text(
           t.product.detail,
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: theme.textTheme.titleMedium?.color,
+          ),
         ),
         SizedBox(height: 8.h),
         Text(
           product.description,
           style: TextStyle(
             fontSize: 14.sp,
-            color: Colors.grey[800],
+            color: theme.textTheme.bodyMedium?.color,
             height: 1.5,
           ),
         ),
@@ -169,20 +188,28 @@ class ProductDetailView extends ConsumerWidget {
   }
 
   /// 构建规格
-  Widget _buildSpecifications(ProductModel product) {
+  Widget _buildSpecifications(BuildContext context, ProductModel product) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           t.product.specifications,
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: theme.textTheme.titleMedium?.color,
+          ),
         ),
         SizedBox(height: 8.h),
         // 这里假设 specifications 是 Map 或 String，根据实际模型调整
         // 暂时简单显示
         Text(
           product.specifications.toString(),
-          style: TextStyle(fontSize: 14.sp, color: Colors.grey[800]),
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: theme.textTheme.bodyMedium?.color,
+          ),
         ),
       ],
     );
@@ -194,13 +221,14 @@ class ProductDetailView extends ConsumerWidget {
     WidgetRef ref,
     ProductModel? product,
   ) {
+    final theme = Theme.of(context);
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: theme.shadowColor.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -212,21 +240,27 @@ class ProductDetailView extends ConsumerWidget {
             // 数量选择（简单版）
             DecoratedBox(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey[300]!),
+                border: Border.all(color: theme.dividerColor),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.remove),
+                    icon: Icon(Symbols.remove, color: theme.iconTheme.color),
                     onPressed: () {
                       // TODO(User): 减少数量
                     },
                     iconSize: 20.sp,
                   ),
-                  Text('1', style: TextStyle(fontSize: 16.sp)),
+                  Text(
+                    '1',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: theme.textTheme.bodyLarge?.color,
+                    ),
+                  ),
                   IconButton(
-                    icon: const Icon(Icons.add),
+                    icon: Icon(Symbols.add, color: theme.iconTheme.color),
                     onPressed: () {
                       // TODO(User): 增加数量
                     },
@@ -250,8 +284,11 @@ class ProductDetailView extends ConsumerWidget {
                     : null,
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 12.h),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  foregroundColor: Colors.white,
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
+                  disabledBackgroundColor: theme.disabledColor,
+                  disabledForegroundColor: theme.colorScheme.onSurface
+                      .withValues(alpha: 0.38),
                 ),
                 child: Text(
                   product != null && !product.hasStock

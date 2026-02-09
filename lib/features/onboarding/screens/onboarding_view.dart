@@ -6,6 +6,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lunchbox/features/onboarding/providers/onboarding_notifier.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// Onboarding 引导页视图
 class OnboardingView extends ConsumerWidget {
@@ -17,43 +18,55 @@ class OnboardingView extends ConsumerWidget {
     // 只有 watch 会建立监听关系并保持 Provider 活跃
     ref.watch(onboardingProvider);
     final notifier = ref.read(onboardingProvider.notifier);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
-    final bodyStyle = TextStyle(fontSize: 16.sp, color: Colors.grey[600]);
+    final bodyStyle = TextStyle(
+      fontSize: 16.sp,
+      color: colorScheme.onSurfaceVariant,
+    );
 
     final pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
       bodyTextStyle: bodyStyle,
       bodyPadding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
-      pageColor: Theme.of(context).scaffoldBackgroundColor,
+      pageColor: colorScheme.surface,
       imagePadding: EdgeInsets.only(top: 24.h),
       imageFlex: 2,
     );
 
     return IntroductionScreen(
-      globalBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      globalBackgroundColor: colorScheme.surface,
       allowImplicitScrolling: true,
-
       pages: [
         PageViewModel(
           title: t.onboarding.welcomeTitle,
           body: t.onboarding.welcomeBody,
           image: _buildImage(
             context,
-            Icons.lunch_dining,
-            Theme.of(context).primaryColor,
+            Symbols.lunch_dining,
+            colorScheme.primary,
           ),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: t.onboarding.findDevicesTitle,
           body: t.onboarding.findDevicesBody,
-          image: _buildImage(context, Icons.location_on, Colors.orange),
+          image: _buildImage(
+            context,
+            Symbols.location_on,
+            colorScheme.secondary,
+          ),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: t.onboarding.paymentTitle,
           body: t.onboarding.paymentBody,
-          image: _buildImage(context, Icons.credit_card, Colors.green),
+          image: _buildImage(
+            context,
+            Symbols.credit_card,
+            colorScheme.tertiary,
+          ),
           decoration: pageDecoration,
         ),
       ],
@@ -74,28 +87,35 @@ class OnboardingView extends ConsumerWidget {
       nextFlex: 0,
       skip: Text(
         t.common.skip,
-        style: const TextStyle(fontWeight: FontWeight.w600),
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: colorScheme.primary,
+        ),
       ),
-      next: const Icon(Icons.arrow_forward),
+      next: Icon(Symbols.arrow_forward, color: colorScheme.primary),
       done: Text(
         t.onboarding.getStarted,
-        style: const TextStyle(fontWeight: FontWeight.w600),
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: colorScheme.primary,
+        ),
       ),
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: EdgeInsets.all(16.w),
       controlsPadding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       dotsDecorator: DotsDecorator(
         size: Size(10.0.w, 10.0.w),
-        color: const Color(0xFFBDBDBD),
+        color: colorScheme.outline,
         activeSize: Size(22.0.w, 10.0.w),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0.r)),
         ),
-        activeColor: Theme.of(context).primaryColor,
+        activeColor: colorScheme.primary,
       ),
     );
   }
 
+  /// 构建引导页图片
   Widget _buildImage(BuildContext context, IconData icon, Color color) {
     return Center(
       child: Container(

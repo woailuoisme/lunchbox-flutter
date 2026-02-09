@@ -73,6 +73,8 @@ class TranslationsZhTw extends Translations with BaseTranslations<AppLocale, Tra
 	@override late final _TranslationsTimeZhTw time = _TranslationsTimeZhTw._(_root);
   @override late final _TranslationsCouponZhTw coupon = _TranslationsCouponZhTw
       ._(_root);
+  @override late final _TranslationsCommunityZhTw community = _TranslationsCommunityZhTw
+      ._(_root);
 }
 
 // Path: common
@@ -223,6 +225,10 @@ class _TranslationsHomeZhTw extends TranslationsHomeZhCn {
   @override String get teamOrder => '團隊點餐';
 
   @override String get teamOrderHint => '多人訂購/團隊點餐';
+
+  @override String get invite => '邀請有禮';
+
+  @override String get inviteHint => '邀請好友得現金';
 
   @override String get recommendTitle => '為我推薦';
   @override late final _TranslationsHomeGridZhTw grid = _TranslationsHomeGridZhTw
@@ -736,6 +742,40 @@ class _TranslationsCouponZhTw extends TranslationsCouponZhCn {
   @override String discountOff({required Object amount}) => '${amount}元減免券';
 }
 
+// Path: community
+class _TranslationsCommunityZhTw extends TranslationsCommunityZhCn {
+  _TranslationsCommunityZhTw._(TranslationsZhTw root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override String get title => '社群福利';
+
+  @override String get join => '加入社群';
+
+  @override String get share => '與美食愛好者一起分享美味';
+
+  @override String get org => '東莞中科雲計算研究院';
+
+  @override String get dept => '雲計算中心';
+
+  @override String get scanHint => '掃碼加入東莞中科雲計算研究院';
+  @override late final _TranslationsCommunityFeaturesZhTw features = _TranslationsCommunityFeaturesZhTw
+      ._(_root);
+
+  @override String get whyJoin => '為什麼加入我們的社群？';
+
+  @override String get reason1 => '每日美食推薦，讓您不再糾結吃什麼';
+
+  @override String get reason2 => '限時優惠活動，省錢又省心';
+
+  @override String get reason3 => '專業美食測評，幫您避坑';
+
+  @override String get reason4 => '美食製作教程，在家也能做出美味';
+}
+
 // Path: home.grid
 class _TranslationsHomeGridZhTw extends TranslationsHomeGridZhCn {
   _TranslationsHomeGridZhTw._(TranslationsZhTw root)
@@ -848,6 +888,41 @@ class _TranslationsCouponTabsZhTw extends TranslationsCouponTabsZhCn {
   @override String get received => '已領取';
 
   @override String get expired => '已過期';
+}
+
+// Path: community.features
+class _TranslationsCommunityFeaturesZhTw
+    extends TranslationsCommunityFeaturesZhCn {
+  _TranslationsCommunityFeaturesZhTw._(TranslationsZhTw root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override String get coupon => '專屬優惠券';
+
+  @override String get couponHint => '群內專享折扣，省錢又美味';
+
+  @override String get tasting => '新品試吃';
+
+  @override String get tastingHint => '第一時間品嚐最新美食';
+
+  @override String get exchange => '美食交流';
+
+  @override String get exchangeHint => '與美食達人分享心得';
+
+  @override String get priority => '活動優先';
+
+  @override String get priorityHint => '優先參與各種美食活動';
+
+  @override String get activity => '社群活動';
+
+  @override String get activityHint => '定期舉辦線下聚會';
+
+  @override String get topic => '話題討論';
+
+  @override String get topicHint => '參與話題贏取獎勵';
 }
 
 // Path: home.lottery.prizeStats
@@ -975,6 +1050,8 @@ extension on TranslationsZhTw {
       'home.selfPickupHint' => '掃碼取餐/打包帶走',
       'home.teamOrder' => '團隊點餐',
       'home.teamOrderHint' => '多人訂購/團隊點餐',
+      'home.invite' => '邀請有禮',
+      'home.inviteHint' => '邀請好友得現金',
       'home.recommendTitle' => '為我推薦',
       'home.grid.welfare' => '社群福利',
       'home.grid.service' => '客服中心',
@@ -1200,6 +1277,29 @@ extension on TranslationsZhTw {
       'coupon.btnExpired' => '已過期',
       'coupon.discount' => ({required Object amount}) => '${amount}元優惠券',
       'coupon.discountOff' => ({required Object amount}) => '${amount}元減免券',
+      'community.title' => '社群福利',
+      'community.join' => '加入社群',
+      'community.share' => '與美食愛好者一起分享美味',
+      'community.org' => '東莞中科雲計算研究院',
+      'community.dept' => '雲計算中心',
+      'community.scanHint' => '掃碼加入東莞中科雲計算研究院',
+      'community.features.coupon' => '專屬優惠券',
+      'community.features.couponHint' => '群內專享折扣，省錢又美味',
+      'community.features.tasting' => '新品試吃',
+      'community.features.tastingHint' => '第一時間品嚐最新美食',
+      'community.features.exchange' => '美食交流',
+      'community.features.exchangeHint' => '與美食達人分享心得',
+      'community.features.priority' => '活動優先',
+      'community.features.priorityHint' => '優先參與各種美食活動',
+      'community.features.activity' => '社群活動',
+      'community.features.activityHint' => '定期舉辦線下聚會',
+      'community.features.topic' => '話題討論',
+      'community.features.topicHint' => '參與話題贏取獎勵',
+      'community.whyJoin' => '為什麼加入我們的社群？',
+      'community.reason1' => '每日美食推薦，讓您不再糾結吃什麼',
+      'community.reason2' => '限時優惠活動，省錢又省心',
+      'community.reason3' => '專業美食測評，幫您避坑',
+      'community.reason4' => '美食製作教程，在家也能做出美味',
 			_ => null,
 		};
 	}

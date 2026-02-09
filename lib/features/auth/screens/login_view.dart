@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/auth/models/password.dart';
 import 'package:lunchbox/features/auth/models/username.dart';
 import 'package:lunchbox/features/auth/providers/login_notifier.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
 
 class LoginView extends ConsumerStatefulWidget {
@@ -45,8 +45,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
       }
     });
 
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -54,13 +57,13 @@ class _LoginViewState extends ConsumerState<LoginView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(height: 60.h),
-              _buildHeader(),
+              _buildHeader(colorScheme),
               SizedBox(height: 60.h),
-              _buildLoginForm(),
+              _buildLoginForm(colorScheme),
               SizedBox(height: 24.h),
-              _buildLoginButton(),
+              _buildLoginButton(colorScheme),
               SizedBox(height: 16.h),
-              _buildFooterLinks(),
+              _buildFooterLinks(colorScheme),
               SizedBox(height: 24.h),
             ],
           ),
@@ -69,24 +72,31 @@ class _LoginViewState extends ConsumerState<LoginView> {
     );
   }
 
-  Widget _buildFooterLinks() {
+  Widget _buildFooterLinks(ColorScheme colorScheme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [_buildRegisterHint(), _buildForgotPassword()],
+      children: [
+        _buildRegisterHint(colorScheme),
+        _buildForgotPassword(colorScheme),
+      ],
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(ColorScheme colorScheme) {
     return Column(
       children: [
         Container(
           width: 80.w,
           height: 80.w,
           decoration: BoxDecoration(
-            color: AppColors.primary,
+            color: colorScheme.primary,
             borderRadius: BorderRadius.circular(20.r),
           ),
-          child: Icon(Icons.lunch_dining, size: 48.sp, color: Colors.white),
+          child: Icon(
+            Symbols.lunch_dining,
+            size: 48.sp,
+            color: colorScheme.onPrimary,
+          ),
         ),
         SizedBox(height: 24.h),
         Text(
@@ -94,19 +104,22 @@ class _LoginViewState extends ConsumerState<LoginView> {
           style: TextStyle(
             fontSize: 28.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 8.h),
         Text(
           t.auth.slogan,
-          style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildLoginForm() {
+  Widget _buildLoginForm(ColorScheme colorScheme) {
     final state = ref.watch(loginProvider);
 
     return Column(
@@ -117,36 +130,33 @@ class _LoginViewState extends ConsumerState<LoginView> {
               ref.read(loginProvider.notifier).usernameChanged(value),
           style: TextStyle(
             fontSize: 16.sp,
-            color: AppColors.textPrimary,
+            color: colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
           decoration: InputDecoration(
             labelText: t.common.username,
-            labelStyle: const TextStyle(color: AppColors.textSecondary),
+            labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
             hintText: t.auth.enterUsernameHint,
-            hintStyle: const TextStyle(color: AppColors.textHint),
+            hintStyle: TextStyle(color: colorScheme.outline),
             errorText:
                 state.username.displayError == UsernameValidationError.empty
                 ? t.auth.enterUsername
                 : null,
-            prefixIcon: const Icon(
-              Icons.person_outline,
-              color: AppColors.primary,
-            ),
+            prefixIcon: Icon(Symbols.person, color: colorScheme.primary),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.divider),
+              borderSide: BorderSide(color: colorScheme.outlineVariant),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(
-                color: AppColors.divider,
+              borderSide: BorderSide(
+                color: colorScheme.outlineVariant,
                 width: 1.5,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
+              borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
           ),
           keyboardType: TextInputType.text,
@@ -160,45 +170,40 @@ class _LoginViewState extends ConsumerState<LoginView> {
           obscureText: _obscurePassword,
           style: TextStyle(
             fontSize: 16.sp,
-            color: AppColors.textPrimary,
+            color: colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
           decoration: InputDecoration(
             labelText: t.common.password,
-            labelStyle: const TextStyle(color: AppColors.textSecondary),
+            labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
             hintText: t.auth.enterPassword,
-            hintStyle: const TextStyle(color: AppColors.textHint),
+            hintStyle: TextStyle(color: colorScheme.outline),
             errorText:
                 state.password.displayError == PasswordValidationError.empty
                 ? t.auth.enterPassword
                 : null,
-            prefixIcon: const Icon(
-              Icons.lock_outline,
-              color: AppColors.primary,
-            ),
+            prefixIcon: Icon(Symbols.lock, color: colorScheme.primary),
             suffixIcon: IconButton(
               icon: Icon(
-                _obscurePassword
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                color: AppColors.textSecondary,
+                _obscurePassword ? Symbols.visibility : Symbols.visibility_off,
+                color: colorScheme.onSurfaceVariant,
               ),
               onPressed: _togglePasswordVisibility,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.divider),
+              borderSide: BorderSide(color: colorScheme.outlineVariant),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(
-                color: AppColors.divider,
+              borderSide: BorderSide(
+                color: colorScheme.outlineVariant,
                 width: 1.5,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
+              borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
           ),
           textInputAction: TextInputAction.done,
@@ -208,17 +213,17 @@ class _LoginViewState extends ConsumerState<LoginView> {
     );
   }
 
-  Widget _buildLoginButton() {
+  Widget _buildLoginButton(ColorScheme colorScheme) {
     final state = ref.watch(loginProvider);
     final isLoading = state.status.isInProgress;
 
     return ElevatedButton(
       onPressed: state.isValid ? _handleLogin : null,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-        disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.5),
-        disabledForegroundColor: Colors.white.withValues(alpha: 0.8),
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
+        disabledBackgroundColor: colorScheme.primary.withValues(alpha: 0.5),
+        disabledForegroundColor: colorScheme.onPrimary.withValues(alpha: 0.8),
         padding: EdgeInsets.symmetric(vertical: 16.h),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
@@ -229,9 +234,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
           ? SizedBox(
               width: 20.w,
               height: 20.w,
-              child: const CircularProgressIndicator(
+              child: CircularProgressIndicator(
                 strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  colorScheme.onPrimary,
+                ),
               ),
             )
           : Text(
@@ -241,7 +248,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     );
   }
 
-  Widget _buildForgotPassword() {
+  Widget _buildForgotPassword(ColorScheme colorScheme) {
     return TextButton(
       onPressed: () => context.push(AppRoutes.forgotPassword),
       style: TextButton.styleFrom(
@@ -251,18 +258,21 @@ class _LoginViewState extends ConsumerState<LoginView> {
       ),
       child: Text(
         t.auth.forgotPassword,
-        style: TextStyle(fontSize: 14.sp, color: AppColors.primary),
+        style: TextStyle(fontSize: 14.sp, color: colorScheme.primary),
       ),
     );
   }
 
-  Widget _buildRegisterHint() {
+  Widget _buildRegisterHint(ColorScheme colorScheme) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           t.auth.dontHaveAccount,
-          style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: colorScheme.onSurfaceVariant,
+          ),
         ),
         TextButton(
           onPressed: () => context.push(AppRoutes.register),
@@ -275,7 +285,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
             t.common.register,
             style: TextStyle(
               fontSize: 14.sp,
-              color: AppColors.primary,
+              color: colorScheme.primary,
               fontWeight: FontWeight.w600,
             ),
           ),

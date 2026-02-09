@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/core/widgets/widgets.dart' as widgets;
 import 'package:lunchbox/features/device/providers/cart_notifier.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
@@ -20,9 +19,10 @@ class DeviceDetailView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceAsync = ref.watch(deviceDetailProvider(deviceId));
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(t.device.menu),
         centerTitle: true,
@@ -39,13 +39,13 @@ class DeviceDetailView extends ConsumerWidget {
           length: 2,
           child: Column(
             children: [
-              _buildDeviceHeader(context, device),
-              _buildTabBar(context),
+              _buildDeviceHeader(context, device, theme),
+              _buildTabBar(context, theme),
               Expanded(
                 child: TabBarView(
                   children: [
-                    _buildMainContent(ref, deviceId),
-                    _buildDiscountContent(ref, deviceId),
+                    _buildMainContent(ref, deviceId, theme),
+                    _buildDiscountContent(ref, deviceId, theme),
                   ],
                 ),
               ),
@@ -55,18 +55,22 @@ class DeviceDetailView extends ConsumerWidget {
         loading: () => const widgets.LoadingWidget(),
         error: (error, stack) => widgets.ErrorWidget(message: error.toString()),
       ),
-      floatingActionButton: _buildCartButton(context, ref),
+      floatingActionButton: _buildCartButton(context, ref, theme),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 
   /// 构建设备信息头部
-  Widget _buildDeviceHeader(BuildContext context, DeviceModel device) {
+  Widget _buildDeviceHeader(
+    BuildContext context,
+    DeviceModel device,
+    ThemeData theme,
+  ) {
     return Container(
       margin: EdgeInsets.all(12.w),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Column(
@@ -80,8 +84,10 @@ class DeviceDetailView extends ConsumerWidget {
                   Container(
                     width: 8.w,
                     height: 8.w,
-                    decoration: const BoxDecoration(
-                      color: AppColors.deviceOnline,
+                    decoration: BoxDecoration(
+                      color: device.isOnline
+                          ? const Color(0xFF00B894)
+                          : theme.colorScheme.outline,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -90,7 +96,9 @@ class DeviceDetailView extends ConsumerWidget {
                     device.isOnline ? t.device.online : t.device.offline,
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: AppColors.deviceOnline,
+                      color: device.isOnline
+                          ? const Color(0xFF00B894)
+                          : theme.colorScheme.outline,
                     ),
                   ),
                 ],
@@ -100,14 +108,14 @@ class DeviceDetailView extends ConsumerWidget {
                   Icon(
                     Icons.location_on,
                     size: 14.sp,
-                    color: AppColors.primary,
+                    color: theme.colorScheme.primary,
                   ),
                   SizedBox(width: 2.w),
                   Text(
                     device.distanceText.isEmpty ? '8.7km' : device.distanceText,
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: AppColors.textSecondary,
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
@@ -123,17 +131,24 @@ class DeviceDetailView extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ),
-              Icon(Icons.play_arrow, size: 16.sp, color: AppColors.textHint),
+              Icon(
+                Icons.play_arrow,
+                size: 16.sp,
+                color: theme.colorScheme.outline,
+              ),
             ],
           ),
           SizedBox(height: 4.h),
           Text(
             device.address,
-            style: TextStyle(fontSize: 12.sp, color: AppColors.textHint),
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -143,17 +158,17 @@ class DeviceDetailView extends ConsumerWidget {
   }
 
   /// 构建 TabBar
-  Widget _buildTabBar(BuildContext context) {
+  Widget _buildTabBar(BuildContext context, ThemeData theme) {
     return Container(
-      color: Colors.white,
+      color: theme.colorScheme.surface,
       child: TabBar(
         tabs: [
           Tab(text: t.device.classicMenu),
           Tab(text: t.device.limitedDiscount),
         ],
-        labelColor: AppColors.primary,
-        unselectedLabelColor: AppColors.textSecondary,
-        indicatorColor: AppColors.primary,
+        labelColor: theme.colorScheme.primary,
+        unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
+        indicatorColor: theme.colorScheme.primary,
         indicatorSize: TabBarIndicatorSize.label,
         labelStyle: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
         unselectedLabelStyle: TextStyle(fontSize: 16.sp),
@@ -162,7 +177,7 @@ class DeviceDetailView extends ConsumerWidget {
   }
 
   /// 构建主要内容（左侧分类 + 右侧产品列表）
-  Widget _buildMainContent(WidgetRef ref, String deviceId) {
+  Widget _buildMainContent(WidgetRef ref, String deviceId, ThemeData theme) {
     final categoriesAsync = ref.watch(productCategoriesProvider(deviceId));
     final productsAsync = ref.watch(deviceProductsProvider(deviceId));
     final selectedCategory = ref.watch(productCategoryProvider);
@@ -199,11 +214,13 @@ class DeviceDetailView extends ConsumerWidget {
                   child: Container(
                     height: 80.h,
                     decoration: BoxDecoration(
-                      color: isSelected ? Colors.white : Colors.transparent,
+                      color: isSelected
+                          ? theme.colorScheme.surface
+                          : Colors.transparent,
                       border: isSelected
                           ? Border(
                               left: BorderSide(
-                                color: AppColors.primary,
+                                color: theme.colorScheme.primary,
                                 width: 4.w,
                               ),
                             )
@@ -216,8 +233,8 @@ class DeviceDetailView extends ConsumerWidget {
                           _getCategoryIcon(category),
                           size: 24,
                           color: isSelected
-                              ? AppColors.primary
-                              : AppColors.textSecondary,
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.onSurfaceVariant,
                         ),
                         SizedBox(height: 4.h),
                         Text(
@@ -225,8 +242,8 @@ class DeviceDetailView extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: isSelected
-                                ? AppColors.primary
-                                : AppColors.textPrimary,
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.onSurface,
                             fontWeight: isSelected
                                 ? FontWeight.bold
                                 : FontWeight.normal,
@@ -237,7 +254,7 @@ class DeviceDetailView extends ConsumerWidget {
                             '($productCount)',
                             style: TextStyle(
                               fontSize: 10.sp,
-                              color: AppColors.textHint,
+                              color: theme.colorScheme.outline,
                             ),
                           ),
                       ],
@@ -246,16 +263,16 @@ class DeviceDetailView extends ConsumerWidget {
                 );
               },
             ),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (_, __) => const SizedBox(),
+            loading: () => const widgets.LoadingWidget(),
+            error: (error, stack) => const SizedBox(),
           ),
         ),
 
         // 右侧产品列表
         Expanded(
           child: Container(
-            color: Colors.white,
-            child: _buildProductList(ref, deviceId, selectedCategory),
+            color: theme.colorScheme.surface,
+            child: _buildProductList(ref, deviceId, selectedCategory, theme),
           ),
         ),
       ],
@@ -278,15 +295,24 @@ class DeviceDetailView extends ConsumerWidget {
   }
 
   /// 构建折扣内容
-  Widget _buildDiscountContent(WidgetRef ref, String deviceId) {
+  Widget _buildDiscountContent(
+    WidgetRef ref,
+    String deviceId,
+    ThemeData theme,
+  ) {
     return Container(
-      color: Colors.white,
-      child: _buildProductList(ref, deviceId, 'discount'),
+      color: theme.colorScheme.surface,
+      child: _buildProductList(ref, deviceId, 'discount', theme),
     );
   }
 
   /// 构建产品列表
-  Widget _buildProductList(WidgetRef ref, String deviceId, String category) {
+  Widget _buildProductList(
+    WidgetRef ref,
+    String deviceId,
+    String category,
+    ThemeData theme,
+  ) {
     final productsAsync = ref.watch(deviceProductsProvider(deviceId));
 
     return productsAsync.when(
@@ -305,7 +331,12 @@ class DeviceDetailView extends ConsumerWidget {
           padding: EdgeInsets.all(12.w),
           itemCount: filteredProducts.length,
           itemBuilder: (context, index) {
-            return _buildProductItem(context, ref, filteredProducts[index]);
+            return _buildProductItem(
+              context,
+              ref,
+              filteredProducts[index],
+              theme,
+            );
           },
         );
       },
@@ -319,6 +350,7 @@ class DeviceDetailView extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     ProductModel product,
+    ThemeData theme,
   ) {
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
@@ -375,7 +407,7 @@ class DeviceDetailView extends ConsumerWidget {
                       vertical: 2.h,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.error,
+                      color: theme.colorScheme.error,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(8.r),
                         bottomRight: Radius.circular(8.r),
@@ -385,7 +417,7 @@ class DeviceDetailView extends ConsumerWidget {
                       '${product.discountPercentage}% OFF',
                       style: TextStyle(
                         fontSize: 10.sp,
-                        color: Colors.white,
+                        color: theme.colorScheme.onError,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -404,7 +436,7 @@ class DeviceDetailView extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
+                    color: theme.colorScheme.onSurface,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -412,7 +444,10 @@ class DeviceDetailView extends ConsumerWidget {
                 SizedBox(height: 4.h),
                 Text(
                   product.description,
-                  style: TextStyle(fontSize: 12.sp, color: AppColors.textHint),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -423,7 +458,7 @@ class DeviceDetailView extends ConsumerWidget {
                       t.device.monthlySales(count: product.monthlySales),
                       style: TextStyle(
                         fontSize: 11.sp,
-                        color: AppColors.textHint,
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     SizedBox(width: 8.w),
@@ -431,7 +466,7 @@ class DeviceDetailView extends ConsumerWidget {
                       t.device.stock(count: product.stock),
                       style: TextStyle(
                         fontSize: 11.sp,
-                        color: AppColors.textHint,
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -448,7 +483,7 @@ class DeviceDetailView extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primary,
+                            color: theme.colorScheme.primary,
                           ),
                         ),
                         if (product.hasDiscount)
@@ -456,7 +491,7 @@ class DeviceDetailView extends ConsumerWidget {
                             '¥${product.originalPrice!.toStringAsFixed(2)}',
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: AppColors.textHint,
+                              color: theme.colorScheme.onSurfaceVariant,
                               decoration: TextDecoration.lineThrough,
                             ),
                           ),
@@ -467,9 +502,9 @@ class DeviceDetailView extends ConsumerWidget {
                         onPressed: () {
                           ref.read(cartProvider.notifier).addToCart(product);
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.add_circle,
-                          color: AppColors.primary,
+                          color: theme.colorScheme.primary,
                           size: 30,
                         ),
                         padding: EdgeInsets.zero,
@@ -482,14 +517,16 @@ class DeviceDetailView extends ConsumerWidget {
                           vertical: 4.h,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.textDisabled,
+                          color: theme.disabledColor,
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                         child: Text(
                           t.device.soldOutLabel,
                           style: TextStyle(
                             fontSize: 10.sp,
-                            color: Colors.white,
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.38,
+                            ),
                           ),
                         ),
                       ),
@@ -504,7 +541,11 @@ class DeviceDetailView extends ConsumerWidget {
   }
 
   /// 构建购物车按钮
-  Widget _buildCartButton(BuildContext context, WidgetRef ref) {
+  Widget _buildCartButton(
+    BuildContext context,
+    WidgetRef ref,
+    ThemeData theme,
+  ) {
     final cartState = ref.watch(cartProvider);
     final totalQuantity = cartState.totalQuantity;
 
@@ -512,20 +553,20 @@ class DeviceDetailView extends ConsumerWidget {
       label: Text(totalQuantity.toString()),
       isLabelVisible: totalQuantity > 0,
       child: FloatingActionButton(
-        onPressed: () => _showCartBottomSheet(context),
-        backgroundColor: AppColors.secondary,
-        child: const Icon(Icons.shopping_cart, color: Colors.white),
+        onPressed: () => _showCartBottomSheet(context, theme),
+        backgroundColor: theme.colorScheme.secondary,
+        child: Icon(Icons.shopping_cart, color: theme.colorScheme.onSecondary),
       ),
     );
   }
 
   /// 显示购物车底部弹窗
-  void _showCartBottomSheet(BuildContext context) {
+  void _showCartBottomSheet(BuildContext context, ThemeData theme) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => const _CartBottomSheet(),
+      builder: (context) => _CartBottomSheet(theme: theme),
     );
   }
 
@@ -547,7 +588,9 @@ class DeviceDetailView extends ConsumerWidget {
 
 /// 购物车底部弹窗组件
 class _CartBottomSheet extends ConsumerWidget {
-  const _CartBottomSheet();
+  const _CartBottomSheet({required this.theme});
+
+  final ThemeData theme;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -556,7 +599,7 @@ class _CartBottomSheet extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
       ),
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
@@ -573,6 +616,7 @@ class _CartBottomSheet extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
                 IconButton(
@@ -592,7 +636,7 @@ class _CartBottomSheet extends ConsumerWidget {
                   t.device.selectedProducts,
                   style: TextStyle(
                     fontSize: 14.sp,
-                    color: AppColors.textSecondary,
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
                 TextButton.icon(
@@ -600,7 +644,7 @@ class _CartBottomSheet extends ConsumerWidget {
                   icon: const Icon(Icons.delete_outline, size: 16),
                   label: Text(t.cart.clear),
                   style: TextButton.styleFrom(
-                    foregroundColor: AppColors.textHint,
+                    foregroundColor: theme.colorScheme.outline,
                   ),
                 ),
               ],
@@ -640,6 +684,7 @@ class _CartBottomSheet extends ConsumerWidget {
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.bold,
+                                color: theme.colorScheme.onSurface,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -650,7 +695,7 @@ class _CartBottomSheet extends ConsumerWidget {
                                   '¥${item.product.price.toStringAsFixed(2)}',
                                   style: TextStyle(
                                     fontSize: 14.sp,
-                                    color: AppColors.primary,
+                                    color: theme.colorScheme.primary,
                                   ),
                                 ),
                                 if (item.product.hasDiscount) ...[
@@ -659,7 +704,7 @@ class _CartBottomSheet extends ConsumerWidget {
                                     '¥${item.product.originalPrice!.toStringAsFixed(2)}',
                                     style: TextStyle(
                                       fontSize: 12.sp,
-                                      color: AppColors.textHint,
+                                      color: theme.colorScheme.onSurfaceVariant,
                                       decoration: TextDecoration.lineThrough,
                                     ),
                                   ),
@@ -670,7 +715,7 @@ class _CartBottomSheet extends ConsumerWidget {
                               '${t.device.subtotal}: ¥${item.subtotal.toStringAsFixed(2)}',
                               style: TextStyle(
                                 fontSize: 12.sp,
-                                color: AppColors.primary,
+                                color: theme.colorScheme.primary,
                               ),
                             ),
                           ],
@@ -684,16 +729,21 @@ class _CartBottomSheet extends ConsumerWidget {
                               item.quantity - 1,
                             ),
                             icon: const Icon(Icons.remove_circle_outline),
-                            color: AppColors.textHint,
+                            color: theme.colorScheme.outline,
                           ),
-                          Text(item.quantity.toString()),
+                          Text(
+                            item.quantity.toString(),
+                            style: TextStyle(
+                              color: theme.colorScheme.onSurface,
+                            ),
+                          ),
                           IconButton(
                             onPressed: () => notifier.updateQuantity(
                               item,
                               item.quantity + 1,
                             ),
                             icon: const Icon(Icons.add_circle_outline),
-                            color: AppColors.primary,
+                            color: theme.colorScheme.primary,
                           ),
                         ],
                       ),
@@ -705,7 +755,7 @@ class _CartBottomSheet extends ConsumerWidget {
           ),
           Container(
             padding: EdgeInsets.all(16.w),
-            color: const Color(0xFFF1F8E9),
+            color: theme.colorScheme.surfaceContainer,
             child: Row(
               children: [
                 Expanded(
@@ -717,20 +767,21 @@ class _CartBottomSheet extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.onSurface,
                         ),
                       ),
                       Text(
                         '${t.device.estimatedPrice}: ¥${cartState.totalAmount.toStringAsFixed(2)}',
                         style: TextStyle(
                           fontSize: 12.sp,
-                          color: AppColors.primary,
+                          color: theme.colorScheme.primary,
                         ),
                       ),
                       Text(
                         '${t.device.originalPrice}: ¥${cartState.totalAmount.toStringAsFixed(2)}',
                         style: TextStyle(
                           fontSize: 10.sp,
-                          color: AppColors.textHint,
+                          color: theme.colorScheme.onSurfaceVariant,
                           decoration: TextDecoration.lineThrough,
                         ),
                       ),
@@ -742,7 +793,7 @@ class _CartBottomSheet extends ConsumerWidget {
                     context.push(AppRoutes.orderConfirm);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: theme.colorScheme.primary,
                     padding: EdgeInsets.symmetric(
                       horizontal: 32.w,
                       vertical: 12.h,
@@ -750,7 +801,7 @@ class _CartBottomSheet extends ConsumerWidget {
                   ),
                   child: Text(
                     t.cart.checkout,
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: theme.colorScheme.onPrimary),
                   ),
                 ),
               ],

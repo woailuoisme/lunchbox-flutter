@@ -1,12 +1,14 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/core/providers/locale_provider.dart';
 import 'package:lunchbox/core/theme/theme_provider.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/settings/providers/settings_providers.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -18,44 +20,82 @@ class SettingsView extends ConsumerWidget {
     final packageInfoAsync = ref.watch(fetchPackageInfoProvider);
     final currentLocale = ref.watch(localeProvider);
     final themeState = ref.watch(themeProvider);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return UpgradeAlert(
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: colorScheme.surface,
         appBar: AppBar(
-          title: Text(t.settings.title),
+          title: Text(
+            t.settings.title,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           centerTitle: true,
-          backgroundColor: Colors.transparent,
+          backgroundColor: colorScheme.surface,
           elevation: 0,
         ),
         body: ListView(
+          padding: EdgeInsets.symmetric(vertical: 16.h),
           children: [
-            const SizedBox(height: 16),
-            _buildSectionHeader(t.settings.general),
-            _buildSectionList([
-              _buildListTile(
+            _buildSectionHeader(context, t.settings.general),
+            _buildSectionCard(context, [
+              _buildSettingsItem(
+                context: context,
+                icon: Symbols.palette,
+                iconColor: colorScheme.primary,
                 title: t.settings.theme,
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       _getThemeModeName(themeState.mode),
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 14,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: AppColors.textHint,
+                    SizedBox(width: 8.w),
+                    Icon(
+                      Symbols.arrow_forward_ios,
+                      size: 14.sp,
+                      color: colorScheme.outline,
                     ),
                   ],
                 ),
                 onTap: () => _showThemePicker(context, ref, themeState.mode),
               ),
-              _buildListTile(
+              _buildSettingsItem(
+                context: context,
+                icon: Symbols.colors,
+                iconColor: colorScheme.secondary,
+                title: '主题配色',
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 16.w,
+                      height: 16.w,
+                      decoration: BoxDecoration(
+                        color: _getSchemeColor(themeState.scheme),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Icon(
+                      Symbols.arrow_forward_ios,
+                      size: 14.sp,
+                      color: colorScheme.outline,
+                    ),
+                  ],
+                ),
+                onTap: () => _showSchemePicker(context, ref, themeState.scheme),
+              ),
+              _buildSettingsItem(
+                context: context,
+                icon: Symbols.language,
+                iconColor: colorScheme.tertiary,
                 title: t.settings.language,
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -64,27 +104,53 @@ class SettingsView extends ConsumerWidget {
                       currentLocale == AppLocale.en
                           ? t.settings.english
                           : t.settings.chinese,
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 14,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: AppColors.textHint,
+                    SizedBox(width: 8.w),
+                    Icon(
+                      Symbols.arrow_forward_ios,
+                      size: 14.sp,
+                      color: colorScheme.outline,
                     ),
                   ],
                 ),
-                onTap: () => _showLanguagePicker(context, ref),
+                onTap: () => _showLanguagePicker(context, ref, currentLocale),
               ),
-              _buildListTile(
+              _buildSettingsItem(
+                context: context,
+                icon: Symbols.system_update,
+                iconColor: Colors.green,
                 title: t.settings.checkUpdate,
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                  color: AppColors.textHint,
+                trailing: packageInfoAsync.when(
+                  data: (PackageInfo info) => Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'v${info.version}',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Icon(
+                        Symbols.arrow_forward_ios,
+                        size: 14.sp,
+                        color: colorScheme.outline,
+                      ),
+                    ],
+                  ),
+                  loading: () => SizedBox(
+                    width: 14.w,
+                    height: 14.w,
+                    child: const CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  error: (_, stack) => Icon(
+                    Symbols.arrow_forward_ios,
+                    size: 14.sp,
+                    color: colorScheme.outline,
+                  ),
                 ),
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -95,13 +161,12 @@ class SettingsView extends ConsumerWidget {
                   );
                 },
               ),
-              _buildListTile(
+              _buildSettingsItem(
+                context: context,
+                icon: Symbols.cleaning_services,
+                iconColor: Colors.orange,
                 title: t.settings.clearCache,
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                  color: AppColors.textHint,
-                ),
+                showDivider: false,
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -112,56 +177,78 @@ class SettingsView extends ConsumerWidget {
                 },
               ),
             ]),
-            const SizedBox(height: 24),
-            _buildSectionHeader(t.settings.about),
-            _buildSectionList([
-              _buildListTile(
+            SizedBox(height: 24.h),
+            _buildSectionHeader(context, t.settings.about),
+            _buildSectionCard(context, [
+              _buildSettingsItem(
+                context: context,
+                icon: Symbols.perm_device_information,
+                iconColor: colorScheme.secondary,
                 title: t.settings.deviceInfo,
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                  color: AppColors.textHint,
-                ),
                 onTap: () => context.push(
                   '${AppRoutes.settings}${AppRoutes.deviceInfo}',
                 ),
               ),
-              _buildListTile(
+              _buildSettingsItem(
+                context: context,
+                icon: Symbols.info,
+                iconColor: colorScheme.primary,
                 title: t.settings.aboutUs,
+                showDivider: false,
                 trailing: packageInfoAsync.when(
                   data: (PackageInfo info) => Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        'v${info.version}',
-                        style: const TextStyle(
-                          color: AppColors.textSecondary,
-                          fontSize: 14,
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                          vertical: 2.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                        child: Text(
+                          'v${info.version}',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        color: AppColors.textHint,
+                      SizedBox(width: 8.w),
+                      Icon(
+                        Symbols.arrow_forward_ios,
+                        size: 14.sp,
+                        color: colorScheme.outline,
                       ),
                     ],
                   ),
-                  loading: () => const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                  loading: () => SizedBox(
+                    width: 14.w,
+                    height: 14.w,
+                    child: const CircularProgressIndicator(strokeWidth: 2),
                   ),
-                  error: (Object err, StackTrace? stack) => const Icon(
-                    Icons.error_outline,
-                    color: Colors.red,
-                    size: 16,
+                  error: (Object err, StackTrace? stack) => Icon(
+                    Symbols.error,
+                    color: colorScheme.error,
+                    size: 14.sp,
                   ),
                 ),
                 onTap: () =>
                     context.push('${AppRoutes.settings}${AppRoutes.about}'),
               ),
             ]),
+            SizedBox(height: 32.h),
+            Center(
+              child: Text(
+                '© 2024 Lunchbox Vending. All rights reserved.',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.h),
           ],
         ),
       ),
@@ -184,20 +271,37 @@ class SettingsView extends ConsumerWidget {
     WidgetRef ref,
     ThemeMode currentMode,
   ) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     showModalBottomSheet<void>(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      backgroundColor: colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) {
         return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              SizedBox(height: 8.h),
+              Container(
+                width: 40.w,
+                height: 4.h,
+                decoration: BoxDecoration(
+                  color: colorScheme.outlineVariant,
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
+              ),
+              SizedBox(height: 16.h),
               ListTile(
-                title: Text(t.settings.themeSystem),
+                title: Text(
+                  t.settings.themeSystem,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+                leading: const Icon(Symbols.brightness_auto),
                 trailing: currentMode == ThemeMode.system
-                    ? const Icon(Icons.check, color: AppColors.primary)
+                    ? Icon(Symbols.check, color: colorScheme.primary)
                     : null,
                 onTap: () async {
                   await ref
@@ -209,9 +313,13 @@ class SettingsView extends ConsumerWidget {
                 },
               ),
               ListTile(
-                title: Text(t.settings.themeLight),
+                title: Text(
+                  t.settings.themeLight,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+                leading: const Icon(Symbols.light_mode),
                 trailing: currentMode == ThemeMode.light
-                    ? const Icon(Icons.check, color: AppColors.primary)
+                    ? Icon(Symbols.check, color: colorScheme.primary)
                     : null,
                 onTap: () async {
                   await ref
@@ -223,9 +331,13 @@ class SettingsView extends ConsumerWidget {
                 },
               ),
               ListTile(
-                title: Text(t.settings.themeDark),
+                title: Text(
+                  t.settings.themeDark,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+                leading: const Icon(Symbols.dark_mode),
                 trailing: currentMode == ThemeMode.dark
-                    ? const Icon(Icons.check, color: AppColors.primary)
+                    ? Icon(Symbols.check, color: colorScheme.primary)
                     : null,
                 onTap: () async {
                   await ref
@@ -236,6 +348,7 @@ class SettingsView extends ConsumerWidget {
                   }
                 },
               ),
+              SizedBox(height: 16.h),
             ],
           ),
         );
@@ -243,19 +356,136 @@ class SettingsView extends ConsumerWidget {
     );
   }
 
-  void _showLanguagePicker(BuildContext context, WidgetRef ref) {
+  void _showSchemePicker(
+    BuildContext context,
+    WidgetRef ref,
+    FlexScheme currentScheme,
+  ) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    const List<FlexScheme> schemes = [
+      FlexScheme.materialBaseline,
+      FlexScheme.outerSpace,
+      FlexScheme.brandBlue,
+      FlexScheme.mandyRed,
+    ];
+
     showModalBottomSheet<void>(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      backgroundColor: colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) {
         return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              SizedBox(height: 8.h),
+              Container(
+                width: 40.w,
+                height: 4.h,
+                decoration: BoxDecoration(
+                  color: colorScheme.outlineVariant,
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
+              ),
+              SizedBox(height: 16.h),
+              ...schemes.map((scheme) {
+                return ListTile(
+                  title: Text(
+                    _getSchemeName(scheme),
+                    style: const TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                  leading: Container(
+                    width: 24.w,
+                    height: 24.w,
+                    decoration: BoxDecoration(
+                      color: _getSchemeColor(scheme),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  trailing: currentScheme == scheme
+                      ? Icon(Symbols.check, color: colorScheme.primary)
+                      : null,
+                  onTap: () async {
+                    await ref.read(themeProvider.notifier).setScheme(scheme);
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+                  },
+                );
+              }),
+              SizedBox(height: 16.h),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Color _getSchemeColor(FlexScheme scheme) {
+    if (scheme == FlexScheme.materialBaseline) {
+      return Colors.deepPurple;
+    }
+    return FlexColor.schemes[scheme]?.light.primary ?? Colors.deepPurple;
+  }
+
+  String _getSchemeName(FlexScheme scheme) {
+    switch (scheme) {
+      case FlexScheme.materialBaseline:
+        return '默认';
+      case FlexScheme.outerSpace:
+        return '商务科技';
+      case FlexScheme.brandBlue:
+        return '清新大厂';
+      case FlexScheme.mandyRed:
+        return '独特设计';
+      default:
+        return scheme.name;
+    }
+  }
+
+  void _showLanguagePicker(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocale currentLocale,
+  ) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 8.h),
+              Container(
+                width: 40.w,
+                height: 4.h,
+                decoration: BoxDecoration(
+                  color: colorScheme.outlineVariant,
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
+              ),
+              SizedBox(height: 16.h),
               ListTile(
-                title: Text(t.settings.english),
+                title: Text(
+                  t.settings.english,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+                leading: Text(
+                  '🇺🇸',
+                  style: TextStyle(fontSize: 24.sp),
+                ), // 简单使用emoji
+                trailing: currentLocale == AppLocale.en
+                    ? Icon(Symbols.check, color: colorScheme.primary)
+                    : null,
                 onTap: () async {
                   await ref
                       .read(localeProvider.notifier)
@@ -266,7 +496,17 @@ class SettingsView extends ConsumerWidget {
                 },
               ),
               ListTile(
-                title: Text(t.settings.chinese),
+                title: Text(
+                  t.settings.chinese,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+                leading: Text(
+                  '🇨🇳',
+                  style: TextStyle(fontSize: 24.sp),
+                ), // 简单使用emoji
+                trailing: currentLocale == AppLocale.zhCn
+                    ? Icon(Symbols.check, color: colorScheme.primary)
+                    : null,
                 onTap: () async {
                   await ref
                       .read(localeProvider.notifier)
@@ -276,6 +516,7 @@ class SettingsView extends ConsumerWidget {
                   }
                 },
               ),
+              SizedBox(height: 16.h),
             ],
           ),
         );
@@ -283,29 +524,32 @@ class SettingsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(BuildContext context, String title) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+      padding: EdgeInsets.fromLTRB(24.w, 0, 24.w, 8.h),
       child: Text(
         title,
-        style: const TextStyle(
-          color: AppColors.textSecondary,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+        style: theme.textTheme.titleSmall?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
   }
 
-  Widget _buildSectionList(List<Widget> children) {
+  Widget _buildSectionCard(BuildContext context, List<Widget> children) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
+            color: colorScheme.shadow.withValues(alpha: 0.03),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -315,42 +559,53 @@ class SettingsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildListTile({
+  Widget _buildSettingsItem({
+    required BuildContext context,
+    required IconData icon,
+    required Color iconColor,
     required String title,
-    required Widget trailing,
+    Widget? trailing,
     VoidCallback? onTap,
+    bool showDivider = true,
   }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Column(
       children: [
-        ListTile(
-          title: Text(
-            title,
-            style: const TextStyle(fontSize: 16, color: AppColors.textPrimary),
-          ),
-          trailing: trailing,
-          onTap: onTap,
-          shape: RoundedRectangleAppTheme
-              .listTileShape, // If I had it, but I'll stick to default or manually
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 4,
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(16.r),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              child: Row(
+                children: [
+                  Icon(icon, color: iconColor, size: 24.sp),
+                  SizedBox(width: 16.w),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  ?trailing,
+                ],
+              ),
+            ),
           ),
         ),
-        if (title != '清除缓存' && title != '关于我们')
-          const Divider(
+        if (showDivider)
+          Divider(
             height: 1,
-            indent: 16,
-            endIndent: 16,
-            color: AppColors.divider,
+            indent: 56.w,
+            endIndent: 16.w,
+            color: colorScheme.outlineVariant.withValues(alpha: 0.5),
           ),
       ],
     );
   }
-}
-
-// Simple helper for consistency since I don't know the exact theme classes
-class RoundedRectangleAppTheme {
-  static const listTileShape = RoundedRectangleBorder(
-    borderRadius: BorderRadius.all(Radius.circular(12)),
-  );
 }

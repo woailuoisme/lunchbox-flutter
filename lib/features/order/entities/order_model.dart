@@ -20,6 +20,7 @@ enum PaymentMethod {
   wechatPay, // 微信支付
   alipay, // 支付宝
   cash, // 现金支付
+  stripe, // Stripe支付
 }
 
 /// 订单模型类
@@ -136,6 +137,8 @@ abstract class OrderModel with _$OrderModel {
         return '支付宝';
       case PaymentMethod.cash:
         return '现金支付';
+      case PaymentMethod.stripe:
+        return 'Stripe支付';
     }
   }
 }

@@ -191,6 +191,30 @@ GoRouter goRouter(Ref ref) {
         path: AppRoutes.favoriteDevices,
         builder: (context, state) => const FavoriteDevicesView(),
       ),
+      GoRoute(
+        path: AppRoutes.wallet,
+        builder: (context, state) => const WalletView(),
+      ),
+      GoRoute(
+        path: AppRoutes.myPoints,
+        builder: (context, state) => const MyPointsView(),
+      ),
+      GoRoute(
+        path: AppRoutes.pointsMall,
+        builder: (context, state) => const PointsMallView(),
+      ),
+      GoRoute(
+        path: AppRoutes.feedback,
+        builder: (context, state) => const FeedbackView(),
+      ),
+      GoRoute(
+        path: AppRoutes.partner,
+        builder: (context, state) => const PartnerView(),
+      ),
+      GoRoute(
+        path: AppRoutes.aboutUs,
+        builder: (context, state) => const AboutUsView(),
+      ),
 
       // 帮助中心
       GoRoute(

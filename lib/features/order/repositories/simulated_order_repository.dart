@@ -61,7 +61,7 @@ class SimulatedOrderRepository implements OrderRepository {
       createdAt: DateTime.parse('2025-11-28 23:21:59'),
       status: OrderStatus.paid,
       paidAt: DateTime.parse('2025-11-28 23:22:00'),
-      paymentMethod: PaymentMethod.wechatPay,
+      paymentMethod: PaymentMethod.stripe,
       pickupCode: '123456',
       pickupHint: '请前往1号柜取餐',
       storeName: '深圳南山科技园店',
@@ -104,7 +104,7 @@ class SimulatedOrderRepository implements OrderRepository {
       createdAt: DateTime.parse('2025-11-20 18:13:31'),
       status: OrderStatus.paid,
       paidAt: DateTime.parse('2025-11-20 18:14:00'),
-      paymentMethod: PaymentMethod.alipay,
+      paymentMethod: PaymentMethod.stripe,
       pickupCode: '654321',
       remark: '订单将于今晚10点30分过期',
     ),
@@ -130,7 +130,7 @@ class SimulatedOrderRepository implements OrderRepository {
       paidAt: DateTime.now(),
       paymentMethod: PaymentMethod.values.firstWhere(
         (e) => e.name == paymentMethod,
-        orElse: () => PaymentMethod.wechatPay,
+        orElse: () => PaymentMethod.stripe,
       ),
       pickupCode: '${DateTime.now().millisecond}',
       pickupHint: '请前往1号柜取餐',
@@ -232,7 +232,7 @@ class SimulatedOrderRepository implements OrderRepository {
         paidAt: DateTime.now(),
         paymentMethod: PaymentMethod.values.firstWhere(
           (e) => e.name == paymentMethod,
-          orElse: () => PaymentMethod.wechatPay,
+          orElse: () => PaymentMethod.stripe,
         ),
       );
       return TaskEither.right({'status': 'success', 'orderId': orderId});

@@ -312,6 +312,12 @@ class TranslationsHomeZhCn {
   /// zh-CN: '多人订购/团队点餐'
   String get teamOrderHint => '多人订购/团队点餐';
 
+  /// zh-CN: '邀请有礼'
+  String get invite => '邀请有礼';
+
+  /// zh-CN: '邀请好友得现金'
+  String get inviteHint => '邀请好友得现金';
+
   /// zh-CN: '为我推荐'
   String get recommendTitle => '为我推荐';
 
@@ -1271,6 +1277,9 @@ class TranslationsHomeGridZhCn {
 
   /// zh-CN: '邀请好友'
   String get invite => '邀请好友';
+
+  /// zh-CN: '邀请好友得现金'
+  String get inviteHint => '邀请好友得现金';
 }
 
 // Path: home.lottery
@@ -1371,6 +1380,18 @@ class TranslationsCommunityFeaturesZhCn {
 
   /// zh-CN: '优先参与各种美食活动'
   String get priorityHint => '优先参与各种美食活动';
+
+  /// zh-CN: '社群活动'
+  String get activity => '社群活动';
+
+  /// zh-CN: '定期举办线下聚会'
+  String get activityHint => '定期举办线下聚会';
+
+  /// zh-CN: '话题讨论'
+  String get topic => '话题讨论';
+
+  /// zh-CN: '参与话题赢取奖励'
+  String get topicHint => '参与话题赢取奖励';
 }
 
 // Path: teamOrdering.scenarios
@@ -1822,12 +1843,15 @@ extension on Translations {
       'home.selfPickupHint' => '扫码取餐/打包带走',
       'home.teamOrder' => '团队点餐',
       'home.teamOrderHint' => '多人订购/团队点餐',
+      'home.invite' => '邀请有礼',
+      'home.inviteHint' => '邀请好友得现金',
       'home.recommendTitle' => '为我推荐',
       'home.grid.welfare' => '社群福利',
       'home.grid.service' => '客服中心',
       'home.grid.coupon' => '领优惠券',
       'home.grid.lottery' => '幸运抽奖',
       'home.grid.invite' => '邀请好友',
+      'home.grid.inviteHint' => '邀请好友得现金',
       'home.lottery.title' => '幸运抽奖',
       'home.lottery.prizes' => '我的奖品',
       'home.lottery.rules' => '抽奖规则',
@@ -1867,6 +1891,10 @@ extension on Translations {
       'community.features.exchangeHint' => '与美食达人分享心得',
       'community.features.priority' => '活动优先',
       'community.features.priorityHint' => '优先参与各种美食活动',
+      'community.features.activity' => '社群活动',
+      'community.features.activityHint' => '定期举办线下聚会',
+      'community.features.topic' => '话题讨论',
+      'community.features.topicHint' => '参与话题赢取奖励',
       'community.whyJoin' => '为什么加入我们的社群？',
       'community.reason1' => '每日美食推荐，让你不再纠结吃什么',
       'community.reason2' => '限时优惠活动，省钱又省心',

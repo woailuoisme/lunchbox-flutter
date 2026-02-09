@@ -52,7 +52,7 @@ class MyApp extends ConsumerWidget {
       builder: (context, child) {
         return ToastificationWrapper(
           child: MaterialApp.router(
-            title: '饭盒售货机',
+            onGenerateTitle: (context) => t.common.appName,
             theme: themeNotifier.lightTheme,
             darkTheme: themeNotifier.darkTheme,
             themeMode: themeState.mode,

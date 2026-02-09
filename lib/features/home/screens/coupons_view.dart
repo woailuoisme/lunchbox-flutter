@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// 优惠券页面
 class CouponsView extends StatefulWidget {
@@ -28,19 +29,22 @@ class _CouponsViewState extends State<CouponsView>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB),
+      backgroundColor: colorScheme.surfaceContainer,
       appBar: AppBar(
         title: Text(t.coupon.title),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: colorScheme.surface,
+        foregroundColor: colorScheme.onSurface,
         elevation: 0,
         centerTitle: true,
         bottom: TabBar(
           controller: _tabController,
-          labelColor: const Color(0xFFFF5252),
-          unselectedLabelColor: Colors.black54,
-          indicatorColor: const Color(0xFFFF5252),
+          labelColor: colorScheme.primary,
+          unselectedLabelColor: colorScheme.onSurfaceVariant,
+          indicatorColor: colorScheme.primary,
           indicatorSize: TabBarIndicatorSize.label,
           tabs: [
             Tab(text: t.coupon.tabs.available),
@@ -49,21 +53,24 @@ class _CouponsViewState extends State<CouponsView>
           ],
         ),
         actions: [
-          IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
+          IconButton(icon: const Icon(Symbols.more_horiz), onPressed: () {}),
         ],
       ),
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildCouponList(type: 'available'),
-          _buildCouponList(type: 'received'),
-          _buildCouponList(type: 'expired'),
+          _buildCouponList(type: 'available', colorScheme: colorScheme),
+          _buildCouponList(type: 'received', colorScheme: colorScheme),
+          _buildCouponList(type: 'expired', colorScheme: colorScheme),
         ],
       ),
     );
   }
 
-  Widget _buildCouponList({required String type}) {
+  Widget _buildCouponList({
+    required String type,
+    required ColorScheme colorScheme,
+  }) {
     // Mock data
     final coupons = [
       {
@@ -135,50 +142,46 @@ class _CouponsViewState extends State<CouponsView>
       padding: EdgeInsets.all(16.w),
       itemCount: coupons.length,
       itemBuilder: (context, index) {
-        return _buildCouponCard(coupons[index]);
+        return _buildCouponCard(coupons[index], colorScheme);
       },
     );
   }
 
-  Widget _buildCouponCard(Map<String, dynamic> data) {
+  Widget _buildCouponCard(Map<String, dynamic> data, ColorScheme colorScheme) {
     final amount = data['amount'] as String;
     final condition = data['condition'] as int;
     final isReceived = data['isReceived'] as bool;
     final isExpired = data['isExpired'] as bool;
 
-    Color primaryColor = const Color(
-      0xFF66BB6A,
-    ); // Green for available/received
+    Color primaryColor = colorScheme.primary; // Green for available/received
     // Color secondaryColor = const Color(0xFF81C784);
     // String btnText = t.coupon.btnReceive;
-    Color btnTextColor = Colors.white;
-    Color btnBgColor = const Color(
-      0xFFFF5252,
-    ); // Use standard red for action button
+    Color btnTextColor = colorScheme.onPrimary;
+    Color btnBgColor = colorScheme.primary;
 
     if (isReceived) {
       // btnText = t.coupon.btnUse;
-      btnBgColor = Colors.white;
-      btnTextColor = const Color(0xFFFF5252);
+      btnBgColor = colorScheme.surface;
+      btnTextColor = colorScheme.primary;
     }
 
     if (isExpired) {
-      primaryColor = Colors.grey;
+      primaryColor = colorScheme.outline;
       // secondaryColor = Colors.grey.withValues(alpha: 0.7);
       // btnText = t.coupon.btnExpired;
       btnBgColor = Colors.transparent;
-      btnTextColor = Colors.grey;
+      btnTextColor = colorScheme.outline;
     }
 
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       height: 100.h,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(8.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: colorScheme.shadow.withValues(alpha: 0.05),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -248,7 +251,9 @@ class _CouponsViewState extends State<CouponsView>
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
-                          color: isExpired ? Colors.grey : Colors.black87,
+                          color: isExpired
+                              ? colorScheme.outline
+                              : colorScheme.onSurface,
                         ),
                       ),
                       if (isReceived && !isExpired)
@@ -258,13 +263,13 @@ class _CouponsViewState extends State<CouponsView>
                             vertical: 2.h,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFF5252),
+                            color: colorScheme.primary,
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
                             '满减',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: colorScheme.onPrimary,
                               fontSize: 10.sp,
                             ),
                           ),
@@ -276,17 +281,26 @@ class _CouponsViewState extends State<CouponsView>
                       if (isReceived && !isExpired)
                         Text(
                           '已领取 / ',
-                          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: colorScheme.outline,
+                          ),
                         ),
                       if (!isReceived && !isExpired)
                         Text(
                           '未领取 / ',
-                          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: colorScheme.outline,
+                          ),
                         ),
                       if (isExpired)
                         Text(
                           '已过期 / ',
-                          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: colorScheme.outline,
+                          ),
                         ),
                     ],
                   ),
@@ -295,7 +309,10 @@ class _CouponsViewState extends State<CouponsView>
                     children: [
                       Text(
                         t.coupon.validForever,
-                        style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: colorScheme.outline,
+                        ),
                       ),
                       if (!isExpired)
                         SizedBox(
@@ -304,12 +321,14 @@ class _CouponsViewState extends State<CouponsView>
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               backgroundColor: isReceived
-                                  ? Colors.white
+                                  ? colorScheme.surface
                                   : btnBgColor,
                               foregroundColor: btnTextColor,
                               elevation: 0,
                               side: isReceived
-                                  ? const BorderSide(color: Color(0xFFE0E0E0))
+                                  ? BorderSide(
+                                      color: colorScheme.outlineVariant,
+                                    )
                                   : null,
                               padding: EdgeInsets.symmetric(horizontal: 16.w),
                               shape: RoundedRectangleBorder(
@@ -320,7 +339,9 @@ class _CouponsViewState extends State<CouponsView>
                               isReceived ? '已领取' : '立即领取',
                               style: TextStyle(
                                 fontSize: 12.sp,
-                                color: isReceived ? Colors.grey : Colors.white,
+                                color: isReceived
+                                    ? colorScheme.outline
+                                    : colorScheme.onPrimary,
                               ),
                             ),
                           ),
@@ -328,7 +349,10 @@ class _CouponsViewState extends State<CouponsView>
                       else
                         Text(
                           '已过期',
-                          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: colorScheme.outline,
+                          ),
                         ),
                     ],
                   ),

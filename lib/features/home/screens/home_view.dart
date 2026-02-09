@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
@@ -24,24 +24,27 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F8F8),
+      backgroundColor: colorScheme.surfaceContainer,
       body: CustomScrollView(
         slivers: [
           // 顶部状态栏占位和轮播图
-          SliverToBoxAdapter(child: _buildHeader()),
+          SliverToBoxAdapter(child: _buildHeader(colorScheme)),
 
           // 欢迎区和点餐入口
-          SliverToBoxAdapter(child: _buildWelcomeAndActions()),
+          SliverToBoxAdapter(child: _buildWelcomeAndActions(colorScheme)),
 
           // 功能矩阵
-          SliverToBoxAdapter(child: _buildFunctionGrid()),
+          SliverToBoxAdapter(child: _buildFunctionGrid(colorScheme)),
 
           // 为我推荐标题
-          SliverToBoxAdapter(child: _buildRecommendHeader()),
+          SliverToBoxAdapter(child: _buildRecommendHeader(colorScheme)),
 
           // 推荐列表 (使用 CarouselSlider 实现横向轮播)
-          SliverToBoxAdapter(child: _buildRecommendCarousel()),
+          SliverToBoxAdapter(child: _buildRecommendCarousel(colorScheme)),
 
           SliverToBoxAdapter(child: SizedBox(height: 20.h)),
         ],
@@ -52,7 +55,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   /// 构建头部轮播图
   ///
   /// 使用 carousel_slider 实现自动播放的横幅展示，包含自定义指示器和文字阴影效果
-  Widget _buildHeader() {
+  Widget _buildHeader(ColorScheme colorScheme) {
     final List<Map<String, String>> headerItems = [
       {
         'image': 'https://picsum.photos/seed/header1/800/400',
@@ -91,8 +94,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
               builder: (BuildContext context) {
                 return Container(
                   width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(10),
                       bottomRight: Radius.circular(10),
@@ -204,7 +207,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   }
 
   /// 构建欢迎区和点餐入口
-  Widget _buildWelcomeAndActions() {
+  Widget _buildWelcomeAndActions(ColorScheme colorScheme) {
     return Padding(
       padding: EdgeInsets.all(16.w),
       child: Column(
@@ -215,27 +218,35 @@ class _HomeViewState extends ConsumerState<HomeView> {
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+              color: colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 4.h),
           Row(
             children: [
-              Icon(Icons.location_on, size: 14.sp, color: AppColors.primary),
+              Icon(
+                Symbols.location_on,
+                size: 14.sp,
+                color: colorScheme.primary,
+              ),
               SizedBox(width: 4.w),
               Text(
                 '20号机  距你8.9km',
                 style: TextStyle(
                   fontSize: 12.sp,
-                  color: AppColors.textSecondary,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
               const Spacer(),
               Text(
                 '更多门店',
-                style: TextStyle(fontSize: 12.sp, color: Colors.blue),
+                style: TextStyle(fontSize: 12.sp, color: colorScheme.tertiary),
               ),
-              Icon(Icons.keyboard_arrow_down, size: 14.sp, color: Colors.blue),
+              Icon(
+                Symbols.keyboard_arrow_down,
+                size: 14.sp,
+                color: colorScheme.tertiary,
+              ),
             ],
           ),
           SizedBox(height: 16.h),
@@ -245,23 +256,25 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 child: _buildActionButton(
                   title: t.home.selfPickup,
                   subtitle: t.home.selfPickupHint,
-                  icon: Icons.storefront,
-                  color: AppColors.primary,
+                  icon: Symbols.storefront,
+                  color: colorScheme.primary,
                   onTap: () {
-                    // TODO: 导航到自取页面
+                    context.go(AppRoutes.eat);
                   },
+                  iconColor: colorScheme.onPrimary,
                 ),
               ),
-              SizedBox(width: 12.w),
+              SizedBox(width: 16.w),
               Expanded(
                 child: _buildActionButton(
                   title: t.home.teamOrder,
                   subtitle: t.home.teamOrderHint,
-                  icon: Icons.group,
-                  color: const Color(0xFFFF8A80),
+                  icon: Symbols.moped,
+                  color: colorScheme.primary,
                   onTap: () {
                     context.push(AppRoutes.teamOrdering);
                   },
+                  iconColor: colorScheme.onPrimary,
                 ),
               ),
             ],
@@ -280,6 +293,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     required IconData icon,
     required Color color,
     VoidCallback? onTap,
+    Color? iconColor,
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -298,7 +312,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         ),
         child: Row(
           children: [
-            Icon(icon, color: Colors.white, size: 24.sp),
+            Icon(icon, color: iconColor ?? Colors.white, size: 24.sp),
             SizedBox(width: 8.w),
             Expanded(
               child: Column(
@@ -333,30 +347,30 @@ class _HomeViewState extends ConsumerState<HomeView> {
   /// 构建功能矩阵
   ///
   /// 展示福利、客服、领券等五个核心功能入口
-  Widget _buildFunctionGrid() {
+  Widget _buildFunctionGrid(ColorScheme colorScheme) {
     final items = [
       {
-        'icon': Icons.card_giftcard,
+        'icon': Symbols.card_giftcard,
         'label': t.home.grid.welfare,
         'color': const Color(0xFFFF7043),
       },
       {
-        'icon': Icons.headset_mic,
+        'icon': Symbols.headset_mic,
         'label': t.home.grid.service,
         'color': const Color(0xFFFF5252),
       },
       {
-        'icon': Icons.confirmation_number,
+        'icon': Symbols.confirmation_number,
         'label': t.home.grid.coupon,
         'color': const Color(0xFFFFA726),
       },
       {
-        'icon': Icons.stars,
+        'icon': Symbols.stars,
         'label': t.home.grid.lottery,
         'color': const Color(0xFFEF5350),
       },
       {
-        'icon': Icons.person_add,
+        'icon': Symbols.person_add,
         'label': t.home.grid.invite,
         'color': const Color(0xFFEC407A),
       },
@@ -399,7 +413,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   item['label']! as String,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: const Color(0xFF333333),
+                    color: colorScheme.onSurface,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -414,7 +428,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   /// 构建推荐标题
   ///
   /// 居中展示“为我推荐”文字及红色装饰线
-  Widget _buildRecommendHeader() {
+  Widget _buildRecommendHeader(ColorScheme colorScheme) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h),
       alignment: Alignment.center,
@@ -425,11 +439,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+              color: colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 4.h),
-          Container(width: 20.w, height: 2.h, color: AppColors.primary),
+          Container(width: 20.w, height: 2.h, color: colorScheme.primary),
         ],
       ),
     );
@@ -438,7 +452,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   /// 构建推荐轮播
   ///
   /// 使用 carousel_slider 实现商品推荐的横向滑动效果，突出显示当前项
-  Widget _buildRecommendCarousel() {
+  Widget _buildRecommendCarousel(ColorScheme colorScheme) {
     final products = [
       {'name': '客家酸甜咕噜肉饭', 'price': '14.99', 'originalPrice': '21.4'},
       {'name': '古法爆汁红烧肉饭', 'price': '15.59', 'originalPrice': '22.23'},
@@ -457,7 +471,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         autoPlayCurve: Curves.easeInOutCubic,
       ),
       items: products.asMap().entries.map((entry) {
-        return _buildRecommendCard(entry.key, entry.value);
+        return _buildRecommendCard(entry.key, entry.value, colorScheme);
       }).toList(),
     );
   }
@@ -465,11 +479,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
   /// 构建推荐卡片
   ///
   /// 展示商品图片、名称、价格及抢购按钮
-  Widget _buildRecommendCard(int index, Map<String, String> product) {
+  Widget _buildRecommendCard(
+    int index,
+    Map<String, String> product,
+    ColorScheme colorScheme,
+  ) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
@@ -532,7 +550,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       style: TextStyle(
                         fontSize: 15.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
+                        color: colorScheme.onSurface,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -552,7 +570,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                   '¥',
                                   style: TextStyle(
                                     fontSize: 12.sp,
-                                    color: AppColors.primary,
+                                    color: colorScheme.primary,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -561,7 +579,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                   product['price']!,
                                   style: TextStyle(
                                     fontSize: 20.sp,
-                                    color: AppColors.primary,
+                                    color: colorScheme.primary,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -571,7 +589,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               '¥${product['originalPrice']}',
                               style: TextStyle(
                                 fontSize: 11.sp,
-                                color: AppColors.textHint,
+                                color: colorScheme.onSurfaceVariant,
                                 decoration: TextDecoration.lineThrough,
                               ),
                             ),
@@ -583,13 +601,18 @@ class _HomeViewState extends ConsumerState<HomeView> {
                             vertical: 8.h,
                           ),
                           decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [AppColors.primary, Color(0xFFFFB74D)],
+                            gradient: LinearGradient(
+                              colors: [
+                                colorScheme.primary,
+                                const Color(0xFFFFB74D),
+                              ],
                             ),
                             borderRadius: BorderRadius.circular(25.r),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.primary.withValues(alpha: 0.3),
+                                color: colorScheme.primary.withValues(
+                                  alpha: 0.3,
+                                ),
                                 blurRadius: 8,
                                 offset: const Offset(0, 4),
                               ),

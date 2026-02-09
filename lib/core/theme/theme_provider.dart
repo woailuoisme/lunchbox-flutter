@@ -44,37 +44,73 @@ class ThemeNotifier extends _$ThemeNotifier {
     error: AppColors.error,
   );
 
-  ThemeData get lightTheme => FlexThemeData.light(
-    colors: _appSchemeColor, // 使用自定义颜色
-    // scheme: state.scheme, // 如果想支持多套皮肤，可以在这里根据 state.scheme 切换
-    surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-    blendLevel: 7,
-    subThemesData: const FlexSubThemesData(
-      blendOnLevel: 10,
-      useMaterial3Typography: true,
-      useM2StyleDividerInM3: true,
-      alignedDropdown: true,
-      useInputDecoratorThemeInDialogs: true,
-    ),
-    visualDensity: FlexColorScheme.comfortablePlatformDensity,
-    swapLegacyOnMaterial3: true,
-  );
+  ThemeData get lightTheme {
+    if (state.scheme == FlexScheme.materialBaseline) {
+      return FlexThemeData.light(
+        colors: _appSchemeColor,
+        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+        blendLevel: 7,
+        subThemesData: const FlexSubThemesData(
+          blendOnLevel: 10,
+          useMaterial3Typography: true,
+          useM2StyleDividerInM3: true,
+          alignedDropdown: true,
+          useInputDecoratorThemeInDialogs: true,
+        ),
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        swapLegacyOnMaterial3: true,
+      );
+    }
 
-  ThemeData get darkTheme => FlexThemeData.dark(
-    colors: _appSchemeColor, // 使用自定义颜色
-    // scheme: state.scheme,
-    surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-    blendLevel: 13,
-    subThemesData: const FlexSubThemesData(
-      blendOnLevel: 20,
-      useMaterial3Typography: true,
-      useM2StyleDividerInM3: true,
-      alignedDropdown: true,
-      useInputDecoratorThemeInDialogs: true,
-    ),
-    visualDensity: FlexColorScheme.comfortablePlatformDensity,
-    swapLegacyOnMaterial3: true,
-  );
+    return FlexThemeData.light(
+      scheme: state.scheme,
+      surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+      blendLevel: 7,
+      subThemesData: const FlexSubThemesData(
+        blendOnLevel: 10,
+        useMaterial3Typography: true,
+        useM2StyleDividerInM3: true,
+        alignedDropdown: true,
+        useInputDecoratorThemeInDialogs: true,
+      ),
+      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      swapLegacyOnMaterial3: true,
+    );
+  }
+
+  ThemeData get darkTheme {
+    if (state.scheme == FlexScheme.materialBaseline) {
+      return FlexThemeData.dark(
+        colors: _appSchemeColor,
+        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+        blendLevel: 13,
+        subThemesData: const FlexSubThemesData(
+          blendOnLevel: 20,
+          useMaterial3Typography: true,
+          useM2StyleDividerInM3: true,
+          alignedDropdown: true,
+          useInputDecoratorThemeInDialogs: true,
+        ),
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        swapLegacyOnMaterial3: true,
+      );
+    }
+
+    return FlexThemeData.dark(
+      scheme: state.scheme,
+      surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+      blendLevel: 13,
+      subThemesData: const FlexSubThemesData(
+        blendOnLevel: 20,
+        useMaterial3Typography: true,
+        useM2StyleDividerInM3: true,
+        alignedDropdown: true,
+        useInputDecoratorThemeInDialogs: true,
+      ),
+      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      swapLegacyOnMaterial3: true,
+    );
+  }
 }
 
 class ThemeState {

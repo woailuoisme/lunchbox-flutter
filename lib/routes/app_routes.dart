@@ -53,6 +53,12 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String profileEdit = '/profile-edit';
   static const String favoriteDevices = '/favorite-devices';
+  static const String wallet = '/wallet';
+  static const String myPoints = '/my-points';
+  static const String pointsMall = '/points-mall';
+  static const String feedback = '/feedback';
+  static const String partner = '/partner';
+  static const String aboutUs = '/about-us';
 
   // 帮助
   static const String help = '/help';

@@ -81,6 +81,8 @@ class TranslationsEn extends Translations
       ._(_root);
   @override late final _TranslationsCouponEn coupon = _TranslationsCouponEn._(
       _root);
+  @override late final _TranslationsCommunityEn community = _TranslationsCommunityEn
+      ._(_root);
 }
 
 // Path: common
@@ -248,6 +250,10 @@ class _TranslationsHomeEn extends TranslationsHomeZhCn {
   @override String get teamOrder => 'Team Order';
 
   @override String get teamOrderHint => 'Group ordering/Team meal';
+
+  @override String get invite => 'Invite & Earn';
+
+  @override String get inviteHint => 'Invite friends to get cash';
 
   @override String get recommendTitle => 'Recommended for Me';
   @override late final _TranslationsHomeGridEn grid = _TranslationsHomeGridEn._(
@@ -799,6 +805,41 @@ class _TranslationsCouponEn extends TranslationsCouponZhCn {
   @override String discountOff({required Object amount}) => '\$ ${amount} Off';
 }
 
+// Path: community
+class _TranslationsCommunityEn extends TranslationsCommunityZhCn {
+  _TranslationsCommunityEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get title => 'Community Benefits';
+
+  @override String get join => 'Join Community';
+
+  @override String get share => 'Share delicious food with foodies';
+
+  @override String get org => 'Dongguan CAS Cloud Computing Center';
+
+  @override String get dept => 'Cloud Computing Center';
+
+  @override String get scanHint =>
+      'Scan to join Dongguan CAS Cloud Computing Center';
+  @override late final _TranslationsCommunityFeaturesEn features = _TranslationsCommunityFeaturesEn
+      ._(_root);
+
+  @override String get whyJoin => 'Why join our community?';
+
+  @override String get reason1 => 'Daily food recommendations';
+
+  @override String get reason2 => 'Limited time offers, save money';
+
+  @override String get reason3 => 'Professional food reviews';
+
+  @override String get reason4 => 'Food making tutorials';
+}
+
 // Path: home.grid
 class _TranslationsHomeGridEn extends TranslationsHomeGridZhCn {
   _TranslationsHomeGridEn._(TranslationsEn root)
@@ -977,6 +1018,41 @@ class _TranslationsCouponTabsEn extends TranslationsCouponTabsZhCn {
   @override String get expired => 'Expired';
 }
 
+// Path: community.features
+class _TranslationsCommunityFeaturesEn
+    extends TranslationsCommunityFeaturesZhCn {
+  _TranslationsCommunityFeaturesEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get coupon => 'Exclusive Coupons';
+
+  @override String get couponHint => 'Exclusive discounts for group members';
+
+  @override String get tasting => 'New Product Tasting';
+
+  @override String get tastingHint => 'Taste the latest food first';
+
+  @override String get exchange => 'Food Exchange';
+
+  @override String get exchangeHint => 'Share insights with food experts';
+
+  @override String get priority => 'Priority Access';
+
+  @override String get priorityHint => 'Priority participation in food events';
+
+  @override String get activity => 'Community Events';
+
+  @override String get activityHint => 'Regular offline gatherings';
+
+  @override String get topic => 'Topic Discussion';
+
+  @override String get topicHint => 'Participate in topics to win rewards';
+}
+
 // Path: home.lottery.prizeStats
 class _TranslationsHomeLotteryPrizeStatsEn
     extends TranslationsHomeLotteryPrizeStatsZhCn {
@@ -1102,6 +1178,8 @@ extension on TranslationsEn {
       'home.selfPickupHint' => 'Scan code to pick up/Take away',
       'home.teamOrder' => 'Team Order',
       'home.teamOrderHint' => 'Group ordering/Team meal',
+      'home.invite' => 'Invite & Earn',
+      'home.inviteHint' => 'Invite friends to get cash',
       'home.recommendTitle' => 'Recommended for Me',
       'home.grid.welfare' => 'Welfare',
       'home.grid.service' => 'Service',
@@ -1360,6 +1438,29 @@ extension on TranslationsEn {
       'coupon.btnExpired' => 'Expired',
       'coupon.discount' => ({required Object amount}) => '\$ ${amount} Coupon',
       'coupon.discountOff' => ({required Object amount}) => '\$ ${amount} Off',
+      'community.title' => 'Community Benefits',
+      'community.join' => 'Join Community',
+      'community.share' => 'Share delicious food with foodies',
+      'community.org' => 'Dongguan CAS Cloud Computing Center',
+      'community.dept' => 'Cloud Computing Center',
+      'community.scanHint' => 'Scan to join Dongguan CAS Cloud Computing Center',
+      'community.features.coupon' => 'Exclusive Coupons',
+      'community.features.couponHint' => 'Exclusive discounts for group members',
+      'community.features.tasting' => 'New Product Tasting',
+      'community.features.tastingHint' => 'Taste the latest food first',
+      'community.features.exchange' => 'Food Exchange',
+      'community.features.exchangeHint' => 'Share insights with food experts',
+      'community.features.priority' => 'Priority Access',
+      'community.features.priorityHint' => 'Priority participation in food events',
+      'community.features.activity' => 'Community Events',
+      'community.features.activityHint' => 'Regular offline gatherings',
+      'community.features.topic' => 'Topic Discussion',
+      'community.features.topicHint' => 'Participate in topics to win rewards',
+      'community.whyJoin' => 'Why join our community?',
+      'community.reason1' => 'Daily food recommendations',
+      'community.reason2' => 'Limited time offers, save money',
+      'community.reason3' => 'Professional food reviews',
+      'community.reason4' => 'Food making tutorials',
 			_ => null,
 		};
 	}

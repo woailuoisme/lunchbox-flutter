@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// 全局统一图片组件
 ///
@@ -133,7 +134,7 @@ class AppImage extends StatelessWidget {
     // 处理圆角
     final finalBorderRadius =
         borderRadius ??
-        (radius != null ? BorderRadius.circular(radius!) : null);
+        (radius != null ? BorderRadius.circular(radius!.r) : null);
 
     if (finalBorderRadius != null) {
       return ClipRRect(borderRadius: finalBorderRadius, child: imageWidget);
@@ -146,29 +147,43 @@ class AppImage extends StatelessWidget {
     if (placeholder != null) {
       return placeholder!;
     }
-    return Container(width: width, height: height, color: AppColors.background)
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Container(
+          width: width,
+          height: height,
+          color: colorScheme.surfaceContainerHighest,
+        )
         .animate(onPlay: (controller) => controller.repeat())
-        .shimmer(duration: 1200.ms, color: Colors.white.withValues(alpha: 0.5));
+        .shimmer(
+          duration: 1200.ms,
+          color: colorScheme.surface.withValues(alpha: 0.5),
+        );
   }
 
   Widget _buildError(BuildContext context) {
     if (errorWidget != null) {
       return errorWidget!;
     }
+
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: colorScheme.surfaceContainerHighest,
         borderRadius:
             borderRadius ??
-            (radius != null ? BorderRadius.circular(radius!) : null),
+            (radius != null ? BorderRadius.circular(radius!.r) : null),
       ),
       child: Center(
         child: Icon(
-          Icons.broken_image_rounded,
-          color: Colors.grey[300],
-          size: 24,
+          Symbols.broken_image,
+          color: colorScheme.outlineVariant,
+          size: 24.sp,
         ),
       ),
     );

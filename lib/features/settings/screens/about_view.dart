@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/settings/providers/settings_providers.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /// 关于应用页面
@@ -13,9 +13,11 @@ class AboutView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final packageInfoAsync = ref.watch(fetchPackageInfoProvider);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(t.settings.aboutUs),
         centerTitle: true,
@@ -32,30 +34,29 @@ class AboutView extends ConsumerWidget {
                 width: 100.w,
                 height: 100.w,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: colorScheme.surface,
                   borderRadius: BorderRadius.circular(20.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
+                      color: colorScheme.shadow.withValues(alpha: 0.05),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
                   ],
                 ),
                 child: Icon(
-                  Icons.lunch_dining,
+                  Symbols.lunch_dining,
                   size: 60.sp,
-                  color: AppColors.primary,
+                  color: colorScheme.primary,
                 ),
               ),
             ),
             SizedBox(height: 24.h),
             Text(
               info.appName,
-              style: TextStyle(
-                fontSize: 24.sp,
+              style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
+                color: colorScheme.onSurface,
               ),
             ),
             SizedBox(height: 8.h),
@@ -63,20 +64,24 @@ class AboutView extends ConsumerWidget {
               t.profile.version(
                 version: '${info.version} (${info.buildNumber})',
               ),
-              style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
             SizedBox(height: 40.h),
             // Info List
-            _buildInfoCard([
-              _buildInfoItem(t.settings.appName, info.appName),
-              _buildInfoItem(t.settings.packageName, info.packageName),
-              _buildInfoItem(t.settings.versionName, info.version),
-              _buildInfoItem(t.settings.buildNumber, info.buildNumber),
+            _buildInfoCard(context, [
+              _buildInfoItem(context, t.settings.appName, info.appName),
+              _buildInfoItem(context, t.settings.packageName, info.packageName),
+              _buildInfoItem(context, t.settings.versionName, info.version),
+              _buildInfoItem(context, t.settings.buildNumber, info.buildNumber),
             ]),
             const Spacer(),
             Text(
               t.settings.copyright,
-              style: TextStyle(fontSize: 12.sp, color: AppColors.textHint),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.outline,
+              ),
             ),
             SizedBox(height: 24.h),
           ],
@@ -88,15 +93,17 @@ class AboutView extends ConsumerWidget {
     );
   }
 
-  Widget _buildInfoCard(List<Widget> children) {
+  Widget _buildInfoCard(BuildContext context, List<Widget> children) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
+            color: colorScheme.shadow.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -106,7 +113,9 @@ class AboutView extends ConsumerWidget {
     );
   }
 
-  Widget _buildInfoItem(String label, String value) {
+  Widget _buildInfoItem(BuildContext context, String label, String value) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Column(
       children: [
         Padding(
@@ -116,24 +125,25 @@ class AboutView extends ConsumerWidget {
             children: [
               Text(
                 label,
-                style: TextStyle(fontSize: 15.sp, color: AppColors.textPrimary),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurface,
+                ),
               ),
               Text(
                 value,
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  color: AppColors.textSecondary,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
           ),
         ),
         if (label != '构建号')
-          const Divider(
+          Divider(
             height: 1,
-            indent: 16,
-            endIndent: 16,
-            color: AppColors.divider,
+            indent: 16.w,
+            endIndent: 16.w,
+            color: colorScheme.outlineVariant.withValues(alpha: 0.5),
           ),
       ],
     );

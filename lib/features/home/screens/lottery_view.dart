@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/home/providers/lottery_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// 抽奖页面
 ///
@@ -122,6 +122,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   }
 
   void _showResultDialog(String prizeName) {
+    final colorScheme = Theme.of(context).colorScheme;
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -130,7 +131,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
         child: Container(
           padding: EdgeInsets.all(20.w),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: colorScheme.surface,
             borderRadius: BorderRadius.circular(16.r),
           ),
           child: Column(
@@ -151,7 +152,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
                 prizeName,
                 style: TextStyle(
                   fontSize: 24.sp,
-                  color: Colors.red,
+                  color: colorScheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -161,8 +162,8 @@ class _LotteryViewState extends ConsumerState<LotteryView>
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: colorScheme.onPrimary,
                     padding: EdgeInsets.symmetric(vertical: 12.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.r),
@@ -182,9 +183,11 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   Widget build(BuildContext context) {
     final lotteryState = ref.watch(lotteryProvider);
     final lotteryNotifier = ref.read(lotteryProvider.notifier);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF5F5),
+      backgroundColor: colorScheme.surfaceContainer,
       appBar: AppBar(
         title: Text(t.home.grid.lottery),
         backgroundColor: Colors.transparent,
@@ -194,18 +197,19 @@ class _LotteryViewState extends ConsumerState<LotteryView>
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHeader(lotteryState.remainingSpins),
+            _buildHeader(lotteryState.remainingSpins, colorScheme),
             SizedBox(height: 20.h),
             _buildWheelSection(
               lotteryState.isSpinning,
               lotteryNotifier.wheelItems,
+              colorScheme,
             ),
             SizedBox(height: 30.h),
-            _buildPrizeInfo(lotteryNotifier.wheelItems),
+            _buildPrizeInfo(lotteryNotifier.wheelItems, colorScheme),
             SizedBox(height: 20.h),
-            _buildRules(),
+            _buildRules(colorScheme),
             SizedBox(height: 30.h),
-            _buildBottomButtons(),
+            _buildBottomButtons(colorScheme),
             SizedBox(height: 40.h),
           ],
         ),
@@ -214,16 +218,16 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   }
 
   /// 顶部标题卡片
-  Widget _buildHeader(int remainingSpins) {
+  Widget _buildHeader(int remainingSpins, ColorScheme colorScheme) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.red.withValues(alpha: 0.1),
+            color: colorScheme.primary.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -246,12 +250,12 @@ class _LotteryViewState extends ConsumerState<LotteryView>
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 Text(
                   '参与抽奖，赢取好礼',
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                  style: TextStyle(fontSize: 12.sp, color: colorScheme.outline),
                 ),
               ],
             ),
@@ -259,13 +263,13 @@ class _LotteryViewState extends ConsumerState<LotteryView>
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              color: colorScheme.primary,
               borderRadius: BorderRadius.circular(20.r),
             ),
             child: Text(
               '剩余次数: $remainingSpins',
               style: TextStyle(
-                color: Colors.white,
+                color: colorScheme.onPrimary,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
               ),
@@ -277,7 +281,11 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   }
 
   /// 转盘区域
-  Widget _buildWheelSection(bool isSpinning, List<String> items) {
+  Widget _buildWheelSection(
+    bool isSpinning,
+    List<String> items,
+    ColorScheme colorScheme,
+  ) {
     return Center(
       child: Stack(
         alignment: Alignment.center,
@@ -323,9 +331,10 @@ class _LotteryViewState extends ConsumerState<LotteryView>
           Positioned(
             top: 0,
             child: Icon(
-              Icons.arrow_drop_down,
+              Symbols.arrow_drop_down,
               size: 40.w,
               color: const Color(0xFFD32F2F),
+              fill: 1.0,
             ),
           ),
           // 中心按钮
@@ -335,7 +344,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
               width: 80.w,
               height: 80.w,
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: colorScheme.primary,
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white, width: 4),
                 boxShadow: [
@@ -350,7 +359,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
               child: Text(
                 isSpinning ? '...' : '抽奖',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: colorScheme.onPrimary,
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -363,12 +372,12 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   }
 
   /// 奖品说明列表
-  Widget _buildPrizeInfo(List<String> prizes) {
+  Widget _buildPrizeInfo(List<String> prizes, ColorScheme colorScheme) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -384,11 +393,19 @@ class _LotteryViewState extends ConsumerState<LotteryView>
               padding: EdgeInsets.only(bottom: 8.h),
               child: Row(
                 children: [
-                  Icon(Icons.star, color: Colors.amber, size: 20.w),
+                  Icon(
+                    Symbols.star,
+                    color: Colors.amber,
+                    size: 20.w,
+                    fill: 1.0,
+                  ),
                   SizedBox(width: 8.w),
                   Text(
                     prize,
-                    style: TextStyle(fontSize: 14.sp, color: Colors.black87),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: colorScheme.onSurface,
+                    ),
                   ),
                 ],
               ),
@@ -400,12 +417,12 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   }
 
   /// 抽奖规则
-  Widget _buildRules() {
+  Widget _buildRules(ColorScheme colorScheme) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -420,20 +437,20 @@ class _LotteryViewState extends ConsumerState<LotteryView>
               ),
               Text(
                 '收起',
-                style: TextStyle(fontSize: 12.sp, color: AppColors.primary),
+                style: TextStyle(fontSize: 12.sp, color: colorScheme.primary),
               ),
             ],
           ),
           SizedBox(height: 12.h),
-          _buildRuleItem('每日有免费抽奖次数，次数用完后可领取任务获得'),
-          _buildRuleItem('优惠券48小时内有效，乖乖币自动到账'),
-          _buildRuleItem('活动最终解释权归平台所有'),
+          _buildRuleItem('每日有免费抽奖次数，次数用完后可领取任务获得', colorScheme),
+          _buildRuleItem('优惠券48小时内有效，乖乖币自动到账', colorScheme),
+          _buildRuleItem('活动最终解释权归平台所有', colorScheme),
         ],
       ),
     );
   }
 
-  Widget _buildRuleItem(String text) {
+  Widget _buildRuleItem(String text, ColorScheme colorScheme) {
     return Padding(
       padding: EdgeInsets.only(bottom: 6.h),
       child: Row(
@@ -441,13 +458,16 @@ class _LotteryViewState extends ConsumerState<LotteryView>
         children: [
           Text(
             '• ',
-            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+            style: TextStyle(
+              color: colorScheme.onSurfaceVariant,
+              fontSize: 14.sp,
+            ),
           ),
           Expanded(
             child: Text(
               text,
               style: TextStyle(
-                color: Colors.grey,
+                color: colorScheme.onSurfaceVariant,
                 fontSize: 12.sp,
                 height: 1.5,
               ),
@@ -459,7 +479,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   }
 
   /// 底部按钮
-  Widget _buildBottomButtons() {
+  Widget _buildBottomButtons(ColorScheme colorScheme) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
@@ -468,8 +488,8 @@ class _LotteryViewState extends ConsumerState<LotteryView>
             child: ElevatedButton(
               onPressed: () => Navigator.pop(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFFF0F0),
-                foregroundColor: AppColors.primary,
+                backgroundColor: colorScheme.primaryContainer,
+                foregroundColor: colorScheme.primary,
                 elevation: 0,
                 padding: EdgeInsets.symmetric(vertical: 14.h),
                 shape: RoundedRectangleBorder(
@@ -486,13 +506,15 @@ class _LotteryViewState extends ConsumerState<LotteryView>
                 context.push('${AppRoutes.lottery}/${AppRoutes.myPrizes}');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black87,
+                backgroundColor: colorScheme.surface,
+                foregroundColor: colorScheme.onSurface,
                 elevation: 0,
                 padding: EdgeInsets.symmetric(vertical: 14.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
-                  side: BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
+                  side: BorderSide(
+                    color: colorScheme.outline.withValues(alpha: 0.2),
+                  ),
                 ),
               ),
               child: const Text('我的奖品'),

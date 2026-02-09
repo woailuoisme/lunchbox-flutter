@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/auth/providers/auth_notifier.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
 
 class RegisterView extends ConsumerStatefulWidget {
@@ -77,13 +77,16 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(t.auth.registerTitle),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        foregroundColor: AppColors.textPrimary,
+        foregroundColor: colorScheme.onSurface,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -94,11 +97,11 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: 24.h),
-                _buildHeader(),
+                _buildHeader(colorScheme),
                 SizedBox(height: 32.h),
-                _buildForm(),
+                _buildForm(colorScheme),
                 SizedBox(height: 32.h),
-                _buildRegisterButton(),
+                _buildRegisterButton(colorScheme),
                 SizedBox(height: 24.h),
               ],
             ),
@@ -108,20 +111,20 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(ColorScheme colorScheme) {
     return Column(
       children: [
         Container(
           width: 80.w,
           height: 80.w,
           decoration: BoxDecoration(
-            color: AppColors.primary,
+            color: colorScheme.primary,
             borderRadius: BorderRadius.circular(20.r),
           ),
           child: Icon(
-            Icons.person_add_outlined,
+            Symbols.person_add,
             size: 48.sp,
-            color: Colors.white,
+            color: colorScheme.onPrimary,
           ),
         ),
         SizedBox(height: 24.h),
@@ -130,51 +133,51 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
           style: TextStyle(
             fontSize: 28.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 8.h),
         Text(
           t.auth.slogan,
-          style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildForm() {
+  Widget _buildForm(ColorScheme colorScheme) {
     return Column(
       children: [
         TextFormField(
           controller: _usernameController,
           style: TextStyle(
             fontSize: 16.sp,
-            color: AppColors.textPrimary,
+            color: colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
           decoration: InputDecoration(
             labelText: t.common.username,
-            labelStyle: const TextStyle(color: AppColors.textSecondary),
+            labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
             hintText: t.auth.enterUsernameHint,
-            hintStyle: const TextStyle(color: AppColors.textHint),
-            prefixIcon: const Icon(
-              Icons.person_outline,
-              color: AppColors.primary,
-            ),
+            hintStyle: TextStyle(color: colorScheme.outline),
+            prefixIcon: Icon(Symbols.person, color: colorScheme.primary),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.divider),
+              borderSide: BorderSide(color: colorScheme.outlineVariant),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(
-                color: AppColors.divider,
+              borderSide: BorderSide(
+                color: colorScheme.outlineVariant,
                 width: 1.5,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
+              borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
           ),
           validator: (v) => v?.isNotEmpty ?? false ? null : t.auth.required,
@@ -185,32 +188,29 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
           controller: _nicknameController,
           style: TextStyle(
             fontSize: 16.sp,
-            color: AppColors.textPrimary,
+            color: colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
           decoration: InputDecoration(
             labelText: t.auth.nickname,
-            labelStyle: const TextStyle(color: AppColors.textSecondary),
+            labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
             hintText: t.auth.enterNickname,
-            hintStyle: const TextStyle(color: AppColors.textHint),
-            prefixIcon: const Icon(
-              Icons.face_outlined,
-              color: AppColors.primary,
-            ),
+            hintStyle: TextStyle(color: colorScheme.outline),
+            prefixIcon: Icon(Symbols.face, color: colorScheme.primary),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.divider),
+              borderSide: BorderSide(color: colorScheme.outlineVariant),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(
-                color: AppColors.divider,
+              borderSide: BorderSide(
+                color: colorScheme.outlineVariant,
                 width: 1.5,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
+              borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
           ),
           validator: (v) => v?.isNotEmpty ?? false ? null : t.auth.required,
@@ -222,32 +222,29 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
           obscureText: true,
           style: TextStyle(
             fontSize: 16.sp,
-            color: AppColors.textPrimary,
+            color: colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
           decoration: InputDecoration(
             labelText: t.common.password,
-            labelStyle: const TextStyle(color: AppColors.textSecondary),
+            labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
             hintText: t.auth.enterPassword,
-            hintStyle: const TextStyle(color: AppColors.textHint),
-            prefixIcon: const Icon(
-              Icons.lock_outline,
-              color: AppColors.primary,
-            ),
+            hintStyle: TextStyle(color: colorScheme.outline),
+            prefixIcon: Icon(Symbols.lock, color: colorScheme.primary),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.divider),
+              borderSide: BorderSide(color: colorScheme.outlineVariant),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(
-                color: AppColors.divider,
+              borderSide: BorderSide(
+                color: colorScheme.outlineVariant,
                 width: 1.5,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
+              borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
           ),
           validator: (v) => v?.isNotEmpty ?? false ? null : t.auth.required,
@@ -258,14 +255,14 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
     );
   }
 
-  Widget _buildRegisterButton() {
+  Widget _buildRegisterButton(ColorScheme colorScheme) {
     return ElevatedButton(
       onPressed: _isLoading ? null : _handleRegister,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-        disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.5),
-        disabledForegroundColor: Colors.white.withValues(alpha: 0.8),
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
+        disabledBackgroundColor: colorScheme.primary.withValues(alpha: 0.5),
+        disabledForegroundColor: colorScheme.onPrimary.withValues(alpha: 0.8),
         padding: EdgeInsets.symmetric(vertical: 16.h),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
@@ -276,9 +273,11 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
           ? SizedBox(
               width: 20.w,
               height: 20.w,
-              child: const CircularProgressIndicator(
+              child: CircularProgressIndicator(
                 strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  colorScheme.onPrimary,
+                ),
               ),
             )
           : Text(

@@ -6,6 +6,7 @@ import 'package:lunchbox/features/device/entities/device_model.dart';
 import 'package:lunchbox/features/profile/providers/profile_notifier.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// 收藏设备视图
 class FavoriteDevicesView extends ConsumerWidget {
@@ -33,15 +34,19 @@ class FavoriteDevicesView extends ConsumerWidget {
 
   /// 构建空状态
   Widget _buildEmptyState(BuildContext context) {
+    final theme = Theme.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.favorite_border, size: 80.sp, color: Colors.grey),
+          Icon(Symbols.favorite, size: 80.sp, color: theme.colorScheme.outline),
           SizedBox(height: 16.h),
           Text(
             t.profile.noFavoriteDevices,
-            style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
           SizedBox(height: 24.h),
           ElevatedButton(
@@ -59,6 +64,7 @@ class FavoriteDevicesView extends ConsumerWidget {
     DeviceModel device,
     ProfileNotifier notifier,
   ) {
+    final theme = Theme.of(context);
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
       child: InkWell(
@@ -76,15 +82,15 @@ class FavoriteDevicesView extends ConsumerWidget {
                 height: 48.w,
                 decoration: BoxDecoration(
                   color: device.isOnline
-                      ? Theme.of(context).primaryColor.withValues(alpha: 0.1)
-                      : Colors.grey[200],
+                      ? theme.colorScheme.primary.withValues(alpha: 0.1)
+                      : theme.colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Icon(
-                  Icons.storefront,
+                  Symbols.storefront,
                   color: device.isOnline
-                      ? Theme.of(context).primaryColor
-                      : Colors.grey,
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.onSurfaceVariant,
                   size: 24.sp,
                 ),
               ),
@@ -113,7 +119,9 @@ class FavoriteDevicesView extends ConsumerWidget {
                           width: 8.w,
                           height: 8.w,
                           decoration: BoxDecoration(
-                            color: device.isOnline ? Colors.green : Colors.grey,
+                            color: device.isOnline
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.outline,
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -122,7 +130,7 @@ class FavoriteDevicesView extends ConsumerWidget {
                           device.isOnline ? t.device.online : t.device.offline,
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: Colors.grey[600],
+                            color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -133,9 +141,9 @@ class FavoriteDevicesView extends ConsumerWidget {
                     Row(
                       children: [
                         Icon(
-                          Icons.place_outlined,
+                          Symbols.location_on,
                           size: 14.sp,
-                          color: Colors.grey[600],
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
                         SizedBox(width: 2.w),
                         Expanded(
@@ -143,7 +151,7 @@ class FavoriteDevicesView extends ConsumerWidget {
                             device.address,
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: Colors.grey[600],
+                              color: theme.colorScheme.onSurfaceVariant,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -157,7 +165,11 @@ class FavoriteDevicesView extends ConsumerWidget {
 
               // 取消收藏按钮
               IconButton(
-                icon: const Icon(Icons.favorite, color: Colors.red),
+                icon: Icon(
+                  Symbols.favorite,
+                  fill: 1,
+                  color: theme.colorScheme.error,
+                ),
                 onPressed: () =>
                     _confirmRemoveFavorite(context, device, notifier),
               ),

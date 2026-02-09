@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:material_symbols_icons/symbols.dart';
+import 'package:lunchbox/routes/app_routes.dart';
 
 /// 用户中心视图 (我的)
 ///
@@ -10,15 +13,16 @@ class ProfileView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F8F8),
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           // 红色渐变背景头部
-          SliverToBoxAdapter(child: _buildHeader()),
+          SliverToBoxAdapter(child: _buildHeader(context)),
 
           // 功能列表菜单
-          SliverToBoxAdapter(child: _buildMenuSection()),
+          SliverToBoxAdapter(child: _buildMenuSection(context)),
 
           SliverToBoxAdapter(child: SizedBox(height: 40.h)),
         ],
@@ -29,7 +33,8 @@ class ProfileView extends ConsumerWidget {
   /// 构建红色渐变头部
   ///
   /// 包含背景渐变、状态栏占位、用户信息以及资产信息（钱包、币、券）
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -37,8 +42,8 @@ class ProfileView extends ConsumerWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color(0xFFFF5252),
-            const Color(0xFFFF8A80).withValues(alpha: 0.9),
+            theme.colorScheme.primary,
+            theme.colorScheme.primary.withValues(alpha: 0.8),
           ],
         ),
       ),
@@ -53,20 +58,24 @@ class ProfileView extends ConsumerWidget {
               children: [
                 const SizedBox(width: 40),
                 Text(
-                  '我的',
+                  '个人中心',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: theme.colorScheme.onPrimary,
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Row(
                   children: [
-                    Icon(Icons.more_horiz, color: Colors.white, size: 24.sp),
+                    Icon(
+                      Symbols.more_horiz,
+                      color: theme.colorScheme.onPrimary,
+                      size: 24.sp,
+                    ),
                     SizedBox(width: 12.w),
                     Icon(
-                      Icons.radio_button_checked,
-                      color: Colors.white,
+                      Symbols.radio_button_checked,
+                      color: theme.colorScheme.onPrimary,
                       size: 24.sp,
                     ),
                   ],
@@ -86,7 +95,7 @@ class ProfileView extends ConsumerWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: theme.colorScheme.onPrimary.withValues(alpha: 0.5),
                       width: 2,
                     ),
                     image: const DecorationImage(
@@ -102,7 +111,7 @@ class ProfileView extends ConsumerWidget {
                   child: Text(
                     'Hi! 166****2309',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: theme.colorScheme.onPrimary,
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
                     ),
@@ -114,15 +123,18 @@ class ProfileView extends ConsumerWidget {
                     vertical: 6.h,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(10.r),
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.3),
+                      color: theme.colorScheme.onPrimary.withValues(alpha: 0.3),
                     ),
                   ),
                   child: Text(
                     '退出',
-                    style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                    style: TextStyle(
+                      color: theme.colorScheme.onPrimary,
+                      fontSize: 13.sp,
+                    ),
                   ),
                 ),
               ],
@@ -134,7 +146,7 @@ class ProfileView extends ConsumerWidget {
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             padding: EdgeInsets.symmetric(vertical: 24.h),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.12),
+              color: theme.colorScheme.surface.withValues(alpha: 0.12),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20.r),
                 topRight: Radius.circular(20.r),
@@ -142,9 +154,24 @@ class ProfileView extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                _buildAssetItem('999962.07', '钱包余额'),
-                _buildAssetItem('300', '乖乖币'),
-                _buildAssetItem('9', '优惠券'),
+                _buildAssetItem(
+                  context,
+                  '999962.07',
+                  '钱包余额',
+                  onTap: () => context.push(AppRoutes.wallet),
+                ),
+                _buildAssetItem(
+                  context,
+                  '300',
+                  '乖乖币',
+                  onTap: () => context.push(AppRoutes.myPoints),
+                ),
+                _buildAssetItem(
+                  context,
+                  '9',
+                  '优惠券',
+                  onTap: () => context.push(AppRoutes.coupons),
+                ),
               ],
             ),
           ),
@@ -156,27 +183,36 @@ class ProfileView extends ConsumerWidget {
   /// 构建资产单项
   ///
   /// 展示资产数值及名称，使用白色文字以配合红色背景
-  Widget _buildAssetItem(String value, String label) {
+  Widget _buildAssetItem(
+    BuildContext context,
+    String value,
+    String label, {
+    VoidCallback? onTap,
+  }) {
+    final theme = Theme.of(context);
     return Expanded(
-      child: Column(
-        children: [
-          Text(
-            value,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          children: [
+            Text(
+              value,
+              style: TextStyle(
+                color: theme.colorScheme.onPrimary,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          SizedBox(height: 4.h),
-          Text(
-            label,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.8),
-              fontSize: 11.sp,
+            SizedBox(height: 4.h),
+            Text(
+              label,
+              style: TextStyle(
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
+                fontSize: 11.sp,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -184,23 +220,56 @@ class ProfileView extends ConsumerWidget {
   /// 构建功能列表菜单
   ///
   /// 垂直展示钱包、优惠券、设置等功能项
-  Widget _buildMenuSection() {
+  Widget _buildMenuSection(BuildContext context) {
+    final theme = Theme.of(context);
     return ColoredBox(
-      color: Colors.white,
+      color: theme.cardColor,
       child: Column(
         children: [
           _buildMenuTile(
-            icon: Icons.account_balance_wallet_outlined,
+            context: context,
+            icon: Symbols.account_balance_wallet,
             title: '我的钱包',
             trailingText: '999962.07',
-            trailingColor: const Color(0xFFFF5252),
+            trailingColor: theme.colorScheme.primary,
+            onTap: () => context.push(AppRoutes.wallet),
           ),
-          _buildMenuTile(icon: Icons.assignment_outlined, title: '优惠券'),
-          _buildMenuTile(icon: Icons.help_outline, title: '问题反馈'),
-          _buildMenuTile(icon: Icons.person_outline, title: '个人信息'),
-          _buildMenuTile(icon: Icons.handshake_outlined, title: '合作商加盟'),
-          _buildMenuTile(icon: Icons.info_outline, title: '关于我们'),
-          _buildMenuTile(icon: Icons.settings_outlined, title: '设置'),
+          _buildMenuTile(
+            context: context,
+            icon: Symbols.airplane_ticket,
+            title: '优惠券',
+            onTap: () => context.push(AppRoutes.coupons),
+          ),
+          _buildMenuTile(
+            context: context,
+            icon: Symbols.help,
+            title: '问题反馈',
+            onTap: () => context.push(AppRoutes.feedback),
+          ),
+          _buildMenuTile(
+            context: context,
+            icon: Symbols.person,
+            title: '个人信息',
+            onTap: () => context.push(AppRoutes.profileEdit),
+          ),
+          _buildMenuTile(
+            context: context,
+            icon: Symbols.handshake,
+            title: '合作商加盟',
+            onTap: () => context.push(AppRoutes.partner),
+          ),
+          _buildMenuTile(
+            context: context,
+            icon: Symbols.info,
+            title: '关于我们',
+            onTap: () => context.push(AppRoutes.aboutUs),
+          ),
+          _buildMenuTile(
+            context: context,
+            icon: Symbols.settings,
+            title: '设置',
+            onTap: () => context.push(AppRoutes.settings),
+          ),
         ],
       ),
     );
@@ -210,44 +279,53 @@ class ProfileView extends ConsumerWidget {
   ///
   /// 单个功能行，包含图标、标题、可选的尾部文字及右箭头
   Widget _buildMenuTile({
+    required BuildContext context,
     required IconData icon,
     required String title,
     String? trailingText,
     Color? trailingColor,
+    VoidCallback? onTap,
   }) {
-    return Container(
-      height: 60.h,
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: const Color(0xFFF5F5F5), width: 1.h),
-        ),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 24.sp, color: const Color(0xFF666666)),
-          SizedBox(width: 16.w),
-          Text(
-            title,
-            style: TextStyle(fontSize: 15.sp, color: const Color(0xFF333333)),
+    final theme = Theme.of(context);
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 60.h,
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: theme.dividerColor, width: 1.h),
           ),
-          const Spacer(),
-          if (trailingText != null)
+        ),
+        child: Row(
+          children: [
+            Icon(icon, size: 24.sp, color: theme.iconTheme.color),
+            SizedBox(width: 16.w),
             Text(
-              trailingText,
+              title,
               style: TextStyle(
-                fontSize: 16.sp,
-                color: trailingColor ?? const Color(0xFF999999),
-                fontWeight: FontWeight.bold,
+                fontSize: 15.sp,
+                color: theme.textTheme.bodyLarge?.color,
               ),
             ),
-          SizedBox(width: 4.w),
-          Icon(
-            Icons.chevron_right,
-            size: 20.sp,
-            color: const Color(0xFFCCCCCC),
-          ),
-        ],
+            const Spacer(),
+            if (trailingText != null)
+              Text(
+                trailingText,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: trailingColor ?? theme.hintColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            SizedBox(width: 4.w),
+            Icon(
+              Symbols.chevron_right,
+              size: 20.sp,
+              color: theme.disabledColor,
+            ),
+          ],
+        ),
       ),
     );
   }

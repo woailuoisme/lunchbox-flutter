@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
 
 class ForgotPasswordView extends StatefulWidget {
@@ -65,13 +65,16 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(t.auth.forgotPasswordTitle),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        foregroundColor: AppColors.textPrimary,
+        foregroundColor: colorScheme.onSurface,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -82,11 +85,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: 40.h),
-                _buildHeader(),
+                _buildHeader(colorScheme),
                 SizedBox(height: 40.h),
-                _buildForm(),
+                _buildForm(colorScheme),
                 SizedBox(height: 32.h),
-                _buildSubmitButton(),
+                _buildSubmitButton(colorScheme),
               ],
             ),
           ),
@@ -95,17 +98,21 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(ColorScheme colorScheme) {
     return Column(
       children: [
         Container(
           width: 80.w,
           height: 80.w,
           decoration: BoxDecoration(
-            color: AppColors.primary,
+            color: colorScheme.primary,
             borderRadius: BorderRadius.circular(20.r),
           ),
-          child: Icon(Icons.lock_reset, size: 48.sp, color: Colors.white),
+          child: Icon(
+            Symbols.lock_reset,
+            size: 48.sp,
+            color: colorScheme.onPrimary,
+          ),
         ),
         SizedBox(height: 24.h),
         Text(
@@ -113,45 +120,48 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           style: TextStyle(
             fontSize: 28.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: colorScheme.onSurface,
           ),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 12.h),
         Text(
           t.auth.resetPasswordHint,
-          style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: colorScheme.onSurfaceVariant,
+          ),
           textAlign: TextAlign.center,
         ),
       ],
     );
   }
 
-  Widget _buildForm() {
+  Widget _buildForm(ColorScheme colorScheme) {
     return TextFormField(
       controller: _emailController,
       style: TextStyle(
         fontSize: 16.sp,
-        color: AppColors.textPrimary,
+        color: colorScheme.onSurface,
         fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
         labelText: t.common.username,
-        labelStyle: const TextStyle(color: AppColors.textSecondary),
+        labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
         hintText: t.auth.usernameOrEmail,
-        hintStyle: const TextStyle(color: AppColors.textHint),
-        prefixIcon: const Icon(Icons.person_outline, color: AppColors.primary),
+        hintStyle: TextStyle(color: colorScheme.outline),
+        prefixIcon: Icon(Symbols.person, color: colorScheme.primary),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: const BorderSide(color: AppColors.divider),
+          borderSide: BorderSide(color: colorScheme.outlineVariant),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: const BorderSide(color: AppColors.divider, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.outlineVariant, width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+          borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
       ),
       validator: (v) => v?.isNotEmpty ?? false ? null : t.auth.required,
@@ -160,14 +170,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     );
   }
 
-  Widget _buildSubmitButton() {
+  Widget _buildSubmitButton(ColorScheme colorScheme) {
     return ElevatedButton(
       onPressed: _isLoading ? null : _handleResetPassword,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-        disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.5),
-        disabledForegroundColor: Colors.white.withValues(alpha: 0.8),
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
+        disabledBackgroundColor: colorScheme.primary.withValues(alpha: 0.5),
+        disabledForegroundColor: colorScheme.onPrimary.withValues(alpha: 0.8),
         padding: EdgeInsets.symmetric(vertical: 16.h),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
@@ -178,9 +188,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           ? SizedBox(
               width: 20.w,
               height: 20.w,
-              child: const CircularProgressIndicator(
+              child: CircularProgressIndicator(
                 strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  colorScheme.onPrimary,
+                ),
               ),
             )
           : Text(

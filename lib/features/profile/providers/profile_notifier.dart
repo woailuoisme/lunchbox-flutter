@@ -3,6 +3,7 @@ import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/features/auth/repositories/auth_repository.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
 import 'package:lunchbox/features/profile/providers/profile_state.dart';
+import 'package:lunchbox/features/profile/repositories/profile_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'profile_notifier.g.dart';
@@ -27,18 +28,14 @@ class ProfileNotifier extends _$ProfileNotifier {
   Future<void> loadUserInfo() async {
     try {
       state = state.copyWith(isLoading: true);
-      final authRepository = ref.read(authRepositoryProvider);
-      final result = await authRepository.getCurrentUser().run();
-
-      result.fold(
-        (failure) {
-          LoggerUtils.e('ProfileNotifier: Failed to load user info', failure);
-        },
-        (user) {
-          state = state.copyWith(currentUser: user);
-          LoggerUtils.i('ProfileNotifier: User info loaded');
-        },
+      LoggerUtils.i(
+        'ProfileNotifier: Loading user info from Mock Repository (v2)',
       );
+      final repository = ref.read(profileRepositoryProvider.notifier);
+      final user = await repository.getUserInfo();
+
+      state = state.copyWith(currentUser: user);
+      LoggerUtils.i('ProfileNotifier: User info loaded successfully');
     } catch (e) {
       LoggerUtils.e('ProfileNotifier: Failed to load user info', e);
     } finally {
@@ -116,19 +113,28 @@ class ProfileNotifier extends _$ProfileNotifier {
   }
 
   /// 更新用户信息
-  Future<void> updateUserInfo({String? nickname, String? avatar}) async {
+  Future<void> updateUserInfo({
+    String? nickname,
+    String? avatar,
+    String? gender,
+    DateTime? birthday,
+  }) async {
     try {
       if (state.currentUser == null) {
         return;
       }
 
       state = state.copyWith(isLoading: true);
-      final updatedUser = state.currentUser!.copyWith(
-        nickname: nickname ?? state.currentUser!.nickname,
-        avatar: avatar ?? state.currentUser!.avatar,
+
+      final repository = ref.read(profileRepositoryProvider.notifier);
+      final updatedUser = await repository.updateUserInfo(
+        currentUser: state.currentUser!,
+        nickname: nickname,
+        avatar: avatar,
+        gender: gender,
+        birthday: birthday,
       );
 
-      // TODO(User): 实际应该调用 API 更新用户信息
       state = state.copyWith(currentUser: updatedUser);
       LoggerUtils.i('ProfileNotifier: User info updated');
     } catch (e) {

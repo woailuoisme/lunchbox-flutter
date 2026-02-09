@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// 团队用餐页面
 ///
@@ -10,12 +11,15 @@ class TeamOrderingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB),
+      backgroundColor: colorScheme.surfaceContainer,
       appBar: AppBar(
         title: Text(t.teamOrdering.title),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: colorScheme.surface,
+        foregroundColor: colorScheme.onSurface,
         elevation: 0,
         centerTitle: true,
       ),
@@ -25,29 +29,29 @@ class TeamOrderingView extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 100.h),
             child: Column(
               children: [
-                _buildHeader(),
-                _buildScenarios(),
-                _buildProcess(),
-                _buildAdvantages(),
+                _buildHeader(colorScheme),
+                _buildScenarios(colorScheme),
+                _buildProcess(colorScheme),
+                _buildAdvantages(colorScheme),
               ],
             ),
           ),
-          _buildBottomButton(),
+          _buildBottomButton(colorScheme),
         ],
       ),
     );
   }
 
   /// 构建顶部横幅
-  Widget _buildHeader() {
+  Widget _buildHeader(ColorScheme colorScheme) {
     return Container(
       width: double.infinity,
       height: 180.h,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFFE57373), Color(0xFFC62828)],
+          colors: [colorScheme.primaryContainer, colorScheme.primary],
         ),
       ),
       child: Column(
@@ -56,7 +60,7 @@ class TeamOrderingView extends StatelessWidget {
           Text(
             t.teamOrdering.bannerTitle,
             style: TextStyle(
-              color: Colors.white,
+              color: colorScheme.onPrimary,
               fontSize: 26.sp,
               fontWeight: FontWeight.bold,
             ),
@@ -65,7 +69,7 @@ class TeamOrderingView extends StatelessWidget {
           Text(
             t.teamOrdering.bannerSubtitle,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.8),
+              color: colorScheme.onPrimary.withValues(alpha: 0.8),
               fontSize: 14.sp,
             ),
           ),
@@ -85,15 +89,18 @@ class TeamOrderingView extends StatelessWidget {
                       vertical: 4.h,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: colorScheme.onPrimary.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(20.r),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.3),
+                        color: colorScheme.onPrimary.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Text(
                       tag,
-                      style: TextStyle(color: Colors.white, fontSize: 10.sp),
+                      style: TextStyle(
+                        color: colorScheme.onPrimary,
+                        fontSize: 10.sp,
+                      ),
                     ),
                   );
                 }).toList(),
@@ -104,7 +111,7 @@ class TeamOrderingView extends StatelessWidget {
   }
 
   /// 构建适用场景
-  Widget _buildScenarios() {
+  Widget _buildScenarios(ColorScheme colorScheme) {
     final scenarios = [
       {
         'icon': '🍱',
@@ -128,12 +135,13 @@ class TeamOrderingView extends StatelessWidget {
         _buildSectionTitle(
           t.teamOrdering.scenarios.title,
           t.teamOrdering.scenarios.subtitle,
+          colorScheme,
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Row(
             children: scenarios
-                .map((s) => Expanded(child: _buildScenarioCard(s)))
+                .map((s) => Expanded(child: _buildScenarioCard(s, colorScheme)))
                 .toList(),
           ),
         ),
@@ -142,16 +150,16 @@ class TeamOrderingView extends StatelessWidget {
   }
 
   /// 构建场景卡片
-  Widget _buildScenarioCard(Map<String, String> data) {
+  Widget _buildScenarioCard(Map<String, String> data, ColorScheme colorScheme) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 4.w),
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 8.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
+            color: colorScheme.shadow.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -169,7 +177,10 @@ class TeamOrderingView extends StatelessWidget {
           Text(
             data['desc']!,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+            style: TextStyle(
+              fontSize: 10.sp,
+              color: colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -177,7 +188,7 @@ class TeamOrderingView extends StatelessWidget {
   }
 
   /// 构建操作流程
-  Widget _buildProcess() {
+  Widget _buildProcess(ColorScheme colorScheme) {
     final steps = [
       {
         'num': '1',
@@ -201,12 +212,13 @@ class TeamOrderingView extends StatelessWidget {
         _buildSectionTitle(
           t.teamOrdering.process.title,
           t.teamOrdering.process.subtitle,
+          colorScheme,
         ),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 16.w),
           padding: EdgeInsets.all(20.w),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: colorScheme.surface,
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Column(
@@ -220,15 +232,15 @@ class TeamOrderingView extends StatelessWidget {
                       Container(
                         width: 24.w,
                         height: 24.w,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFFF8A80),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer,
                           shape: BoxShape.circle,
                         ),
                         alignment: Alignment.center,
                         child: Text(
                           entry.value['num']!,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: colorScheme.onPrimaryContainer,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -251,7 +263,7 @@ class TeamOrderingView extends StatelessWidget {
                               entry.value['desc']!,
                               style: TextStyle(
                                 fontSize: 12.sp,
-                                color: Colors.grey,
+                                color: colorScheme.onSurfaceVariant,
                               ),
                             ),
                           ],
@@ -264,7 +276,7 @@ class TeamOrderingView extends StatelessWidget {
                       margin: EdgeInsets.only(left: 11.w),
                       height: 20.h,
                       width: 1.w,
-                      color: const Color(0xFFFF8A80).withValues(alpha: 0.3),
+                      color: colorScheme.primary.withValues(alpha: 0.3),
                     ),
                 ],
               );
@@ -276,25 +288,25 @@ class TeamOrderingView extends StatelessWidget {
   }
 
   /// 构建服务优势
-  Widget _buildAdvantages() {
+  Widget _buildAdvantages(ColorScheme colorScheme) {
     final advantages = [
       {
-        'icon': Icons.track_changes,
+        'icon': Symbols.track_changes,
         'title': t.teamOrdering.advantages.custom,
         'desc': t.teamOrdering.advantages.customDesc,
       },
       {
-        'icon': Icons.alarm,
+        'icon': Symbols.alarm,
         'title': t.teamOrdering.advantages.reserve,
         'desc': t.teamOrdering.advantages.reserveDesc,
       },
       {
-        'icon': Icons.payment,
+        'icon': Symbols.payments,
         'title': t.teamOrdering.advantages.price,
         'desc': t.teamOrdering.advantages.priceDesc,
       },
       {
-        'icon': Icons.verified_user,
+        'icon': Symbols.verified_user,
         'title': t.teamOrdering.advantages.quality,
         'desc': t.teamOrdering.advantages.qualityDesc,
       },
@@ -305,29 +317,37 @@ class TeamOrderingView extends StatelessWidget {
         _buildSectionTitle(
           t.teamOrdering.advantages.title,
           t.teamOrdering.advantages.subtitle,
+          colorScheme,
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(children: advantages.map(_buildAdvantageItem).toList()),
+          child: Column(
+            children: advantages
+                .map((a) => _buildAdvantageItem(a, colorScheme))
+                .toList(),
+          ),
         ),
       ],
     );
   }
 
   /// 构建单个优势项
-  Widget _buildAdvantageItem(Map<String, dynamic> data) {
+  Widget _buildAdvantageItem(
+    Map<String, dynamic> data,
+    ColorScheme colorScheme,
+  ) {
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         children: [
           Icon(
             data['icon'] as IconData,
-            color: const Color(0xFFD32F2F),
+            color: colorScheme.primary,
             size: 24.sp,
           ),
           SizedBox(width: 16.w),
@@ -345,7 +365,10 @@ class TeamOrderingView extends StatelessWidget {
                 SizedBox(height: 2.h),
                 Text(
                   data['desc'] as String,
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
@@ -356,7 +379,11 @@ class TeamOrderingView extends StatelessWidget {
   }
 
   /// 构建章节标题
-  Widget _buildSectionTitle(String title, String subtitle) {
+  Widget _buildSectionTitle(
+    String title,
+    String subtitle,
+    ColorScheme colorScheme,
+  ) {
     return Padding(
       padding: EdgeInsets.fromLTRB(16.w, 24.h, 16.w, 16.h),
       child: Column(
@@ -368,7 +395,10 @@ class TeamOrderingView extends StatelessWidget {
           SizedBox(height: 4.h),
           Text(
             subtitle,
-            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -376,7 +406,7 @@ class TeamOrderingView extends StatelessWidget {
   }
 
   /// 构建底部固定按钮
-  Widget _buildBottomButton() {
+  Widget _buildBottomButton(ColorScheme colorScheme) {
     return Positioned(
       left: 0,
       right: 0,
@@ -384,10 +414,10 @@ class TeamOrderingView extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorScheme.surface,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: colorScheme.shadow.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, -4),
             ),
@@ -396,8 +426,8 @@ class TeamOrderingView extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () {},
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFF766A),
-            foregroundColor: Colors.white,
+            backgroundColor: colorScheme.primary,
+            foregroundColor: colorScheme.onPrimary,
             minimumSize: Size(double.infinity, 50.h),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25.r),
@@ -412,7 +442,7 @@ class TeamOrderingView extends StatelessWidget {
                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 8.w),
-              Icon(Icons.arrow_forward, size: 18.sp),
+              Icon(Symbols.arrow_forward, size: 18.sp),
             ],
           ),
         ),

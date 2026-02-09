@@ -1,10 +1,10 @@
 import 'dart:io';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/features/settings/providers/settings_providers.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
@@ -15,9 +15,11 @@ class DeviceInfoView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceInfoAsync = ref.watch(fetchDeviceInfoProvider);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(t.settings.deviceInfo),
         centerTitle: true,
@@ -33,7 +35,12 @@ class DeviceInfoView extends ConsumerWidget {
             itemBuilder: (context, index) {
               final key = infoMap.keys.elementAt(index);
               final value = infoMap[key].toString();
-              return _buildInfoTile(key, value, index == infoMap.length - 1);
+              return _buildInfoTile(
+                context,
+                key,
+                value,
+                index == infoMap.length - 1,
+              );
             },
           );
         },
@@ -82,17 +89,26 @@ class DeviceInfoView extends ConsumerWidget {
     return device.data;
   }
 
-  Widget _buildInfoTile(String label, String value, bool isLast) {
+  Widget _buildInfoTile(
+    BuildContext context,
+    String label,
+    String value,
+    bool isLast,
+  ) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: isLast
-            ? const BorderRadius.vertical(bottom: Radius.circular(12))
+            ? BorderRadius.vertical(bottom: Radius.circular(12.r))
             : BorderRadius.zero,
         border: Border(
           bottom: isLast
               ? BorderSide.none
-              : const BorderSide(color: AppColors.divider),
+              : BorderSide(
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                ),
         ),
       ),
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -103,10 +119,9 @@ class DeviceInfoView extends ConsumerWidget {
             width: 100.w,
             child: Text(
               label,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: AppColors.textPrimary,
+              style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
+                color: colorScheme.onSurface,
               ),
             ),
           ),
@@ -114,7 +129,9 @@ class DeviceInfoView extends ConsumerWidget {
             child: Text(
               value,
               textAlign: TextAlign.end,
-              style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         ],

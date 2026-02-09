@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/splash/providers/splash_notifier.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 class SplashView extends ConsumerStatefulWidget {
   const SplashView({super.key});
@@ -34,9 +35,11 @@ class _SplashViewState extends ConsumerState<SplashView> {
 
     final state = ref.watch(splashProvider);
     final controller = ref.read(splashProvider.notifier);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: colorScheme.primary,
       body: SafeArea(
         child: Builder(
           builder: (context) {
@@ -68,15 +71,17 @@ class _SplashViewState extends ConsumerState<SplashView> {
   }
 
   Widget _buildLogo(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Container(
       width: 120.w,
       height: 120.w,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: colorScheme.shadow.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -84,23 +89,25 @@ class _SplashViewState extends ConsumerState<SplashView> {
       ),
       child: Center(
         child: Icon(
-          Icons.lunch_dining,
+          Symbols.lunch_dining,
           size: 60.sp,
-          color: Theme.of(context).primaryColor,
+          color: colorScheme.primary,
         ),
       ),
     );
   }
 
   Widget _buildAppName(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Column(
       children: [
         Text(
           t.common.appName,
-          style: TextStyle(
+          style: theme.textTheme.headlineMedium?.copyWith(
             fontSize: 28.sp,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: colorScheme.onPrimary,
             letterSpacing: 2,
           ),
         ),
@@ -110,6 +117,8 @@ class _SplashViewState extends ConsumerState<SplashView> {
   }
 
   Widget _buildLoadingIndicator(BuildContext context, SplashState state) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return SizedBox(
       width: 200.w,
       child: Column(
@@ -118,17 +127,17 @@ class _SplashViewState extends ConsumerState<SplashView> {
             borderRadius: BorderRadius.circular(10.r),
             child: LinearProgressIndicator(
               value: state.initializationProgress,
-              backgroundColor: Colors.white.withValues(alpha: 0.3),
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+              backgroundColor: colorScheme.onPrimary.withValues(alpha: 0.3),
+              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.onPrimary),
               minHeight: 6.h,
             ),
           ),
           SizedBox(height: 8.h),
           Text(
             '${(state.initializationProgress * 100).toInt()}%',
-            style: TextStyle(
+            style: theme.textTheme.bodySmall?.copyWith(
               fontSize: 12.sp,
-              color: Colors.white.withValues(alpha: 0.8),
+              color: colorScheme.onPrimary.withValues(alpha: 0.8),
             ),
           ),
         ],
@@ -137,6 +146,8 @@ class _SplashViewState extends ConsumerState<SplashView> {
   }
 
   Widget _buildLoadingText(BuildContext context, SplashState state) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final progress = state.initializationProgress;
     String message = t.splash.starting;
 
@@ -154,9 +165,9 @@ class _SplashViewState extends ConsumerState<SplashView> {
 
     return Text(
       message,
-      style: TextStyle(
+      style: theme.textTheme.bodyMedium?.copyWith(
         fontSize: 14.sp,
-        color: Colors.white.withValues(alpha: 0.9),
+        color: colorScheme.onPrimary.withValues(alpha: 0.9),
       ),
     );
   }
@@ -166,29 +177,31 @@ class _SplashViewState extends ConsumerState<SplashView> {
     SplashState state,
     SplashNotifier controller,
   ) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 40.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, size: 80.sp, color: Colors.white),
+            Icon(Symbols.error, size: 80.sp, color: colorScheme.onPrimary),
             SizedBox(height: 24.h),
             Text(
               t.splash.failed,
-              style: TextStyle(
+              style: theme.textTheme.titleLarge?.copyWith(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: colorScheme.onPrimary,
               ),
             ),
             SizedBox(height: 16.h),
             Text(
               state.initializationError ?? t.common.unknownError,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: theme.textTheme.bodyMedium?.copyWith(
                 fontSize: 14.sp,
-                color: Colors.white.withValues(alpha: 0.9),
+                color: colorScheme.onPrimary.withValues(alpha: 0.9),
               ),
             ),
             SizedBox(height: 40.h),
@@ -198,8 +211,8 @@ class _SplashViewState extends ConsumerState<SplashView> {
                 ElevatedButton(
                   onPressed: () => controller.retryInitialization(),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: colorScheme.onPrimary,
+                    foregroundColor: colorScheme.primary,
                     padding: EdgeInsets.symmetric(
                       horizontal: 32.w,
                       vertical: 12.h,
@@ -220,8 +233,8 @@ class _SplashViewState extends ConsumerState<SplashView> {
                 OutlinedButton(
                   onPressed: () => controller.skipError(),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.white),
+                    foregroundColor: colorScheme.onPrimary,
+                    side: BorderSide(color: colorScheme.onPrimary),
                     padding: EdgeInsets.symmetric(
                       horizontal: 32.w,
                       vertical: 12.h,

@@ -7,6 +7,7 @@ import 'package:lunchbox/features/device/providers/cart_notifier.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:lunchbox/features/product/providers/product_providers.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// 产品列表视图
 class ProductListView extends ConsumerWidget {
@@ -17,6 +18,7 @@ class ProductListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsync = ref.watch(filteredProductsProvider(deviceId));
     final availableOnly = ref.watch(productFilterAvailableProvider);
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -24,7 +26,7 @@ class ProductListView extends ConsumerWidget {
         actions: [
           // 排序按钮
           PopupMenuButton<String>(
-            icon: const Icon(Icons.sort),
+            icon: const Icon(Symbols.sort),
             onSelected: (value) {
               ref.read(productSortProvider.notifier).update(value);
             },
@@ -47,7 +49,9 @@ class ProductListView extends ConsumerWidget {
           // 过滤按钮
           IconButton(
             icon: Icon(
-              availableOnly ? Icons.filter_alt : Icons.filter_alt_outlined,
+              Symbols.filter_alt,
+              fill: availableOnly ? 1 : 0,
+              color: availableOnly ? theme.colorScheme.primary : null,
             ),
             onPressed: () {
               ref.read(productFilterAvailableProvider.notifier).toggle();
@@ -56,7 +60,7 @@ class ProductListView extends ConsumerWidget {
           ),
           // 购物车按钮
           IconButton(
-            icon: const Icon(Icons.shopping_cart),
+            icon: const Icon(Symbols.shopping_cart),
             onPressed: () {
               context.push('/cart'); // 假设有这个路由，或者使用 goRouter 的路径
             },
@@ -66,7 +70,7 @@ class ProductListView extends ConsumerWidget {
       body: Column(
         children: [
           // 类别选择器
-          _buildCategorySelector(ref, deviceId),
+          _buildCategorySelector(context, ref, deviceId),
 
           // 产品列表
           Expanded(
@@ -78,14 +82,17 @@ class ProductListView extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.inventory_2_outlined,
+                          Symbols.inventory_2,
                           size: 64.sp,
-                          color: Colors.grey,
+                          color: theme.disabledColor,
                         ),
                         SizedBox(height: 16.h),
                         Text(
                           t.order.noOrders,
-                          style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: theme.disabledColor,
+                          ),
                         ),
                       ],
                     ),
@@ -123,9 +130,14 @@ class ProductListView extends ConsumerWidget {
   }
 
   /// 构建类别选择器
-  Widget _buildCategorySelector(WidgetRef ref, String deviceId) {
+  Widget _buildCategorySelector(
+    BuildContext context,
+    WidgetRef ref,
+    String deviceId,
+  ) {
     final categoriesAsync = ref.watch(productCategoriesProvider(deviceId));
     final selectedCategory = ref.watch(productCategoryProvider);
+    final theme = Theme.of(context);
 
     return categoriesAsync.when(
       data: (categories) {
@@ -147,8 +159,17 @@ class ProductListView extends ConsumerWidget {
               return Padding(
                 padding: EdgeInsets.only(right: 8.w),
                 child: ChoiceChip(
-                  label: Text(_getCategoryName(category)),
+                  label: Text(
+                    _getCategoryName(category),
+                    style: TextStyle(
+                      color: isSelected
+                          ? theme.colorScheme.onPrimary
+                          : theme.textTheme.bodyMedium?.color,
+                    ),
+                  ),
                   selected: isSelected,
+                  selectedColor: theme.colorScheme.primary,
+                  backgroundColor: theme.colorScheme.surface,
                   onSelected: (_) {
                     ref.read(productCategoryProvider.notifier).update(category);
                   },
@@ -188,8 +209,10 @@ class ProductListView extends ConsumerWidget {
     WidgetRef ref,
     ProductModel product,
   ) {
+    final theme = Theme.of(context);
     return Card(
       clipBehavior: Clip.antiAlias,
+      color: theme.cardColor,
       child: InkWell(
         onTap: () {
           context.push('/product/${product.id}');
@@ -212,11 +235,24 @@ class ProductListView extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (product.isHot) _buildBadge(t.product.hot, Colors.red),
+                      if (product.isHot)
+                        _buildBadge(
+                          t.product.hot,
+                          theme.colorScheme.error,
+                          textColor: theme.colorScheme.onError,
+                        ),
                       if (product.isPromotion)
-                        _buildBadge(t.product.promotion, Colors.orange),
+                        _buildBadge(
+                          t.product.promotion,
+                          theme.colorScheme.tertiary,
+                          textColor: theme.colorScheme.onTertiary,
+                        ),
                       if (!product.hasStock)
-                        _buildBadge(t.device.soldOut, Colors.grey),
+                        _buildBadge(
+                          t.device.soldOut,
+                          theme.disabledColor,
+                          textColor: theme.colorScheme.onSurface,
+                        ),
                     ],
                   ),
                 ),
@@ -237,6 +273,7 @@ class ProductListView extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
+                        color: theme.textTheme.bodyLarge?.color,
                       ),
                     ),
                     const Spacer(),
@@ -249,7 +286,7 @@ class ProductListView extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
-                            color: Colors.red,
+                            color: theme.colorScheme.primary,
                           ),
                         ),
                         if (product.hasDiscount) ...[
@@ -258,8 +295,9 @@ class ProductListView extends ConsumerWidget {
                             '¥${product.originalPrice!.toStringAsFixed(2)}',
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: Colors.grey,
+                              color: theme.hintColor,
                               decoration: TextDecoration.lineThrough,
+                              decorationColor: theme.hintColor,
                             ),
                           ),
                         ],
@@ -288,6 +326,11 @@ class ProductListView extends ConsumerWidget {
                             : null,
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,
+                          backgroundColor: theme.colorScheme.primary,
+                          foregroundColor: theme.colorScheme.onPrimary,
+                          disabledBackgroundColor: theme.disabledColor,
+                          disabledForegroundColor: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.38),
                         ),
                         child: Text(
                           product.hasStock
@@ -308,7 +351,7 @@ class ProductListView extends ConsumerWidget {
   }
 
   /// 构建标签
-  Widget _buildBadge(String text, Color color) {
+  Widget _buildBadge(String text, Color color, {Color? textColor}) {
     return Container(
       margin: EdgeInsets.only(bottom: 4.h),
       padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
@@ -320,7 +363,7 @@ class ProductListView extends ConsumerWidget {
         text,
         style: TextStyle(
           fontSize: 10.sp,
-          color: Colors.white,
+          color: textColor ?? Colors.white,
           fontWeight: FontWeight.bold,
         ),
       ),

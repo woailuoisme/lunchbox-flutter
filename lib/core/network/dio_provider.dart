@@ -1,7 +1,5 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
+import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 import 'package:lunchbox/core/network/interceptors/auth_interceptor.dart';
 import 'package:lunchbox/core/network/interceptors/error_handling_interceptor.dart';
 import 'package:lunchbox/core/values/app_constants.dart';
@@ -33,16 +31,18 @@ Dio dio(Ref ref) {
 
   final dio = Dio(options);
 
-  // 如果启用了测试模式，忽略证书校验
-  if (AppConstants.useTestMode) {
-    dio.httpClientAdapter = IOHttpClientAdapter(
-      createHttpClient: () {
-        final client = HttpClient();
-        client.badCertificateCallback = (cert, host, port) => true;
-        return client;
+  // 使用 Http2Adapter 支持 HTTP/2 协议
+  dio.httpClientAdapter = Http2Adapter(
+    ConnectionManager(
+      idleTimeout: const Duration(seconds: 15),
+      onClientCreate: (_, config) {
+        // 如果启用了测试模式，忽略证书校验
+        if (AppConstants.useTestMode) {
+          config.onBadCertificate = (_) => true;
+        }
       },
-    );
-  }
+    ),
+  );
 
   // Add interceptors in order:
   // 1. Auth interceptor - adds authentication tokens

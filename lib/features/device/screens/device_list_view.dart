@@ -6,7 +6,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart'
     as isp;
 import 'package:latlong2/latlong.dart';
 import 'package:lunchbox/core/services/location_service.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/core/widgets/map/lunchbox_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/routes/app_routes.dart';
@@ -137,18 +136,19 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
           '取餐机',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: theme.colorScheme.onSurface,
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         centerTitle: true,
       ),
@@ -159,20 +159,20 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
             height: 48.h,
             margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F5F5),
+              color: theme.colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(24.r),
             ),
             child: TabBar(
               controller: _tabController,
               padding: EdgeInsets.all(4.w),
-              labelColor: Colors.white,
-              unselectedLabelColor: const Color(0xFF666666),
+              labelColor: theme.colorScheme.onPrimary,
+              unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
               indicator: BoxDecoration(
-                color: const Color(0xFFFF5252),
+                color: theme.colorScheme.primary,
                 borderRadius: BorderRadius.circular(20.r),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFFF5252).withValues(alpha: 0.3),
+                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -198,8 +198,8 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildFrequentTab(), // 常去营业点
-                _buildNearbyTab(), // 附近营业点
+                _buildFrequentTab(theme), // 常去营业点
+                _buildNearbyTab(theme), // 附近营业点
               ],
             ),
           ),
@@ -209,7 +209,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
   }
 
   /// 构建“常去营业点”视图
-  Widget _buildFrequentTab() {
+  Widget _buildFrequentTab(ThemeData theme) {
     return CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       slivers: [
@@ -218,8 +218,8 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
           child: _buildStatusBanner(
             text: '已加载3个常用设备',
             icon: Icons.refresh,
-            bgColor: const Color(0xFFE8F5E9), // 浅绿色背景
-            textColor: const Color(0xFF4CAF50), // 绿色文字
+            bgColor: Colors.green.shade50, // 浅绿色背景
+            textColor: Colors.green, // 绿色文字
           ),
         ),
 
@@ -234,11 +234,14 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                   fetchNextPage: fetchNextPage,
                   builderDelegate: isp.PagedChildBuilderDelegate<DeviceModel>(
                     itemBuilder: (context, item, index) =>
-                        _buildDeviceCard(item),
+                        _buildDeviceCard(item, theme),
                     noItemsFoundIndicatorBuilder: (context) => Center(
                       child: Text(
                         '暂无常去营业点',
-                        style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                        style: TextStyle(
+                          color: theme.colorScheme.outline,
+                          fontSize: 14.sp,
+                        ),
                       ),
                     ),
                   ),
@@ -254,7 +257,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
               child: Text(
                 '- 已经到底啦 -',
                 style: TextStyle(
-                  color: const Color(0xFF999999),
+                  color: theme.colorScheme.outline,
                   fontSize: 12.sp,
                 ),
               ),
@@ -266,25 +269,25 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
   }
 
   /// 构建“附近营业点”视图
-  Widget _buildNearbyTab() {
+  Widget _buildNearbyTab(ThemeData theme) {
     return CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       slivers: [
         // 城市选择
-        SliverToBoxAdapter(child: _buildCitySelector()),
+        SliverToBoxAdapter(child: _buildCitySelector(theme)),
 
         // 顶部提示条
         SliverToBoxAdapter(
           child: _buildStatusBanner(
             text: '正在刷新...',
             icon: Icons.refresh,
-            bgColor: const Color(0xFFE8F5E9),
-            textColor: const Color(0xFF4CAF50),
+            bgColor: Colors.green.shade50,
+            textColor: Colors.green,
           ),
         ),
 
         // 地图预览区
-        SliverToBoxAdapter(child: _buildMapPreview()),
+        SliverToBoxAdapter(child: _buildMapPreview(theme)),
 
         // 设备列表 (使用 PagedSliverList)
         SliverPadding(
@@ -297,11 +300,14 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                   fetchNextPage: fetchNextPage,
                   builderDelegate: isp.PagedChildBuilderDelegate<DeviceModel>(
                     itemBuilder: (context, item, index) =>
-                        _buildDeviceCard(item),
+                        _buildDeviceCard(item, theme),
                     noItemsFoundIndicatorBuilder: (context) => Center(
                       child: Text(
                         '暂无附近营业点',
-                        style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                        style: TextStyle(
+                          color: theme.colorScheme.outline,
+                          fontSize: 14.sp,
+                        ),
                       ),
                     ),
                   ),
@@ -341,7 +347,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
   }
 
   /// 构建城市选择器
-  Widget _buildCitySelector() {
+  Widget _buildCitySelector(ThemeData theme) {
     return GestureDetector(
       onTap: () async {
         final result = await Navigator.push(
@@ -359,9 +365,9 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
         margin: EdgeInsets.fromLTRB(16.w, 16.w, 16.w, 8.w),
         height: 50.h,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: const Color(0xFFF0F0F0)),
+          border: Border.all(color: theme.colorScheme.outlineVariant),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.05),
@@ -378,7 +384,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
               '东莞市',
               style: TextStyle(
                 fontSize: 16.sp,
-                color: const Color(0xFF333333),
+                color: theme.colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -390,13 +396,13 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
   }
 
   /// 构建地图预览
-  Widget _buildMapPreview() {
+  Widget _buildMapPreview(ThemeData theme) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
       height: 240.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: const Color(0xFFEEEEEE)),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12.r),
@@ -411,9 +417,9 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                   point: _currentCenter,
                   width: 40,
                   height: 40,
-                  child: const Icon(
+                  child: Icon(
                     Icons.location_on,
-                    color: Color(0xFFFF5252),
+                    color: theme.colorScheme.primary,
                     size: 40,
                   ),
                 ),
@@ -427,6 +433,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                 children: [
                   _buildMapTool(
                     Icons.search,
+                    theme: theme,
                     onTap: () {
                       // TODO: 地图搜索
                     },
@@ -434,6 +441,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                   SizedBox(height: 8.h),
                   _buildMapTool(
                     Icons.refresh,
+                    theme: theme,
                     onTap: () {
                       // 刷新地图/设备
                       _nearbyPagingController.refresh();
@@ -442,7 +450,8 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                   SizedBox(height: 8.h),
                   _buildMapTool(
                     _isLocating ? Icons.gps_not_fixed : Icons.my_location,
-                    color: const Color(0xFFFF5252),
+                    theme: theme,
+                    color: theme.colorScheme.primary,
                     onTap: _locateUser,
                   ),
                 ],
@@ -455,14 +464,19 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
   }
 
   /// 构建地图工具按钮
-  Widget _buildMapTool(IconData icon, {Color? color, VoidCallback? onTap}) {
+  Widget _buildMapTool(
+    IconData icon, {
+    required ThemeData theme,
+    Color? color,
+    VoidCallback? onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 36.w,
         height: 36.w,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.colorScheme.surface,
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
@@ -477,10 +491,14 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                 padding: EdgeInsets.all(8.w),
                 child: CircularProgressIndicator(
                   strokeWidth: 2.w,
-                  color: color ?? const Color(0xFF666666),
+                  color: color ?? theme.colorScheme.onSurfaceVariant,
                 ),
               )
-            : Icon(icon, size: 20.sp, color: color ?? const Color(0xFF666666)),
+            : Icon(
+                icon,
+                size: 20.sp,
+                color: color ?? theme.colorScheme.onSurfaceVariant,
+              ),
       ),
     );
   }
@@ -488,7 +506,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
   /// 构建设备卡片
   ///
   /// 展示机器名称、地址、营业时间、距离及在线状态
-  Widget _buildDeviceCard(DeviceModel device) {
+  Widget _buildDeviceCard(DeviceModel device, ThemeData theme) {
     return GestureDetector(
       onTap: () {
         context.push('${AppRoutes.deviceList}/${device.id}');
@@ -511,7 +529,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF333333),
+                          color: theme.colorScheme.onSurface,
                         ),
                       ),
                       SizedBox(height: 4.h),
@@ -519,7 +537,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                         '09:00-18:00', // 暂无营业时间字段，使用默认
                         style: TextStyle(
                           fontSize: 12.sp,
-                          color: const Color(0xFF999999),
+                          color: theme.colorScheme.outline,
                         ),
                       ),
                       SizedBox(height: 4.h),
@@ -527,7 +545,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                         device.location.address ?? '',
                         style: TextStyle(
                           fontSize: 13.sp,
-                          color: const Color(0xFF666666),
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -537,7 +555,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                 Icon(
                   Icons.navigation_outlined,
                   size: 24.sp,
-                  color: Colors.black,
+                  color: theme.colorScheme.onSurface,
                 ),
               ],
             ),
@@ -545,23 +563,23 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
             Row(
               children: [
                 if (device.isOnline)
-                  _buildStatusTag('在线', const Color(0xFF8BC34A))
+                  _buildStatusTag('在线', Colors.lightGreen)
                 else
-                  _buildStatusTag('离线', Colors.grey),
+                  _buildStatusTag('离线', theme.colorScheme.outline),
                 SizedBox(width: 8.w),
-                _buildStatusTag('已启用', const Color(0xFF2196F3)),
+                _buildStatusTag('已启用', Colors.blue),
                 const Spacer(),
                 Text(
                   '500m', // 暂无距离字段，使用模拟
                   style: TextStyle(
                     fontSize: 13.sp,
-                    color: const Color(0xFF999999),
+                    color: theme.colorScheme.outline,
                   ),
                 ),
               ],
             ),
             SizedBox(height: 16.h),
-            const Divider(height: 1, color: Color(0xFFEEEEEE)),
+            Divider(height: 1, color: theme.dividerColor),
           ],
         ),
       ),

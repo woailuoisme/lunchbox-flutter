@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 邀请规则页面
@@ -8,16 +9,19 @@ class InviteRulesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB),
+      backgroundColor: colorScheme.surfaceContainer,
       appBar: AppBar(
         title: Text(t.invite.rules.title),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: colorScheme.surface,
+        foregroundColor: colorScheme.onSurface,
         elevation: 0,
         centerTitle: true,
         actions: [
-          IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {}),
+          IconButton(icon: const Icon(Symbols.more_horiz), onPressed: () {}),
         ],
       ),
       body: Column(
@@ -27,11 +31,11 @@ class InviteRulesView extends StatelessWidget {
               padding: EdgeInsets.all(16.w),
               child: Column(
                 children: [
-                  _buildHeader(),
+                  _buildHeader(colorScheme),
                   SizedBox(height: 16.h),
                   _buildRuleSection(
                     title: t.invite.rules.section1,
-                    icon: Icons.people,
+                    icon: Symbols.group,
                     color: Colors.blue,
                     rules: [
                       t.invite.rules.rule1,
@@ -40,11 +44,12 @@ class InviteRulesView extends StatelessWidget {
                       t.invite.rules.rule4,
                       t.invite.rules.rule5,
                     ],
+                    colorScheme: colorScheme,
                   ),
                   SizedBox(height: 16.h),
                   _buildRuleSection(
                     title: t.invite.rules.section2,
-                    icon: Icons.card_giftcard,
+                    icon: Symbols.card_giftcard,
                     color: Colors.red,
                     rules: [
                       t.invite.rules.reward1,
@@ -53,11 +58,12 @@ class InviteRulesView extends StatelessWidget {
                       t.invite.rules.reward4,
                       t.invite.rules.reward5,
                     ],
+                    colorScheme: colorScheme,
                   ),
                   SizedBox(height: 16.h),
                   _buildRuleSection(
                     title: t.invite.rules.section3,
-                    icon: Icons.warning_amber_rounded,
+                    icon: Symbols.warning,
                     color: Colors.amber,
                     rules: [
                       t.invite.rules.note1,
@@ -66,11 +72,12 @@ class InviteRulesView extends StatelessWidget {
                       t.invite.rules.note4,
                       t.invite.rules.note5,
                     ],
+                    colorScheme: colorScheme,
                   ),
                   SizedBox(height: 16.h),
                   _buildRuleSection(
                     title: t.invite.rules.section4,
-                    icon: Icons.assignment,
+                    icon: Symbols.assignment,
                     color: Colors.brown,
                     rules: [
                       t.invite.rules.process1,
@@ -79,19 +86,20 @@ class InviteRulesView extends StatelessWidget {
                       t.invite.rules.process4,
                       t.invite.rules.process5,
                     ],
+                    colorScheme: colorScheme,
                   ),
                   SizedBox(height: 80.h),
                 ],
               ),
             ),
           ),
-          _buildBottomButton(),
+          _buildBottomButton(colorScheme),
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(ColorScheme colorScheme) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: 16.h),
@@ -103,13 +111,16 @@ class InviteRulesView extends StatelessWidget {
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 4.h),
           Text(
             '了解邀请规则，轻松获得奖励',
-            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -121,11 +132,12 @@ class InviteRulesView extends StatelessWidget {
     required IconData icon,
     required Color color,
     required List<String> rules,
+    required ColorScheme colorScheme,
   }) {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -137,7 +149,11 @@ class InviteRulesView extends StatelessWidget {
               SizedBox(width: 8.w),
               Text(
                 title,
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
+                ),
               ),
             ],
           ),
@@ -145,7 +161,7 @@ class InviteRulesView extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 12.h),
             child: Divider(
               height: 1,
-              color: Colors.grey.withValues(alpha: 0.1),
+              color: colorScheme.outline.withValues(alpha: 0.1),
             ),
           ),
           ...rules.map(
@@ -164,7 +180,7 @@ class InviteRulesView extends StatelessWidget {
                       rule,
                       style: TextStyle(
                         fontSize: 13.sp,
-                        color: Colors.black54,
+                        color: colorScheme.onSurfaceVariant,
                         height: 1.5,
                       ),
                     ),
@@ -178,14 +194,14 @@ class InviteRulesView extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomButton() {
+  Widget _buildBottomButton(ColorScheme colorScheme) {
     return Container(
       padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: colorScheme.shadow.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -4),
           ),
@@ -194,8 +210,8 @@ class InviteRulesView extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {},
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFFFF5252),
-          foregroundColor: Colors.white,
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
           minimumSize: Size(double.infinity, 50.h),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25.r),
@@ -205,7 +221,7 @@ class InviteRulesView extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.headset_mic, size: 20.sp),
+            Icon(Symbols.headset_mic, size: 20.sp),
             SizedBox(width: 8.w),
             Text(
               t.home.grid.service, // Reuse service text

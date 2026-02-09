@@ -16,6 +16,7 @@ class CartView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(cartProvider);
     final notifier = ref.read(cartProvider.notifier);
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +36,7 @@ class CartView extends ConsumerWidget {
           }
 
           if (state.cartItems.isEmpty) {
-            return _buildEmptyCart(context);
+            return _buildEmptyCart(context, theme);
           }
 
           return Column(
@@ -47,13 +48,13 @@ class CartView extends ConsumerWidget {
                   itemCount: state.cartItems.length,
                   itemBuilder: (context, index) {
                     final item = state.cartItems[index];
-                    return _buildCartItem(item, notifier);
+                    return _buildCartItem(item, notifier, theme);
                   },
                 ),
               ),
 
               // 底部结算栏
-              _buildBottomBar(state),
+              _buildBottomBar(state, theme),
             ],
           );
         },
@@ -62,16 +63,23 @@ class CartView extends ConsumerWidget {
   }
 
   /// 构建空购物车
-  Widget _buildEmptyCart(BuildContext context) {
+  Widget _buildEmptyCart(BuildContext context, ThemeData theme) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.shopping_cart_outlined, size: 80.sp, color: Colors.grey),
+          Icon(
+            Icons.shopping_cart_outlined,
+            size: 80.sp,
+            color: theme.colorScheme.outline,
+          ),
           SizedBox(height: 16.h),
           Text(
             t.cart.empty,
-            style: TextStyle(fontSize: 18.sp, color: Colors.grey[600]),
+            style: TextStyle(
+              fontSize: 18.sp,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
           SizedBox(height: 24.h),
           ElevatedButton(
@@ -84,7 +92,11 @@ class CartView extends ConsumerWidget {
   }
 
   /// 构建购物车商品项
-  Widget _buildCartItem(CartItemModel item, CartNotifier notifier) {
+  Widget _buildCartItem(
+    CartItemModel item,
+    CartNotifier notifier,
+    ThemeData theme,
+  ) {
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
       child: Padding(
@@ -111,6 +123,7 @@ class CartView extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onSurface,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -120,7 +133,7 @@ class CartView extends ConsumerWidget {
                     '¥${item.product.price}',
                     style: TextStyle(
                       fontSize: 14.sp,
-                      color: Colors.red,
+                      color: theme.colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -135,24 +148,29 @@ class CartView extends ConsumerWidget {
                           _buildQuantityButton(
                             icon: Icons.remove,
                             onPressed: () => notifier.decreaseQuantity(item),
+                            theme: theme,
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
                             child: Text(
                               '${item.quantity}',
-                              style: TextStyle(fontSize: 14.sp),
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: theme.colorScheme.onSurface,
+                              ),
                             ),
                           ),
                           _buildQuantityButton(
                             icon: Icons.add,
                             onPressed: () => notifier.increaseQuantity(item),
+                            theme: theme,
                           ),
                         ],
                       ),
                       IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.delete_outline,
-                          color: Colors.grey,
+                          color: theme.colorScheme.outline,
                         ),
                         onPressed: () => notifier.removeItem(item.id),
                       ),
@@ -170,29 +188,30 @@ class CartView extends ConsumerWidget {
   Widget _buildQuantityButton({
     required IconData icon,
     required VoidCallback onPressed,
+    required ThemeData theme,
   }) {
     return InkWell(
       onTap: onPressed,
       child: Container(
         padding: EdgeInsets.all(4.w),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[300]!),
+          border: Border.all(color: theme.colorScheme.outlineVariant),
           borderRadius: BorderRadius.circular(4.r),
         ),
-        child: Icon(icon, size: 16.sp),
+        child: Icon(icon, size: 16.sp, color: theme.colorScheme.onSurface),
       ),
     );
   }
 
   /// 构建底部结算栏
-  Widget _buildBottomBar(CartState state) {
+  Widget _buildBottomBar(CartState state, ThemeData theme) {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: theme.shadowColor.withValues(alpha: 0.05),
             offset: const Offset(0, -2),
             blurRadius: 10,
           ),
@@ -206,14 +225,17 @@ class CartView extends ConsumerWidget {
             children: [
               Text(
                 t.cart.total,
-                style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
               ),
               Text(
                 '¥${state.totalAmount.toStringAsFixed(2)}',
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.red,
+                  color: theme.colorScheme.primary,
                 ),
               ),
             ],

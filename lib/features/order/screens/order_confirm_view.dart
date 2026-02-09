@@ -15,24 +15,42 @@ class OrderConfirmView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch cart state for items and total
+    // 监听购物车状态以获取商品和总价
     final cartState = ref.watch(cartProvider);
-    // Watch order state for payment method and loading
+    // 监听订单状态以获取支付方式和加载状态
     final orderState = ref.watch(orderProvider);
     final orderNotifier = ref.watch(orderProvider.notifier);
+    final theme = Theme.of(context);
 
-    // Calculate total if not already in cart state (CartState usually has items, need to sum them up)
-    // CartItemModel has totalPrice.
+    // 如果购物车状态中没有直接的总价，则计算总价
+    // CartItemModel 包含 totalPrice 属性
     final totalAmount = cartState.cartItems.fold<double>(
       0,
       (sum, item) => sum + item.totalPrice,
     );
 
-    // We can update order total in notifier if needed, but local calculation is fine for display.
-    // If OrderNotifier needs it for creation, it can calculate it or take it from Cart.
-
     return Scaffold(
-      appBar: AppBar(title: Text(t.order.confirmOrder)),
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: Text(
+          t.order.confirmOrder,
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+            color: theme.appBarTheme.foregroundColor,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: theme.appBarTheme.backgroundColor,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: theme.appBarTheme.foregroundColor,
+          ),
+          onPressed: () => context.pop(),
+        ),
+      ),
       body: Stack(
         children: [
           Column(
@@ -43,12 +61,13 @@ class OrderConfirmView extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // 商品列表
-                      _buildProductList(cartState.cartItems),
+                      _buildProductList(context, cartState.cartItems),
 
                       SizedBox(height: 8.h),
 
                       // 支付方式选择
                       _buildPaymentMethod(
+                        context,
                         orderState.selectedPaymentMethod,
                         orderNotifier,
                       ),
@@ -56,7 +75,7 @@ class OrderConfirmView extends ConsumerWidget {
                       SizedBox(height: 8.h),
 
                       // 订单金额
-                      _buildOrderAmount(totalAmount),
+                      _buildOrderAmount(context, totalAmount),
                     ],
                   ),
                 ),
@@ -68,7 +87,7 @@ class OrderConfirmView extends ConsumerWidget {
           ),
 
           if (orderState.isLoading)
-            ColoredBox(
+            Container(
               color: Colors.black.withValues(alpha: 0.3),
               child: const Center(child: CircularProgressIndicator()),
             ),
@@ -78,38 +97,49 @@ class OrderConfirmView extends ConsumerWidget {
   }
 
   /// 构建商品列表
-  Widget _buildProductList(List<CartItemModel> cartItems) {
+  Widget _buildProductList(
+    BuildContext context,
+    List<CartItemModel> cartItems,
+  ) {
+    final theme = Theme.of(context);
     return Container(
-      color: Colors.white,
+      color: theme.cardColor,
       padding: EdgeInsets.all(16.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             t.order.items,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: theme.textTheme.bodyLarge?.color,
+            ),
           ),
           SizedBox(height: 12.h),
 
-          ...cartItems.map(_buildProductItem),
+          ...cartItems.map((item) => _buildProductItem(context, item)),
         ],
       ),
     );
   }
 
   /// 构建商品项
-  Widget _buildProductItem(CartItemModel item) {
+  Widget _buildProductItem(BuildContext context, CartItemModel item) {
+    final theme = Theme.of(context);
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 商品图片
-          AppImage(
-            imageUrl: item.product.imageUrl,
-            width: 60.w,
-            height: 60.w,
-            radius: 8.r,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.r),
+            child: AppImage(
+              imageUrl: item.product.imageUrl,
+              width: 60.w,
+              height: 60.w,
+            ),
           ),
           SizedBox(width: 12.w),
 
@@ -123,6 +153,7 @@ class OrderConfirmView extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
+                    color: theme.textTheme.bodyLarge?.color,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -136,16 +167,13 @@ class OrderConfirmView extends ConsumerWidget {
                       '¥${item.product.price.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontSize: 14.sp,
-                        color: Colors.red,
+                        color: theme.colorScheme.primary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       'x${item.quantity}',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 14.sp, color: theme.hintColor),
                     ),
                   ],
                 ),
@@ -158,26 +186,36 @@ class OrderConfirmView extends ConsumerWidget {
   }
 
   /// 构建支付方式选择
-  Widget _buildPaymentMethod(String selectedMethod, OrderNotifier notifier) {
+  Widget _buildPaymentMethod(
+    BuildContext context,
+    String selectedMethod,
+    OrderNotifier notifier,
+  ) {
+    final theme = Theme.of(context);
     return Container(
-      color: Colors.white,
+      color: theme.cardColor,
       padding: EdgeInsets.all(16.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             t.order.paymentMethod,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: theme.textTheme.bodyLarge?.color,
+            ),
           ),
           SizedBox(height: 12.h),
 
           Column(
             children: [
               _buildPaymentOption(
+                context,
                 'stripe',
                 'Stripe (Credit Card)',
                 Icons.credit_card,
-                Colors.indigo,
+                theme.colorScheme.primary,
                 selectedMethod,
                 notifier,
               ),
@@ -190,6 +228,7 @@ class OrderConfirmView extends ConsumerWidget {
 
   /// 构建支付方式选项
   Widget _buildPaymentOption(
+    BuildContext context,
     String value,
     String label,
     IconData icon,
@@ -197,15 +236,17 @@ class OrderConfirmView extends ConsumerWidget {
     String selectedMethod,
     OrderNotifier notifier,
   ) {
+    final theme = Theme.of(context);
     final isSelected = selectedMethod == value;
 
     return InkWell(
       onTap: () => notifier.selectPaymentMethod(value),
+      borderRadius: BorderRadius.circular(8.r),
       child: Container(
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
           border: Border.all(
-            color: isSelected ? color : Colors.grey[300]!,
+            color: isSelected ? color : theme.dividerColor,
             width: isSelected ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(8.r),
@@ -220,6 +261,7 @@ class OrderConfirmView extends ConsumerWidget {
                 style: TextStyle(
                   fontSize: 15.sp,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  color: theme.textTheme.bodyLarge?.color,
                 ),
               ),
             ),
@@ -231,25 +273,35 @@ class OrderConfirmView extends ConsumerWidget {
   }
 
   /// 构建订单金额
-  Widget _buildOrderAmount(double totalAmount) {
+  Widget _buildOrderAmount(BuildContext context, double totalAmount) {
+    final theme = Theme.of(context);
     return Container(
-      color: Colors.white,
+      color: theme.cardColor,
       padding: EdgeInsets.all(16.w),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(t.order.totalAmount, style: TextStyle(fontSize: 14.sp)),
+              Text(
+                t.order.totalAmount,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: theme.textTheme.bodyMedium?.color,
+                ),
+              ),
               Text(
                 '¥${totalAmount.toStringAsFixed(2)}',
-                style: TextStyle(fontSize: 14.sp),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: theme.textTheme.bodyMedium?.color,
+                ),
               ),
             ],
           ),
           SizedBox(height: 8.h),
 
-          Divider(height: 1.h),
+          Divider(height: 1.h, color: theme.dividerColor),
 
           SizedBox(height: 8.h),
 
@@ -258,14 +310,18 @@ class OrderConfirmView extends ConsumerWidget {
             children: [
               Text(
                 t.order.actualAmount,
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: theme.textTheme.bodyLarge?.color,
+                ),
               ),
               Text(
                 '¥${totalAmount.toStringAsFixed(2)}',
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.red,
+                  color: theme.colorScheme.primary,
                 ),
               ),
             ],
@@ -282,13 +338,14 @@ class OrderConfirmView extends ConsumerWidget {
     double totalAmount,
     bool isLoading,
   ) {
+    final theme = Theme.of(context);
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: theme.shadowColor.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -303,14 +360,17 @@ class OrderConfirmView extends ConsumerWidget {
                   children: [
                     TextSpan(
                       text: t.order.totalLabel,
-                      style: TextStyle(fontSize: 14.sp),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: theme.textTheme.bodyLarge?.color,
+                      ),
                     ),
                     TextSpan(
                       text: '¥${totalAmount.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
-                        color: Colors.red,
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                   ],
@@ -323,15 +383,14 @@ class OrderConfirmView extends ConsumerWidget {
                   ? null
                   : () async {
                       try {
-                        // Use a fixed device ID or get it from a provider
+                        // TODO: 获取实际的设备ID
                         const deviceId = 'device_001';
                         final order = await ref
                             .read(orderProvider.notifier)
                             .createOrder(deviceId);
 
                         if (context.mounted && order != null) {
-                          // Navigate to payment
-                          // Using extra to pass the order object
+                          // 跳转到支付页面或订单详情
                           await context.push(
                             AppRoutes.payment,
                             extra: {'order': order},
@@ -350,8 +409,8 @@ class OrderConfirmView extends ConsumerWidget {
                       }
                     },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
+                backgroundColor: theme.colorScheme.primary,
+                foregroundColor: theme.colorScheme.onPrimary,
                 padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24.r),
