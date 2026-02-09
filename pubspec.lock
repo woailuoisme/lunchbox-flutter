@@ -146,7 +146,7 @@ packages:
     source: hosted
     version: "5.1.1"
   built_value:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: built_value
       sha256: "7931c90b84bc573fef103548e354258ae4c9d28d140e41961df6843c5d60d4d8"
@@ -393,6 +393,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  custom_refresh_indicator:
+    dependency: "direct main"
+    description:
+      name: custom_refresh_indicator
+      sha256: c34dd1dfb1f6b9ee2db9c5972586dba5e4445d79f8431f6ab098a6e963ccd39c
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.1"
   dart_earcut:
     dependency: transitive
     description:
@@ -489,6 +497,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.31.0"
+  envied:
+    dependency: "direct main"
+    description:
+      name: envied
+      sha256: "4cfe31953c13977d1118b4f14cc5dfb683d8bb4c35d5b0c64b29d5b2e30712e8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.2"
+  envied_generator:
+    dependency: "direct dev"
+    description:
+      name: envied_generator
+      sha256: "04467955af3b8f8a249b2f20686f00c89a979cb077aef7d0918642978b28bdeb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.2"
   equatable:
     dependency: transitive
     description:
@@ -941,6 +965,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "17.1.0"
+  go_router_builder:
+    dependency: "direct dev"
+    description:
+      name: go_router_builder
+      sha256: "135648d2febcf6e45d87ad12f4dbcf2d0fb46eb1aa14722c0a42c7a60f02ac55"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.0"
   google_maps:
     dependency: transitive
     description:
@@ -2186,6 +2218,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.15"
+  timelines_plus:
+    dependency: "direct main"
+    description:
+      name: timelines_plus
+      sha256: d621d8724bc8f64957127c1195436996548e166296682d081bedcdb0abe1b638
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   timezone:
     dependency: transitive
     description:

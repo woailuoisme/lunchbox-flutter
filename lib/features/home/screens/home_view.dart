@@ -352,27 +352,27 @@ class _HomeViewState extends ConsumerState<HomeView> {
       {
         'icon': Symbols.card_giftcard,
         'label': t.home.grid.welfare,
-        'color': const Color(0xFFFF7043),
+        'color': colorScheme.primary,
       },
       {
         'icon': Symbols.headset_mic,
         'label': t.home.grid.service,
-        'color': const Color(0xFFFF5252),
+        'color': colorScheme.primary,
       },
       {
         'icon': Symbols.confirmation_number,
         'label': t.home.grid.coupon,
-        'color': const Color(0xFFFFA726),
+        'color': colorScheme.primary,
       },
       {
         'icon': Symbols.stars,
         'label': t.home.grid.lottery,
-        'color': const Color(0xFFEF5350),
+        'color': colorScheme.primary,
       },
       {
         'icon': Symbols.person_add,
         'label': t.home.grid.invite,
-        'color': const Color(0xFFEC407A),
+        'color': colorScheme.primary,
       },
     ];
 
@@ -521,13 +521,13 @@ class _HomeViewState extends ConsumerState<HomeView> {
                         vertical: 4.h,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.red.withValues(alpha: 0.85),
+                        color: colorScheme.error.withValues(alpha: 0.85),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Text(
                         '今日推荐',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: colorScheme.onError,
                           fontSize: 10.sp,
                           fontWeight: FontWeight.bold,
                         ),

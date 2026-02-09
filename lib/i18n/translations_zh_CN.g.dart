@@ -164,6 +164,12 @@ class TranslationsCommonZhCn {
 
   /// zh-CN: '退出'
   String get logout => '退出';
+
+  /// zh-CN: '下拉刷新'
+  String get pullToRefresh => '下拉刷新';
+
+  /// zh-CN: '释放刷新'
+  String get releaseToRefresh => '释放刷新';
 }
 
 // Path: navigation
@@ -839,6 +845,9 @@ class TranslationsSettingsZhCn {
 
   /// zh-CN: '简体中文'
   String get chinese => '简体中文';
+
+  /// zh-CN: '繁体中文'
+  String get traditionalChinese => '繁体中文';
 
   /// zh-CN: '应用名称'
   String get appName => '应用名称';
@@ -1803,6 +1812,8 @@ extension on Translations {
       'common.developing' => '页面正在开发中',
       'common.appName' => '饭盒售货机',
       'common.logout' => '退出',
+      'common.pullToRefresh' => '下拉刷新',
+      'common.releaseToRefresh' => '释放刷新',
       'navigation.home' => '首页',
       'navigation.device' => '设备',
       'navigation.orders' => '订单',
@@ -2061,6 +2072,7 @@ extension on Translations {
       'settings.cacheCleared' => '缓存已清除',
       'settings.english' => '英语',
       'settings.chinese' => '简体中文',
+      'settings.traditionalChinese' => '繁体中文',
       'settings.appName' => '应用名称',
       'settings.packageName' => '包名',
       'settings.versionName' => '版本号',

@@ -33,11 +33,10 @@ final class PartnerRepositoryProvider
   PartnerRepository create() => PartnerRepository();
 }
 
-String _$partnerRepositoryHash() => r'ee38556406609baf9fda08b4aee6cea3bbaa9f29';
+String _$partnerRepositoryHash() => r'310f9b68e57780f2212de1d683bc649f48507323';
 
 abstract class _$PartnerRepository extends $AsyncNotifier<void> {
   FutureOr<void> build();
-
   @$mustCallSuper
   @override
   void runBuild() {

@@ -121,6 +121,10 @@ class _TranslationsCommonZhTw extends TranslationsCommonZhCn {
   @override String get appName => '飯盒售貨機';
 
   @override String get logout => '登出';
+
+  @override String get pullToRefresh => '下拉重新整理';
+
+  @override String get releaseToRefresh => '釋放重新整理';
 }
 
 // Path: navigation
@@ -507,6 +511,8 @@ class _TranslationsSettingsZhTw extends TranslationsSettingsZhCn {
   @override String get english => '英語';
 
   @override String get chinese => '簡體中文';
+
+  @override String get traditionalChinese => '繁體中文';
 
   @override String get appName => '應用名稱';
 
@@ -1010,6 +1016,8 @@ extension on TranslationsZhTw {
       'common.developing' => '頁面正在开发中',
       'common.appName' => '飯盒售貨機',
       'common.logout' => '登出',
+      'common.pullToRefresh' => '下拉重新整理',
+      'common.releaseToRefresh' => '釋放重新整理',
       'navigation.home' => '首頁',
       'navigation.device' => '設備',
       'navigation.orders' => '訂單',
@@ -1190,6 +1198,7 @@ extension on TranslationsZhTw {
       'settings.cacheCleared' => '快取已清除',
       'settings.english' => '英語',
       'settings.chinese' => '簡體中文',
+      'settings.traditionalChinese' => '繁體中文',
       'settings.appName' => '應用名稱',
       'settings.packageName' => '包名',
       'settings.versionName' => '版本號',

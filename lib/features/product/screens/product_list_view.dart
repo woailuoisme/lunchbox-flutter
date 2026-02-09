@@ -99,7 +99,7 @@ class ProductListView extends ConsumerWidget {
                   );
                 }
 
-                return RefreshIndicator(
+                return CustomRefreshView(
                   onRefresh: () async {
                     ref.invalidate(rawProductsProvider(deviceId));
                   },

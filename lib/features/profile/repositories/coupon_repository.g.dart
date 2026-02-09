@@ -33,11 +33,10 @@ final class CouponRepositoryProvider
   CouponRepository create() => CouponRepository();
 }
 
-String _$couponRepositoryHash() => r'49c84130bc3c74e3483371b9cb38244dbe173ee7';
+String _$couponRepositoryHash() => r'42ee47e4a66c0a80743e9f1a888c9bcca8e2a874';
 
 abstract class _$CouponRepository extends $AsyncNotifier<List<CouponModel>> {
   FutureOr<List<CouponModel>> build();
-
   @$mustCallSuper
   @override
   void runBuild() {

@@ -63,21 +63,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
         backgroundColor:
             theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
         elevation: 0,
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Symbols.more_horiz)),
-          TextButton(
-            onPressed: _saveProfile,
-            child: Text(
-              '保存',
-              style: TextStyle(
-                color: theme.colorScheme.primary,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          SizedBox(width: 8.w),
-        ],
+        actions: [],
       ),
       body: user == null
           ? const Center(child: CircularProgressIndicator())
@@ -335,7 +321,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Row(
           children: [
-            Icon(icon, size: 20.sp, color: theme.iconTheme.color),
+            Icon(icon, size: 20.sp, color: theme.colorScheme.primary),
             SizedBox(width: 12.w),
             Text(
               label,

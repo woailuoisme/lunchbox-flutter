@@ -65,21 +65,7 @@ class ProfileView extends ConsumerWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Row(
-                  children: [
-                    Icon(
-                      Symbols.more_horiz,
-                      color: theme.colorScheme.onPrimary,
-                      size: 24.sp,
-                    ),
-                    SizedBox(width: 12.w),
-                    Icon(
-                      Symbols.radio_button_checked,
-                      color: theme.colorScheme.onPrimary,
-                      size: 24.sp,
-                    ),
-                  ],
-                ),
+                // Icons removed
               ],
             ),
           ),
@@ -299,7 +285,7 @@ class ProfileView extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, size: 24.sp, color: theme.iconTheme.color),
+            Icon(icon, size: 24.sp, color: theme.colorScheme.primary),
             SizedBox(width: 16.w),
             Text(
               title,

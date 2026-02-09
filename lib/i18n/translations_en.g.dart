@@ -139,6 +139,10 @@ class _TranslationsCommonEn extends TranslationsCommonZhCn {
   @override String get appName => 'E-Lunchbox';
 
   @override String get logout => 'Logout';
+
+  @override String get pullToRefresh => 'Pull to refresh';
+
+  @override String get releaseToRefresh => 'Release to refresh';
 }
 
 // Path: navigation
@@ -565,6 +569,8 @@ class _TranslationsSettingsEn extends TranslationsSettingsZhCn {
   @override String get english => 'English';
 
   @override String get chinese => 'Simplified Chinese';
+
+  @override String get traditionalChinese => 'Traditional Chinese';
 
   @override String get appName => 'App Name';
 
@@ -1138,6 +1144,8 @@ extension on TranslationsEn {
       'common.developing' => 'Page is under development',
       'common.appName' => 'E-Lunchbox',
       'common.logout' => 'Logout',
+      'common.pullToRefresh' => 'Pull to refresh',
+      'common.releaseToRefresh' => 'Release to refresh',
       'navigation.home' => 'Home',
       'navigation.device' => 'Device',
       'navigation.orders' => 'Orders',
@@ -1328,6 +1336,7 @@ extension on TranslationsEn {
       'settings.cacheCleared' => 'Cache cleared',
       'settings.english' => 'English',
       'settings.chinese' => 'Simplified Chinese',
+      'settings.traditionalChinese' => 'Traditional Chinese',
       'settings.appName' => 'App Name',
       'settings.packageName' => 'Package Name',
       'settings.versionName' => 'Version Name',

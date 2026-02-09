@@ -127,4 +127,5 @@ const _$PaymentMethodEnumMap = {
   PaymentMethod.wechatPay: 'wechatPay',
   PaymentMethod.alipay: 'alipay',
   PaymentMethod.cash: 'cash',
+  PaymentMethod.stripe: 'stripe',
 };

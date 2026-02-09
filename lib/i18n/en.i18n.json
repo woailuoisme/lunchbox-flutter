@@ -22,7 +22,9 @@
     "unknownError": "Unknown Error",
     "developing": "Page is under development",
     "appName": "E-Lunchbox",
-    "logout": "Logout"
+    "logout": "Logout",
+    "pullToRefresh": "Pull to refresh",
+    "releaseToRefresh": "Release to refresh"
   },
   "navigation": {
     "home": "Home",
@@ -245,6 +247,7 @@
     "cacheCleared": "Cache cleared",
     "english": "English",
     "chinese": "Simplified Chinese",
+    "traditionalChinese": "Traditional Chinese",
     "appName": "App Name",
     "packageName": "Package Name",
     "versionName": "Version Name",

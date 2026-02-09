@@ -22,7 +22,9 @@
     "unknownError": "未知错误",
     "developing": "页面正在开发中",
     "appName": "饭盒售货机",
-    "logout": "退出"
+    "logout": "退出",
+    "pullToRefresh": "下拉刷新",
+    "releaseToRefresh": "释放刷新"
   },
   "navigation": {
     "home": "首页",
@@ -328,6 +330,7 @@
     "cacheCleared": "缓存已清除",
     "english": "英语",
     "chinese": "简体中文",
+    "traditionalChinese": "繁体中文",
     "appName": "应用名称",
     "packageName": "包名",
     "versionName": "版本号",

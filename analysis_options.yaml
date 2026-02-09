@@ -1,12 +1,11 @@
-# This file configures the analyzer, which statically analyzes Dart code to
-# check for errors, warnings, and lints.
+# 此文件配置分析器，用于静态分析 Dart 代码以检查错误、警告和 lint 问题。
 #
-# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
-# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
-# invoked from the command line by running `flutter analyze`.
+# 分析器识别的问题会显示在支持 Dart 的 IDE 用户界面中
+# (https://dart.dev/tools#ides-and-editors)。
+# 也可以通过运行 `flutter analyze` 从命令行调用分析器。
 
-# The following line activates a set of recommended lints for Flutter apps,
-# packages, and plugins designed to encourage good coding practices.
+# 下一行激活了一组推荐用于 Flutter 应用、包和插件的 lint 规则，
+# 旨在鼓励良好的编码实践。
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
@@ -14,12 +13,20 @@ analyzer:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
   errors:
+    # 忽略无效的注解目标警告 (通常用于 freezed/json_serializable 等代码生成库)
     invalid_annotation_target: ignore
+    # 忽略未使用的字段警告 (建议在发布前清理)
     unused_field: ignore
+    # 忽略未使用的局部变量警告 (建议在发布前清理)
     unused_local_variable: ignore
+    # 忽略未使用的元素警告 (如私有函数、类等，建议在发布前清理)
+    unused_element: ignore
   language:
+    # 启用严格类型转换，禁止隐式 dynamic 转换，避免运行时类型错误
     strict-casts: true
+    # 启用严格类型推断，禁止隐式 dynamic 推断，强制显式声明类型
     strict-inference: true
+    # 启用严格原始类型，强制指定泛型参数 (例如使用 List<dynamic> 而不是 List)
     strict-raw-types: true
 
 linter:

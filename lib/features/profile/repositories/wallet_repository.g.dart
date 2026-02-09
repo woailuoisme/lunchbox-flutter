@@ -33,11 +33,10 @@ final class WalletRepositoryProvider
   WalletRepository create() => WalletRepository();
 }
 
-String _$walletRepositoryHash() => r'4b1279d82cb5dfd562b9a59eb7310c78d7813ea6';
+String _$walletRepositoryHash() => r'6c3ad549e408f3085ac530ca04023e88e2d62bc3';
 
 abstract class _$WalletRepository extends $AsyncNotifier<void> {
   FutureOr<void> build();
-
   @$mustCallSuper
   @override
   void runBuild() {

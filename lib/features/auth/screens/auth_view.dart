@@ -23,10 +23,7 @@ class AuthView extends ConsumerWidget {
             SizedBox(height: 16.h),
             Text(
               t.common.developing,
-              style: TextStyle(
-                fontSize: 20.sp,
-                color: colorScheme.onSurface,
-              ),
+              style: TextStyle(fontSize: 20.sp, color: colorScheme.onSurface),
             ),
           ],
         ),

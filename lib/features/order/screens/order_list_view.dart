@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
+import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/features/order/providers/order_notifier.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 
@@ -232,7 +233,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
       return _buildEmptyState();
     }
 
-    return RefreshIndicator(
+    return CustomRefreshView(
       onRefresh: () async {
         controller.refresh();
       },

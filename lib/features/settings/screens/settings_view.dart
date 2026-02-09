@@ -44,32 +44,8 @@ class SettingsView extends ConsumerWidget {
             _buildSectionCard(context, [
               _buildSettingsItem(
                 context: context,
-                icon: Symbols.palette,
-                iconColor: colorScheme.primary,
-                title: t.settings.theme,
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      _getThemeModeName(themeState.mode),
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Icon(
-                      Symbols.arrow_forward_ios,
-                      size: 14.sp,
-                      color: colorScheme.outline,
-                    ),
-                  ],
-                ),
-                onTap: () => _showThemePicker(context, ref, themeState.mode),
-              ),
-              _buildSettingsItem(
-                context: context,
                 icon: Symbols.colors,
-                iconColor: colorScheme.secondary,
+                iconColor: colorScheme.primary,
                 title: '主题配色',
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -94,16 +70,38 @@ class SettingsView extends ConsumerWidget {
               ),
               _buildSettingsItem(
                 context: context,
+                icon: Symbols.palette,
+                iconColor: colorScheme.primary,
+                title: t.settings.theme,
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _getThemeModeName(themeState.mode),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Icon(
+                      Symbols.arrow_forward_ios,
+                      size: 14.sp,
+                      color: colorScheme.outline,
+                    ),
+                  ],
+                ),
+                onTap: () => _showThemePicker(context, ref, themeState.mode),
+              ),
+              _buildSettingsItem(
+                context: context,
                 icon: Symbols.language,
-                iconColor: colorScheme.tertiary,
+                iconColor: colorScheme.primary,
                 title: t.settings.language,
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      currentLocale == AppLocale.en
-                          ? t.settings.english
-                          : t.settings.chinese,
+                      _getLocaleName(currentLocale),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
@@ -121,7 +119,7 @@ class SettingsView extends ConsumerWidget {
               _buildSettingsItem(
                 context: context,
                 icon: Symbols.system_update,
-                iconColor: Colors.green,
+                iconColor: colorScheme.primary,
                 title: t.settings.checkUpdate,
                 trailing: packageInfoAsync.when(
                   data: (PackageInfo info) => Row(
@@ -164,7 +162,7 @@ class SettingsView extends ConsumerWidget {
               _buildSettingsItem(
                 context: context,
                 icon: Symbols.cleaning_services,
-                iconColor: Colors.orange,
+                iconColor: colorScheme.primary,
                 title: t.settings.clearCache,
                 showDivider: false,
                 onTap: () {
@@ -183,8 +181,13 @@ class SettingsView extends ConsumerWidget {
               _buildSettingsItem(
                 context: context,
                 icon: Symbols.perm_device_information,
-                iconColor: colorScheme.secondary,
+                iconColor: colorScheme.primary,
                 title: t.settings.deviceInfo,
+                trailing: Icon(
+                  Symbols.arrow_forward_ios,
+                  size: 14.sp,
+                  color: colorScheme.outline,
+                ),
                 onTap: () => context.push(
                   '${AppRoutes.settings}${AppRoutes.deviceInfo}',
                 ),
@@ -364,10 +367,10 @@ class SettingsView extends ConsumerWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     const List<FlexScheme> schemes = [
-      FlexScheme.materialBaseline,
-      FlexScheme.outerSpace,
-      FlexScheme.brandBlue,
-      FlexScheme.mandyRed,
+      FlexScheme.shadOrange,
+      FlexScheme.shadGreen,
+      FlexScheme.bahamaBlue,
+      FlexScheme.damask,
     ];
 
     showModalBottomSheet<void>(
@@ -433,23 +436,37 @@ class SettingsView extends ConsumerWidget {
 
   String _getSchemeName(FlexScheme scheme) {
     switch (scheme) {
-      case FlexScheme.materialBaseline:
-        return '默认';
-      case FlexScheme.outerSpace:
-        return '商务科技';
-      case FlexScheme.brandBlue:
-        return '清新大厂';
-      case FlexScheme.mandyRed:
-        return '独特设计';
+      case FlexScheme.shadOrange:
+        return '活力橙 (ShadOrange)';
+      case FlexScheme.shadGreen:
+        return '自然绿 (ShadGreen)';
+      case FlexScheme.bahamaBlue:
+        return '巴哈马蓝 (BahamaBlue)';
+      case FlexScheme.damask:
+        return '锦缎红 (Damask)';
       default:
         return scheme.name;
+    }
+  }
+
+  String _getLocaleName(AppLocale? locale) {
+    if (locale == null) {
+      return t.settings.themeSystem;
+    }
+    switch (locale) {
+      case AppLocale.en:
+        return t.settings.english;
+      case AppLocale.zhCn:
+        return t.settings.chinese;
+      case AppLocale.zhTw:
+        return t.settings.traditionalChinese;
     }
   }
 
   void _showLanguagePicker(
     BuildContext context,
     WidgetRef ref,
-    AppLocale currentLocale,
+    AppLocale? currentLocale,
   ) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -474,6 +491,22 @@ class SettingsView extends ConsumerWidget {
                 ),
               ),
               SizedBox(height: 16.h),
+              ListTile(
+                title: Text(
+                  t.settings.themeSystem,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+                leading: const Icon(Symbols.smartphone),
+                trailing: currentLocale == null
+                    ? Icon(Symbols.check, color: colorScheme.primary)
+                    : null,
+                onTap: () async {
+                  await ref.read(localeProvider.notifier).setLocale(null);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+              ),
               ListTile(
                 title: Text(
                   t.settings.english,
@@ -511,6 +544,27 @@ class SettingsView extends ConsumerWidget {
                   await ref
                       .read(localeProvider.notifier)
                       .setLocale(AppLocale.zhCn);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+              ListTile(
+                title: Text(
+                  t.settings.traditionalChinese,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+                leading: Text(
+                  '🇭🇰',
+                  style: TextStyle(fontSize: 24.sp),
+                ), // 简单使用emoji
+                trailing: currentLocale == AppLocale.zhTw
+                    ? Icon(Symbols.check, color: colorScheme.primary)
+                    : null,
+                onTap: () async {
+                  await ref
+                      .read(localeProvider.notifier)
+                      .setLocale(AppLocale.zhTw);
                   if (context.mounted) {
                     Navigator.pop(context);
                   }

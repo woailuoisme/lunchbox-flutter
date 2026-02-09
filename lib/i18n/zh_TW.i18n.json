@@ -22,7 +22,9 @@
     "unknownError": "未知錯誤",
     "developing": "頁面正在开发中",
     "appName": "飯盒售貨機",
-    "logout": "登出"
+    "logout": "登出",
+    "pullToRefresh": "下拉重新整理",
+    "releaseToRefresh": "釋放重新整理"
   },
   "navigation": {
     "home": "首頁",
@@ -235,6 +237,7 @@
     "cacheCleared": "快取已清除",
     "english": "英語",
     "chinese": "簡體中文",
+    "traditionalChinese": "繁體中文",
     "appName": "應用名稱",
     "packageName": "包名",
     "versionName": "版本號",

@@ -1,7 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
-import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'theme_provider.g.dart';
@@ -15,8 +15,7 @@ class ThemeNotifier extends _$ThemeNotifier {
   ThemeState build() {
     final prefs = ref.watch(sharedPreferencesProvider);
     final modeIndex = prefs.getInt(_themeModeKey) ?? ThemeMode.system.index;
-    final schemeIndex =
-        prefs.getInt(_schemeKey) ?? FlexScheme.materialBaseline.index;
+    final schemeIndex = prefs.getInt(_schemeKey) ?? FlexScheme.shadGreen.index;
 
     return ThemeState(
       mode: ThemeMode.values[modeIndex],
@@ -34,81 +33,44 @@ class ThemeNotifier extends _$ThemeNotifier {
     await ref.read(sharedPreferencesProvider).setInt(_schemeKey, scheme.index);
   }
 
-  // 使用 AppColors 定义自定义配色方案
-  FlexSchemeColor get _appSchemeColor => FlexSchemeColor(
-    primary: AppColors.primary,
-    primaryContainer: AppColors.primaryLight,
-    secondary: AppColors.secondary,
-    secondaryContainer: AppColors.secondary.withValues(alpha: 0.2),
-    appBarColor: AppColors.surface,
-    error: AppColors.error,
-  );
-
   ThemeData get lightTheme {
-    if (state.scheme == FlexScheme.materialBaseline) {
-      return FlexThemeData.light(
-        colors: _appSchemeColor,
-        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-        blendLevel: 7,
-        subThemesData: const FlexSubThemesData(
-          blendOnLevel: 10,
-          useMaterial3Typography: true,
-          useM2StyleDividerInM3: true,
-          alignedDropdown: true,
-          useInputDecoratorThemeInDialogs: true,
-        ),
-        visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        swapLegacyOnMaterial3: true,
-      );
-    }
-
     return FlexThemeData.light(
+      // Using FlexColorScheme built-in FlexScheme enum based colors
       scheme: state.scheme,
-      surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-      blendLevel: 7,
+      // Component theme configurations for light mode.
       subThemesData: const FlexSubThemesData(
-        blendOnLevel: 10,
-        useMaterial3Typography: true,
+        interactionEffects: true,
+        tintedDisabledControls: true,
         useM2StyleDividerInM3: true,
+        inputDecoratorIsFilled: true,
+        inputDecoratorBorderType: FlexInputBorderType.outline,
         alignedDropdown: true,
-        useInputDecoratorThemeInDialogs: true,
+        navigationRailUseIndicator: true,
       ),
+      // Direct ThemeData properties.
       visualDensity: FlexColorScheme.comfortablePlatformDensity,
-      swapLegacyOnMaterial3: true,
+      cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
     );
   }
 
   ThemeData get darkTheme {
-    if (state.scheme == FlexScheme.materialBaseline) {
-      return FlexThemeData.dark(
-        colors: _appSchemeColor,
-        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-        blendLevel: 13,
-        subThemesData: const FlexSubThemesData(
-          blendOnLevel: 20,
-          useMaterial3Typography: true,
-          useM2StyleDividerInM3: true,
-          alignedDropdown: true,
-          useInputDecoratorThemeInDialogs: true,
-        ),
-        visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        swapLegacyOnMaterial3: true,
-      );
-    }
-
     return FlexThemeData.dark(
+      // Using FlexColorScheme built-in FlexScheme enum based colors.
       scheme: state.scheme,
-      surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-      blendLevel: 13,
+      // Component theme configurations for dark mode.
       subThemesData: const FlexSubThemesData(
-        blendOnLevel: 20,
-        useMaterial3Typography: true,
+        interactionEffects: true,
+        tintedDisabledControls: true,
+        blendOnColors: true,
         useM2StyleDividerInM3: true,
+        inputDecoratorIsFilled: true,
+        inputDecoratorBorderType: FlexInputBorderType.outline,
         alignedDropdown: true,
-        useInputDecoratorThemeInDialogs: true,
+        navigationRailUseIndicator: true,
       ),
+      // Direct ThemeData properties.
       visualDensity: FlexColorScheme.comfortablePlatformDensity,
-      swapLegacyOnMaterial3: true,
+      cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
     );
   }
 }

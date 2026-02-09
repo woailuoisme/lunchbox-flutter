@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutUsView extends ConsumerStatefulWidget {
   const AboutUsView({super.key});
@@ -57,7 +61,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
                 width: double.infinity,
                 height: 48.h,
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: _shareApp,
                   icon: Icon(Symbols.share, color: theme.colorScheme.onPrimary),
                   label: Text(
                     '分享给朋友',
@@ -253,7 +257,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
           ListTile(
             leading: Icon(
               Symbols.description,
-              color: theme.colorScheme.secondary,
+              color: theme.colorScheme.primary,
             ),
             title: Text('用户协议与隐私政策', style: TextStyle(fontSize: 14.sp)),
             subtitle: Text(
@@ -286,7 +290,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
           _buildSectionTitle(context, '联系我们'),
           SizedBox(height: 16.h),
           ListTile(
-            leading: const Icon(Symbols.phone),
+            leading: Icon(Symbols.phone, color: theme.colorScheme.primary),
             title: Text(
               '客服热线',
               style: TextStyle(
@@ -303,11 +307,14 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
               ),
             ),
             trailing: const Icon(Symbols.arrow_forward_ios, size: 16),
-            onTap: () {},
+            onTap: _launchPhone,
           ),
           Divider(height: 1, color: theme.dividerColor),
           ListTile(
-            leading: Icon(Symbols.location_on, color: theme.colorScheme.error),
+            leading: Icon(
+              Symbols.location_on,
+              color: theme.colorScheme.primary,
+            ),
             title: Text(
               '公司地址',
               style: TextStyle(
@@ -323,10 +330,47 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
               ),
             ),
             trailing: const Icon(Symbols.arrow_forward_ios, size: 16),
-            onTap: () {},
+            onTap: _launchMap,
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _launchPhone() async {
+    final Uri launchUri = Uri(scheme: 'tel', path: '4001148818');
+    if (await canLaunchUrl(launchUri)) {
+      await launchUrl(launchUri);
+    }
+  }
+
+  Future<void> _launchMap() async {
+    const address = '广东省东莞市松山湖园区科汇路1号1栋1510室';
+    final query = Uri.encodeComponent(address);
+    Uri uri;
+
+    if (Platform.isIOS || Platform.isMacOS) {
+      uri = Uri.parse('https://maps.apple.com/?q=$query');
+    } else {
+      uri = Uri.parse('geo:0,0?q=$query');
+    }
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      // Fallback to web map
+      final webUri = Uri.parse(
+        'https://www.google.com/maps/search/?api=1&query=$query',
+      );
+      if (await canLaunchUrl(webUri)) {
+        await launchUrl(webUri, mode: LaunchMode.externalApplication);
+      }
+    }
+  }
+
+  Future<void> _shareApp() async {
+    await SharePlus.instance.share(
+      ShareParams(text: 'Lunchbox - 您的专属午餐管家\n版本: $_version'),
     );
   }
 
