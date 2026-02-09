@@ -3,7 +3,6 @@ import 'package:lunchbox/core/network/dio_provider.dart';
 import 'package:lunchbox/core/network/response/api_response.dart';
 import 'package:lunchbox/core/network/response/paginated_response.dart';
 import 'package:lunchbox/features/auth/auth.dart';
-import 'package:lunchbox/features/city/city.dart';
 import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/features/order/order.dart';
 import 'package:lunchbox/features/product/product.dart';

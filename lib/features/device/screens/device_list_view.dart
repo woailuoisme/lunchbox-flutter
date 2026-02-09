@@ -8,6 +8,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:lunchbox/core/services/location_service.dart';
 import 'package:lunchbox/core/values/app_colors.dart';
 import 'package:lunchbox/core/widgets/map/lunchbox_map.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lunchbox/routes/app_routes.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
 import 'package:lunchbox/features/device/repositories/simulated_device_repository.dart';
 import 'package:lunchbox/features/device/screens/city_selection_view.dart';
@@ -487,71 +489,81 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
   ///
   /// 展示机器名称、地址、营业时间、距离及在线状态
   Widget _buildDeviceCard(DeviceModel device) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 24.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      device.name,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF333333),
+    return GestureDetector(
+      onTap: () {
+        context.push('${AppRoutes.deviceList}/${device.id}');
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 24.h),
+        color: Colors.transparent, // 确保点击区域覆盖整个卡片
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        device.name,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF333333),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      '09:00-18:00', // 暂无营业时间字段，使用默认
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: const Color(0xFF999999),
+                      SizedBox(height: 4.h),
+                      Text(
+                        '09:00-18:00', // 暂无营业时间字段，使用默认
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color(0xFF999999),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      device.location.address ?? '',
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        color: const Color(0xFF666666),
+                      SizedBox(height: 4.h),
+                      Text(
+                        device.location.address ?? '',
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: const Color(0xFF666666),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(width: 12.w),
-              Icon(Icons.navigation_outlined, size: 24.sp, color: Colors.black),
-            ],
-          ),
-          SizedBox(height: 12.h),
-          Row(
-            children: [
-              if (device.isOnline)
-                _buildStatusTag('在线', const Color(0xFF8BC34A))
-              else
-                _buildStatusTag('离线', Colors.grey),
-              SizedBox(width: 8.w),
-              _buildStatusTag('已启用', const Color(0xFF2196F3)),
-              const Spacer(),
-              Text(
-                '500m', // 暂无距离字段，使用模拟
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  color: const Color(0xFF999999),
+                SizedBox(width: 12.w),
+                Icon(
+                  Icons.navigation_outlined,
+                  size: 24.sp,
+                  color: Colors.black,
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          const Divider(height: 1, color: Color(0xFFEEEEEE)),
-        ],
+              ],
+            ),
+            SizedBox(height: 12.h),
+            Row(
+              children: [
+                if (device.isOnline)
+                  _buildStatusTag('在线', const Color(0xFF8BC34A))
+                else
+                  _buildStatusTag('离线', Colors.grey),
+                SizedBox(width: 8.w),
+                _buildStatusTag('已启用', const Color(0xFF2196F3)),
+                const Spacer(),
+                Text(
+                  '500m', // 暂无距离字段，使用模拟
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    color: const Color(0xFF999999),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            const Divider(height: 1, color: Color(0xFFEEEEEE)),
+          ],
+        ),
       ),
     );
   }

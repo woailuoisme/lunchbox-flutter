@@ -31,6 +31,10 @@ _ProductModel _$ProductModelFromJson(
       isAvailable: $checkedConvert('is_available', (v) => v as bool? ?? true),
       isHot: $checkedConvert('is_hot', (v) => v as bool? ?? false),
       isPromotion: $checkedConvert('is_promotion', (v) => v as bool? ?? false),
+      monthlySales: $checkedConvert(
+        'monthly_sales',
+        (v) => (v as num?)?.toInt() ?? 0,
+      ),
       specifications: $checkedConvert('specifications', (v) => v as String?),
     );
     return val;
@@ -42,6 +46,7 @@ _ProductModel _$ProductModelFromJson(
     'isAvailable': 'is_available',
     'isHot': 'is_hot',
     'isPromotion': 'is_promotion',
+    'monthlySales': 'monthly_sales',
   },
 );
 
@@ -59,5 +64,6 @@ Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
       'is_available': instance.isAvailable,
       'is_hot': instance.isHot,
       'is_promotion': instance.isPromotion,
+      'monthly_sales': instance.monthlySales,
       'specifications': ?instance.specifications,
     };

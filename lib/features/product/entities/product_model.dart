@@ -44,6 +44,9 @@ abstract class ProductModel with _$ProductModel {
     /// 产品是否为促销商品
     @Default(false) bool isPromotion,
 
+    /// 月售数量
+    @Default(0) int monthlySales,
+
     /// 产品规格信息
     String? specifications,
   }) = _ProductModel;

@@ -1,7 +1,5 @@
 import 'package:lunchbox/core/errors/errors.dart';
-import 'package:lunchbox/features/city/city.dart';
-import 'package:lunchbox/features/device/entities/device_model.dart';
-import 'package:lunchbox/features/device/repositories/device_repository.dart';
+import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/features/product/product.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

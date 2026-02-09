@@ -59,6 +59,12 @@ _OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => $checkedCreate(
         (v) => v == null ? null : DateTime.parse(v as String),
       ),
       pickupCode: $checkedConvert('pickup_code', (v) => v as String?),
+      pickupHint: $checkedConvert('pickup_hint', (v) => v as String?),
+      diningCode: $checkedConvert('dining_code', (v) => v as String?),
+      storeName: $checkedConvert('store_name', (v) => v as String?),
+      storeAddress: $checkedConvert('store_address', (v) => v as String?),
+      storePhone: $checkedConvert('store_phone', (v) => v as String?),
+      qrCodeData: $checkedConvert('qr_code_data', (v) => v as String?),
       remark: $checkedConvert('remark', (v) => v as String?),
     );
     return val;
@@ -74,6 +80,12 @@ _OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => $checkedCreate(
     'completedAt': 'completed_at',
     'cancelledAt': 'cancelled_at',
     'pickupCode': 'pickup_code',
+    'pickupHint': 'pickup_hint',
+    'diningCode': 'dining_code',
+    'storeName': 'store_name',
+    'storeAddress': 'store_address',
+    'storePhone': 'store_phone',
+    'qrCodeData': 'qr_code_data',
   },
 );
 
@@ -93,6 +105,12 @@ Map<String, dynamic> _$OrderModelToJson(_OrderModel instance) =>
       'completed_at': ?instance.completedAt?.toIso8601String(),
       'cancelled_at': ?instance.cancelledAt?.toIso8601String(),
       'pickup_code': ?instance.pickupCode,
+      'pickup_hint': ?instance.pickupHint,
+      'dining_code': ?instance.diningCode,
+      'store_name': ?instance.storeName,
+      'store_address': ?instance.storeAddress,
+      'store_phone': ?instance.storePhone,
+      'qr_code_data': ?instance.qrCodeData,
       'remark': ?instance.remark,
     };
 

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
+import 'package:lunchbox/features/device/entities/cart_item_model.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
 
 part 'order_model.freezed.dart';
@@ -68,6 +68,24 @@ abstract class OrderModel with _$OrderModel {
 
     /// 取货码（用于从设备取货）
     String? pickupCode,
+
+    /// 取餐提示（如：请前往1号窗口取餐）
+    String? pickupHint,
+
+    /// 堂食码
+    String? diningCode,
+
+    /// 门店名称
+    String? storeName,
+
+    /// 门店地址
+    String? storeAddress,
+
+    /// 门店电话
+    String? storePhone,
+
+    /// 二维码数据
+    String? qrCodeData,
 
     /// 订单备注
     String? remark,

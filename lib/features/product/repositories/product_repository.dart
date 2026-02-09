@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:lunchbox/core/errors/errors.dart';
 import 'package:lunchbox/core/network/network.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
+import 'package:lunchbox/features/product/repositories/simulated_product_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'product_repository.g.dart';
@@ -10,7 +11,8 @@ part 'product_repository.g.dart';
 @Riverpod(keepAlive: true)
 ProductRepository productRepository(Ref ref) {
   final restClient = ref.watch(restClientProvider);
-  return ProductRepository(restClient);
+  // 使用模拟仓库
+  return SimulatedProductRepository(restClient);
 }
 
 /// 产品仓库类

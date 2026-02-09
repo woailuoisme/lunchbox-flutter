@@ -105,14 +105,6 @@ class _SplashViewState extends ConsumerState<SplashView> {
           ),
         ),
         SizedBox(height: 8.h),
-        Text(
-          'E-Lunchbox',
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: Colors.white.withValues(alpha: 0.8),
-            letterSpacing: 1,
-          ),
-        ),
       ],
     );
   }

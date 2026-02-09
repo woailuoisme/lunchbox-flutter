@@ -1,10 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lunchbox/features/device/entities/city.dart';
 
 part 'city_model.freezed.dart';
 part 'city_model.g.dart';
 
-/// City model
-/// Domain entity representing a city in the lunchbox vending machine system
+/// City data model
+/// Used for data transfer with JSON serialization support
 @freezed
 abstract class CityModel with _$CityModel {
   const factory CityModel({
@@ -17,23 +18,8 @@ abstract class CityModel with _$CityModel {
     /// City code (e.g., "BJ" for Beijing)
     required String code,
 
-    /// Pin yin for the city name
-    @Default('') String pinyin,
-
-    /// Initial letter of the city name
-    @Default('') String initial,
-
-    /// City latitude
-    @Default(0.0) double latitude,
-
-    /// City longitude
-    @Default(0.0) double longitude,
-
-    /// Whether this is a hot city
-    @Default(false) bool isHot,
-
     /// Number of devices in this city
-    @JsonKey(name: 'device_count') @Default(0) int deviceCount,
+    @JsonKey(name: 'device_count') required int deviceCount,
   }) = _CityModel;
 
   /// Create CityModel from JSON
@@ -41,4 +27,8 @@ abstract class CityModel with _$CityModel {
       _$CityModelFromJson(json);
 
   const CityModel._();
+
+  /// Convert data model to domain entity
+  City toEntity() =>
+      City(id: id, name: name, code: code, deviceCount: deviceCount);
 }

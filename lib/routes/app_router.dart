@@ -1,8 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/core/providers/providers.dart';
 import 'package:lunchbox/features/auth/auth.dart';
-import 'package:lunchbox/features/cart/cart.dart';
-import 'package:lunchbox/features/city/city.dart';
 import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/features/help/help.dart';
 import 'package:lunchbox/features/home/home.dart';
@@ -14,7 +12,7 @@ import 'package:lunchbox/features/profile/profile.dart';
 import 'package:lunchbox/features/settings/settings.dart';
 import 'package:lunchbox/features/splash/splash.dart';
 import 'package:lunchbox/routes/app_routes.dart';
-import 'package:lunchbox/shared/shared.dart';
+import 'package:lunchbox/core/widgets/gnav_scaffold.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_router.g.dart';

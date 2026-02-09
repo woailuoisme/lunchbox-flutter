@@ -1,5 +1,5 @@
 import 'package:lunchbox/core/utils/logger_utils.dart';
-import 'package:lunchbox/features/city/repositories/city_repository.dart';
+import 'package:lunchbox/features/device/repositories/city_repository.dart';
 import 'package:lunchbox/features/device/repositories/device_repository.dart';
 import 'package:lunchbox/features/home/providers/home_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

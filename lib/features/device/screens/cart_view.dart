@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/core/widgets/widgets.dart';
-import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
-import 'package:lunchbox/features/cart/providers/cart_notifier.dart';
-import 'package:lunchbox/features/cart/providers/cart_state.dart';
+import 'package:lunchbox/features/device/entities/cart_item_model.dart';
+import 'package:lunchbox/features/device/providers/cart_notifier.dart';
+import 'package:lunchbox/features/device/providers/cart_state.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 购物车视图

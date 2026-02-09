@@ -2,16 +2,18 @@ import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:lunchbox/core/errors/errors.dart';
 import 'package:lunchbox/core/network/network.dart';
-import 'package:lunchbox/features/cart/cart.dart';
+import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'package:lunchbox/features/order/repositories/simulated_order_repository.dart';
 
 part 'order_repository.g.dart';
 
 @Riverpod(keepAlive: true)
 OrderRepository orderRepository(Ref ref) {
-  final restClient = ref.watch(restClientProvider);
-  return OrderRepository(restClient);
+  // Use simulated repository for UI development without backend
+  return SimulatedOrderRepository();
 }
 
 /// 订单仓库类

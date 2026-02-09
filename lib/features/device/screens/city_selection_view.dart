@@ -1,11 +1,16 @@
-import 'package:alphabet_list_view/alphabet_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lunchbox/core/values/app_colors.dart';
+import 'package:lunchbox/core/widgets/error_widget.dart' as app_error; // 防止命名冲突
+import 'package:lunchbox/core/widgets/loading_widget.dart';
 import 'package:lunchbox/features/device/entities/city_model.dart';
-import 'package:lunchbox/features/device/repositories/city_repository.dart';
+import 'package:lunchbox/features/device/providers/city_providers.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:toastification/toastification.dart';
 
+/// 城市选择视图
 class CitySelectionView extends ConsumerStatefulWidget {
   const CitySelectionView({super.key});
 
@@ -14,248 +19,315 @@ class CitySelectionView extends ConsumerStatefulWidget {
 }
 
 class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController
+      ..removeListener(_onSearchChanged)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    ref.read(citySearchQueryProvider.notifier).query = _searchController.text;
+  }
+
+  void _showAllCities() {
+    _searchController.clear();
+    FocusScope.of(context).unfocus();
+  }
+
+  Future<void> _selectCity(CityModel city) async {
+    try {
+      await ref.read(selectedCityProvider.notifier).set(city);
+      if (mounted) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.success,
+          title: Text(t.city.switchSuccess),
+          description: Text(t.city.switchedTo(name: city.name)),
+          autoCloseDuration: const Duration(seconds: 2),
+        );
+        context.pop();
+      }
+    } catch (e) {
+      if (mounted) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.error,
+          title: Text(t.city.switchFailed),
+          description: Text(t.city.saveFailed),
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final cityListAsync = ref.watch(cityListProvider);
-
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          '选择城市',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => context.pop(),
-        ),
-      ),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(title: Text(t.city.title), elevation: 0),
       body: Column(
         children: [
+          // 搜索框
           _buildSearchBar(),
-          cityListAsync.when(
-            data: (cities) => Expanded(
-              child: Column(
-                children: [
-                  _buildCurrentLocation(cities.length),
-                  Expanded(
-                    child: AlphabetListView(
-                      items: _buildAlphabetItems(cities),
-                      options: AlphabetListViewOptions(
-                        listOptions: ListOptions(
-                          stickySectionHeader: true,
-                          listHeaderBuilder: (context, symbol) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 8.h,
-                              ),
-                              color: const Color(
-                                0xFFE0E0E0,
-                              ), // Grey background for header
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    symbol,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                        scrollbarOptions: ScrollbarOptions(
-                          backgroundColor: Colors.transparent,
-                          symbolBuilder: (context, symbol, state) {
-                            return Container(
-                              alignment: Alignment.center,
-                              width: 30.w,
-                              padding: EdgeInsets.symmetric(vertical: 2.h),
-                              child: Text(
-                                symbol,
-                                style: TextStyle(
-                                  color:
-                                      state == AlphabetScrollbarItemState.active
-                                      ? const Color(0xFFFF5252)
-                                      : Colors.grey,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        overlayOptions: OverlayOptions(
-                          showOverlay: true,
-                          overlayBuilder: (context, symbol) {
-                            return Container(
-                              width: 60.w,
-                              height: 60.w,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.5),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                              child: Text(
-                                symbol,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            loading: () => const Expanded(
-              child: Center(
-                child: CircularProgressIndicator(color: Color(0xFFFF5252)),
-              ),
-            ),
-            error: (error, stack) => Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.error_outline, size: 48.sp, color: Colors.grey),
-                    SizedBox(height: 16.h),
-                    Text(
-                      '加载失败，请重试',
-                      style: TextStyle(color: Colors.grey, fontSize: 14.sp),
-                    ),
-                    TextButton(
-                      onPressed: () => ref.refresh(cityListProvider),
-                      child: const Text('重试'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+
+          // 热门城市
+          _buildHotCities(),
+
+          // 城市列表
+          Expanded(child: _buildCityList()),
         ],
       ),
     );
   }
 
-  List<AlphabetListViewItemGroup> _buildAlphabetItems(List<CityModel> cities) {
-    final Map<String, List<CityModel>> grouped = {};
-    for (final city in cities) {
-      if (!grouped.containsKey(city.tag)) {
-        grouped[city.tag] = [];
-      }
-      grouped[city.tag]!.add(city);
+  /// 构建搜索框
+  Widget _buildSearchBar() {
+    final searchQuery = ref.watch(citySearchQueryProvider);
+
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      color: Colors.white,
+      child: TextField(
+        controller: _searchController,
+        decoration: InputDecoration(
+          hintText: t.city.search,
+          prefixIcon: const Icon(Icons.search),
+          suffixIcon: searchQuery.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: _showAllCities,
+                )
+              : const SizedBox.shrink(),
+          filled: true,
+          fillColor: AppColors.background,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.r),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 12.h,
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// 构建热门城市
+  Widget _buildHotCities() {
+    final hotCitiesAsync = ref.watch(hotCitiesProvider);
+    final searchQuery = ref.watch(citySearchQueryProvider);
+
+    if (searchQuery.isNotEmpty) {
+      return const SizedBox.shrink();
     }
 
-    final sortedKeys = grouped.keys.toList()..sort();
+    return hotCitiesAsync.when(
+      data: (cities) {
+        if (cities.isEmpty) {
+          return const SizedBox.shrink();
+        }
 
-    return sortedKeys.map((tag) {
-      return AlphabetListViewItemGroup(
-        tag: tag,
-        children: grouped[tag]!.map((city) => _buildCityItem(city)).toList(),
-      );
-    }).toList();
-  }
-
-  Widget _buildSearchBar() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      padding: EdgeInsets.symmetric(horizontal: 12.w),
-      height: 40.h,
-      decoration: BoxDecoration(
-        color: const Color(0xFFF5F5F5),
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.search, color: Colors.grey, size: 20.sp),
-          SizedBox(width: 8.w),
-          Text(
-            '搜索城市名称或省份',
-            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCurrentLocation(int cityCount) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE8F5E9),
-        borderRadius: BorderRadius.circular(4.r),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              '从预加载数据加载 ($cityCount个城市)',
-              style: TextStyle(color: const Color(0xFF4CAF50), fontSize: 13.sp),
-            ),
-          ),
-          InkWell(
-            onTap: () => ref.refresh(cityListProvider),
-            child: Icon(
-              Icons.refresh,
-              color: const Color(0xFF4CAF50),
-              size: 18.sp,
-            ),
-          ),
-          SizedBox(width: 8.w),
-          Icon(Icons.edit, color: const Color(0xFF4CAF50), size: 18.sp),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCityItem(CityModel city) {
-    return InkWell(
-      onTap: () {
-        context.pop(city.name);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-        decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Color(0xFFEEEEEE))),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              city.name,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF333333),
+        return Container(
+          color: Colors.white,
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                t.city.hot,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
               ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              city.code,
-              style: TextStyle(fontSize: 12.sp, color: const Color(0xFF999999)),
-            ),
-          ],
+              SizedBox(height: 12.h),
+              Wrap(
+                spacing: 12.w,
+                runSpacing: 12.h,
+                children: cities.map(_buildCityChip).toList(),
+              ),
+            ],
+          ),
+        );
+      },
+      loading: () => const SizedBox.shrink(), // 热门城市加载中不占位，或者显示骨架屏
+      error: (_, _) => const SizedBox.shrink(),
+    );
+  }
+
+  /// 构建城市芯片
+  Widget _buildCityChip(CityModel city) {
+    return InkWell(
+      onTap: () => _selectCity(city),
+      borderRadius: BorderRadius.circular(8.r),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          color: AppColors.background,
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(color: AppColors.divider),
         ),
+        child: Text(
+          city.name,
+          style: TextStyle(fontSize: 14.sp, color: AppColors.textPrimary),
+        ),
+      ),
+    );
+  }
+
+  /// 构建城市列表
+  Widget _buildCityList() {
+    final allCitiesAsync = ref.watch(allCitiesProvider);
+
+    // 如果是搜索状态，使用 filteredCitiesProvider
+    // 如果不是搜索状态，使用 groupedCitiesProvider (如果我们需要分组显示)
+    // 原始代码在搜索时显示列表，未搜索时也显示列表（但可能分组）
+    // 这里为了简单，我们统一使用 filteredCitiesProvider，它在无搜索词时返回所有城市
+    //
+    // 实际上，如果我们需要分组显示（按首字母），我们需要判断 searchQuery
+
+    final searchQuery = ref.watch(citySearchQueryProvider);
+
+    if (searchQuery.isEmpty) {
+      // 分组显示逻辑
+      final groupedCities = ref.watch(groupedCitiesProvider);
+      // groupedCitiesProvider 依赖 allCitiesProvider，所以如果 allCities 还在加载，它可能为空
+      // 我们还是应该依赖 allCitiesAsync 的状态
+
+      return allCitiesAsync.when(
+        data: (_) {
+          if (groupedCities.isEmpty) {
+            return _buildEmptyState();
+          }
+
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref
+                ..invalidate(allCitiesProvider)
+                ..invalidate(hotCitiesProvider);
+              await ref.read(allCitiesProvider.future);
+            },
+            child: ListView.builder(
+              itemCount: groupedCities.length,
+              itemBuilder: (context, index) {
+                final initial = groupedCities.keys.elementAt(index);
+                final cities = groupedCities[initial]!;
+                return _buildGroupedItem(initial, cities);
+              },
+            ),
+          );
+        },
+        loading: () => const LoadingWidget(),
+        error: (err, stack) => app_error.ErrorWidget(
+          message: err.toString(),
+          onRetry: () => ref.refresh(allCitiesProvider),
+        ),
+      );
+    } else {
+      // 搜索结果列表
+      final filteredCities = ref.watch(filteredCitiesProvider);
+
+      return allCitiesAsync.when(
+        data: (_) {
+          if (filteredCities.isEmpty) {
+            return _buildEmptyState();
+          }
+
+          return ListView.builder(
+            itemCount: filteredCities.length,
+            itemBuilder: (context, index) {
+              final city = filteredCities[index];
+              return _buildCityItem(city);
+            },
+          );
+        },
+        loading: () => const LoadingWidget(),
+        error: (err, stack) => app_error.ErrorWidget(
+          message: err.toString(),
+          onRetry: () => ref.refresh(allCitiesProvider),
+        ),
+      );
+    }
+  }
+
+  Widget _buildGroupedItem(String initial, List<CityModel> cities) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          color: AppColors.background,
+          width: double.infinity,
+          child: Text(
+            initial,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ),
+        ...cities.map(_buildCityItem),
+      ],
+    );
+  }
+
+  /// 构建城市列表项
+  Widget _buildCityItem(CityModel city) {
+    final selectedCityAsync = ref.watch(selectedCityProvider);
+    final selectedCity = selectedCityAsync.asData?.value;
+    final isSelected = selectedCity?.id == city.id;
+
+    return ColoredBox(
+      color: Colors.white,
+      child: ListTile(
+        title: Text(
+          city.name,
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: isSelected ? AppColors.primary : AppColors.textPrimary,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+          ),
+        ),
+        trailing: isSelected
+            ? Icon(Icons.check_circle, color: AppColors.primary, size: 24.sp)
+            : null,
+        onTap: () => _selectCity(city),
+      ),
+    );
+  }
+
+  /// 构建空状态
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.location_city_outlined,
+            size: 64.sp,
+            color: AppColors.textHint,
+          ),
+          SizedBox(height: 16.h),
+          Text(
+            '未找到相关城市',
+            style: TextStyle(fontSize: 16.sp, color: AppColors.textSecondary),
+          ),
+          SizedBox(height: 8.h),
+          TextButton(onPressed: _showAllCities, child: const Text('查看所有城市')),
+        ],
       ),
     );
   }

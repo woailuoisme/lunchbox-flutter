@@ -1,6 +1,6 @@
 import 'package:lunchbox/core/errors/failure_extensions.dart';
-import 'package:lunchbox/features/city/entities/city_model.dart';
-import 'package:lunchbox/features/city/repositories/city_repository.dart';
+import 'package:lunchbox/features/device/entities/city_model.dart';
+import 'package:lunchbox/features/device/repositories/city_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'city_providers.g.dart';

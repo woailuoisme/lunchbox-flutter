@@ -1,6 +1,6 @@
 import 'package:lunchbox/core/errors/failure_extensions.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
-import 'package:lunchbox/features/cart/providers/cart_notifier.dart';
+import 'package:lunchbox/features/device/providers/cart_notifier.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/features/order/providers/order_state.dart';
 import 'package:lunchbox/features/order/repositories/order_repository.dart';
@@ -14,6 +14,22 @@ class OrderNotifier extends _$OrderNotifier {
   OrderState build() {
     Future.microtask(loadOrders);
     return const OrderState();
+  }
+
+  Future<List<OrderModel>> fetchOrdersPage({
+    required int page,
+    int pageSize = 10,
+    String? status,
+  }) async {
+    final repository = ref.read(orderRepositoryProvider);
+    final result = await repository
+        .getUserOrders(page: page, pageSize: pageSize, status: status)
+        .run();
+
+    return result.match((failure) {
+      LoggerUtils.e('OrderNotifier: Failed to load orders page', failure);
+      throw failure;
+    }, (data) => data);
   }
 
   Future<void> loadOrders({String? status}) async {
@@ -107,6 +123,47 @@ class OrderNotifier extends _$OrderNotifier {
       (_) async {
         await loadOrders(status: state.selectedStatus);
         LoggerUtils.i('OrderNotifier: Order cancelled: $orderId');
+      },
+    );
+  }
+
+  Future<void> payOrder(String orderId, String paymentMethod) async {
+    state = state.copyWith(isLoading: true);
+    final repository = ref.read(orderRepositoryProvider);
+    final result = await repository.payOrder(orderId, paymentMethod).run();
+
+    await result.fold(
+      (failure) async {
+        LoggerUtils.e('OrderNotifier: Failed to pay order', failure);
+        state = state.copyWith(isLoading: false);
+        throw Exception(failure.toUserMessage());
+      },
+      (_) async {
+        await loadOrders(status: state.selectedStatus);
+        if (state.selectedOrder?.id == orderId) {
+          await loadOrderById(orderId);
+        }
+        LoggerUtils.i('OrderNotifier: Order paid: $orderId');
+      },
+    );
+  }
+
+  Future<OrderModel?> reorder(String orderId) async {
+    state = state.copyWith(isLoading: true);
+    final repository = ref.read(orderRepositoryProvider);
+    final result = await repository.reorder(orderId).run();
+
+    return result.fold(
+      (failure) {
+        LoggerUtils.e('OrderNotifier: Failed to reorder', failure);
+        state = state.copyWith(isLoading: false);
+        throw Exception(failure.toUserMessage());
+      },
+      (order) async {
+        state = state.copyWith(isLoading: false, selectedOrder: order);
+        await loadOrders(status: state.selectedStatus);
+        LoggerUtils.i('OrderNotifier: Reordered: ${order.id}');
+        return order;
       },
     );
   }

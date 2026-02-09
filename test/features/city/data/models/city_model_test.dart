@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lunchbox/features/city/entities/city_model.dart';
+import 'package:lunchbox/features/device/entities/city_model.dart';
 
 void main() {
   group('CityModel', () {

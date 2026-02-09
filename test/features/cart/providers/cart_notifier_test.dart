@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
-import 'package:lunchbox/features/cart/providers/cart_notifier.dart';
-import 'package:lunchbox/features/cart/repositories/cart_repository.dart';
+import 'package:lunchbox/features/device/entities/cart_item_model.dart';
+import 'package:lunchbox/features/device/providers/cart_notifier.dart';
+import 'package:lunchbox/features/device/repositories/cart_repository.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

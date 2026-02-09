@@ -7,4 +7,3 @@ export 'repositories/order_repository.dart';
 export 'screens/order_confirm_view.dart';
 export 'screens/order_detail_view.dart';
 export 'screens/order_list_view.dart';
-export 'screens/order_view.dart';

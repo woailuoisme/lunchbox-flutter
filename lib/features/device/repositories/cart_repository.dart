@@ -6,7 +6,7 @@ import 'package:lunchbox/core/errors/failure.dart';
 import 'package:lunchbox/core/network/rest_client.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
-import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
+import 'package:lunchbox/features/device/entities/cart_item_model.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

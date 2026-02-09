@@ -22,7 +22,7 @@ class SimulatedDeviceRepository {
         longitude: 114.057868,
         address: '深圳市福田区沙头街道车公庙深南大道6013号(车公庙地铁站D1口旁)',
       ),
-      productIds: [],
+      productIds: ['p1', 'p2', 'p3', 'p4', 'p5'],
       lastUpdated: '2023-10-01T12:00:00Z',
     ),
     const DeviceModel(
@@ -35,7 +35,7 @@ class SimulatedDeviceRepository {
         longitude: 114.057868,
         address: '深圳市南山区滨海大道3388号',
       ),
-      productIds: [],
+      productIds: ['p1', 'p2', 'p3'],
       lastUpdated: '2023-10-01T12:00:00Z',
     ),
     const DeviceModel(
@@ -48,7 +48,7 @@ class SimulatedDeviceRepository {
         longitude: 114.057868,
         address: '深圳市南山区粤海街道德维森德维森大厦',
       ),
-      productIds: [],
+      productIds: ['p4', 'p5'],
       lastUpdated: '2023-10-01T12:00:00Z',
     ),
   ];
@@ -65,7 +65,7 @@ class SimulatedDeviceRepository {
         longitude: 113.8,
         address: '东莞市广东省东莞市大岭山镇东莞暨南大学研究院中科云计算研究院',
       ),
-      productIds: [],
+      productIds: ['p1', 'p3', 'p5'],
       lastUpdated: '2023-10-01T12:00:00Z',
     ),
     const DeviceModel(
@@ -78,7 +78,7 @@ class SimulatedDeviceRepository {
         longitude: 113.8,
         address: '东莞市寮步镇科技二路光大We谷',
       ),
-      productIds: [],
+      productIds: ['p2', 'p4'],
       lastUpdated: '2023-10-01T12:00:00Z',
     ),
   ];

@@ -1014,11 +1014,11 @@ class TranslationsDeviceZhCn {
   /// zh-CN: '状态'
   String get status => '状态';
 
-  /// zh-CN: '在线'
-  String get online => '在线';
+  /// zh-CN: '营业中'
+  String get online => '营业中';
 
-  /// zh-CN: '离线'
-  String get offline => '离线';
+  /// zh-CN: '休息中'
+  String get offline => '休息中';
 
   /// zh-CN: '支付方式：'
   String get paymentMethods => '支付方式：';
@@ -1056,6 +1056,39 @@ class TranslationsDeviceZhCn {
   /// zh-CN: '加载商品失败: ${error}'
   String loadProductsFailed({required Object error}) =>
       '加载商品失败: ${error}';
+
+  /// zh-CN: '点餐'
+  String get menu => '点餐';
+
+  /// zh-CN: '经典菜单'
+  String get classicMenu => '经典菜单';
+
+  /// zh-CN: '限时优惠'
+  String get limitedDiscount => '限时优惠';
+
+  /// zh-CN: '月售 ${count}'
+  String monthlySales({required Object count}) => '月售 ${count}';
+
+  /// zh-CN: '剩余 ${count}'
+  String stock({required Object count}) => '剩余 ${count}';
+
+  /// zh-CN: '已售罄'
+  String get soldOutLabel => '已售罄';
+
+  /// zh-CN: '自取点餐'
+  String get selfPickupOrder => '自取点餐';
+
+  /// zh-CN: '已选商品'
+  String get selectedProducts => '已选商品';
+
+  /// zh-CN: '小计'
+  String get subtotal => '小计';
+
+  /// zh-CN: '预估到手'
+  String get estimatedPrice => '预估到手';
+
+  /// zh-CN: '原价'
+  String get originalPrice => '原价';
 
   /// zh-CN: '附近营业点'
   String get nearby => '附近营业点';
@@ -2045,8 +2078,8 @@ extension on Translations {
       'device.address' => '地址',
       'device.distance' => '距离',
       'device.status' => '状态',
-      'device.online' => '在线',
-      'device.offline' => '离线',
+      'device.online' => '营业中',
+      'device.offline' => '休息中',
       'device.paymentMethods' => '支付方式：',
       'device.mobilePayment' => '移动支付',
       'device.cash' => '现金',
@@ -2060,6 +2093,17 @@ extension on Translations {
       'device.loadFailed' => ({required Object error}) => '加载失败: ${error}',
       'device.loadProductsFailed' =>
           ({required Object error}) => '加载商品失败: ${error}',
+      'device.menu' => '点餐',
+      'device.classicMenu' => '经典菜单',
+      'device.limitedDiscount' => '限时优惠',
+      'device.monthlySales' => ({required Object count}) => '月售 ${count}',
+      'device.stock' => ({required Object count}) => '剩余 ${count}',
+      'device.soldOutLabel' => '已售罄',
+      'device.selfPickupOrder' => '自取点餐',
+      'device.selectedProducts' => '已选商品',
+      'device.subtotal' => '小计',
+      'device.estimatedPrice' => '预估到手',
+      'device.originalPrice' => '原价',
       'device.nearby' => '附近营业点',
       'device.frequent' => '常去营业点',
       'device.sortByDistance' => '按距离排序',
