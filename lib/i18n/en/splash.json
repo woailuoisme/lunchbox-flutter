@@ -1,0 +1,9 @@
+{
+  "starting": "Starting...",
+  "checkingServices": "Checking services...",
+  "loadingConfig": "Loading config...",
+  "checkingAuth": "Checking auth status...",
+  "preparingData": "Preparing data...",
+  "ready": "Ready",
+  "failed": "Start Failed"
+}

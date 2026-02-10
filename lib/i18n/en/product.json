@@ -1,0 +1,22 @@
+{
+  "title": "Product List",
+  "detail": "Product Detail",
+  "hot": "Hot",
+  "promotion": "Sale",
+  "discountOff": "${percent}% OFF",
+  "stockFull": "In Stock",
+  "stockEmpty": "Out of Stock",
+  "addToCart": "Add to Cart",
+  "addedToCart": "Added to Cart",
+  "specifications": "Specifications",
+  "categoryAll": "All",
+  "categoryFood": "Food",
+  "categoryDrink": "Drink",
+  "categorySnack": "Snack",
+  "sortDefault": "Default",
+  "sortPriceAsc": "Price: Low to High",
+  "sortPriceDesc": "Price: High to Low",
+  "sortName": "Name",
+  "filterOnlyAvailable": "Show Available Only",
+  "cart": "Cart"
+}

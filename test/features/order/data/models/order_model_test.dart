@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lunchbox/features/device/entities/cart_item_model.dart';
-import 'package:lunchbox/features/device/entities/device_model.dart';
-import 'package:lunchbox/features/device/entities/location_model.dart';
+import 'package:lunchbox/features/cart/cart.dart';
+import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
 

@@ -1,0 +1,27 @@
+{
+  "errors": {
+    "connectionTimeout": "Connection timeout, please check your network",
+    "sendTimeout": "Send timeout, please check your network",
+    "receiveTimeout": "Receive timeout, please check your network",
+    "badCertificate": "Bad certificate",
+    "cancel": "Request cancelled",
+    "connectionError": "Connection error, please check your network",
+    "unknown": "Unknown error: ${error}",
+    "retryLater": "Please try again later",
+    "badRequest": "Bad request",
+    "unauthorized": "Unauthorized, please login again",
+    "forbidden": "Forbidden",
+    "notFound": "Resource not found",
+    "timeout": "Request timeout, please try again",
+    "conflict": "Conflict",
+    "validationFailed": "Validation failed",
+    "tooManyRequests": "Too many requests, please try again later",
+    "internalServerError": "Internal server error",
+    "badGateway": "Bad gateway",
+    "serviceUnavailable": "Service unavailable",
+    "gatewayTimeout": "Gateway timeout",
+    "serverError": "Server error (${code})",
+    "requestError": "Request error (${code})",
+    "failed": "Network request failed"
+  }
+}

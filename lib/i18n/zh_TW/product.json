@@ -1,0 +1,22 @@
+{
+  "title": "商品列表",
+  "detail": "商品詳情",
+  "hot": "熱銷",
+  "promotion": "促銷",
+  "discountOff": "${percent}% OFF",
+  "stockFull": "庫存充足",
+  "stockEmpty": "暫時缺貨",
+  "addToCart": "加入購物車",
+  "addedToCart": "已加入購物車",
+  "specifications": "規格參數",
+  "categoryAll": "全部",
+  "categoryFood": "食品",
+  "categoryDrink": "飲料",
+  "categorySnack": "零食",
+  "sortDefault": "預設排序",
+  "sortPriceAsc": "價格從低到高",
+  "sortPriceDesc": "價格從高到低",
+  "sortName": "按名稱排序",
+  "filterOnlyAvailable": "僅顯示可用商品",
+  "cart": "購物車"
+}

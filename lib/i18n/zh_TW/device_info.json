@@ -1,0 +1,19 @@
+{
+  "browser": "瀏覽器",
+  "platform": "平台",
+  "userAgent": "User Agent",
+  "language": "語言",
+  "memory": "記憶體",
+  "brand": "品牌",
+  "model": "型號",
+  "systemVersion": "系統版本",
+  "sdkVersion": "SDK版本",
+  "manufacturer": "廠商",
+  "hardware": "硬體",
+  "host": "主機",
+  "id": "ID",
+  "name": "名稱",
+  "systemName": "系統名",
+  "machine": "機器碼",
+  "uniqueId": "唯一ID"
+}

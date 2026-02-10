@@ -1,0 +1,13 @@
+{
+  "checkout": "收银台",
+  "success": "支付成功",
+  "orderNotFound": "订单信息不存在",
+  "payNow": "立即支付",
+  "initializing": "正在初始化支付组件...",
+  "cancelTitle": "取消支付",
+  "cancelContent": "确定要取消支付吗？订单将被取消",
+  "continuePay": "继续支付",
+  "cancelPay": "取消支付",
+  "amount": "支付金额",
+  "remainingTime": "支付剩余时间"
+}

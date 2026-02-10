@@ -1,0 +1,6 @@
+{
+  "justNow": "剛剛",
+  "minutesAgo": "${minutes}分鐘前",
+  "hoursAgo": "${hours}小時前",
+  "daysAgo": "${days}天前"
+}

@@ -1,0 +1,11 @@
+{
+  "title": "選擇城市",
+  "search": "搜尋城市",
+  "hot": "熱門城市",
+  "noResult": "未找到相關城市",
+  "viewAll": "查看所有城市",
+  "switchSuccess": "城市已切換",
+  "switchedTo": "已切換到 ${name}",
+  "switchFailed": "切換失敗",
+  "saveFailed": "無法儲存選擇的城市，請重試"
+}

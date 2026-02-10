@@ -1,4 +1,4 @@
-import 'package:lunchbox/features/profile/models/wallet_transaction_model.dart';
+import 'package:lunchbox/features/profile/entities/wallet_transaction_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'wallet_repository.g.dart';

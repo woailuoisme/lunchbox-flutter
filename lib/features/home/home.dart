@@ -1,7 +1,7 @@
 library;
 
-export 'models/lottery_prize.dart';
-export 'models/lottery_state.dart';
+export 'entities/lottery_prize.dart';
+export 'entities/lottery_state.dart';
 export 'providers/home_notifier.dart';
 export 'providers/home_state.dart';
 export 'providers/lottery_provider.dart';

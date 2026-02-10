@@ -4,7 +4,7 @@ targets:
       envied_generator:envied:
         enabled: true
         generate_for:
-          - lib/env/*.dart
+          - lib/core/env/*.dart
 
       riverpod_generator:
         enabled: true
@@ -40,3 +40,14 @@ targets:
           explicit_to_json: true # 嵌套对象生成显式的 toJson 调用
           field_rename: snake # 字段命名策略：snake_case (例如 userName -> user_name)
           include_if_null: false #生成的 JSON 中不包含 null 值字段
+
+      retrofit_generator:
+        enabled: true
+        generate_for:
+          - lib/core/network/*.dart
+          - lib/features/**/datasources/*.dart
+
+      go_router_builder:
+        enabled: true
+        generate_for:
+          - lib/routes/*.dart

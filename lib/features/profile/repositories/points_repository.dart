@@ -1,5 +1,5 @@
-import 'package:lunchbox/features/profile/models/mall_product_model.dart';
-import 'package:lunchbox/features/profile/models/points_record_model.dart';
+import 'package:lunchbox/features/profile/entities/mall_product_model.dart';
+import 'package:lunchbox/features/profile/entities/points_record_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'points_repository.g.dart';

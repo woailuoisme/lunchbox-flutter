@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lunchbox/features/device/entities/device.dart';
 import 'package:lunchbox/features/device/entities/device_status.dart';
 import 'package:lunchbox/features/device/entities/location_model.dart';
 
@@ -47,17 +46,6 @@ abstract class DeviceModel with _$DeviceModel {
   String get address => location.address ?? '';
   double? get distance => null; // TODO: Calculate distance
   String get distanceText => '';
-
-  /// Convert DeviceModel to Device domain entity
-  Device toEntity() => Device(
-    id: id,
-    name: name,
-    cityId: cityId,
-    status: _parseStatus(status),
-    location: location.toEntity(),
-    productIds: productIds,
-    lastUpdated: DateTime.parse(lastUpdated),
-  );
 
   /// Parse status string to DeviceStatus enum
   DeviceStatus _parseStatus(String status) {

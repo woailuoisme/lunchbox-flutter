@@ -1,0 +1,13 @@
+{
+  "checkout": "Checkout",
+  "success": "Payment Successful",
+  "orderNotFound": "Order Not Found",
+  "payNow": "Pay Now",
+  "initializing": "Initializing payment...",
+  "cancelTitle": "Cancel Payment",
+  "cancelContent": "Are you sure you want to cancel? Order will be cancelled",
+  "continuePay": "Continue Payment",
+  "cancelPay": "Cancel Payment",
+  "amount": "Payment Amount",
+  "remainingTime": "Time Remaining"
+}

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:lunchbox/routes/routes.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:lunchbox/routes/app_routes.dart';
 
 /// 用户中心视图 (我的)
 ///
@@ -54,9 +53,8 @@ class ProfileView extends ConsumerWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(width: 40),
                 Text(
                   '个人中心',
                   style: TextStyle(
@@ -65,7 +63,6 @@ class ProfileView extends ConsumerWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                // Icons removed
               ],
             ),
           ),
@@ -144,19 +141,19 @@ class ProfileView extends ConsumerWidget {
                   context,
                   '999962.07',
                   '钱包余额',
-                  onTap: () => context.push(AppRoutes.wallet),
+                  onTap: () => const WalletRoute().push<void>(context),
                 ),
                 _buildAssetItem(
                   context,
                   '300',
                   '乖乖币',
-                  onTap: () => context.push(AppRoutes.myPoints),
+                  onTap: () => const MyPointsRoute().push<void>(context),
                 ),
                 _buildAssetItem(
                   context,
                   '9',
                   '优惠券',
-                  onTap: () => context.push(AppRoutes.coupons),
+                  onTap: () => const CouponsRoute().push<void>(context),
                 ),
               ],
             ),
@@ -218,43 +215,43 @@ class ProfileView extends ConsumerWidget {
             title: '我的钱包',
             trailingText: '999962.07',
             trailingColor: theme.colorScheme.primary,
-            onTap: () => context.push(AppRoutes.wallet),
+            onTap: () => const WalletRoute().push<void>(context),
           ),
           _buildMenuTile(
             context: context,
             icon: Symbols.airplane_ticket,
             title: '优惠券',
-            onTap: () => context.push(AppRoutes.coupons),
+            onTap: () => const CouponsRoute().push<void>(context),
           ),
           _buildMenuTile(
             context: context,
             icon: Symbols.help,
             title: '问题反馈',
-            onTap: () => context.push(AppRoutes.feedback),
+            onTap: () => const FeedbackRoute().push<void>(context),
           ),
           _buildMenuTile(
             context: context,
             icon: Symbols.person,
             title: '个人信息',
-            onTap: () => context.push(AppRoutes.profileEdit),
+            onTap: () => const ProfileEditRoute().push<void>(context),
           ),
           _buildMenuTile(
             context: context,
             icon: Symbols.handshake,
             title: '合作商加盟',
-            onTap: () => context.push(AppRoutes.partner),
+            onTap: () => const PartnerRoute().push<void>(context),
           ),
           _buildMenuTile(
             context: context,
             icon: Symbols.info,
             title: '关于我们',
-            onTap: () => context.push(AppRoutes.aboutUs),
+            onTap: () => const AboutUsRoute().push<void>(context),
           ),
           _buildMenuTile(
             context: context,
             icon: Symbols.settings,
             title: '设置',
-            onTap: () => context.push(AppRoutes.settings),
+            onTap: () => const SettingsRoute().push<void>(context),
           ),
         ],
       ),

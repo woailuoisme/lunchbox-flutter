@@ -1,5 +1,9 @@
 library;
 
+export 'entities/coupon_model.dart';
+export 'entities/mall_product_model.dart';
+export 'entities/points_record_model.dart';
+export 'entities/wallet_transaction_model.dart';
 export 'providers/profile_notifier.dart';
 export 'providers/profile_state.dart';
 export 'screens/about_us_view.dart';

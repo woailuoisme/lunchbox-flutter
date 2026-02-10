@@ -1,0 +1,19 @@
+{
+  "browser": "Browser",
+  "platform": "Platform",
+  "userAgent": "User Agent",
+  "language": "Language",
+  "memory": "Memory",
+  "brand": "Brand",
+  "model": "Model",
+  "systemVersion": "System Version",
+  "sdkVersion": "SDK Version",
+  "manufacturer": "Manufacturer",
+  "hardware": "Hardware",
+  "host": "Host",
+  "id": "ID",
+  "name": "Name",
+  "systemName": "System Name",
+  "machine": "Machine",
+  "uniqueId": "Unique ID"
+}

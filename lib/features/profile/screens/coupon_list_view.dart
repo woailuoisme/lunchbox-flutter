@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:lunchbox/features/profile/models/coupon_model.dart';
+import 'package:lunchbox/features/profile/entities/coupon_model.dart';
 import 'package:lunchbox/features/profile/repositories/coupon_repository.dart';
 
 class CouponListView extends ConsumerStatefulWidget {

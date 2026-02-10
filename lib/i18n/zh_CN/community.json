@@ -1,0 +1,27 @@
+{
+  "title": "社群福利",
+  "join": "加入社群",
+  "share": "与美食爱好者一起分享美味",
+  "org": "东莞中科云计算研究院",
+  "dept": "云计算中心",
+  "scanHint": "扫码加入东莞中科云计算研究院",
+  "features": {
+    "coupon": "专属优惠券",
+    "couponHint": "群内专享折扣，省钱又美味",
+    "tasting": "新品试吃",
+    "tastingHint": "第一时间品尝最新美食",
+    "exchange": "美食交流",
+    "exchangeHint": "与美食达人分享心得",
+    "priority": "活动优先",
+    "priorityHint": "优先参与各种美食活动",
+    "activity": "社群活动",
+    "activityHint": "定期举办线下聚会",
+    "topic": "话题讨论",
+    "topicHint": "参与话题赢取奖励"
+  },
+  "whyJoin": "为什么加入我们的社群？",
+  "reason1": "每日美食推荐，让你不再纠结吃什么",
+  "reason2": "限时优惠活动，省钱又省心",
+  "reason3": "专业美食测评，帮你避坑",
+  "reason4": "美食制作教程，在家也能做出美味"
+}

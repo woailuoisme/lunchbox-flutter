@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
-import 'package:lunchbox/features/device/entities/device_status.dart';
 import 'package:lunchbox/features/device/entities/location_model.dart';
 
 void main() {
@@ -68,16 +67,6 @@ void main() {
         'last_updated': '2023-01-01T12:00:00.000',
       };
       expect(result, expectedMap);
-    });
-
-    test('toEntity should return a valid Device entity', () async {
-      // act
-      final result = tDeviceModel.toEntity();
-
-      // assert
-      expect(result.id, 'd1');
-      expect(result.status, DeviceStatus.online);
-      expect(result.lastUpdated, DateTime.parse('2023-01-01T12:00:00.000'));
     });
 
     test('isOnline should return true when status is online', () {

@@ -1,0 +1,18 @@
+{
+  "title": "Coupon",
+  "tabs": {
+    "available": "Available",
+    "received": "Received",
+    "expired": "Expired"
+  },
+  "unit": "$",
+  "condition": "Coupon\nOver ${amount}",
+  "conditionNoThreshold": "Coupon\nNo threshold",
+  "validForever": "Valid Forever",
+  "btnReceive": "Receive",
+  "btnReceived": "Received",
+  "btnUse": "Use",
+  "btnExpired": "Expired",
+  "discount": "$ ${amount} Coupon",
+  "discountOff": "$ ${amount} Off"
+}

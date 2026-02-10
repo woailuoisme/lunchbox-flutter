@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:lunchbox/features/profile/models/mall_product_model.dart';
+import 'package:lunchbox/features/profile/entities/mall_product_model.dart';
 import 'package:lunchbox/features/profile/repositories/points_repository.dart';
 
 class PointsMallView extends ConsumerStatefulWidget {

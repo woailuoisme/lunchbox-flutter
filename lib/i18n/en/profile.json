@@ -1,0 +1,16 @@
+{
+  "title": "User Center",
+  "notLoggedIn": "Not Logged In",
+  "editProfile": "Edit Profile",
+  "logout": "Logout",
+  "favoriteDevices": "Favorite Devices",
+  "personalInfo": "Personal Info",
+  "confirmLogout": "Confirm Logout",
+  "confirmLogoutContent": "Are you sure you want to logout?",
+  "clearCacheConfirm": "Are you sure you want to clear all cache data?",
+  "noFavoriteDevices": "No favorite devices",
+  "removeFavorite": "Unfavorite",
+  "removeFavoriteConfirm": "Are you sure you want to unfavorite \"${name}\"?",
+  "appDescription": "A convenient vending machine purchasing application",
+  "version": "Version: ${version}"
+}

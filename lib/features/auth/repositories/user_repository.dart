@@ -6,7 +6,7 @@ import 'package:lunchbox/core/errors/errors.dart';
 import 'package:lunchbox/core/network/network.dart';
 import 'package:lunchbox/core/services/services.dart';
 import 'package:lunchbox/core/utils/utils.dart';
-import 'package:lunchbox/features/auth/models/user_model.dart';
+import 'package:lunchbox/features/auth/entities/user_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_repository.g.dart';

@@ -1,0 +1,27 @@
+{
+  "errors": {
+    "connectionTimeout": "连接超时，请检查网络连接",
+    "sendTimeout": "发送请求超时，请检查网络连接",
+    "receiveTimeout": "接收响应超时，请检查网络连接",
+    "badCertificate": "证书验证失败",
+    "cancel": "请求已取消",
+    "connectionError": "网络连接失败，请检查网络设置",
+    "unknown": "未知错误：${error}",
+    "retryLater": "请稍后重试",
+    "badRequest": "请求参数错误",
+    "unauthorized": "未授权，请重新登录",
+    "forbidden": "没有权限访问该资源",
+    "notFound": "请求的资源不存在",
+    "timeout": "请求超时，请重试",
+    "conflict": "请求冲突",
+    "validationFailed": "请求数据验证失败",
+    "tooManyRequests": "请求过于频繁，请稍后重试",
+    "internalServerError": "服务器内部错误",
+    "badGateway": "网关错误，请稍后重试",
+    "serviceUnavailable": "服务暂时不可用，请稍后重试",
+    "gatewayTimeout": "网关超时，请稍后重试",
+    "serverError": "服务器错误（${code}）",
+    "requestError": "请求错误（${code}）",
+    "failed": "网络请求失败"
+  }
+}

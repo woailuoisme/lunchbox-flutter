@@ -1,0 +1,18 @@
+{
+  "title": "優惠券",
+  "tabs": {
+    "available": "可領取",
+    "received": "已領取",
+    "expired": "已過期"
+  },
+  "unit": "NT$",
+  "condition": "滿減券\n滿${amount}元可用",
+  "conditionNoThreshold": "滿減券\n滿0元可用",
+  "validForever": "長期有效",
+  "btnReceive": "立即領取",
+  "btnReceived": "已領取",
+  "btnUse": "去使用",
+  "btnExpired": "已過期",
+  "discount": "${amount}元優惠券",
+  "discountOff": "${amount}元減免券"
+}

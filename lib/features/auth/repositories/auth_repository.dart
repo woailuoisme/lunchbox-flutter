@@ -1,26 +1,26 @@
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:lunchbox/core/errors/failure.dart';
-import 'package:lunchbox/core/network/rest_client.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/core/values/app_constants.dart';
-import 'package:lunchbox/features/auth/models/user_model.dart';
+import 'package:lunchbox/features/auth/datasources/auth_remote_data_source.dart';
+import 'package:lunchbox/features/auth/entities/user_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_repository.g.dart';
 
 @Riverpod(keepAlive: true)
 AuthRepository authRepository(Ref ref) {
-  final restClient = ref.watch(restClientProvider);
+  final remoteDataSource = ref.watch(authRemoteDataSourceProvider);
   final storageService = ref.watch(storageServiceProvider);
-  return AuthRepository(restClient, storageService);
+  return AuthRepository(remoteDataSource, storageService);
 }
 
 class AuthRepository {
-  AuthRepository(this._client, this._storageService);
+  AuthRepository(this._remoteDataSource, this._storageService);
 
-  final RestClient _client;
+  final AuthRemoteDataSource _remoteDataSource;
   final StorageService _storageService;
 
   TaskEither<Failure, UserModel> login({
@@ -53,7 +53,7 @@ class AuthRepository {
         return testUser;
       }
 
-      final response = await _client.login({
+      final response = await _remoteDataSource.login({
         'username': username,
         'password': password,
       });
@@ -96,7 +96,7 @@ class AuthRepository {
     required String nickname,
   }) {
     return TaskEither.tryCatch(() async {
-      final response = await _client.register({
+      final response = await _remoteDataSource.register({
         'username': username,
         'password': password,
         'nickname': nickname,
@@ -137,7 +137,7 @@ class AuthRepository {
   TaskEither<Failure, void> logout() {
     return TaskEither.tryCatch(() async {
       try {
-        await _client.logout();
+        await _remoteDataSource.logout();
       } catch (e, stackTrace) {
         LoggerUtils.e('AuthRepository: Logout API failed', e, stackTrace);
         // Continue to clear local session even if API fails
@@ -159,7 +159,7 @@ class AuthRepository {
         return null;
       }
 
-      final response = await _client.getUserProfile();
+      final response = await _remoteDataSource.getUserProfile();
       if (response.success && response.data != null) {
         LoggerUtils.i('AuthRepository: Current user fetched successfully');
         return response.data;
@@ -174,7 +174,7 @@ class AuthRepository {
 
   TaskEither<Failure, UserModel> updateUserInfo(Map<String, dynamic> data) {
     return TaskEither.tryCatch(() async {
-      final response = await _client.updateUserProfile(data);
+      final response = await _remoteDataSource.updateUserProfile(data);
       if (response.success && response.data != null) {
         LoggerUtils.i('AuthRepository: User info updated successfully');
         return response.data!;
@@ -192,7 +192,7 @@ class AuthRepository {
     required String newPassword,
   }) {
     return TaskEither.tryCatch(() async {
-      final response = await _client.changePassword({
+      final response = await _remoteDataSource.changePassword({
         'oldPassword': oldPassword,
         'newPassword': newPassword,
       });
@@ -228,7 +228,7 @@ class AuthRepository {
         throw const Failure.unauthorized();
       }
 
-      final response = await _client.refreshToken({'token': token});
+      final response = await _remoteDataSource.refreshToken({'token': token});
       if (response.success && response.data != null) {
         final newToken = response.data!['token'] as String;
         await _storageService.write(AppConstants.keyAuthToken, newToken);
@@ -244,7 +244,9 @@ class AuthRepository {
 
   TaskEither<Failure, void> sendVerificationCode(String phone) {
     return TaskEither.tryCatch(() async {
-      final response = await _client.sendVerificationCode({'phone': phone});
+      final response = await _remoteDataSource.sendVerificationCode({
+        'phone': phone,
+      });
       if (!response.success) {
         throw Failure.server(
           message: response.message,
@@ -259,7 +261,10 @@ class AuthRepository {
     required String code,
   }) {
     return TaskEither.tryCatch(() async {
-      final response = await _client.verifyCode({'phone': phone, 'code': code});
+      final response = await _remoteDataSource.verifyCode({
+        'phone': phone,
+        'code': code,
+      });
       if (response.success && response.data != null) {
         return response.data!['valid'] as bool;
       } else {

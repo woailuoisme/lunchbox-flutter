@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/core/services/services.dart';
 import 'package:lunchbox/core/theme/theme.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:lunchbox/routes/routes.dart';
+import 'package:lunchbox/routes/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 

@@ -1,4 +1,4 @@
-import 'package:lunchbox/features/auth/models/user_model.dart';
+import 'package:lunchbox/features/auth/entities/user_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'profile_repository.g.dart';

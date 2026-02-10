@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lunchbox/features/auth/models/password.dart';
-import 'package:lunchbox/features/auth/models/username.dart';
+import 'package:lunchbox/features/auth/entities/password.dart';
+import 'package:lunchbox/features/auth/entities/username.dart';
 import 'package:lunchbox/features/auth/providers/login_notifier.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:lunchbox/routes/app_routes.dart';
+import 'package:lunchbox/routes/routes.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
 
@@ -250,7 +249,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   Widget _buildForgotPassword(ColorScheme colorScheme) {
     return TextButton(
-      onPressed: () => context.push(AppRoutes.forgotPassword),
+      onPressed: () => const ForgotPasswordRoute().push<void>(context),
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
         minimumSize: Size.zero,
@@ -275,7 +274,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           ),
         ),
         TextButton(
-          onPressed: () => context.push(AppRoutes.register),
+          onPressed: () => const RegisterRoute().push<void>(context),
           style: TextButton.styleFrom(
             padding: EdgeInsets.only(left: 4.w),
             minimumSize: Size.zero,

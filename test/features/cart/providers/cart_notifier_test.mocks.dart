@@ -5,8 +5,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:fpdart/fpdart.dart' as _i5;
 import 'package:lunchbox/core/errors/failure.dart' as _i6;
-import 'package:lunchbox/features/device/entities/cart_item_model.dart' as _i3;
-import 'package:lunchbox/features/device/repositories/cart_repository.dart'
+import 'package:lunchbox/features/cart/entities/cart_item_model.dart' as _i3;
+import 'package:lunchbox/features/cart/repositories/cart_repository.dart'
     as _i2;
 import 'package:lunchbox/features/product/entities/product_model.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;

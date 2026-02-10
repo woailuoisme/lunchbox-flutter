@@ -1,0 +1,9 @@
+{
+  "starting": "正在启动...",
+  "checkingServices": "检查服务状态...",
+  "loadingConfig": "加载配置...",
+  "checkingAuth": "检查登录状态...",
+  "preparingData": "准备数据...",
+  "ready": "启动完成",
+  "failed": "启动失败"
+}

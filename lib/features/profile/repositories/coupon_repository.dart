@@ -1,4 +1,4 @@
-import 'package:lunchbox/features/profile/models/coupon_model.dart';
+import 'package:lunchbox/features/profile/entities/coupon_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'coupon_repository.g.dart';

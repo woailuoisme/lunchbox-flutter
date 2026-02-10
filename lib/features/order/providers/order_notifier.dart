@@ -1,6 +1,6 @@
 import 'package:lunchbox/core/errors/failure_extensions.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
-import 'package:lunchbox/features/device/providers/cart_notifier.dart';
+import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/features/order/providers/order_state.dart';
 import 'package:lunchbox/features/order/repositories/order_repository.dart';

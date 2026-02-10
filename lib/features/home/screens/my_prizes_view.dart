@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/features/home/models/lottery_prize.dart';
+import 'package:lunchbox/features/home/entities/lottery_prize.dart';
 import 'package:lunchbox/features/home/providers/lottery_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';

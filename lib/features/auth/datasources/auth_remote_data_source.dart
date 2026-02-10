@@ -1,77 +1,61 @@
 import 'package:dio/dio.dart';
-import 'package:lunchbox/core/services/api_service.dart';
+import 'package:lunchbox/core/network/dio_provider.dart';
+import 'package:lunchbox/core/network/response/api_response.dart';
+import 'package:lunchbox/features/auth/entities/user_model.dart';
+import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_remote_data_source.g.dart';
 
 @Riverpod(keepAlive: true)
 AuthRemoteDataSource authRemoteDataSource(Ref ref) {
-  final apiService = ref.watch(apiServiceProvider);
-  return AuthRemoteDataSource(apiService);
+  final dio = ref.watch(dioProvider);
+  return AuthRemoteDataSource(dio);
 }
 
-class AuthRemoteDataSource {
-  AuthRemoteDataSource(this._apiService);
-  final ApiService _apiService;
+@RestApi()
+abstract class AuthRemoteDataSource {
+  factory AuthRemoteDataSource(Dio dio, {String baseUrl}) =
+      _AuthRemoteDataSource;
 
-  Future<Response<dynamic>> login({
-    required String username,
-    required String password,
-  }) {
-    return _apiService.post<dynamic>(
-      '/auth/login',
-      data: {'username': username, 'password': password},
-    );
-  }
+  @POST('/api/auth/login')
+  Future<ApiResponse<dynamic>> login(@Body() Map<String, dynamic> body);
 
-  Future<Response<dynamic>> register({
-    required String username,
-    required String password,
-    required String nickname,
-  }) {
-    return _apiService.post<dynamic>(
-      '/auth/register',
-      data: {'username': username, 'password': password, 'nickname': nickname},
-    );
-  }
+  @POST('/api/auth/register')
+  Future<ApiResponse<dynamic>> register(@Body() Map<String, dynamic> body);
 
-  Future<void> logout() {
-    return _apiService.post<void>('/auth/logout');
-  }
+  @POST('/api/auth/logout')
+  Future<ApiResponse<void>> logout();
 
-  Future<Response<dynamic>> getUserInfo() {
-    return _apiService.get<dynamic>('/user/profile');
-  }
+  @GET('/api/users/profile')
+  Future<ApiResponse<UserModel>> getUserProfile();
 
-  Future<Response<dynamic>> updateUserInfo(Map<String, dynamic> data) {
-    return _apiService.put<dynamic>('/user/profile', data: data);
-  }
+  @PUT('/api/users/profile')
+  Future<ApiResponse<UserModel>> updateUserProfile(
+    @Body() Map<String, dynamic> body,
+  );
 
-  Future<void> changePassword({
-    required String oldPassword,
-    required String newPassword,
-  }) {
-    return _apiService.post<void>(
-      '/user/change-password',
-      data: {'oldPassword': oldPassword, 'newPassword': newPassword},
-    );
-  }
+  @PUT('/api/users/password')
+  Future<ApiResponse<bool>> changePassword(@Body() Map<String, dynamic> body);
 
-  Future<Response<dynamic>> refreshToken(String token) {
-    return _apiService.post<dynamic>('/auth/refresh', data: {'token': token});
-  }
+  @POST('/api/auth/refresh')
+  Future<ApiResponse<dynamic>> refreshToken(@Body() Map<String, dynamic> body);
 
-  Future<void> sendVerificationCode(String phone) {
-    return _apiService.post<void>('/auth/send-code', data: {'phone': phone});
-  }
+  @POST('/api/auth/send-code')
+  Future<ApiResponse<void>> sendVerificationCode(
+    @Body() Map<String, dynamic> body,
+  );
 
-  Future<Response<dynamic>> verifyCode({
-    required String phone,
-    required String code,
-  }) {
-    return _apiService.post<dynamic>(
-      '/auth/verify-code',
-      data: {'phone': phone, 'code': code},
-    );
-  }
+  @POST('/api/auth/verify-code')
+  Future<ApiResponse<dynamic>> verifyCode(@Body() Map<String, dynamic> body);
+
+  @POST('/api/users/favorite-devices')
+  Future<ApiResponse<bool>> addFavoriteDevice(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @DELETE('/api/users/favorite-devices/{deviceId}')
+  Future<ApiResponse<bool>> removeFavoriteDevice(
+    @Path('deviceId') String deviceId,
+  );
 }

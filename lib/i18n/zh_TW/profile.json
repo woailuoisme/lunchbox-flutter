@@ -1,0 +1,16 @@
+{
+  "title": "用戶中心",
+  "notLoggedIn": "未登入",
+  "editProfile": "編輯資料",
+  "logout": "登出",
+  "favoriteDevices": "收藏設備",
+  "personalInfo": "個人資訊",
+  "confirmLogout": "確認登出",
+  "confirmLogoutContent": "確定要登出嗎？",
+  "clearCacheConfirm": "確定要清除所有快取數據嗎？",
+  "noFavoriteDevices": "暫無收藏設備",
+  "removeFavorite": "取消收藏",
+  "removeFavoriteConfirm": "確定要取消收藏\"${name}\"嗎？",
+  "appDescription": "一個便捷的自動售貨機購買應用",
+  "version": "版本：${version}"
+}

@@ -1,0 +1,19 @@
+{
+  "browser": "浏览器",
+  "platform": "平台",
+  "userAgent": "User Agent",
+  "language": "语言",
+  "memory": "内存",
+  "brand": "品牌",
+  "model": "型号",
+  "systemVersion": "系统版本",
+  "sdkVersion": "SDK版本",
+  "manufacturer": "厂商",
+  "hardware": "硬件",
+  "host": "主机",
+  "id": "ID",
+  "name": "名称",
+  "systemName": "系统名",
+  "machine": "机器码",
+  "uniqueId": "唯一ID"
+}

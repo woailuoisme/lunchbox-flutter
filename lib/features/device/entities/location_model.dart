@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lunchbox/features/device/entities/location.dart';
 
 part 'location_model.freezed.dart';
 part 'location_model.g.dart';
@@ -24,8 +23,4 @@ abstract class LocationModel with _$LocationModel {
       _$LocationModelFromJson(json);
 
   const LocationModel._();
-
-  /// Convert LocationModel to Location domain entity
-  Location toEntity() =>
-      Location(latitude: latitude, longitude: longitude, address: address);
 }

@@ -1,0 +1,18 @@
+{
+  "title": "优惠券",
+  "tabs": {
+    "available": "可领取",
+    "received": "已领取",
+    "expired": "已过期"
+  },
+  "unit": "¥",
+  "condition": "满减券\n满${amount}元可用",
+  "conditionNoThreshold": "满减券\n满0元可用",
+  "validForever": "长期有效",
+  "btnReceive": "立即领取",
+  "btnReceived": "已领取",
+  "btnUse": "去使用",
+  "btnExpired": "已过期",
+  "discount": "${amount}元优惠券",
+  "discountOff": "${amount}元减免券"
+}

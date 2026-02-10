@@ -1,7 +1,7 @@
 import 'package:formz/formz.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
-import 'package:lunchbox/features/auth/models/password.dart';
-import 'package:lunchbox/features/auth/models/username.dart';
+import 'package:lunchbox/features/auth/entities/password.dart';
+import 'package:lunchbox/features/auth/entities/username.dart';
 import 'package:lunchbox/features/auth/providers/auth_notifier.dart';
 import 'package:lunchbox/features/auth/providers/login_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

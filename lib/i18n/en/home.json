@@ -1,0 +1,61 @@
+{
+  "selectCity": "Select City",
+  "nearbyDevices": "Nearby Devices",
+  "banner1Title": "Convenient",
+  "banner1Subtitle": "Delicious on the go",
+  "banner2Title": "Fresh Delivery",
+  "banner2Subtitle": "Daily Updates",
+  "banner3Title": "Best Offers",
+  "banner3Subtitle": "Limited Time Only",
+  "noDevices": "No devices nearby",
+  "welcome": "Hello, User",
+  "selfPickup": "Self Pickup",
+  "selfPickupHint": "Scan code to pick up/Take away",
+  "teamOrder": "Team Order",
+  "teamOrderHint": "Group ordering/Team meal",
+  "invite": "Invite & Earn",
+  "inviteHint": "Invite friends to get cash",
+  "recommendTitle": "Recommended for Me",
+  "grid": {
+    "welfare": "Welfare",
+    "service": "Service",
+    "coupon": "Coupons",
+    "lottery": "Lucky Draw",
+    "invite": "Invite Friends"
+  },
+  "lottery": {
+    "title": "Lucky Draw",
+    "prizes": "My Prizes",
+    "rules": "Draw Rules",
+    "remaining": "Remaining: {count}",
+    "spin": "Spin",
+    "rule1": "Free draws daily, complete tasks for more",
+    "rule2": "Coupons valid for 48h, Coins added automatically",
+    "rule3": "Platform reserves all rights",
+    "prizeUnit": "Coins",
+    "prizeList": "Prize List",
+    "back": "Back",
+    "prizeStats": {
+      "total": "Total",
+      "used": "Used",
+      "available": "Available"
+    },
+    "tabs": {
+      "all": "All",
+      "available": "Available",
+      "used": "Used",
+      "expired": "Expired"
+    },
+    "prizeCard": {
+      "source": "Coin rewards, can be used in Coin Mall",
+      "getTime": "Got at: {time}",
+      "expiryTime": "Expiry: {time}",
+      "statusExpired": "Expired"
+    }
+  },
+  "status": {
+    "open": "Open",
+    "closed": "Closed",
+    "mobilePayment": "Mobile Payment Supported"
+  }
+}

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:lunchbox/core/errors/errors.dart';
 import 'package:lunchbox/core/network/network.dart';
-import 'package:lunchbox/features/device/device.dart';
+import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

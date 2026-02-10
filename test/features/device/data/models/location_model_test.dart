@@ -41,15 +41,5 @@ void main() {
       };
       expect(result, expectedMap);
     });
-
-    test('toEntity should return a valid Location entity', () async {
-      // act
-      final result = tLocationModel.toEntity();
-
-      // assert
-      expect(result.latitude, 31.2304);
-      expect(result.longitude, 121.4737);
-      expect(result.address, 'Shanghai');
-    });
   });
 }

@@ -1,0 +1,11 @@
+{
+  "title": "Select City",
+  "search": "Search City",
+  "hot": "Hot Cities",
+  "noResult": "No related cities found",
+  "viewAll": "View All Cities",
+  "switchSuccess": "City switched",
+  "switchedTo": "Switched to ${name}",
+  "switchFailed": "Switch failed",
+  "saveFailed": "Unable to save selected city, please try again"
+}

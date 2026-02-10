@@ -1,0 +1,20 @@
+{
+  "title": "設定",
+  "general": "通用",
+  "language": "語言",
+  "checkUpdate": "檢查更新",
+  "clearCache": "清除快取",
+  "about": "關於",
+  "deviceInfo": "設備資訊",
+  "aboutUs": "關於我們",
+  "checkingUpdate": "正在檢查更新...",
+  "cacheCleared": "快取已清除",
+  "english": "英語",
+  "chinese": "簡體中文",
+  "traditionalChinese": "繁體中文",
+  "appName": "應用名稱",
+  "packageName": "包名",
+  "versionName": "版本號",
+  "buildNumber": "構建號",
+  "copyright": "© 2024 Lunchbox Team"
+}

@@ -49,40 +49,146 @@ class TranslationsEn extends Translations
       TranslationsEn(meta: meta ?? this.$meta);
 
 	// Translations
+  @override late final _TranslationsAuthEn auth = _TranslationsAuthEn._(_root);
+  @override late final _TranslationsCartEn cart = _TranslationsCartEn._(_root);
+  @override late final _TranslationsCityEn city = _TranslationsCityEn._(_root);
   @override late final _TranslationsCommonEn common = _TranslationsCommonEn._(
       _root);
+  @override late final _TranslationsCommunityEn community = _TranslationsCommunityEn
+      ._(_root);
+  @override late final _TranslationsCouponEn coupon = _TranslationsCouponEn._(
+      _root);
+  @override late final _TranslationsDeviceEn device = _TranslationsDeviceEn._(
+      _root);
+  @override late final _TranslationsDeviceInfoEn device_info = _TranslationsDeviceInfoEn
+      ._(_root);
+  @override late final _TranslationsHelpEn help = _TranslationsHelpEn._(_root);
+  @override late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
   @override late final _TranslationsNavigationEn navigation = _TranslationsNavigationEn
       ._(_root);
-  @override late final _TranslationsAuthEn auth = _TranslationsAuthEn._(_root);
-  @override late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
-  @override late final _TranslationsProductEn product = _TranslationsProductEn
+  @override late final _TranslationsNetworkEn network = _TranslationsNetworkEn
       ._(_root);
-  @override late final _TranslationsCartEn cart = _TranslationsCartEn._(_root);
+  @override late final _TranslationsOnboardingEn onboarding = _TranslationsOnboardingEn
+      ._(_root);
   @override late final _TranslationsOrderEn order = _TranslationsOrderEn._(
       _root);
   @override late final _TranslationsPaymentEn payment = _TranslationsPaymentEn
       ._(_root);
-  @override late final _TranslationsSplashEn splash = _TranslationsSplashEn._(
-      _root);
+  @override late final _TranslationsProductEn product = _TranslationsProductEn
+      ._(_root);
   @override late final _TranslationsProfileEn profile = _TranslationsProfileEn
       ._(_root);
-  @override late final _TranslationsTimeEn time = _TranslationsTimeEn._(_root);
   @override late final _TranslationsSettingsEn settings = _TranslationsSettingsEn
       ._(_root);
-  @override late final _TranslationsDeviceInfoEn device_info = _TranslationsDeviceInfoEn
-      ._(_root);
-  @override late final _TranslationsHelpEn help = _TranslationsHelpEn._(_root);
-  @override late final _TranslationsOnboardingEn onboarding = _TranslationsOnboardingEn
-      ._(_root);
-  @override late final _TranslationsCityEn city = _TranslationsCityEn._(_root);
-  @override late final _TranslationsDeviceEn device = _TranslationsDeviceEn._(
+  @override late final _TranslationsSplashEn splash = _TranslationsSplashEn._(
       _root);
-  @override late final _TranslationsNetworkEn network = _TranslationsNetworkEn
-      ._(_root);
-  @override late final _TranslationsCouponEn coupon = _TranslationsCouponEn._(
-      _root);
-  @override late final _TranslationsCommunityEn community = _TranslationsCommunityEn
-      ._(_root);
+  @override late final _TranslationsTimeEn time = _TranslationsTimeEn._(_root);
+}
+
+// Path: auth
+class _TranslationsAuthEn extends TranslationsAuthZhCn {
+  _TranslationsAuthEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get loginTitle => 'Welcome Back';
+
+  @override String get loginButton => 'Login';
+
+  @override String get registerButton => 'Register';
+
+  @override String get forgotPassword => 'Forgot Password?';
+
+  @override String get loginFailed => 'Login Failed';
+
+  @override String get loginSuccess => 'Login Success';
+
+  @override String get registerTitle => 'Create Account';
+
+  @override String get nickname => 'Nickname';
+
+  @override String get registerSuccess => 'Register Success';
+
+  @override String get registerFailed => 'Register Failed';
+
+  @override String get forgotPasswordTitle => 'Reset Password';
+
+  @override String get sendResetLink => 'Send Reset Link';
+
+  @override String get resetLinkSent => 'Reset Link Sent';
+
+  @override String get required => 'Required';
+
+  @override String get enterUsername => 'Please enter username';
+
+  @override String get enterPassword => 'Please enter password';
+
+  @override String get enterUsernameHint => 'Enter username or phone';
+
+  @override String get enterNickname => 'Please enter nickname';
+
+  @override String get dontHaveAccount => 'Don\'t have an account?';
+
+  @override String get resetPasswordHint =>
+      'Enter your username or email to reset password';
+
+  @override String get usernameOrEmail => 'Username / Email';
+
+  @override String get slogan => 'Convenient purchase, delicious on the go';
+}
+
+// Path: cart
+class _TranslationsCartEn extends TranslationsCartZhCn {
+  _TranslationsCartEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get title => 'Cart';
+
+  @override String get clear => 'Clear';
+
+  @override String get empty => 'Cart is empty';
+
+  @override String get total => 'Total';
+
+  @override String get checkout => 'Checkout';
+
+  @override String get goShopping => 'Go Shopping';
+}
+
+// Path: city
+class _TranslationsCityEn extends TranslationsCityZhCn {
+  _TranslationsCityEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get title => 'Select City';
+
+  @override String get search => 'Search City';
+
+  @override String get hot => 'Hot Cities';
+
+  @override String get noResult => 'No related cities found';
+
+  @override String get viewAll => 'View All Cities';
+
+  @override String get switchSuccess => 'City switched';
+
+  @override String switchedTo({required Object name}) => 'Switched to ${name}';
+
+  @override String get switchFailed => 'Switch failed';
+
+  @override String get saveFailed =>
+      'Unable to save selected city, please try again';
 }
 
 // Path: common
@@ -145,77 +251,198 @@ class _TranslationsCommonEn extends TranslationsCommonZhCn {
   @override String get releaseToRefresh => 'Release to refresh';
 }
 
-// Path: navigation
-class _TranslationsNavigationEn extends TranslationsNavigationZhCn {
-  _TranslationsNavigationEn._(TranslationsEn root)
+// Path: community
+class _TranslationsCommunityEn extends TranslationsCommunityZhCn {
+  _TranslationsCommunityEn._(TranslationsEn root)
       : this._root = root,
         super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
   // Translations
-  @override String get home => 'Home';
+  @override String get title => 'Community Benefits';
 
-  @override String get device => 'Device';
+  @override String get join => 'Join Community';
 
-  @override String get orders => 'Orders';
+  @override String get share => 'Share delicious food with foodies';
 
-  @override String get profile => 'Profile';
+  @override String get org => 'Dongguan CAS Cloud Computing Center';
+
+  @override String get dept => 'Cloud Computing Center';
+
+  @override String get scanHint =>
+      'Scan to join Dongguan CAS Cloud Computing Center';
+  @override late final _TranslationsCommunityFeaturesEn features = _TranslationsCommunityFeaturesEn
+      ._(_root);
+
+  @override String get whyJoin => 'Why join our community?';
+
+  @override String get reason1 => 'Daily food recommendations';
+
+  @override String get reason2 => 'Limited time offers, save money';
+
+  @override String get reason3 => 'Professional food reviews';
+
+  @override String get reason4 => 'Food making tutorials';
 }
 
-// Path: auth
-class _TranslationsAuthEn extends TranslationsAuthZhCn {
-  _TranslationsAuthEn._(TranslationsEn root)
+// Path: coupon
+class _TranslationsCouponEn extends TranslationsCouponZhCn {
+  _TranslationsCouponEn._(TranslationsEn root)
       : this._root = root,
         super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
   // Translations
-  @override String get loginTitle => 'Welcome Back';
+  @override String get title => 'Coupon';
+  @override late final _TranslationsCouponTabsEn tabs = _TranslationsCouponTabsEn
+      ._(_root);
 
-  @override String get loginButton => 'Login';
+  @override String get unit => '\$';
 
-  @override String get registerButton => 'Register';
+  @override String condition({required Object amount}) =>
+      'Coupon\nOver ${amount}';
 
-  @override String get forgotPassword => 'Forgot Password?';
+  @override String get conditionNoThreshold => 'Coupon\nNo threshold';
 
-  @override String get loginFailed => 'Login Failed';
+  @override String get validForever => 'Valid Forever';
 
-  @override String get loginSuccess => 'Login Success';
+  @override String get btnReceive => 'Receive';
 
-  @override String get registerTitle => 'Create Account';
+  @override String get btnReceived => 'Received';
 
-  @override String get nickname => 'Nickname';
+  @override String get btnUse => 'Use';
 
-  @override String get registerSuccess => 'Register Success';
+  @override String get btnExpired => 'Expired';
 
-  @override String get registerFailed => 'Register Failed';
+  @override String discount({required Object amount}) => '\$ ${amount} Coupon';
 
-  @override String get forgotPasswordTitle => 'Reset Password';
+  @override String discountOff({required Object amount}) => '\$ ${amount} Off';
+}
 
-  @override String get sendResetLink => 'Send Reset Link';
+// Path: device
+class _TranslationsDeviceEn extends TranslationsDeviceZhCn {
+  _TranslationsDeviceEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
 
-  @override String get resetLinkSent => 'Reset Link Sent';
+  final TranslationsEn _root; // ignore: unused_field
 
-  @override String get required => 'Required';
+  // Translations
+  @override String get title => 'Device Detail';
 
-  @override String get enterUsername => 'Please enter username';
+  @override String get info => 'Device Information';
 
-  @override String get enterPassword => 'Please enter password';
+  @override String get address => 'Address';
 
-  @override String get enterUsernameHint => 'Enter username or phone';
+  @override String get distance => 'Distance';
 
-  @override String get enterNickname => 'Please enter nickname';
+  @override String get status => 'Status';
 
-  @override String get dontHaveAccount => 'Don\'t have an account?';
+  @override String get online => 'Online';
 
-  @override String get resetPasswordHint =>
-      'Enter your username or email to reset password';
+  @override String get offline => 'Offline';
 
-  @override String get usernameOrEmail => 'Username / Email';
+  @override String get paymentMethods => 'Payment Methods: ';
 
-  @override String get slogan => 'Convenient purchase, delicious on the go';
+  @override String get mobilePayment => 'Mobile Payment';
+
+  @override String get cash => 'Cash';
+
+  @override String get noProducts => 'No products';
+
+  @override String get productList => 'Product List';
+
+  @override String get soldOut => 'Sold Out';
+
+  @override String get reportIssue => 'Report Issue';
+
+  @override String get reportDeviceIssue => 'Report Device Issue';
+
+  @override String get reportIssueHint => 'Please describe the issue...';
+
+  @override String get reportSuccess => 'Issue reported successfully';
+
+  @override String loadFailed({required Object error}) =>
+      'Load failed: ${error}';
+
+  @override String loadProductsFailed({required Object error}) =>
+      'Load products failed: ${error}';
+
+  @override String get nearby => 'Nearby Devices';
+
+  @override String get sortByDistance => 'Sort by Distance';
+
+  @override String get sortByName => 'Sort by Name';
+
+  @override String get filterOnline => 'Show Online Only';
+
+  @override String get noDevicesNearby => 'No devices nearby';
+
+  @override String get maintenance => 'Maintenance';
+
+  @override String get unknown => 'Unknown';
+
+  @override String get cashPayment => 'Cash Payment';
+}
+
+// Path: device_info
+class _TranslationsDeviceInfoEn extends TranslationsDeviceInfoZhCn {
+  _TranslationsDeviceInfoEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get browser => 'Browser';
+
+  @override String get platform => 'Platform';
+
+  @override String get userAgent => 'User Agent';
+
+  @override String get language => 'Language';
+
+  @override String get memory => 'Memory';
+
+  @override String get brand => 'Brand';
+
+  @override String get model => 'Model';
+
+  @override String get systemVersion => 'System Version';
+
+  @override String get sdkVersion => 'SDK Version';
+
+  @override String get manufacturer => 'Manufacturer';
+
+  @override String get hardware => 'Hardware';
+
+  @override String get host => 'Host';
+
+  @override String get id => 'ID';
+
+  @override String get name => 'Name';
+
+  @override String get systemName => 'System Name';
+
+  @override String get machine => 'Machine';
+
+  @override String get uniqueId => 'Unique ID';
+}
+
+// Path: help
+class _TranslationsHelpEn extends TranslationsHelpZhCn {
+  _TranslationsHelpEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override String get title => 'Help Center';
+
+  @override String get developing => 'Help page is under development';
 }
 
 // Path: home
@@ -268,76 +495,62 @@ class _TranslationsHomeEn extends TranslationsHomeZhCn {
       ._(_root);
 }
 
-// Path: product
-class _TranslationsProductEn extends TranslationsProductZhCn {
-  _TranslationsProductEn._(TranslationsEn root)
+// Path: navigation
+class _TranslationsNavigationEn extends TranslationsNavigationZhCn {
+  _TranslationsNavigationEn._(TranslationsEn root)
       : this._root = root,
         super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
   // Translations
-  @override String get title => 'Product List';
+  @override String get home => 'Home';
 
-  @override String get detail => 'Product Detail';
+  @override String get device => 'Device';
 
-  @override String get hot => 'Hot';
+  @override String get orders => 'Orders';
 
-  @override String get promotion => 'Sale';
-
-  @override String discountOff({required Object percent}) => '${percent}% OFF';
-
-  @override String get stockFull => 'In Stock';
-
-  @override String get stockEmpty => 'Out of Stock';
-
-  @override String get addToCart => 'Add to Cart';
-
-  @override String get addedToCart => 'Added to Cart';
-
-  @override String get specifications => 'Specifications';
-
-  @override String get categoryAll => 'All';
-
-  @override String get categoryFood => 'Food';
-
-  @override String get categoryDrink => 'Drink';
-
-  @override String get categorySnack => 'Snack';
-
-  @override String get sortDefault => 'Default';
-
-  @override String get sortPriceAsc => 'Price: Low to High';
-
-  @override String get sortPriceDesc => 'Price: High to Low';
-
-  @override String get sortName => 'Name';
-
-  @override String get filterOnlyAvailable => 'Show Available Only';
-
-  @override String get cart => 'Cart';
+  @override String get profile => 'Profile';
 }
 
-// Path: cart
-class _TranslationsCartEn extends TranslationsCartZhCn {
-  _TranslationsCartEn._(TranslationsEn root)
+// Path: network
+class _TranslationsNetworkEn extends TranslationsNetworkZhCn {
+  _TranslationsNetworkEn._(TranslationsEn root)
       : this._root = root,
         super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
   // Translations
-  @override String get title => 'Cart';
+  @override late final _TranslationsNetworkErrorsEn errors = _TranslationsNetworkErrorsEn
+      ._(_root);
+}
 
-  @override String get clear => 'Clear';
+// Path: onboarding
+class _TranslationsOnboardingEn extends TranslationsOnboardingZhCn {
+  _TranslationsOnboardingEn._(TranslationsEn root)
+      : this._root = root,
+        super.internal(root);
 
-  @override String get empty => 'Cart is empty';
+  final TranslationsEn _root; // ignore: unused_field
 
-  @override String get total => 'Total';
+  // Translations
+  @override String get welcomeTitle => 'Welcome to E-Lunchbox';
 
-  @override String get checkout => 'Checkout';
+  @override String get welcomeBody =>
+      'Anytime, anywhere, easily buy delicious lunch';
 
-  @override String get goShopping => 'Go Shopping';
+  @override String get findDevicesTitle => 'Find Nearby Devices';
+
+  @override String get findDevicesBody =>
+      'Quickly locate the nearest vending machine and save your time';
+
+  @override String get paymentTitle => 'Convenient Payment';
+
+  @override String get paymentBody =>
+      'Supports multiple convenient payment methods like credit cards';
+
+  @override String get getStarted => 'Get Started';
 }
 
 // Path: order
@@ -444,28 +657,54 @@ class _TranslationsPaymentEn extends TranslationsPaymentZhCn {
   @override String get remainingTime => 'Time Remaining';
 }
 
-// Path: splash
-class _TranslationsSplashEn extends TranslationsSplashZhCn {
-  _TranslationsSplashEn._(TranslationsEn root)
+// Path: product
+class _TranslationsProductEn extends TranslationsProductZhCn {
+  _TranslationsProductEn._(TranslationsEn root)
       : this._root = root,
         super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
   // Translations
-  @override String get starting => 'Starting...';
+  @override String get title => 'Product List';
 
-  @override String get checkingServices => 'Checking services...';
+  @override String get detail => 'Product Detail';
 
-  @override String get loadingConfig => 'Loading config...';
+  @override String get hot => 'Hot';
 
-  @override String get checkingAuth => 'Checking auth status...';
+  @override String get promotion => 'Sale';
 
-  @override String get preparingData => 'Preparing data...';
+  @override String discountOff({required Object percent}) => '${percent}% OFF';
 
-  @override String get ready => 'Ready';
+  @override String get stockFull => 'In Stock';
 
-  @override String get failed => 'Start Failed';
+  @override String get stockEmpty => 'Out of Stock';
+
+  @override String get addToCart => 'Add to Cart';
+
+  @override String get addedToCart => 'Added to Cart';
+
+  @override String get specifications => 'Specifications';
+
+  @override String get categoryAll => 'All';
+
+  @override String get categoryFood => 'Food';
+
+  @override String get categoryDrink => 'Drink';
+
+  @override String get categorySnack => 'Snack';
+
+  @override String get sortDefault => 'Default';
+
+  @override String get sortPriceAsc => 'Price: Low to High';
+
+  @override String get sortPriceDesc => 'Price: High to Low';
+
+  @override String get sortName => 'Name';
+
+  @override String get filterOnlyAvailable => 'Show Available Only';
+
+  @override String get cart => 'Cart';
 }
 
 // Path: profile
@@ -508,25 +747,6 @@ class _TranslationsProfileEn extends TranslationsProfileZhCn {
       'A convenient vending machine purchasing application';
 
   @override String version({required Object version}) => 'Version: ${version}';
-}
-
-// Path: time
-class _TranslationsTimeEn extends TranslationsTimeZhCn {
-  _TranslationsTimeEn._(TranslationsEn root)
-      : this._root = root,
-        super.internal(root);
-
-  final TranslationsEn _root; // ignore: unused_field
-
-	// Translations
-  @override String get justNow => 'Just now';
-
-  @override String minutesAgo({required Object minutes}) =>
-      '${minutes} mins ago';
-
-  @override String hoursAgo({required Object hours}) => '${hours} hours ago';
-
-  @override String daysAgo({required Object days}) => '${days} days ago';
 }
 
 // Path: settings
@@ -583,267 +803,98 @@ class _TranslationsSettingsEn extends TranslationsSettingsZhCn {
   @override String get copyright => '© 2024 Lunchbox Team';
 }
 
-// Path: device_info
-class _TranslationsDeviceInfoEn extends TranslationsDeviceInfoZhCn {
-  _TranslationsDeviceInfoEn._(TranslationsEn root)
+// Path: splash
+class _TranslationsSplashEn extends TranslationsSplashZhCn {
+  _TranslationsSplashEn._(TranslationsEn root)
       : this._root = root,
         super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
   // Translations
-  @override String get browser => 'Browser';
+  @override String get starting => 'Starting...';
 
-  @override String get platform => 'Platform';
+  @override String get checkingServices => 'Checking services...';
 
-  @override String get userAgent => 'User Agent';
+  @override String get loadingConfig => 'Loading config...';
 
-  @override String get language => 'Language';
+  @override String get checkingAuth => 'Checking auth status...';
 
-  @override String get memory => 'Memory';
+  @override String get preparingData => 'Preparing data...';
 
-  @override String get brand => 'Brand';
+  @override String get ready => 'Ready';
 
-  @override String get model => 'Model';
-
-  @override String get systemVersion => 'System Version';
-
-  @override String get sdkVersion => 'SDK Version';
-
-  @override String get manufacturer => 'Manufacturer';
-
-  @override String get hardware => 'Hardware';
-
-  @override String get host => 'Host';
-
-  @override String get id => 'ID';
-
-  @override String get name => 'Name';
-
-  @override String get systemName => 'System Name';
-
-  @override String get machine => 'Machine';
-
-  @override String get uniqueId => 'Unique ID';
+  @override String get failed => 'Start Failed';
 }
 
-// Path: help
-class _TranslationsHelpEn extends TranslationsHelpZhCn {
-  _TranslationsHelpEn._(TranslationsEn root)
+// Path: time
+class _TranslationsTimeEn extends TranslationsTimeZhCn {
+  _TranslationsTimeEn._(TranslationsEn root)
       : this._root = root,
         super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
   // Translations
-  @override String get title => 'Help Center';
+  @override String get justNow => 'Just now';
 
-  @override String get developing => 'Help page is under development';
+  @override String minutesAgo({required Object minutes}) =>
+      '${minutes} mins ago';
+
+  @override String hoursAgo({required Object hours}) => '${hours} hours ago';
+
+  @override String daysAgo({required Object days}) => '${days} days ago';
 }
 
-// Path: onboarding
-class _TranslationsOnboardingEn extends TranslationsOnboardingZhCn {
-  _TranslationsOnboardingEn._(TranslationsEn root)
+// Path: community.features
+class _TranslationsCommunityFeaturesEn
+    extends TranslationsCommunityFeaturesZhCn {
+  _TranslationsCommunityFeaturesEn._(TranslationsEn root)
       : this._root = root,
         super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
   // Translations
-  @override String get welcomeTitle => 'Welcome to E-Lunchbox';
+  @override String get coupon => 'Exclusive Coupons';
 
-  @override String get welcomeBody =>
-      'Anytime, anywhere, easily buy delicious lunch';
+  @override String get couponHint => 'Exclusive discounts for group members';
 
-  @override String get findDevicesTitle => 'Find Nearby Devices';
+  @override String get tasting => 'New Product Tasting';
 
-  @override String get findDevicesBody =>
-      'Quickly locate the nearest vending machine and save your time';
+  @override String get tastingHint => 'Taste the latest food first';
 
-  @override String get paymentTitle => 'Convenient Payment';
+  @override String get exchange => 'Food Exchange';
 
-  @override String get paymentBody =>
-      'Supports multiple convenient payment methods like credit cards';
+  @override String get exchangeHint => 'Share insights with food experts';
 
-  @override String get getStarted => 'Get Started';
+  @override String get priority => 'Priority Access';
+
+  @override String get priorityHint => 'Priority participation in food events';
+
+  @override String get activity => 'Community Events';
+
+  @override String get activityHint => 'Regular offline gatherings';
+
+  @override String get topic => 'Topic Discussion';
+
+  @override String get topicHint => 'Participate in topics to win rewards';
 }
 
-// Path: city
-class _TranslationsCityEn extends TranslationsCityZhCn {
-  _TranslationsCityEn._(TranslationsEn root)
+// Path: coupon.tabs
+class _TranslationsCouponTabsEn extends TranslationsCouponTabsZhCn {
+  _TranslationsCouponTabsEn._(TranslationsEn root)
       : this._root = root,
         super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
   // Translations
-  @override String get title => 'Select City';
+  @override String get available => 'Available';
 
-  @override String get search => 'Search City';
+  @override String get received => 'Received';
 
-  @override String get hot => 'Hot Cities';
-
-  @override String get noResult => 'No related cities found';
-
-  @override String get viewAll => 'View All Cities';
-
-  @override String get switchSuccess => 'City switched';
-
-  @override String switchedTo({required Object name}) => 'Switched to ${name}';
-
-  @override String get switchFailed => 'Switch failed';
-
-  @override String get saveFailed =>
-      'Unable to save selected city, please try again';
-}
-
-// Path: device
-class _TranslationsDeviceEn extends TranslationsDeviceZhCn {
-  _TranslationsDeviceEn._(TranslationsEn root)
-      : this._root = root,
-        super.internal(root);
-
-  final TranslationsEn _root; // ignore: unused_field
-
-  // Translations
-  @override String get title => 'Device Detail';
-
-  @override String get info => 'Device Information';
-
-  @override String get address => 'Address';
-
-  @override String get distance => 'Distance';
-
-  @override String get status => 'Status';
-
-  @override String get online => 'Online';
-
-  @override String get offline => 'Offline';
-
-  @override String get paymentMethods => 'Payment Methods: ';
-
-  @override String get mobilePayment => 'Mobile Payment';
-
-  @override String get cash => 'Cash';
-
-  @override String get noProducts => 'No products';
-
-  @override String get productList => 'Product List';
-
-  @override String get soldOut => 'Sold Out';
-
-  @override String get reportIssue => 'Report Issue';
-
-  @override String get reportDeviceIssue => 'Report Device Issue';
-
-  @override String get reportIssueHint => 'Please describe the issue...';
-
-  @override String get reportSuccess => 'Issue reported successfully';
-
-  @override String loadFailed({required Object error}) =>
-      'Load failed: ${error}';
-
-  @override String loadProductsFailed({required Object error}) =>
-      'Load products failed: ${error}';
-
-  @override String get nearby => 'Nearby Devices';
-
-  @override String get sortByDistance => 'Sort by Distance';
-
-  @override String get sortByName => 'Sort by Name';
-
-  @override String get filterOnline => 'Show Online Only';
-
-  @override String get noDevicesNearby => 'No devices nearby';
-
-  @override String get maintenance => 'Maintenance';
-
-  @override String get unknown => 'Unknown';
-
-  @override String get cashPayment => 'Cash Payment';
-}
-
-// Path: network
-class _TranslationsNetworkEn extends TranslationsNetworkZhCn {
-  _TranslationsNetworkEn._(TranslationsEn root)
-      : this._root = root,
-        super.internal(root);
-
-  final TranslationsEn _root; // ignore: unused_field
-
-  // Translations
-  @override late final _TranslationsNetworkErrorsEn errors = _TranslationsNetworkErrorsEn
-      ._(_root);
-}
-
-// Path: coupon
-class _TranslationsCouponEn extends TranslationsCouponZhCn {
-  _TranslationsCouponEn._(TranslationsEn root)
-      : this._root = root,
-        super.internal(root);
-
-  final TranslationsEn _root; // ignore: unused_field
-
-  // Translations
-  @override String get title => 'Coupon';
-  @override late final _TranslationsCouponTabsEn tabs = _TranslationsCouponTabsEn
-      ._(_root);
-
-  @override String get unit => '\$';
-
-  @override String condition({required Object amount}) =>
-      'Coupon\nOver ${amount}';
-
-  @override String get conditionNoThreshold => 'Coupon\nNo threshold';
-
-  @override String get validForever => 'Valid Forever';
-
-  @override String get btnReceive => 'Receive';
-
-  @override String get btnReceived => 'Received';
-
-  @override String get btnUse => 'Use';
-
-  @override String get btnExpired => 'Expired';
-
-  @override String discount({required Object amount}) => '\$ ${amount} Coupon';
-
-  @override String discountOff({required Object amount}) => '\$ ${amount} Off';
-}
-
-// Path: community
-class _TranslationsCommunityEn extends TranslationsCommunityZhCn {
-  _TranslationsCommunityEn._(TranslationsEn root)
-      : this._root = root,
-        super.internal(root);
-
-  final TranslationsEn _root; // ignore: unused_field
-
-  // Translations
-  @override String get title => 'Community Benefits';
-
-  @override String get join => 'Join Community';
-
-  @override String get share => 'Share delicious food with foodies';
-
-  @override String get org => 'Dongguan CAS Cloud Computing Center';
-
-  @override String get dept => 'Cloud Computing Center';
-
-  @override String get scanHint =>
-      'Scan to join Dongguan CAS Cloud Computing Center';
-  @override late final _TranslationsCommunityFeaturesEn features = _TranslationsCommunityFeaturesEn
-      ._(_root);
-
-  @override String get whyJoin => 'Why join our community?';
-
-  @override String get reason1 => 'Daily food recommendations';
-
-  @override String get reason2 => 'Limited time offers, save money';
-
-  @override String get reason3 => 'Professional food reviews';
-
-  @override String get reason4 => 'Food making tutorials';
+  @override String get expired => 'Expired';
 }
 
 // Path: home.grid
@@ -921,30 +972,6 @@ class _TranslationsHomeStatusEn extends TranslationsHomeStatusZhCn {
   @override String get mobilePayment => 'Mobile Payment Supported';
 }
 
-// Path: order.status
-class _TranslationsOrderStatusEn extends TranslationsOrderStatusZhCn {
-  _TranslationsOrderStatusEn._(TranslationsEn root)
-      : this._root = root,
-        super.internal(root);
-
-  final TranslationsEn _root; // ignore: unused_field
-
-  // Translations
-  @override String get all => 'All';
-
-  @override String get pending => 'Pending';
-
-  @override String get paid => 'Paid';
-
-  @override String get completed => 'Completed';
-
-  @override String get cancelled => 'Cancelled';
-
-  @override String get refunded => 'Refunded';
-
-  @override String get failed => 'Failed';
-}
-
 // Path: network.errors
 class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
   _TranslationsNetworkErrorsEn._(TranslationsEn root)
@@ -1008,55 +1035,28 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
   @override String get failed => 'Network request failed';
 }
 
-// Path: coupon.tabs
-class _TranslationsCouponTabsEn extends TranslationsCouponTabsZhCn {
-  _TranslationsCouponTabsEn._(TranslationsEn root)
+// Path: order.status
+class _TranslationsOrderStatusEn extends TranslationsOrderStatusZhCn {
+  _TranslationsOrderStatusEn._(TranslationsEn root)
       : this._root = root,
         super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
   // Translations
-  @override String get available => 'Available';
+  @override String get all => 'All';
 
-  @override String get received => 'Received';
+  @override String get pending => 'Pending';
 
-  @override String get expired => 'Expired';
-}
+  @override String get paid => 'Paid';
 
-// Path: community.features
-class _TranslationsCommunityFeaturesEn
-    extends TranslationsCommunityFeaturesZhCn {
-  _TranslationsCommunityFeaturesEn._(TranslationsEn root)
-      : this._root = root,
-        super.internal(root);
+  @override String get completed => 'Completed';
 
-  final TranslationsEn _root; // ignore: unused_field
+  @override String get cancelled => 'Cancelled';
 
-  // Translations
-  @override String get coupon => 'Exclusive Coupons';
+  @override String get refunded => 'Refunded';
 
-  @override String get couponHint => 'Exclusive discounts for group members';
-
-  @override String get tasting => 'New Product Tasting';
-
-  @override String get tastingHint => 'Taste the latest food first';
-
-  @override String get exchange => 'Food Exchange';
-
-  @override String get exchangeHint => 'Share insights with food experts';
-
-  @override String get priority => 'Priority Access';
-
-  @override String get priorityHint => 'Priority participation in food events';
-
-  @override String get activity => 'Community Events';
-
-  @override String get activityHint => 'Regular offline gatherings';
-
-  @override String get topic => 'Topic Discussion';
-
-  @override String get topicHint => 'Participate in topics to win rewards';
+  @override String get failed => 'Failed';
 }
 
 // Path: home.lottery.prizeStats
@@ -1121,6 +1121,43 @@ class _TranslationsHomeLotteryPrizeCardEn
 extension on TranslationsEn {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
+      'auth.loginTitle' => 'Welcome Back',
+      'auth.loginButton' => 'Login',
+      'auth.registerButton' => 'Register',
+      'auth.forgotPassword' => 'Forgot Password?',
+      'auth.loginFailed' => 'Login Failed',
+      'auth.loginSuccess' => 'Login Success',
+      'auth.registerTitle' => 'Create Account',
+      'auth.nickname' => 'Nickname',
+      'auth.registerSuccess' => 'Register Success',
+      'auth.registerFailed' => 'Register Failed',
+      'auth.forgotPasswordTitle' => 'Reset Password',
+      'auth.sendResetLink' => 'Send Reset Link',
+      'auth.resetLinkSent' => 'Reset Link Sent',
+      'auth.required' => 'Required',
+      'auth.enterUsername' => 'Please enter username',
+      'auth.enterPassword' => 'Please enter password',
+      'auth.enterUsernameHint' => 'Enter username or phone',
+      'auth.enterNickname' => 'Please enter nickname',
+      'auth.dontHaveAccount' => 'Don\'t have an account?',
+      'auth.resetPasswordHint' => 'Enter your username or email to reset password',
+      'auth.usernameOrEmail' => 'Username / Email',
+      'auth.slogan' => 'Convenient purchase, delicious on the go',
+      'cart.title' => 'Cart',
+      'cart.clear' => 'Clear',
+      'cart.empty' => 'Cart is empty',
+      'cart.total' => 'Total',
+      'cart.checkout' => 'Checkout',
+      'cart.goShopping' => 'Go Shopping',
+      'city.title' => 'Select City',
+      'city.search' => 'Search City',
+      'city.hot' => 'Hot Cities',
+      'city.noResult' => 'No related cities found',
+      'city.viewAll' => 'View All Cities',
+      'city.switchSuccess' => 'City switched',
+      'city.switchedTo' => ({required Object name}) => 'Switched to ${name}',
+      'city.switchFailed' => 'Switch failed',
+      'city.saveFailed' => 'Unable to save selected city, please try again',
 			'common.login' => 'Login',
 			'common.register' => 'Register',
 			'common.username' => 'Username',
@@ -1146,32 +1183,92 @@ extension on TranslationsEn {
       'common.logout' => 'Logout',
       'common.pullToRefresh' => 'Pull to refresh',
       'common.releaseToRefresh' => 'Release to refresh',
-      'navigation.home' => 'Home',
-      'navigation.device' => 'Device',
-      'navigation.orders' => 'Orders',
-      'navigation.profile' => 'Profile',
-			'auth.loginTitle' => 'Welcome Back',
-			'auth.loginButton' => 'Login',
-			'auth.registerButton' => 'Register',
-			'auth.forgotPassword' => 'Forgot Password?',
-			'auth.loginFailed' => 'Login Failed',
-      'auth.loginSuccess' => 'Login Success',
-      'auth.registerTitle' => 'Create Account',
-      'auth.nickname' => 'Nickname',
-      'auth.registerSuccess' => 'Register Success',
-      'auth.registerFailed' => 'Register Failed',
-      'auth.forgotPasswordTitle' => 'Reset Password',
-      'auth.sendResetLink' => 'Send Reset Link',
-      'auth.resetLinkSent' => 'Reset Link Sent',
-      'auth.required' => 'Required',
-      'auth.enterUsername' => 'Please enter username',
-      'auth.enterPassword' => 'Please enter password',
-      'auth.enterUsernameHint' => 'Enter username or phone',
-      'auth.enterNickname' => 'Please enter nickname',
-      'auth.dontHaveAccount' => 'Don\'t have an account?',
-      'auth.resetPasswordHint' => 'Enter your username or email to reset password',
-      'auth.usernameOrEmail' => 'Username / Email',
-      'auth.slogan' => 'Convenient purchase, delicious on the go',
+      'community.title' => 'Community Benefits',
+      'community.join' => 'Join Community',
+      'community.share' => 'Share delicious food with foodies',
+      'community.org' => 'Dongguan CAS Cloud Computing Center',
+      'community.dept' => 'Cloud Computing Center',
+      'community.scanHint' => 'Scan to join Dongguan CAS Cloud Computing Center',
+      'community.features.coupon' => 'Exclusive Coupons',
+      'community.features.couponHint' => 'Exclusive discounts for group members',
+      'community.features.tasting' => 'New Product Tasting',
+      'community.features.tastingHint' => 'Taste the latest food first',
+      'community.features.exchange' => 'Food Exchange',
+      'community.features.exchangeHint' => 'Share insights with food experts',
+      'community.features.priority' => 'Priority Access',
+      'community.features.priorityHint' => 'Priority participation in food events',
+      'community.features.activity' => 'Community Events',
+      'community.features.activityHint' => 'Regular offline gatherings',
+      'community.features.topic' => 'Topic Discussion',
+      'community.features.topicHint' => 'Participate in topics to win rewards',
+      'community.whyJoin' => 'Why join our community?',
+      'community.reason1' => 'Daily food recommendations',
+      'community.reason2' => 'Limited time offers, save money',
+      'community.reason3' => 'Professional food reviews',
+      'community.reason4' => 'Food making tutorials',
+      'coupon.title' => 'Coupon',
+      'coupon.tabs.available' => 'Available',
+      'coupon.tabs.received' => 'Received',
+      'coupon.tabs.expired' => 'Expired',
+      'coupon.unit' => '\$',
+      'coupon.condition' =>
+          ({required Object amount}) => 'Coupon\nOver ${amount}',
+      'coupon.conditionNoThreshold' => 'Coupon\nNo threshold',
+      'coupon.validForever' => 'Valid Forever',
+      'coupon.btnReceive' => 'Receive',
+      'coupon.btnReceived' => 'Received',
+      'coupon.btnUse' => 'Use',
+      'coupon.btnExpired' => 'Expired',
+      'coupon.discount' => ({required Object amount}) => '\$ ${amount} Coupon',
+      'coupon.discountOff' => ({required Object amount}) => '\$ ${amount} Off',
+      'device.title' => 'Device Detail',
+      'device.info' => 'Device Information',
+      'device.address' => 'Address',
+      'device.distance' => 'Distance',
+      'device.status' => 'Status',
+      'device.online' => 'Online',
+      'device.offline' => 'Offline',
+      'device.paymentMethods' => 'Payment Methods: ',
+      'device.mobilePayment' => 'Mobile Payment',
+      'device.cash' => 'Cash',
+      'device.noProducts' => 'No products',
+      'device.productList' => 'Product List',
+      'device.soldOut' => 'Sold Out',
+      'device.reportIssue' => 'Report Issue',
+      'device.reportDeviceIssue' => 'Report Device Issue',
+      'device.reportIssueHint' => 'Please describe the issue...',
+      'device.reportSuccess' => 'Issue reported successfully',
+      'device.loadFailed' =>
+          ({required Object error}) => 'Load failed: ${error}',
+      'device.loadProductsFailed' =>
+          ({required Object error}) => 'Load products failed: ${error}',
+      'device.nearby' => 'Nearby Devices',
+      'device.sortByDistance' => 'Sort by Distance',
+      'device.sortByName' => 'Sort by Name',
+      'device.filterOnline' => 'Show Online Only',
+      'device.noDevicesNearby' => 'No devices nearby',
+      'device.maintenance' => 'Maintenance',
+      'device.unknown' => 'Unknown',
+      'device.cashPayment' => 'Cash Payment',
+      'device_info.browser' => 'Browser',
+      'device_info.platform' => 'Platform',
+      'device_info.userAgent' => 'User Agent',
+      'device_info.language' => 'Language',
+      'device_info.memory' => 'Memory',
+      'device_info.brand' => 'Brand',
+      'device_info.model' => 'Model',
+      'device_info.systemVersion' => 'System Version',
+      'device_info.sdkVersion' => 'SDK Version',
+      'device_info.manufacturer' => 'Manufacturer',
+      'device_info.hardware' => 'Hardware',
+      'device_info.host' => 'Host',
+      'device_info.id' => 'ID',
+      'device_info.name' => 'Name',
+      'device_info.systemName' => 'System Name',
+      'device_info.machine' => 'Machine',
+      'device_info.uniqueId' => 'Unique ID',
+      'help.title' => 'Help Center',
+      'help.developing' => 'Help page is under development',
       'home.selectCity' => 'Select City',
       'home.nearbyDevices' => 'Nearby Devices',
       'home.banner1Title' => 'Convenient',
@@ -1219,32 +1316,43 @@ extension on TranslationsEn {
       'home.status.open' => 'Open',
       'home.status.closed' => 'Closed',
       'home.status.mobilePayment' => 'Mobile Payment Supported',
-      'product.title' => 'Product List',
-      'product.detail' => 'Product Detail',
-      'product.hot' => 'Hot',
-      'product.promotion' => 'Sale',
-      'product.discountOff' => ({required Object percent}) => '${percent}% OFF',
-      'product.stockFull' => 'In Stock',
-      'product.stockEmpty' => 'Out of Stock',
-      'product.addToCart' => 'Add to Cart',
-      'product.addedToCart' => 'Added to Cart',
-      'product.specifications' => 'Specifications',
-      'product.categoryAll' => 'All',
-      'product.categoryFood' => 'Food',
-      'product.categoryDrink' => 'Drink',
-      'product.categorySnack' => 'Snack',
-      'product.sortDefault' => 'Default',
-      'product.sortPriceAsc' => 'Price: Low to High',
-      'product.sortPriceDesc' => 'Price: High to Low',
-      'product.sortName' => 'Name',
-      'product.filterOnlyAvailable' => 'Show Available Only',
-      'product.cart' => 'Cart',
-      'cart.title' => 'Cart',
-      'cart.clear' => 'Clear',
-      'cart.empty' => 'Cart is empty',
-      'cart.total' => 'Total',
-      'cart.checkout' => 'Checkout',
-      'cart.goShopping' => 'Go Shopping',
+      'navigation.home' => 'Home',
+      'navigation.device' => 'Device',
+      'navigation.orders' => 'Orders',
+      'navigation.profile' => 'Profile',
+      'network.errors.connectionTimeout' => 'Connection timeout, please check your network',
+      'network.errors.sendTimeout' => 'Send timeout, please check your network',
+      'network.errors.receiveTimeout' => 'Receive timeout, please check your network',
+      'network.errors.badCertificate' => 'Bad certificate',
+      'network.errors.cancel' => 'Request cancelled',
+      'network.errors.connectionError' => 'Connection error, please check your network',
+      'network.errors.unknown' =>
+          ({required Object error}) => 'Unknown error: ${error}',
+      'network.errors.retryLater' => 'Please try again later',
+      'network.errors.badRequest' => 'Bad request',
+      'network.errors.unauthorized' => 'Unauthorized, please login again',
+      'network.errors.forbidden' => 'Forbidden',
+      'network.errors.notFound' => 'Resource not found',
+      'network.errors.timeout' => 'Request timeout, please try again',
+      'network.errors.conflict' => 'Conflict',
+      'network.errors.validationFailed' => 'Validation failed',
+      'network.errors.tooManyRequests' => 'Too many requests, please try again later',
+      'network.errors.internalServerError' => 'Internal server error',
+      'network.errors.badGateway' => 'Bad gateway',
+      'network.errors.serviceUnavailable' => 'Service unavailable',
+      'network.errors.gatewayTimeout' => 'Gateway timeout',
+      'network.errors.serverError' =>
+          ({required Object code}) => 'Server error (${code})',
+      'network.errors.requestError' =>
+          ({required Object code}) => 'Request error (${code})',
+      'network.errors.failed' => 'Network request failed',
+      'onboarding.welcomeTitle' => 'Welcome to E-Lunchbox',
+      'onboarding.welcomeBody' => 'Anytime, anywhere, easily buy delicious lunch',
+      'onboarding.findDevicesTitle' => 'Find Nearby Devices',
+      'onboarding.findDevicesBody' => 'Quickly locate the nearest vending machine and save your time',
+      'onboarding.paymentTitle' => 'Convenient Payment',
+      'onboarding.paymentBody' => 'Supports multiple convenient payment methods like credit cards',
+      'onboarding.getStarted' => 'Get Started',
       'order.myOrders' => 'My Orders',
       'order.noOrders' => 'No Orders',
       'order.detail' => 'Order Detail',
@@ -1293,13 +1401,26 @@ extension on TranslationsEn {
       'payment.cancelPay' => 'Cancel Payment',
       'payment.amount' => 'Payment Amount',
       'payment.remainingTime' => 'Time Remaining',
-      'splash.starting' => 'Starting...',
-      'splash.checkingServices' => 'Checking services...',
-      'splash.loadingConfig' => 'Loading config...',
-      'splash.checkingAuth' => 'Checking auth status...',
-      'splash.preparingData' => 'Preparing data...',
-      'splash.ready' => 'Ready',
-      'splash.failed' => 'Start Failed',
+      'product.title' => 'Product List',
+      'product.detail' => 'Product Detail',
+      'product.hot' => 'Hot',
+      'product.promotion' => 'Sale',
+      'product.discountOff' => ({required Object percent}) => '${percent}% OFF',
+      'product.stockFull' => 'In Stock',
+      'product.stockEmpty' => 'Out of Stock',
+      'product.addToCart' => 'Add to Cart',
+      'product.addedToCart' => 'Added to Cart',
+      'product.specifications' => 'Specifications',
+      'product.categoryAll' => 'All',
+      'product.categoryFood' => 'Food',
+      'product.categoryDrink' => 'Drink',
+      'product.categorySnack' => 'Snack',
+      'product.sortDefault' => 'Default',
+      'product.sortPriceAsc' => 'Price: Low to High',
+      'product.sortPriceDesc' => 'Price: High to Low',
+      'product.sortName' => 'Name',
+      'product.filterOnlyAvailable' => 'Show Available Only',
+      'product.cart' => 'Cart',
       'profile.title' => 'User Center',
       'profile.notLoggedIn' => 'Not Logged In',
       'profile.editProfile' => 'Edit Profile',
@@ -1316,10 +1437,6 @@ extension on TranslationsEn {
           {required Object name}) => 'Are you sure you want to unfavorite "${name}"?',
       'profile.appDescription' => 'A convenient vending machine purchasing application',
       'profile.version' => ({required Object version}) => 'Version: ${version}',
-			'time.justNow' => 'Just now',
-      'time.minutesAgo' => ({required Object minutes}) => '${minutes} mins ago',
-      'time.hoursAgo' => ({required Object hours}) => '${hours} hours ago',
-      'time.daysAgo' => ({required Object days}) => '${days} days ago',
       'settings.title' => 'Settings',
       'settings.general' => 'General',
       'settings.theme' => 'Theme Mode',
@@ -1342,134 +1459,17 @@ extension on TranslationsEn {
       'settings.versionName' => 'Version Name',
       'settings.buildNumber' => 'Build Number',
       'settings.copyright' => '© 2024 Lunchbox Team',
-      'device_info.browser' => 'Browser',
-      'device_info.platform' => 'Platform',
-      'device_info.userAgent' => 'User Agent',
-      'device_info.language' => 'Language',
-      'device_info.memory' => 'Memory',
-      'device_info.brand' => 'Brand',
-      'device_info.model' => 'Model',
-      'device_info.systemVersion' => 'System Version',
-      'device_info.sdkVersion' => 'SDK Version',
-      'device_info.manufacturer' => 'Manufacturer',
-      'device_info.hardware' => 'Hardware',
-      'device_info.host' => 'Host',
-      'device_info.id' => 'ID',
-      'device_info.name' => 'Name',
-      'device_info.systemName' => 'System Name',
-      'device_info.machine' => 'Machine',
-      'device_info.uniqueId' => 'Unique ID',
-      'help.title' => 'Help Center',
-      'help.developing' => 'Help page is under development',
-      'onboarding.welcomeTitle' => 'Welcome to E-Lunchbox',
-      'onboarding.welcomeBody' => 'Anytime, anywhere, easily buy delicious lunch',
-      'onboarding.findDevicesTitle' => 'Find Nearby Devices',
-      'onboarding.findDevicesBody' => 'Quickly locate the nearest vending machine and save your time',
-      'onboarding.paymentTitle' => 'Convenient Payment',
-      'onboarding.paymentBody' => 'Supports multiple convenient payment methods like credit cards',
-      'onboarding.getStarted' => 'Get Started',
-      'city.title' => 'Select City',
-      'city.search' => 'Search City',
-      'city.hot' => 'Hot Cities',
-      'city.noResult' => 'No related cities found',
-      'city.viewAll' => 'View All Cities',
-      'city.switchSuccess' => 'City switched',
-      'city.switchedTo' => ({required Object name}) => 'Switched to ${name}',
-      'city.switchFailed' => 'Switch failed',
-      'city.saveFailed' => 'Unable to save selected city, please try again',
-      'device.title' => 'Device Detail',
-      'device.info' => 'Device Information',
-      'device.address' => 'Address',
-      'device.distance' => 'Distance',
-      'device.status' => 'Status',
-      'device.online' => 'Online',
-      'device.offline' => 'Offline',
-      'device.paymentMethods' => 'Payment Methods: ',
-      'device.mobilePayment' => 'Mobile Payment',
-      'device.cash' => 'Cash',
-      'device.noProducts' => 'No products',
-      'device.productList' => 'Product List',
-      'device.soldOut' => 'Sold Out',
-      'device.reportIssue' => 'Report Issue',
-      'device.reportDeviceIssue' => 'Report Device Issue',
-      'device.reportIssueHint' => 'Please describe the issue...',
-      'device.reportSuccess' => 'Issue reported successfully',
-      'device.loadFailed' =>
-          ({required Object error}) => 'Load failed: ${error}',
-      'device.loadProductsFailed' =>
-          ({required Object error}) => 'Load products failed: ${error}',
-      'device.nearby' => 'Nearby Devices',
-      'device.sortByDistance' => 'Sort by Distance',
-      'device.sortByName' => 'Sort by Name',
-      'device.filterOnline' => 'Show Online Only',
-      'device.noDevicesNearby' => 'No devices nearby',
-      'device.maintenance' => 'Maintenance',
-      'device.unknown' => 'Unknown',
-      'device.cashPayment' => 'Cash Payment',
-      'network.errors.connectionTimeout' => 'Connection timeout, please check your network',
-      'network.errors.sendTimeout' => 'Send timeout, please check your network',
-      'network.errors.receiveTimeout' => 'Receive timeout, please check your network',
-      'network.errors.badCertificate' => 'Bad certificate',
-      'network.errors.cancel' => 'Request cancelled',
-      'network.errors.connectionError' => 'Connection error, please check your network',
-      'network.errors.unknown' =>
-          ({required Object error}) => 'Unknown error: ${error}',
-      'network.errors.retryLater' => 'Please try again later',
-      'network.errors.badRequest' => 'Bad request',
-      'network.errors.unauthorized' => 'Unauthorized, please login again',
-      'network.errors.forbidden' => 'Forbidden',
-      'network.errors.notFound' => 'Resource not found',
-      'network.errors.timeout' => 'Request timeout, please try again',
-      'network.errors.conflict' => 'Conflict',
-      'network.errors.validationFailed' => 'Validation failed',
-      'network.errors.tooManyRequests' => 'Too many requests, please try again later',
-      'network.errors.internalServerError' => 'Internal server error',
-      'network.errors.badGateway' => 'Bad gateway',
-      'network.errors.serviceUnavailable' => 'Service unavailable',
-      'network.errors.gatewayTimeout' => 'Gateway timeout',
-      'network.errors.serverError' =>
-          ({required Object code}) => 'Server error (${code})',
-      'network.errors.requestError' =>
-          ({required Object code}) => 'Request error (${code})',
-      'network.errors.failed' => 'Network request failed',
-      'coupon.title' => 'Coupon',
-      'coupon.tabs.available' => 'Available',
-      'coupon.tabs.received' => 'Received',
-      'coupon.tabs.expired' => 'Expired',
-      'coupon.unit' => '\$',
-      'coupon.condition' =>
-          ({required Object amount}) => 'Coupon\nOver ${amount}',
-      'coupon.conditionNoThreshold' => 'Coupon\nNo threshold',
-      'coupon.validForever' => 'Valid Forever',
-      'coupon.btnReceive' => 'Receive',
-      'coupon.btnReceived' => 'Received',
-      'coupon.btnUse' => 'Use',
-      'coupon.btnExpired' => 'Expired',
-      'coupon.discount' => ({required Object amount}) => '\$ ${amount} Coupon',
-      'coupon.discountOff' => ({required Object amount}) => '\$ ${amount} Off',
-      'community.title' => 'Community Benefits',
-      'community.join' => 'Join Community',
-      'community.share' => 'Share delicious food with foodies',
-      'community.org' => 'Dongguan CAS Cloud Computing Center',
-      'community.dept' => 'Cloud Computing Center',
-      'community.scanHint' => 'Scan to join Dongguan CAS Cloud Computing Center',
-      'community.features.coupon' => 'Exclusive Coupons',
-      'community.features.couponHint' => 'Exclusive discounts for group members',
-      'community.features.tasting' => 'New Product Tasting',
-      'community.features.tastingHint' => 'Taste the latest food first',
-      'community.features.exchange' => 'Food Exchange',
-      'community.features.exchangeHint' => 'Share insights with food experts',
-      'community.features.priority' => 'Priority Access',
-      'community.features.priorityHint' => 'Priority participation in food events',
-      'community.features.activity' => 'Community Events',
-      'community.features.activityHint' => 'Regular offline gatherings',
-      'community.features.topic' => 'Topic Discussion',
-      'community.features.topicHint' => 'Participate in topics to win rewards',
-      'community.whyJoin' => 'Why join our community?',
-      'community.reason1' => 'Daily food recommendations',
-      'community.reason2' => 'Limited time offers, save money',
-      'community.reason3' => 'Professional food reviews',
-      'community.reason4' => 'Food making tutorials',
+      'splash.starting' => 'Starting...',
+      'splash.checkingServices' => 'Checking services...',
+      'splash.loadingConfig' => 'Loading config...',
+      'splash.checkingAuth' => 'Checking auth status...',
+      'splash.preparingData' => 'Preparing data...',
+      'splash.ready' => 'Ready',
+      'splash.failed' => 'Start Failed',
+      'time.justNow' => 'Just now',
+      'time.minutesAgo' => ({required Object minutes}) => '${minutes} mins ago',
+      'time.hoursAgo' => ({required Object hours}) => '${hours} hours ago',
+      'time.daysAgo' => ({required Object days}) => '${days} days ago',
 			_ => null,
 		};
 	}

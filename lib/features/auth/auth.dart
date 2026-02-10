@@ -1,8 +1,8 @@
 library;
 
-export 'models/password.dart';
-export 'models/user_model.dart';
-export 'models/username.dart';
+export 'entities/password.dart';
+export 'entities/user_model.dart';
+export 'entities/username.dart';
 export 'providers/auth_notifier.dart';
 export 'providers/login_notifier.dart';
 export 'providers/login_state.dart';

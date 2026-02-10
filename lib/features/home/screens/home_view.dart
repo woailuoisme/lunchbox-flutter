@@ -2,11 +2,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:lunchbox/routes/app_routes.dart';
+import 'package:lunchbox/routes/routes.dart';
 
 /// 首页视图
 ///
@@ -259,7 +258,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   icon: Symbols.storefront,
                   color: colorScheme.primary,
                   onTap: () {
-                    context.go(AppRoutes.eat);
+                    const EatRoute().go(context);
                   },
                   iconColor: colorScheme.onPrimary,
                 ),
@@ -272,7 +271,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   icon: Symbols.moped,
                   color: colorScheme.primary,
                   onTap: () {
-                    context.push(AppRoutes.teamOrdering);
+                    const TeamOrderingRoute().push<void>(context);
                   },
                   iconColor: colorScheme.onPrimary,
                 ),
@@ -384,13 +383,13 @@ class _HomeViewState extends ConsumerState<HomeView> {
           return GestureDetector(
             onTap: () {
               if (item['label'] == t.home.grid.lottery) {
-                context.push(AppRoutes.lottery);
+                const LotteryRoute().push<void>(context);
               } else if (item['label'] == t.home.grid.welfare) {
-                context.push(AppRoutes.community);
+                const CommunityRoute().push<void>(context);
               } else if (item['label'] == t.home.grid.coupon) {
-                context.push(AppRoutes.coupons);
+                const CouponsRoute().push<void>(context);
               } else if (item['label'] == t.home.grid.invite) {
-                context.push(AppRoutes.invite);
+                const InviteRoute().push<void>(context);
               }
             },
             child: Column(

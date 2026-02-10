@@ -1,0 +1,41 @@
+{
+  "title": "团队用餐",
+  "bannerTitle": "团队点餐",
+  "bannerSubtitle": "多人订购 · 团队聚餐 · 企业团建",
+  "tag1": "专业服务",
+  "tag2": "优惠价格",
+  "tag3": "便捷高效",
+  "scenarios": {
+    "title": "适用场景",
+    "subtitle": "满足不同团队需求",
+    "team": "团队点餐",
+    "teamDesc": "企业团建、部门聚餐",
+    "reserve": "预约点餐",
+    "reserveDesc": "提前预订，按时取餐",
+    "vip": "大客户点餐",
+    "vipDesc": "批量订购，专属服务"
+  },
+  "process": {
+    "title": "操作流程",
+    "subtitle": "简单三步，轻松预订",
+    "step1Title": "联系客服",
+    "step1Desc": "拨打热线或在线咨询，说明用餐需求",
+    "step2Title": "确认方案",
+    "step2Desc": "客服为您定制专属方案，确认菜品和价格",
+    "step3Title": "完成预订",
+    "step3Desc": "确认订单信息，按时到店自取"
+  },
+  "advantages": {
+    "title": "服务优势",
+    "subtitle": "专业团队，值得信赖",
+    "custom": "专业定制",
+    "customDesc": "根据团队规模和个人口味，提供个性化定制方案",
+    "reserve": "提前预约",
+    "reserveDesc": "支持提前预约，合理安排用餐时间，避免等待",
+    "price": "优惠价格",
+    "priceDesc": "团队订购享受更多折扣，量大更优惠",
+    "quality": "品质保证",
+    "qualityDesc": "严格把控食材质量，确保每一份餐点新鲜美味"
+  },
+  "bookNow": "立即预订"
+}
