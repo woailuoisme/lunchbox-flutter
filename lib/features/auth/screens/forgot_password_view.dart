@@ -72,6 +72,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(t.auth.forgotPasswordTitle),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: colorScheme.onSurface,

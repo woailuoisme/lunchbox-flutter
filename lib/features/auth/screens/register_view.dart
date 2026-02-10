@@ -84,6 +84,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(t.auth.registerTitle),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: colorScheme.onSurface,
