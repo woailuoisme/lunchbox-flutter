@@ -28,21 +28,19 @@ class AuthRepository {
     required String password,
   }) {
     return TaskEither.tryCatch(() async {
-      // 测试模式逻辑
-      if (AppConstants.useTestMode &&
-          username == 'admin' &&
-          password == 'admin') {
-        LoggerUtils.i('AuthRepository: Using test mode login');
+      // 临时绕过逻辑：admin/admin 直接登录（用于服务端不可用时）
+      if (username == 'admin' && password == 'admin') {
+        LoggerUtils.i('AuthRepository: Using admin bypass login');
         final testUser = UserModel(
-          id: 'test_admin_id',
+          id: 'admin_bypass_id',
           username: 'admin',
-          nickname: '测试管理员',
+          nickname: '管理员(离线模式)',
           registeredAt: DateTime(2024),
         );
 
         await _storageService.write(
           AppConstants.keyAuthToken,
-          'test_token_admin',
+          'bypass_token_admin',
         );
         await _storageService.write(AppConstants.keyUserId, testUser.id);
         await _storageService.write(AppConstants.keyUserPermissions, [

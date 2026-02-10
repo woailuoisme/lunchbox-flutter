@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/routes.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -56,7 +57,7 @@ class ProfileView extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '个人中心',
+                  t.profile.title,
                   style: TextStyle(
                     color: theme.colorScheme.onPrimary,
                     fontSize: 18.sp,
@@ -113,7 +114,7 @@ class ProfileView extends ConsumerWidget {
                     ),
                   ),
                   child: Text(
-                    '退出',
+                    t.common.logout,
                     style: TextStyle(
                       color: theme.colorScheme.onPrimary,
                       fontSize: 13.sp,
@@ -140,19 +141,19 @@ class ProfileView extends ConsumerWidget {
                 _buildAssetItem(
                   context,
                   '999962.07',
-                  '钱包余额',
+                  t.profile.walletBalance,
                   onTap: () => const WalletRoute().push<void>(context),
                 ),
                 _buildAssetItem(
                   context,
                   '300',
-                  '乖乖币',
+                  t.profile.coin,
                   onTap: () => const MyPointsRoute().push<void>(context),
                 ),
                 _buildAssetItem(
                   context,
                   '9',
-                  '优惠券',
+                  t.profile.couponCount,
                   onTap: () => const CouponsRoute().push<void>(context),
                 ),
               ],
@@ -212,7 +213,7 @@ class ProfileView extends ConsumerWidget {
           _buildMenuTile(
             context: context,
             icon: Symbols.account_balance_wallet,
-            title: '我的钱包',
+            title: t.profile.wallet,
             trailingText: '999962.07',
             trailingColor: theme.colorScheme.primary,
             onTap: () => const WalletRoute().push<void>(context),
@@ -220,37 +221,37 @@ class ProfileView extends ConsumerWidget {
           _buildMenuTile(
             context: context,
             icon: Symbols.airplane_ticket,
-            title: '优惠券',
+            title: t.profile.coupon,
             onTap: () => const CouponsRoute().push<void>(context),
           ),
           _buildMenuTile(
             context: context,
             icon: Symbols.help,
-            title: '问题反馈',
+            title: t.profile.feedback,
             onTap: () => const FeedbackRoute().push<void>(context),
           ),
           _buildMenuTile(
             context: context,
             icon: Symbols.person,
-            title: '个人信息',
+            title: t.profile.personalInfo,
             onTap: () => const ProfileEditRoute().push<void>(context),
           ),
           _buildMenuTile(
             context: context,
             icon: Symbols.handshake,
-            title: '合作商加盟',
+            title: t.profile.cooperation,
             onTap: () => const PartnerRoute().push<void>(context),
           ),
           _buildMenuTile(
             context: context,
             icon: Symbols.info,
-            title: '关于我们',
+            title: t.profile.about,
             onTap: () => const AboutUsRoute().push<void>(context),
           ),
           _buildMenuTile(
             context: context,
             icon: Symbols.settings,
-            title: '设置',
+            title: t.profile.settings,
             onTap: () => const SettingsRoute().push<void>(context),
           ),
         ],

@@ -3,7 +3,9 @@
   "tabs": {
     "available": "Available",
     "received": "Received",
-    "expired": "Expired"
+    "expired": "Expired",
+    "canUse": "To Use",
+    "cannotUse": "Unavailable"
   },
   "unit": "$",
   "condition": "Coupon\nOver ${amount}",
@@ -14,5 +16,9 @@
   "btnUse": "Use",
   "btnExpired": "Expired",
   "discount": "$ ${amount} Coupon",
-  "discountOff": "$ ${amount} Off"
+  "discountOff": "$ ${amount} Off",
+  "noCoupons": "No coupons available",
+  "expiryPrefix": "Expires at: ",
+  "statusAvailable": "Available",
+  "statusUnavailable": "Unavailable"
 }

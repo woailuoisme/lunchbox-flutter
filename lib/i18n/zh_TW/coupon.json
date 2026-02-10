@@ -3,7 +3,9 @@
   "tabs": {
     "available": "可領取",
     "received": "已領取",
-    "expired": "已過期"
+    "expired": "已過期",
+    "canUse": "可使用",
+    "cannotUse": "不可使用"
   },
   "unit": "NT$",
   "condition": "滿減券\n滿${amount}元可用",
@@ -14,5 +16,9 @@
   "btnUse": "去使用",
   "btnExpired": "已過期",
   "discount": "${amount}元優惠券",
-  "discountOff": "${amount}元減免券"
+  "discountOff": "${amount}元減免券",
+  "noCoupons": "暫無優惠券",
+  "expiryPrefix": "有效期至：",
+  "statusAvailable": "可用",
+  "statusUnavailable": "不可用"
 }

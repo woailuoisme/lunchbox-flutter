@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lunchbox/features/profile/providers/profile_notifier.dart';
 import 'package:lunchbox/features/profile/providers/profile_state.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
 
@@ -31,14 +32,14 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text('保存成功')));
+        ).showSnackBar(SnackBar(content: Text(t.profile.saveSuccess)));
         Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('保存失败: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(t.profile.saveFailed(error: e.toString()))),
+        );
       }
     }
   }
@@ -58,7 +59,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('个人信息'),
+        title: Text(t.profile.personalInfo),
         centerTitle: true,
         backgroundColor:
             theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
@@ -81,12 +82,12 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                         // 基本信息卡片
                         _buildInfoCard(
                           context: context,
-                          title: '基本信息',
+                          title: t.profile.info.basic,
                           children: [
                             _buildInfoTile(
                               context: context,
                               icon: Symbols.phone_android,
-                              label: '手机号',
+                              label: t.profile.info.phone,
                               value: _maskPhoneNumber(user.phone ?? ''),
                               isEditable: false,
                             ),
@@ -94,7 +95,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                             _buildInfoTile(
                               context: context,
                               icon: Symbols.wc,
-                              label: '性别',
+                              label: t.profile.info.gender,
                               value: _getGenderLabel(_selectedGender),
                               onTap: () => _showGenderPicker(context),
                             ),
@@ -102,12 +103,12 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                             _buildInfoTile(
                               context: context,
                               icon: Symbols.cake,
-                              label: '生日',
+                              label: t.profile.info.birthday,
                               value: _selectedBirthday != null
                                   ? DateFormat(
                                       'yyyy-MM-dd',
                                     ).format(_selectedBirthday!)
-                                  : '未设置',
+                                  : t.profile.info.notSet,
                               onTap: () => _showDatePicker(context),
                             ),
                           ],
@@ -117,12 +118,12 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                         // 其他信息卡片
                         _buildInfoCard(
                           context: context,
-                          title: '其他信息',
+                          title: t.profile.info.other,
                           children: [
                             _buildInfoTile(
                               context: context,
                               icon: Symbols.mail,
-                              label: '邮箱',
+                              label: t.profile.info.email,
                               value: user.email ?? 'user@example.com',
                               isEditable: false, // 假设邮箱不可编辑或需要特定流程
                             ),
@@ -158,7 +159,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                         // TODO: 调用 API 更新性别和生日
                         toastification.show(
                           context: context,
-                          title: const Text('保存成功'),
+                          title: Text(t.profile.saveSuccess),
                           type: ToastificationType.success,
                           autoCloseDuration: const Duration(seconds: 2),
                         );
@@ -169,7 +170,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                         color: theme.colorScheme.onPrimary,
                       ),
                       label: Text(
-                        '保存信息',
+                        t.profile.saveInfo,
                         style: TextStyle(
                           color: theme.colorScheme.onPrimary,
                           fontSize: 16,
@@ -198,7 +199,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
         onTap: () {
           toastification.show(
             context: context,
-            title: const Text('头像上传功能开发中'),
+            title: Text(t.profile.avatar.uploading),
             type: ToastificationType.info,
             autoCloseDuration: const Duration(seconds: 2),
           );
@@ -251,7 +252,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
             ),
             SizedBox(height: 12.h),
             Text(
-              '点击更换头像',
+              t.profile.avatar.clickToChange,
               style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
             ),
           ],
@@ -366,11 +367,11 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   String _getGenderLabel(String? gender) {
     switch (gender) {
       case 'male':
-        return '男';
+        return t.profile.gender.male;
       case 'female':
-        return '女';
+        return t.profile.gender.female;
       default:
-        return '保密';
+        return t.profile.gender.unknown;
     }
   }
 
@@ -383,9 +384,9 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildGenderOption('男', 'male'),
-              _buildGenderOption('女', 'female'),
-              _buildGenderOption('保密', 'unknown'),
+              _buildGenderOption(t.profile.gender.male, 'male'),
+              _buildGenderOption(t.profile.gender.female, 'female'),
+              _buildGenderOption(t.profile.gender.unknown, 'unknown'),
             ],
           ),
         );

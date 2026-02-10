@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/core/widgets/widgets.dart' as widgets;
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:lunchbox/features/profile/repositories/points_repository.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 class MyPointsView extends ConsumerWidget {
   const MyPointsView({super.key});
@@ -14,7 +15,7 @@ class MyPointsView extends ConsumerWidget {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('我的乖乖币'),
+        title: Text(t.points.title),
         centerTitle: true,
         backgroundColor:
             theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
@@ -71,7 +72,7 @@ class MyPointsView extends ConsumerWidget {
       child: Column(
         children: [
           Text(
-            '我的乖乖币',
+            t.points.title,
             style: TextStyle(
               color: theme.colorScheme.onPrimary,
               fontSize: 14.sp,
@@ -104,7 +105,7 @@ class MyPointsView extends ConsumerWidget {
               ),
               SizedBox(width: 4.w),
               Text(
-                '乖乖币',
+                t.points.unit,
                 style: TextStyle(
                   color: theme.colorScheme.onPrimary,
                   fontSize: 12.sp,
@@ -147,7 +148,7 @@ class MyPointsView extends ConsumerWidget {
           ),
           SizedBox(width: 12.w),
           Text(
-            '乖乖币商城',
+            t.points.mall,
             style: TextStyle(
               color: theme.colorScheme.onPrimary,
               fontSize: 16.sp,
@@ -169,7 +170,7 @@ class MyPointsView extends ConsumerWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 0),
             ),
             child: Text(
-              '去兑换',
+              t.points.goExchange,
               style: TextStyle(
                 color: theme.colorScheme.onPrimary,
                 fontSize: 12.sp,
@@ -194,13 +195,13 @@ class MyPointsView extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '乖乖币规则',
+            t.points.rules,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 12.h),
-          _buildRuleItem(context, Symbols.alarm, '乖乖币永久有效'),
+          _buildRuleItem(context, Symbols.alarm, t.points.rule1),
           SizedBox(height: 8.h),
-          _buildRuleItem(context, Symbols.add_circle, '抽奖可获得额外乖乖币'),
+          _buildRuleItem(context, Symbols.add_circle, t.points.rule2),
         ],
       ),
     );
@@ -247,16 +248,16 @@ class MyPointsView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '乖乖币记录',
+                t.points.records,
                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
               ),
               Row(
                 children: [
-                  _buildTabButton(context, '全部', true),
+                  _buildTabButton(context, t.points.all, true),
                   SizedBox(width: 8.w),
-                  _buildTabButton(context, '获得', false),
+                  _buildTabButton(context, t.points.earned, false),
                   SizedBox(width: 8.w),
-                  _buildTabButton(context, '使用', false),
+                  _buildTabButton(context, t.points.used, false),
                 ],
               ),
             ],
@@ -271,7 +272,7 @@ class MyPointsView extends ConsumerWidget {
               ),
               SizedBox(height: 8.h),
               Text(
-                '暂无乖乖币记录',
+                t.points.noRecords,
                 style: TextStyle(color: theme.hintColor, fontSize: 14.sp),
               ),
             ],
@@ -328,7 +329,7 @@ class MyPointsView extends ConsumerWidget {
                 ),
               ),
               child: Text(
-                '返回',
+                t.points.back,
                 style: TextStyle(color: theme.colorScheme.onSurface),
               ),
             ),
@@ -345,7 +346,7 @@ class MyPointsView extends ConsumerWidget {
                 ),
               ),
               child: Text(
-                '去抽奖',
+                t.points.goLottery,
                 style: TextStyle(color: theme.colorScheme.onPrimary),
               ),
             ),

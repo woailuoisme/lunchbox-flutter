@@ -46,7 +46,7 @@ class SettingsView extends ConsumerWidget {
                 context: context,
                 icon: Symbols.colors,
                 iconColor: colorScheme.primary,
-                title: '主题配色',
+                title: t.settings.themeScheme,
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -245,7 +245,7 @@ class SettingsView extends ConsumerWidget {
             SizedBox(height: 32.h),
             Center(
               child: Text(
-                '© 2024 Lunchbox Vending. All rights reserved.',
+                t.settings.copyright,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                 ),
@@ -437,13 +437,13 @@ class SettingsView extends ConsumerWidget {
   String _getSchemeName(FlexScheme scheme) {
     switch (scheme) {
       case FlexScheme.shadOrange:
-        return '活力橙 (ShadOrange)';
+        return t.settings.schemes.shadOrange;
       case FlexScheme.shadGreen:
-        return '自然绿 (ShadGreen)';
+        return t.settings.schemes.shadGreen;
       case FlexScheme.bahamaBlue:
-        return '巴哈马蓝 (BahamaBlue)';
+        return t.settings.schemes.bahamaBlue;
       case FlexScheme.damask:
-        return '锦缎红 (Damask)';
+        return t.settings.schemes.damask;
       default:
         return scheme.name;
     }

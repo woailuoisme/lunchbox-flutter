@@ -16,6 +16,13 @@
   "english": "英语",
   "chinese": "简体中文",
   "traditionalChinese": "繁体中文",
+  "themeScheme": "主题配色",
+  "schemes": {
+    "shadOrange": "活力橙 (ShadOrange)",
+    "shadGreen": "自然绿 (ShadGreen)",
+    "bahamaBlue": "巴哈马蓝 (BahamaBlue)",
+    "damask": "锦缎红 (Damask)"
+  },
   "appName": "应用名称",
   "packageName": "包名",
   "versionName": "版本号",

@@ -12,7 +12,14 @@ part 'login_notifier.g.dart';
 class LoginNotifier extends _$LoginNotifier {
   @override
   LoginState build() {
-    return const LoginState();
+    // 默认预填充 admin 账号，方便服务端不可用时直接登录
+    const username = Username.dirty('admin');
+    const password = Password.dirty('admin');
+    return const LoginState(
+      username: username,
+      password: password,
+      isValid: true,
+    );
   }
 
   void usernameChanged(String value) {

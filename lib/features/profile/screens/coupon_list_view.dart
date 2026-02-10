@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:lunchbox/features/profile/entities/coupon_model.dart';
 import 'package:lunchbox/features/profile/repositories/coupon_repository.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 class CouponListView extends ConsumerStatefulWidget {
   const CouponListView({super.key});
@@ -34,7 +35,7 @@ class _CouponListViewState extends ConsumerState<CouponListView>
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('优惠券'),
+        title: Text(t.coupon.title),
         centerTitle: true,
         bottom: TabBar(
           controller: _tabController,
@@ -43,9 +44,9 @@ class _CouponListViewState extends ConsumerState<CouponListView>
           unselectedLabelColor: theme.textTheme.bodyMedium?.color?.withValues(
             alpha: 0.54,
           ),
-          tabs: const [
-            Tab(text: '可使用'),
-            Tab(text: '不可使用'),
+          tabs: [
+            Tab(text: t.coupon.tabs.canUse),
+            Tab(text: t.coupon.tabs.cannotUse),
           ],
         ),
       ),
@@ -81,7 +82,7 @@ class _CouponListViewState extends ConsumerState<CouponListView>
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  '暂无优惠券',
+                  t.coupon.noCoupons,
                   style: TextStyle(color: theme.hintColor, fontSize: 14.sp),
                 ),
               ],
@@ -99,7 +100,8 @@ class _CouponListViewState extends ConsumerState<CouponListView>
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('加载失败: $error')),
+      error: (error, stack) =>
+          Center(child: Text('${t.common.loadFailed}: $error')),
     );
   }
 
@@ -140,7 +142,7 @@ class _CouponListViewState extends ConsumerState<CouponListView>
                   textBaseline: TextBaseline.alphabetic,
                   children: [
                     Text(
-                      '¥',
+                      t.coupon.unit,
                       style: TextStyle(
                         color: contentColor,
                         fontSize: 16.sp,
@@ -187,7 +189,7 @@ class _CouponListViewState extends ConsumerState<CouponListView>
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    '有效期至：${coupon.expiryDate}',
+                    '${t.coupon.expiryPrefix}${coupon.expiryDate}',
                     style: TextStyle(
                       color: contentColor.withValues(alpha: 0.8),
                       fontSize: 12.sp,
@@ -204,7 +206,9 @@ class _CouponListViewState extends ConsumerState<CouponListView>
                       borderRadius: BorderRadius.circular(4.r),
                     ),
                     child: Text(
-                      isAvailable ? '可用' : '不可用',
+                      isAvailable
+                          ? t.coupon.statusAvailable
+                          : t.coupon.statusUnavailable,
                       style: TextStyle(color: contentColor, fontSize: 10.sp),
                     ),
                   ),

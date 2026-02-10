@@ -1,0 +1,20 @@
+{
+  "title": "问题反馈",
+  "subtitle": "您的反馈是我们进步的动力",
+  "selectType": "选择反馈类型",
+  "errorReport": "错误报告",
+  "suggestion": "建议",
+  "complaint": "投诉",
+  "other": "其他",
+  "description": "问题描述",
+  "titleHint": "请输入问题标题 (必填)",
+  "contentHint": "请详细描述您遇到的问题或建议 (必填)",
+  "uploadScreenshot": "上传截图 (可选)",
+  "addImage": "添加图片",
+  "uploadLimitHint": "最多可上传3张图片，每张不超过2MB，支持jpg、png格式",
+  "contactOptional": "联系方式 (可选)",
+  "contactInputHint": "请输入您的手机号或邮箱，方便我们联系您",
+  "submit": "提交反馈",
+  "submitSuccess": "反馈提交成功，感谢您的支持",
+  "submitFailed": "反馈提交失败，请稍后重试"
+}

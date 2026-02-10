@@ -16,7 +16,6 @@ import 'translations_en.g.dart' deferred as l_en;
 import 'translations_zh_TW.g.dart' deferred as l_zh_TW;
 
 export 'package:slang_flutter/slang_flutter.dart';
-;
 
 part 'translations_zh_CN.g.dart';
 
@@ -186,7 +185,6 @@ class LocaleSettings
 
   // static aliases (checkout base methods for documentation)
   static AppLocale get currentLocale => instance.currentLocale;
-
   static Stream<AppLocale> getLocaleStream() => instance.getLocaleStream();
 
   static Future<AppLocale> setLocale(
@@ -201,9 +199,7 @@ class LocaleSettings
     rawLocale,
     listenToDeviceLocale: listenToDeviceLocale,
   );
-
   static Future<AppLocale> useDeviceLocale() => instance.useDeviceLocale();
-
   static Future<void> setPluralResolver({
     String? language,
     AppLocale? locale,
@@ -215,7 +211,6 @@ class LocaleSettings
     cardinalResolver: cardinalResolver,
     ordinalResolver: ordinalResolver,
   );
-
   static Future<void> overrideTranslations({
     required AppLocale locale,
     required FileType fileType,
@@ -225,7 +220,6 @@ class LocaleSettings
     fileType: fileType,
     content: content,
   );
-
   static Future<void> overrideTranslationsFromMap({
     required AppLocale locale,
     required bool isFlatMap,
@@ -252,9 +246,7 @@ class LocaleSettings
     rawLocale,
     listenToDeviceLocale: listenToDeviceLocale,
   );
-
   static AppLocale useDeviceLocaleSync() => instance.useDeviceLocaleSync();
-
   static void setPluralResolverSync({
     String? language,
     AppLocale? locale,
@@ -266,7 +258,6 @@ class LocaleSettings
     cardinalResolver: cardinalResolver,
     ordinalResolver: ordinalResolver,
   );
-
   static void overrideTranslationsSync({
     required AppLocale locale,
     required FileType fileType,
@@ -311,13 +302,9 @@ class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
     scriptCode: scriptCode,
     countryCode: countryCode,
   );
-
   static AppLocale findDeviceLocale() => instance.findDeviceLocale();
-
   static List<Locale> get supportedLocales => instance.supportedLocales;
-
   static List<String> get supportedLocalesRaw => instance.supportedLocalesRaw;
-
   static Future<Translations> buildWithOverrides({
     required AppLocale locale,
     required FileType fileType,
@@ -331,7 +318,6 @@ class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
     cardinalResolver: cardinalResolver,
     ordinalResolver: ordinalResolver,
   );
-
   static Future<Translations> buildWithOverridesFromMap({
     required AppLocale locale,
     required bool isFlatMap,
@@ -345,7 +331,6 @@ class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
     cardinalResolver: cardinalResolver,
     ordinalResolver: ordinalResolver,
   );
-
   static Translations buildWithOverridesSync({
     required AppLocale locale,
     required FileType fileType,
@@ -359,7 +344,6 @@ class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
     cardinalResolver: cardinalResolver,
     ordinalResolver: ordinalResolver,
   );
-
   static Translations buildWithOverridesFromMapSync({
     required AppLocale locale,
     required bool isFlatMap,

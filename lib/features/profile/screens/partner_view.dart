@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:lunchbox/features/profile/repositories/partner_repository.dart';
 import 'package:timelines_plus/timelines_plus.dart';
@@ -37,7 +38,7 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
     if (name.isEmpty || company.isEmpty || phone.isEmpty || intention.isEmpty) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('请填写完整信息')));
+      ).showSnackBar(SnackBar(content: Text(t.partner.incompleteInfo)));
       return;
     }
 
@@ -59,7 +60,7 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
         if (success) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(const SnackBar(content: Text('申请提交成功，我们会尽快联系您')));
+          ).showSnackBar(SnackBar(content: Text(t.partner.submitSuccess)));
           _nameController.clear();
           _companyController.clear();
           _phoneController.clear();
@@ -67,14 +68,14 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
         } else {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(const SnackBar(content: Text('申请提交失败，请稍后重试')));
+          ).showSnackBar(SnackBar(content: Text(t.partner.submitFailed)));
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('发生错误: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(t.partner.errorOccurred(error: e.toString()))),
+        );
       }
     } finally {
       if (mounted) {
@@ -91,7 +92,7 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('合作商加盟'),
+        title: Text(t.partner.title),
         centerTitle: true,
         backgroundColor:
             theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
@@ -140,7 +141,7 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
       child: Column(
         children: [
           Text(
-            '合作商加盟',
+            t.partner.title,
             style: TextStyle(
               color: theme.colorScheme.onPrimary,
               fontSize: 24.sp,
@@ -149,7 +150,7 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
           ),
           SizedBox(height: 8.h),
           Text(
-            '携手共创美好未来',
+            t.partner.subtitle,
             style: TextStyle(
               color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
               fontSize: 14.sp,
@@ -164,33 +165,33 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
     final theme = Theme.of(context);
     return _buildSectionCard(
       context: context,
-      title: '合作优势',
+      title: t.partner.advantages,
       children: [
         _buildAdvantageItem(
           Symbols.monetization_on,
-          '丰厚收益',
-          '提供有竞争力的分成比例，让您的投入获得丰厚回报',
+          t.partner.advantage1Title,
+          t.partner.advantage1Desc,
           theme.colorScheme.primary,
           context,
         ),
         _buildAdvantageItem(
           Symbols.security,
-          '品牌支持',
-          '共享知名品牌资源，享受品牌效应带来的客户信任',
+          t.partner.advantage2Title,
+          t.partner.advantage2Desc,
           theme.colorScheme.primary,
           context,
         ),
         _buildAdvantageItem(
           Symbols.trending_up,
-          '市场推广',
-          '专业的市场推广团队，为您提供全方位的营销支持',
+          t.partner.advantage3Title,
+          t.partner.advantage3Desc,
           theme.colorScheme.primary,
           context,
         ),
         _buildAdvantageItem(
           Symbols.school,
-          '培训支持',
-          '提供专业的培训课程，帮助您快速掌握经营技巧',
+          t.partner.advantage4Title,
+          t.partner.advantage4Desc,
           theme.colorScheme.primary,
           context,
         ),
@@ -248,16 +249,36 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
   Widget _buildProcess(BuildContext context) {
     final theme = Theme.of(context);
     final processes = [
-      {'step': '1', 'title': '提交申请', 'desc': '填写合作申请表，提交相关资料'},
-      {'step': '2', 'title': '资质审核', 'desc': '我们将在3-5个工作日内完成资质审核'},
-      {'step': '3', 'title': '面谈沟通', 'desc': '安排面谈，详细了解合作细节'},
-      {'step': '4', 'title': '签署协议', 'desc': '双方达成一致后签署正式合作协议'},
-      {'step': '5', 'title': '开始合作', 'desc': '正式启动合作，享受各项支持服务'},
+      {
+        'step': '1',
+        'title': t.partner.process1Title,
+        'desc': t.partner.process1Desc,
+      },
+      {
+        'step': '2',
+        'title': t.partner.process2Title,
+        'desc': t.partner.process2Desc,
+      },
+      {
+        'step': '3',
+        'title': t.partner.process3Title,
+        'desc': t.partner.process3Desc,
+      },
+      {
+        'step': '4',
+        'title': t.partner.process4Title,
+        'desc': t.partner.process4Desc,
+      },
+      {
+        'step': '5',
+        'title': t.partner.process5Title,
+        'desc': t.partner.process5Desc,
+      },
     ];
 
     return _buildSectionCard(
       context: context,
-      title: '合作流程',
+      title: t.partner.process,
       children: [
         FixedTimeline.tileBuilder(
           theme: TimelineThemeData(
@@ -323,16 +344,16 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
   Widget _buildConditions(BuildContext context) {
     final theme = Theme.of(context);
     final conditions = [
-      '具有合法的经营资质',
-      '有一定的资金实力和经营能力',
-      '认同我们的品牌理念和经营模式',
-      '具备良好的商业信誉',
-      '有相关行业经验者优先',
+      t.partner.condition1,
+      t.partner.condition2,
+      t.partner.condition3,
+      t.partner.condition4,
+      t.partner.condition5,
     ];
 
     return _buildSectionCard(
       context: context,
-      title: '合作条件',
+      title: t.partner.conditions,
       children: [
         FixedTimeline.tileBuilder(
           theme: TimelineThemeData(
@@ -382,28 +403,33 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
     final theme = Theme.of(context);
     return _buildSectionCard(
       context: context,
-      title: '申请合作',
+      title: t.partner.applicationTitle,
       children: [
-        _buildTextField(context, '姓名', '请输入您的姓名', controller: _nameController),
+        _buildTextField(
+          context,
+          t.partner.nameLabel,
+          t.partner.nameInputHint,
+          controller: _nameController,
+        ),
         SizedBox(height: 12.h),
         _buildTextField(
           context,
-          '公司名称',
-          '请输入公司名称',
+          t.partner.companyLabel,
+          t.partner.companyInputHint,
           controller: _companyController,
         ),
         SizedBox(height: 12.h),
         _buildTextField(
           context,
-          '联系电话',
-          '请输入联系电话',
+          t.partner.phoneLabel,
+          t.partner.phoneInputHint,
           controller: _phoneController,
         ),
         SizedBox(height: 12.h),
         _buildTextField(
           context,
-          '合作意向',
-          '请简述您的合作意向',
+          t.partner.intentionLabel,
+          t.partner.intentionInputHint,
           maxLines: 3,
           controller: _intentionController,
         ),
@@ -431,7 +457,7 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
                     ),
                   )
                 : Text(
-                    '提交申请',
+                    t.partner.submit,
                     style: TextStyle(
                       fontSize: 16.sp,
                       color: theme.colorScheme.onPrimary,
@@ -496,7 +522,7 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
       child: Column(
         children: [
           Text(
-            '联系我们',
+            t.partner.contactTitle,
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
@@ -513,7 +539,7 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
               ),
               SizedBox(width: 8.w),
               Text(
-                '客服热线: 400-114-8818',
+                '${t.partner.serviceHotline}: 400-114-8818',
                 style: TextStyle(color: theme.textTheme.bodyMedium?.color),
               ),
             ],
@@ -530,7 +556,7 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
               SizedBox(width: 8.w),
               Expanded(
                 child: Text(
-                  '地址: 广东省东莞市松山湖园区科汇路1号1栋1510室',
+                  '${t.partner.address}: 广东省东莞市松山湖园区科汇路1号1栋1510室',
                   style: TextStyle(
                     fontSize: 14.sp,
                     color: theme.textTheme.bodyMedium?.color,

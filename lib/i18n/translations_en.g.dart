@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:slang/generated.dart';
 import 'package:slang/overrides.dart';
+
 import 'translations.g.dart';
 
 // Path: <root>
@@ -57,6 +58,8 @@ class TranslationsEn extends Translations
 
   // Translations
   @override
+  late final _TranslationsAboutEn about = _TranslationsAboutEn._(_root);
+  @override
   late final _TranslationsAuthEn auth = _TranslationsAuthEn._(_root);
   @override
   late final _TranslationsCartEn cart = _TranslationsCartEn._(_root);
@@ -76,6 +79,10 @@ class TranslationsEn extends Translations
   late final _TranslationsDeviceInfoEn device_info =
       _TranslationsDeviceInfoEn._(_root);
   @override
+  late final _TranslationsFeedbackEn feedback = _TranslationsFeedbackEn._(
+    _root,
+  );
+  @override
   late final _TranslationsHelpEn help = _TranslationsHelpEn._(_root);
   @override
   late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
@@ -92,7 +99,11 @@ class TranslationsEn extends Translations
   @override
   late final _TranslationsOrderEn order = _TranslationsOrderEn._(_root);
   @override
+  late final _TranslationsPartnerEn partner = _TranslationsPartnerEn._(_root);
+  @override
   late final _TranslationsPaymentEn payment = _TranslationsPaymentEn._(_root);
+  @override
+  late final _TranslationsPointsEn points = _TranslationsPointsEn._(_root);
   @override
   late final _TranslationsProductEn product = _TranslationsProductEn._(_root);
   @override
@@ -105,6 +116,132 @@ class TranslationsEn extends Translations
   late final _TranslationsSplashEn splash = _TranslationsSplashEn._(_root);
   @override
   late final _TranslationsTimeEn time = _TranslationsTimeEn._(_root);
+}
+
+// Path: about
+class _TranslationsAboutEn extends TranslationsAboutZhCn {
+  _TranslationsAboutEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title =>
+      TranslationOverrides.string(_root.$meta, 'about.title', {}) ?? 'About Us';
+
+  @override
+  String get appBrand =>
+      TranslationOverrides.string(_root.$meta, 'about.appBrand', {}) ??
+      'Lunchbox Smart Vending Machine';
+
+  @override
+  String get shareWithFriends =>
+      TranslationOverrides.string(_root.$meta, 'about.shareWithFriends', {}) ??
+      'Share with Friends';
+
+  @override
+  String get featuresTitle =>
+      TranslationOverrides.string(_root.$meta, 'about.featuresTitle', {}) ??
+      'Our Features';
+
+  @override
+  String get feature1Title =>
+      TranslationOverrides.string(_root.$meta, 'about.feature1Title', {}) ??
+      'Central Kitchen';
+
+  @override
+  String get feature1Desc =>
+      TranslationOverrides.string(_root.$meta, 'about.feature1Desc', {}) ??
+      'Vending machines bring changes to diet life';
+
+  @override
+  String get feature2Title =>
+      TranslationOverrides.string(_root.$meta, 'about.feature2Title', {}) ??
+      'Quick Serving';
+
+  @override
+  String get feature2Desc =>
+      TranslationOverrides.string(_root.$meta, 'about.feature2Desc', {}) ??
+      'Different from traditional takeout and restaurants';
+
+  @override
+  String get feature3Title =>
+      TranslationOverrides.string(_root.$meta, 'about.feature3Title', {}) ??
+      'Entrepreneur Partner';
+
+  @override
+  String get feature3Desc =>
+      TranslationOverrides.string(_root.$meta, 'about.feature3Desc', {}) ??
+      'A risk-free investment tool';
+
+  @override
+  String get feature4Title =>
+      TranslationOverrides.string(_root.$meta, 'about.feature4Title', {}) ??
+      'Patented Machine';
+
+  @override
+  String get feature4Desc =>
+      TranslationOverrides.string(_root.$meta, 'about.feature4Desc', {}) ??
+      'Wealth creation machine for everyone';
+
+  @override
+  String get policyTitle =>
+      TranslationOverrides.string(_root.$meta, 'about.policyTitle', {}) ??
+      'Policy & Terms';
+
+  @override
+  String get userAgreementAndPrivacy =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'about.userAgreementAndPrivacy',
+        {},
+      ) ??
+      'User Agreement & Privacy Policy';
+
+  @override
+  String get viewDetails =>
+      TranslationOverrides.string(_root.$meta, 'about.viewDetails', {}) ??
+      'View Details';
+
+  @override
+  String get contactTitle =>
+      TranslationOverrides.string(_root.$meta, 'about.contactTitle', {}) ??
+      'Contact Us';
+
+  @override
+  String get customerServiceHotline =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'about.customerServiceHotline',
+        {},
+      ) ??
+      'Customer Service Hotline';
+
+  @override
+  String get customerServiceNumber =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'about.customerServiceNumber',
+        {},
+      ) ??
+      '400-114-8818';
+
+  @override
+  String get companyAddress =>
+      TranslationOverrides.string(_root.$meta, 'about.companyAddress', {}) ??
+      'Company Address';
+
+  @override
+  String get addressDetails =>
+      TranslationOverrides.string(_root.$meta, 'about.addressDetails', {}) ??
+      'Room 1510, Building 1, No. 1 Kehui Road, Songshan Lake Park, Dongguan, Guangdong';
+
+  @override
+  String get shareText =>
+      TranslationOverrides.string(_root.$meta, 'about.shareText', {}) ??
+      'Come and use the Lunchbox Smart Vending Machine!';
 }
 
 // Path: auth
@@ -120,52 +257,42 @@ class _TranslationsAuthEn extends TranslationsAuthZhCn {
   String get loginTitle =>
       TranslationOverrides.string(_root.$meta, 'auth.loginTitle', {}) ??
       'Welcome Back';
-
   @override
   String get loginButton =>
       TranslationOverrides.string(_root.$meta, 'auth.loginButton', {}) ??
       'Login';
-
   @override
   String get registerButton =>
       TranslationOverrides.string(_root.$meta, 'auth.registerButton', {}) ??
       'Register';
-
   @override
   String get forgotPassword =>
       TranslationOverrides.string(_root.$meta, 'auth.forgotPassword', {}) ??
       'Forgot Password?';
-
   @override
   String get loginFailed =>
       TranslationOverrides.string(_root.$meta, 'auth.loginFailed', {}) ??
       'Login Failed';
-
   @override
   String get loginSuccess =>
       TranslationOverrides.string(_root.$meta, 'auth.loginSuccess', {}) ??
       'Login Success';
-
   @override
   String get registerTitle =>
       TranslationOverrides.string(_root.$meta, 'auth.registerTitle', {}) ??
       'Create Account';
-
   @override
   String get nickname =>
       TranslationOverrides.string(_root.$meta, 'auth.nickname', {}) ??
       'Nickname';
-
   @override
   String get registerSuccess =>
       TranslationOverrides.string(_root.$meta, 'auth.registerSuccess', {}) ??
       'Register Success';
-
   @override
   String get registerFailed =>
       TranslationOverrides.string(_root.$meta, 'auth.registerFailed', {}) ??
       'Register Failed';
-
   @override
   String get forgotPasswordTitle =>
       TranslationOverrides.string(
@@ -174,57 +301,46 @@ class _TranslationsAuthEn extends TranslationsAuthZhCn {
         {},
       ) ??
       'Reset Password';
-
   @override
   String get sendResetLink =>
       TranslationOverrides.string(_root.$meta, 'auth.sendResetLink', {}) ??
       'Send Reset Link';
-
   @override
   String get resetLinkSent =>
       TranslationOverrides.string(_root.$meta, 'auth.resetLinkSent', {}) ??
       'Reset Link Sent';
-
   @override
   String get required =>
       TranslationOverrides.string(_root.$meta, 'auth.required', {}) ??
       'Required';
-
   @override
   String get enterUsername =>
       TranslationOverrides.string(_root.$meta, 'auth.enterUsername', {}) ??
       'Please enter username';
-
   @override
   String get enterPassword =>
       TranslationOverrides.string(_root.$meta, 'auth.enterPassword', {}) ??
       'Please enter password';
-
   @override
   String get enterUsernameHint =>
       TranslationOverrides.string(_root.$meta, 'auth.enterUsernameHint', {}) ??
       'Enter username or phone';
-
   @override
   String get enterNickname =>
       TranslationOverrides.string(_root.$meta, 'auth.enterNickname', {}) ??
       'Please enter nickname';
-
   @override
   String get dontHaveAccount =>
       TranslationOverrides.string(_root.$meta, 'auth.dontHaveAccount', {}) ??
       'Don\'t have an account?';
-
   @override
   String get resetPasswordHint =>
       TranslationOverrides.string(_root.$meta, 'auth.resetPasswordHint', {}) ??
       'Enter your username or email to reset password';
-
   @override
   String get usernameOrEmail =>
       TranslationOverrides.string(_root.$meta, 'auth.usernameOrEmail', {}) ??
       'Username / Email';
-
   @override
   String get slogan =>
       TranslationOverrides.string(_root.$meta, 'auth.slogan', {}) ??
@@ -243,25 +359,20 @@ class _TranslationsCartEn extends TranslationsCartZhCn {
   @override
   String get title =>
       TranslationOverrides.string(_root.$meta, 'cart.title', {}) ?? 'Cart';
-
   @override
   String get clear =>
       TranslationOverrides.string(_root.$meta, 'cart.clear', {}) ?? 'Clear';
-
   @override
   String get empty =>
       TranslationOverrides.string(_root.$meta, 'cart.empty', {}) ??
       'Cart is empty';
-
   @override
   String get total =>
       TranslationOverrides.string(_root.$meta, 'cart.total', {}) ?? 'Total';
-
   @override
   String get checkout =>
       TranslationOverrides.string(_root.$meta, 'cart.checkout', {}) ??
       'Checkout';
-
   @override
   String get goShopping =>
       TranslationOverrides.string(_root.$meta, 'cart.goShopping', {}) ??
@@ -281,43 +392,35 @@ class _TranslationsCityEn extends TranslationsCityZhCn {
   String get title =>
       TranslationOverrides.string(_root.$meta, 'city.title', {}) ??
       'Select City';
-
   @override
   String get search =>
       TranslationOverrides.string(_root.$meta, 'city.search', {}) ??
       'Search City';
-
   @override
   String get hot =>
       TranslationOverrides.string(_root.$meta, 'city.hot', {}) ?? 'Hot Cities';
-
   @override
   String get noResult =>
       TranslationOverrides.string(_root.$meta, 'city.noResult', {}) ??
       'No related cities found';
-
   @override
   String get viewAll =>
       TranslationOverrides.string(_root.$meta, 'city.viewAll', {}) ??
       'View All Cities';
-
   @override
   String get switchSuccess =>
       TranslationOverrides.string(_root.$meta, 'city.switchSuccess', {}) ??
       'City switched';
-
   @override
   String switchedTo({required Object name}) =>
       TranslationOverrides.string(_root.$meta, 'city.switchedTo', {
         'name': name,
       }) ??
       'Switched to ${name}';
-
   @override
   String get switchFailed =>
       TranslationOverrides.string(_root.$meta, 'city.switchFailed', {}) ??
       'Switch failed';
-
   @override
   String get saveFailed =>
       TranslationOverrides.string(_root.$meta, 'city.saveFailed', {}) ??
@@ -336,112 +439,88 @@ class _TranslationsCommonEn extends TranslationsCommonZhCn {
   @override
   String get login =>
       TranslationOverrides.string(_root.$meta, 'common.login', {}) ?? 'Login';
-
   @override
   String get register =>
       TranslationOverrides.string(_root.$meta, 'common.register', {}) ??
       'Register';
-
   @override
   String get username =>
       TranslationOverrides.string(_root.$meta, 'common.username', {}) ??
       'Username';
-
   @override
   String get password =>
       TranslationOverrides.string(_root.$meta, 'common.password', {}) ??
       'Password';
-
   @override
   String get confirm =>
       TranslationOverrides.string(_root.$meta, 'common.confirm', {}) ??
       'Confirm';
-
   @override
   String get cancel =>
       TranslationOverrides.string(_root.$meta, 'common.cancel', {}) ?? 'Cancel';
-
   @override
   String get error =>
       TranslationOverrides.string(_root.$meta, 'common.error', {}) ?? 'Error';
-
   @override
   String get success =>
       TranslationOverrides.string(_root.$meta, 'common.success', {}) ??
       'Success';
-
   @override
   String get loading =>
       TranslationOverrides.string(_root.$meta, 'common.loading', {}) ??
       'Loading...';
-
   @override
   String get ok =>
       TranslationOverrides.string(_root.$meta, 'common.ok', {}) ?? 'OK';
-
   @override
   String get save =>
       TranslationOverrides.string(_root.$meta, 'common.save', {}) ?? 'Save';
-
   @override
   String get delete =>
       TranslationOverrides.string(_root.$meta, 'common.delete', {}) ?? 'Delete';
-
   @override
   String get edit =>
       TranslationOverrides.string(_root.$meta, 'common.edit', {}) ?? 'Edit';
-
   @override
   String get search =>
       TranslationOverrides.string(_root.$meta, 'common.search', {}) ?? 'Search';
-
   @override
   String get noData =>
       TranslationOverrides.string(_root.$meta, 'common.noData', {}) ??
       'No Data';
-
   @override
   String get retry =>
       TranslationOverrides.string(_root.$meta, 'common.retry', {}) ?? 'Retry';
-
   @override
   String get skip =>
       TranslationOverrides.string(_root.$meta, 'common.skip', {}) ?? 'Skip';
-
   @override
   String get refresh =>
       TranslationOverrides.string(_root.$meta, 'common.refresh', {}) ??
       'Refresh';
-
   @override
   String get loadFailed =>
       TranslationOverrides.string(_root.$meta, 'common.loadFailed', {}) ??
       'Load Failed';
-
   @override
   String get unknownError =>
       TranslationOverrides.string(_root.$meta, 'common.unknownError', {}) ??
       'Unknown Error';
-
   @override
   String get developing =>
       TranslationOverrides.string(_root.$meta, 'common.developing', {}) ??
       'Page is under development';
-
   @override
   String get appName =>
       TranslationOverrides.string(_root.$meta, 'common.appName', {}) ??
       'E-Lunchbox';
-
   @override
   String get logout =>
       TranslationOverrides.string(_root.$meta, 'common.logout', {}) ?? 'Logout';
-
   @override
   String get pullToRefresh =>
       TranslationOverrides.string(_root.$meta, 'common.pullToRefresh', {}) ??
       'Pull to refresh';
-
   @override
   String get releaseToRefresh =>
       TranslationOverrides.string(_root.$meta, 'common.releaseToRefresh', {}) ??
@@ -461,27 +540,22 @@ class _TranslationsCommunityEn extends TranslationsCommunityZhCn {
   String get title =>
       TranslationOverrides.string(_root.$meta, 'community.title', {}) ??
       'Community Benefits';
-
   @override
   String get join =>
       TranslationOverrides.string(_root.$meta, 'community.join', {}) ??
       'Join Community';
-
   @override
   String get share =>
       TranslationOverrides.string(_root.$meta, 'community.share', {}) ??
       'Share delicious food with foodies';
-
   @override
   String get org =>
       TranslationOverrides.string(_root.$meta, 'community.org', {}) ??
       'Dongguan CAS Cloud Computing Center';
-
   @override
   String get dept =>
       TranslationOverrides.string(_root.$meta, 'community.dept', {}) ??
       'Cloud Computing Center';
-
   @override
   String get scanHint =>
       TranslationOverrides.string(_root.$meta, 'community.scanHint', {}) ??
@@ -489,27 +563,22 @@ class _TranslationsCommunityEn extends TranslationsCommunityZhCn {
   @override
   late final _TranslationsCommunityFeaturesEn features =
       _TranslationsCommunityFeaturesEn._(_root);
-
   @override
   String get whyJoin =>
       TranslationOverrides.string(_root.$meta, 'community.whyJoin', {}) ??
       'Why join our community?';
-
   @override
   String get reason1 =>
       TranslationOverrides.string(_root.$meta, 'community.reason1', {}) ??
       'Daily food recommendations';
-
   @override
   String get reason2 =>
       TranslationOverrides.string(_root.$meta, 'community.reason2', {}) ??
       'Limited time offers, save money';
-
   @override
   String get reason3 =>
       TranslationOverrides.string(_root.$meta, 'community.reason3', {}) ??
       'Professional food reviews';
-
   @override
   String get reason4 =>
       TranslationOverrides.string(_root.$meta, 'community.reason4', {}) ??
@@ -532,18 +601,15 @@ class _TranslationsCouponEn extends TranslationsCouponZhCn {
   late final _TranslationsCouponTabsEn tabs = _TranslationsCouponTabsEn._(
     _root,
   );
-
   @override
   String get unit =>
       TranslationOverrides.string(_root.$meta, 'coupon.unit', {}) ?? '\$';
-
   @override
   String condition({required Object amount}) =>
       TranslationOverrides.string(_root.$meta, 'coupon.condition', {
         'amount': amount,
       }) ??
       'Coupon\nOver ${amount}';
-
   @override
   String get conditionNoThreshold =>
       TranslationOverrides.string(
@@ -552,44 +618,61 @@ class _TranslationsCouponEn extends TranslationsCouponZhCn {
         {},
       ) ??
       'Coupon\nNo threshold';
-
   @override
   String get validForever =>
       TranslationOverrides.string(_root.$meta, 'coupon.validForever', {}) ??
       'Valid Forever';
-
   @override
   String get btnReceive =>
       TranslationOverrides.string(_root.$meta, 'coupon.btnReceive', {}) ??
       'Receive';
-
   @override
   String get btnReceived =>
       TranslationOverrides.string(_root.$meta, 'coupon.btnReceived', {}) ??
       'Received';
-
   @override
   String get btnUse =>
       TranslationOverrides.string(_root.$meta, 'coupon.btnUse', {}) ?? 'Use';
-
   @override
   String get btnExpired =>
       TranslationOverrides.string(_root.$meta, 'coupon.btnExpired', {}) ??
       'Expired';
-
   @override
   String discount({required Object amount}) =>
       TranslationOverrides.string(_root.$meta, 'coupon.discount', {
         'amount': amount,
       }) ??
       '\$ ${amount} Coupon';
-
   @override
   String discountOff({required Object amount}) =>
       TranslationOverrides.string(_root.$meta, 'coupon.discountOff', {
         'amount': amount,
       }) ??
       '\$ ${amount} Off';
+
+  @override
+  String get noCoupons =>
+      TranslationOverrides.string(_root.$meta, 'coupon.noCoupons', {}) ??
+      'No coupons available';
+
+  @override
+  String get expiryPrefix =>
+      TranslationOverrides.string(_root.$meta, 'coupon.expiryPrefix', {}) ??
+      'Expires at: ';
+
+  @override
+  String get statusAvailable =>
+      TranslationOverrides.string(_root.$meta, 'coupon.statusAvailable', {}) ??
+      'Available';
+
+  @override
+  String get statusUnavailable =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'coupon.statusUnavailable',
+        {},
+      ) ??
+      'Unavailable';
 }
 
 // Path: device
@@ -605,69 +688,55 @@ class _TranslationsDeviceEn extends TranslationsDeviceZhCn {
   String get title =>
       TranslationOverrides.string(_root.$meta, 'device.title', {}) ??
       'Device Detail';
-
   @override
   String get info =>
       TranslationOverrides.string(_root.$meta, 'device.info', {}) ??
       'Device Information';
-
   @override
   String get address =>
       TranslationOverrides.string(_root.$meta, 'device.address', {}) ??
       'Address';
-
   @override
   String get distance =>
       TranslationOverrides.string(_root.$meta, 'device.distance', {}) ??
       'Distance';
-
   @override
   String get status =>
       TranslationOverrides.string(_root.$meta, 'device.status', {}) ?? 'Status';
-
   @override
   String get online =>
       TranslationOverrides.string(_root.$meta, 'device.online', {}) ?? 'Online';
-
   @override
   String get offline =>
       TranslationOverrides.string(_root.$meta, 'device.offline', {}) ??
       'Offline';
-
   @override
   String get paymentMethods =>
       TranslationOverrides.string(_root.$meta, 'device.paymentMethods', {}) ??
       'Payment Methods: ';
-
   @override
   String get mobilePayment =>
       TranslationOverrides.string(_root.$meta, 'device.mobilePayment', {}) ??
       'Mobile Payment';
-
   @override
   String get cash =>
       TranslationOverrides.string(_root.$meta, 'device.cash', {}) ?? 'Cash';
-
   @override
   String get noProducts =>
       TranslationOverrides.string(_root.$meta, 'device.noProducts', {}) ??
       'No products';
-
   @override
   String get productList =>
       TranslationOverrides.string(_root.$meta, 'device.productList', {}) ??
       'Product List';
-
   @override
   String get soldOut =>
       TranslationOverrides.string(_root.$meta, 'device.soldOut', {}) ??
       'Sold Out';
-
   @override
   String get reportIssue =>
       TranslationOverrides.string(_root.$meta, 'device.reportIssue', {}) ??
       'Report Issue';
-
   @override
   String get reportDeviceIssue =>
       TranslationOverrides.string(
@@ -676,66 +745,54 @@ class _TranslationsDeviceEn extends TranslationsDeviceZhCn {
         {},
       ) ??
       'Report Device Issue';
-
   @override
   String get reportIssueHint =>
       TranslationOverrides.string(_root.$meta, 'device.reportIssueHint', {}) ??
       'Please describe the issue...';
-
   @override
   String get reportSuccess =>
       TranslationOverrides.string(_root.$meta, 'device.reportSuccess', {}) ??
       'Issue reported successfully';
-
   @override
   String loadFailed({required Object error}) =>
       TranslationOverrides.string(_root.$meta, 'device.loadFailed', {
         'error': error,
       }) ??
       'Load failed: ${error}';
-
   @override
   String loadProductsFailed({required Object error}) =>
       TranslationOverrides.string(_root.$meta, 'device.loadProductsFailed', {
         'error': error,
       }) ??
       'Load products failed: ${error}';
-
   @override
   String get nearby =>
       TranslationOverrides.string(_root.$meta, 'device.nearby', {}) ??
       'Nearby Devices';
-
   @override
   String get sortByDistance =>
       TranslationOverrides.string(_root.$meta, 'device.sortByDistance', {}) ??
       'Sort by Distance';
-
   @override
   String get sortByName =>
       TranslationOverrides.string(_root.$meta, 'device.sortByName', {}) ??
       'Sort by Name';
-
   @override
   String get filterOnline =>
       TranslationOverrides.string(_root.$meta, 'device.filterOnline', {}) ??
       'Show Online Only';
-
   @override
   String get noDevicesNearby =>
       TranslationOverrides.string(_root.$meta, 'device.noDevicesNearby', {}) ??
       'No devices nearby';
-
   @override
   String get maintenance =>
       TranslationOverrides.string(_root.$meta, 'device.maintenance', {}) ??
       'Maintenance';
-
   @override
   String get unknown =>
       TranslationOverrides.string(_root.$meta, 'device.unknown', {}) ??
       'Unknown';
-
   @override
   String get cashPayment =>
       TranslationOverrides.string(_root.$meta, 'device.cashPayment', {}) ??
@@ -755,37 +812,30 @@ class _TranslationsDeviceInfoEn extends TranslationsDeviceInfoZhCn {
   String get browser =>
       TranslationOverrides.string(_root.$meta, 'device_info.browser', {}) ??
       'Browser';
-
   @override
   String get platform =>
       TranslationOverrides.string(_root.$meta, 'device_info.platform', {}) ??
       'Platform';
-
   @override
   String get userAgent =>
       TranslationOverrides.string(_root.$meta, 'device_info.userAgent', {}) ??
       'User Agent';
-
   @override
   String get language =>
       TranslationOverrides.string(_root.$meta, 'device_info.language', {}) ??
       'Language';
-
   @override
   String get memory =>
       TranslationOverrides.string(_root.$meta, 'device_info.memory', {}) ??
       'Memory';
-
   @override
   String get brand =>
       TranslationOverrides.string(_root.$meta, 'device_info.brand', {}) ??
       'Brand';
-
   @override
   String get model =>
       TranslationOverrides.string(_root.$meta, 'device_info.model', {}) ??
       'Model';
-
   @override
   String get systemVersion =>
       TranslationOverrides.string(
@@ -794,12 +844,10 @@ class _TranslationsDeviceInfoEn extends TranslationsDeviceInfoZhCn {
         {},
       ) ??
       'System Version';
-
   @override
   String get sdkVersion =>
       TranslationOverrides.string(_root.$meta, 'device_info.sdkVersion', {}) ??
       'SDK Version';
-
   @override
   String get manufacturer =>
       TranslationOverrides.string(
@@ -808,40 +856,148 @@ class _TranslationsDeviceInfoEn extends TranslationsDeviceInfoZhCn {
         {},
       ) ??
       'Manufacturer';
-
   @override
   String get hardware =>
       TranslationOverrides.string(_root.$meta, 'device_info.hardware', {}) ??
       'Hardware';
-
   @override
   String get host =>
       TranslationOverrides.string(_root.$meta, 'device_info.host', {}) ??
       'Host';
-
   @override
   String get id =>
       TranslationOverrides.string(_root.$meta, 'device_info.id', {}) ?? 'ID';
-
   @override
   String get name =>
       TranslationOverrides.string(_root.$meta, 'device_info.name', {}) ??
       'Name';
-
   @override
   String get systemName =>
       TranslationOverrides.string(_root.$meta, 'device_info.systemName', {}) ??
       'System Name';
-
   @override
   String get machine =>
       TranslationOverrides.string(_root.$meta, 'device_info.machine', {}) ??
       'Machine';
-
   @override
   String get uniqueId =>
       TranslationOverrides.string(_root.$meta, 'device_info.uniqueId', {}) ??
       'Unique ID';
+}
+
+// Path: feedback
+class _TranslationsFeedbackEn extends TranslationsFeedbackZhCn {
+  _TranslationsFeedbackEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title =>
+      TranslationOverrides.string(_root.$meta, 'feedback.title', {}) ??
+      'Feedback';
+
+  @override
+  String get subtitle =>
+      TranslationOverrides.string(_root.$meta, 'feedback.subtitle', {}) ??
+      'Your feedback is our motivation for progress';
+
+  @override
+  String get selectType =>
+      TranslationOverrides.string(_root.$meta, 'feedback.selectType', {}) ??
+      'Select Feedback Type';
+
+  @override
+  String get errorReport =>
+      TranslationOverrides.string(_root.$meta, 'feedback.errorReport', {}) ??
+      'Error Report';
+
+  @override
+  String get suggestion =>
+      TranslationOverrides.string(_root.$meta, 'feedback.suggestion', {}) ??
+      'Suggestion';
+
+  @override
+  String get complaint =>
+      TranslationOverrides.string(_root.$meta, 'feedback.complaint', {}) ??
+      'Complaint';
+
+  @override
+  String get other =>
+      TranslationOverrides.string(_root.$meta, 'feedback.other', {}) ?? 'Other';
+
+  @override
+  String get description =>
+      TranslationOverrides.string(_root.$meta, 'feedback.description', {}) ??
+      'Problem Description';
+
+  @override
+  String get titleHint =>
+      TranslationOverrides.string(_root.$meta, 'feedback.titleHint', {}) ??
+      'Please enter the problem title (Required)';
+
+  @override
+  String get contentHint =>
+      TranslationOverrides.string(_root.$meta, 'feedback.contentHint', {}) ??
+      'Please describe the problem or suggestion in detail (Required)';
+
+  @override
+  String get uploadScreenshot =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'feedback.uploadScreenshot',
+        {},
+      ) ??
+      'Upload Screenshot (Optional)';
+
+  @override
+  String get addImage =>
+      TranslationOverrides.string(_root.$meta, 'feedback.addImage', {}) ??
+      'Add Image';
+
+  @override
+  String get uploadLimitHint =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'feedback.uploadLimitHint',
+        {},
+      ) ??
+      'Up to 3 images, each not exceeding 2MB, support jpg, png formats';
+
+  @override
+  String get contactOptional =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'feedback.contactOptional',
+        {},
+      ) ??
+      'Contact Information (Optional)';
+
+  @override
+  String get contactInputHint =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'feedback.contactInputHint',
+        {},
+      ) ??
+      'Please enter your phone number or email for us to contact you';
+
+  @override
+  String get submit =>
+      TranslationOverrides.string(_root.$meta, 'feedback.submit', {}) ??
+      'Submit Feedback';
+
+  @override
+  String get submitSuccess =>
+      TranslationOverrides.string(_root.$meta, 'feedback.submitSuccess', {}) ??
+      'Feedback submitted successfully, thank you for your support';
+
+  @override
+  String get submitFailed =>
+      TranslationOverrides.string(_root.$meta, 'feedback.submitFailed', {}) ??
+      'Feedback submission failed, please try again later';
 }
 
 // Path: help
@@ -857,7 +1013,6 @@ class _TranslationsHelpEn extends TranslationsHelpZhCn {
   String get title =>
       TranslationOverrides.string(_root.$meta, 'help.title', {}) ??
       'Help Center';
-
   @override
   String get developing =>
       TranslationOverrides.string(_root.$meta, 'help.developing', {}) ??
@@ -877,82 +1032,66 @@ class _TranslationsHomeEn extends TranslationsHomeZhCn {
   String get selectCity =>
       TranslationOverrides.string(_root.$meta, 'home.selectCity', {}) ??
       'Select City';
-
   @override
   String get nearbyDevices =>
       TranslationOverrides.string(_root.$meta, 'home.nearbyDevices', {}) ??
       'Nearby Devices';
-
   @override
   String get banner1Title =>
       TranslationOverrides.string(_root.$meta, 'home.banner1Title', {}) ??
       'Convenient';
-
   @override
   String get banner1Subtitle =>
       TranslationOverrides.string(_root.$meta, 'home.banner1Subtitle', {}) ??
       'Delicious on the go';
-
   @override
   String get banner2Title =>
       TranslationOverrides.string(_root.$meta, 'home.banner2Title', {}) ??
       'Fresh Delivery';
-
   @override
   String get banner2Subtitle =>
       TranslationOverrides.string(_root.$meta, 'home.banner2Subtitle', {}) ??
       'Daily Updates';
-
   @override
   String get banner3Title =>
       TranslationOverrides.string(_root.$meta, 'home.banner3Title', {}) ??
       'Best Offers';
-
   @override
   String get banner3Subtitle =>
       TranslationOverrides.string(_root.$meta, 'home.banner3Subtitle', {}) ??
       'Limited Time Only';
-
   @override
   String get noDevices =>
       TranslationOverrides.string(_root.$meta, 'home.noDevices', {}) ??
       'No devices nearby';
-
   @override
   String get welcome =>
       TranslationOverrides.string(_root.$meta, 'home.welcome', {}) ??
       'Hello, User';
-
   @override
   String get selfPickup =>
       TranslationOverrides.string(_root.$meta, 'home.selfPickup', {}) ??
       'Self Pickup';
-
   @override
   String get selfPickupHint =>
       TranslationOverrides.string(_root.$meta, 'home.selfPickupHint', {}) ??
       'Scan code to pick up/Take away';
-
   @override
   String get teamOrder =>
       TranslationOverrides.string(_root.$meta, 'home.teamOrder', {}) ??
       'Team Order';
-
   @override
   String get teamOrderHint =>
       TranslationOverrides.string(_root.$meta, 'home.teamOrderHint', {}) ??
       'Group ordering/Team meal';
-
   @override
   String get invite =>
       TranslationOverrides.string(_root.$meta, 'home.invite', {}) ??
       'Invite & Earn';
-
   @override
   String get inviteHint =>
       TranslationOverrides.string(_root.$meta, 'home.inviteHint', {}) ??
       'Invite friends to get cash';
-
   @override
   String get recommendTitle =>
       TranslationOverrides.string(_root.$meta, 'home.recommendTitle', {}) ??
@@ -981,17 +1120,14 @@ class _TranslationsNavigationEn extends TranslationsNavigationZhCn {
   @override
   String get home =>
       TranslationOverrides.string(_root.$meta, 'navigation.home', {}) ?? 'Home';
-
   @override
   String get device =>
       TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ??
       'Device';
-
   @override
   String get orders =>
       TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ??
       'Orders';
-
   @override
   String get profile =>
       TranslationOverrides.string(_root.$meta, 'navigation.profile', {}) ??
@@ -1025,12 +1161,10 @@ class _TranslationsOnboardingEn extends TranslationsOnboardingZhCn {
   String get welcomeTitle =>
       TranslationOverrides.string(_root.$meta, 'onboarding.welcomeTitle', {}) ??
       'Welcome to E-Lunchbox';
-
   @override
   String get welcomeBody =>
       TranslationOverrides.string(_root.$meta, 'onboarding.welcomeBody', {}) ??
       'Anytime, anywhere, easily buy delicious lunch';
-
   @override
   String get findDevicesTitle =>
       TranslationOverrides.string(
@@ -1039,7 +1173,6 @@ class _TranslationsOnboardingEn extends TranslationsOnboardingZhCn {
         {},
       ) ??
       'Find Nearby Devices';
-
   @override
   String get findDevicesBody =>
       TranslationOverrides.string(
@@ -1048,17 +1181,14 @@ class _TranslationsOnboardingEn extends TranslationsOnboardingZhCn {
         {},
       ) ??
       'Quickly locate the nearest vending machine and save your time';
-
   @override
   String get paymentTitle =>
       TranslationOverrides.string(_root.$meta, 'onboarding.paymentTitle', {}) ??
       'Convenient Payment';
-
   @override
   String get paymentBody =>
       TranslationOverrides.string(_root.$meta, 'onboarding.paymentBody', {}) ??
       'Supports multiple convenient payment methods like credit cards';
-
   @override
   String get getStarted =>
       TranslationOverrides.string(_root.$meta, 'onboarding.getStarted', {}) ??
@@ -1078,12 +1208,10 @@ class _TranslationsOrderEn extends TranslationsOrderZhCn {
   String get myOrders =>
       TranslationOverrides.string(_root.$meta, 'order.myOrders', {}) ??
       'My Orders';
-
   @override
   String get noOrders =>
       TranslationOverrides.string(_root.$meta, 'order.noOrders', {}) ??
       'No Orders';
-
   @override
   String get detail =>
       TranslationOverrides.string(_root.$meta, 'order.detail', {}) ??
@@ -1092,91 +1220,73 @@ class _TranslationsOrderEn extends TranslationsOrderZhCn {
   late final _TranslationsOrderStatusEn status = _TranslationsOrderStatusEn._(
     _root,
   );
-
   @override
   String get pickupCode =>
       TranslationOverrides.string(_root.$meta, 'order.pickupCode', {}) ??
       'Pickup Code';
-
   @override
   String get pickupHint =>
       TranslationOverrides.string(_root.$meta, 'order.pickupHint', {}) ??
       'Enter code on device to pick up';
-
   @override
   String get items =>
       TranslationOverrides.string(_root.$meta, 'order.items', {}) ??
       'Item List';
-
   @override
   String get info =>
       TranslationOverrides.string(_root.$meta, 'order.info', {}) ??
       'Order Info';
-
   @override
   String get id =>
       TranslationOverrides.string(_root.$meta, 'order.id', {}) ?? 'Order ID';
-
   @override
   String get createdAt =>
       TranslationOverrides.string(_root.$meta, 'order.createdAt', {}) ??
       'Created At';
-
   @override
   String get paidAt =>
       TranslationOverrides.string(_root.$meta, 'order.paidAt', {}) ?? 'Paid At';
-
   @override
   String get paymentMethod =>
       TranslationOverrides.string(_root.$meta, 'order.paymentMethod', {}) ??
       'Payment Method';
-
   @override
   String get totalAmount =>
       TranslationOverrides.string(_root.$meta, 'order.totalAmount', {}) ??
       'Total Amount';
-
   @override
   String get unknown =>
       TranslationOverrides.string(_root.$meta, 'order.unknown', {}) ??
       'Unknown';
-
   @override
   String get refresh =>
       TranslationOverrides.string(_root.$meta, 'order.refresh', {}) ??
       'Refresh';
-
   @override
   String itemsCount({required Object count}) =>
       TranslationOverrides.string(_root.$meta, 'order.itemsCount', {
         'count': count,
       }) ??
       'and ${count} other items';
-
   @override
   String get orderIdLabel =>
       TranslationOverrides.string(_root.$meta, 'order.orderIdLabel', {}) ??
       'Order ID: ';
-
   @override
   String get orderAmount =>
       TranslationOverrides.string(_root.$meta, 'order.orderAmount', {}) ??
       'Order Amount';
-
   @override
   String get cancelOrder =>
       TranslationOverrides.string(_root.$meta, 'order.cancelOrder', {}) ??
       'Cancel Order';
-
   @override
   String get payNow =>
       TranslationOverrides.string(_root.$meta, 'order.payNow', {}) ?? 'Pay Now';
-
   @override
   String get viewDetail =>
       TranslationOverrides.string(_root.$meta, 'order.viewDetail', {}) ??
       'View Details';
-
   @override
   String get cancelConfirmTitle =>
       TranslationOverrides.string(
@@ -1185,7 +1295,6 @@ class _TranslationsOrderEn extends TranslationsOrderZhCn {
         {},
       ) ??
       'Confirm Cancel';
-
   @override
   String get cancelConfirmContent =>
       TranslationOverrides.string(
@@ -1194,38 +1303,281 @@ class _TranslationsOrderEn extends TranslationsOrderZhCn {
         {},
       ) ??
       'Are you sure you want to cancel this order?';
-
   @override
   String get orderCancelled =>
       TranslationOverrides.string(_root.$meta, 'order.orderCancelled', {}) ??
       'Order cancelled';
-
   @override
   String get confirmOrder =>
       TranslationOverrides.string(_root.$meta, 'order.confirmOrder', {}) ??
       'Confirm Order';
-
   @override
   String get actualAmount =>
       TranslationOverrides.string(_root.$meta, 'order.actualAmount', {}) ??
       'Actual Amount';
-
   @override
   String get totalLabel =>
       TranslationOverrides.string(_root.$meta, 'order.totalLabel', {}) ??
       'Total: ';
-
   @override
   String get submitOrder =>
       TranslationOverrides.string(_root.$meta, 'order.submitOrder', {}) ??
       'Submit Order';
-
   @override
   String createFailed({required Object error}) =>
       TranslationOverrides.string(_root.$meta, 'order.createFailed', {
         'error': error,
       }) ??
       'Create order failed: ${error}';
+}
+
+// Path: partner
+class _TranslationsPartnerEn extends TranslationsPartnerZhCn {
+  _TranslationsPartnerEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title =>
+      TranslationOverrides.string(_root.$meta, 'partner.title', {}) ??
+      'Partner Cooperation';
+
+  @override
+  String get subtitle =>
+      TranslationOverrides.string(_root.$meta, 'partner.subtitle', {}) ??
+      'Join hands to create a better future';
+
+  @override
+  String get advantages =>
+      TranslationOverrides.string(_root.$meta, 'partner.advantages', {}) ??
+      'Cooperation Advantages';
+
+  @override
+  String get advantage1Title =>
+      TranslationOverrides.string(_root.$meta, 'partner.advantage1Title', {}) ??
+      'Generous Returns';
+
+  @override
+  String get advantage1Desc =>
+      TranslationOverrides.string(_root.$meta, 'partner.advantage1Desc', {}) ??
+      'Provide competitive profit sharing for your investment';
+
+  @override
+  String get advantage2Title =>
+      TranslationOverrides.string(_root.$meta, 'partner.advantage2Title', {}) ??
+      'Brand Support';
+
+  @override
+  String get advantage2Desc =>
+      TranslationOverrides.string(_root.$meta, 'partner.advantage2Desc', {}) ??
+      'Share well-known brand resources and customer trust';
+
+  @override
+  String get advantage3Title =>
+      TranslationOverrides.string(_root.$meta, 'partner.advantage3Title', {}) ??
+      'Marketing Support';
+
+  @override
+  String get advantage3Desc =>
+      TranslationOverrides.string(_root.$meta, 'partner.advantage3Desc', {}) ??
+      'Professional marketing team for full support';
+
+  @override
+  String get advantage4Title =>
+      TranslationOverrides.string(_root.$meta, 'partner.advantage4Title', {}) ??
+      'Training Support';
+
+  @override
+  String get advantage4Desc =>
+      TranslationOverrides.string(_root.$meta, 'partner.advantage4Desc', {}) ??
+      'Professional training courses to help you master skills';
+
+  @override
+  String get process =>
+      TranslationOverrides.string(_root.$meta, 'partner.process', {}) ??
+      'Cooperation Process';
+
+  @override
+  String get process1Title =>
+      TranslationOverrides.string(_root.$meta, 'partner.process1Title', {}) ??
+      'Submit Application';
+
+  @override
+  String get process1Desc =>
+      TranslationOverrides.string(_root.$meta, 'partner.process1Desc', {}) ??
+      'Fill out the application form and submit relevant information';
+
+  @override
+  String get process2Title =>
+      TranslationOverrides.string(_root.$meta, 'partner.process2Title', {}) ??
+      'Qualification Review';
+
+  @override
+  String get process2Desc =>
+      TranslationOverrides.string(_root.$meta, 'partner.process2Desc', {}) ??
+      'We will complete review within 3-5 working days';
+
+  @override
+  String get process3Title =>
+      TranslationOverrides.string(_root.$meta, 'partner.process3Title', {}) ??
+      'Interview';
+
+  @override
+  String get process3Desc =>
+      TranslationOverrides.string(_root.$meta, 'partner.process3Desc', {}) ??
+      'Arrange an interview to understand cooperation details';
+
+  @override
+  String get process4Title =>
+      TranslationOverrides.string(_root.$meta, 'partner.process4Title', {}) ??
+      'Sign Agreement';
+
+  @override
+  String get process4Desc =>
+      TranslationOverrides.string(_root.$meta, 'partner.process4Desc', {}) ??
+      'Sign formal agreement after reaching consensus';
+
+  @override
+  String get process5Title =>
+      TranslationOverrides.string(_root.$meta, 'partner.process5Title', {}) ??
+      'Start Cooperation';
+
+  @override
+  String get process5Desc =>
+      TranslationOverrides.string(_root.$meta, 'partner.process5Desc', {}) ??
+      'Formally launch cooperation and enjoy support services';
+
+  @override
+  String get conditions =>
+      TranslationOverrides.string(_root.$meta, 'partner.conditions', {}) ??
+      'Cooperation Conditions';
+
+  @override
+  String get condition1 =>
+      TranslationOverrides.string(_root.$meta, 'partner.condition1', {}) ??
+      'Have legal business qualifications';
+
+  @override
+  String get condition2 =>
+      TranslationOverrides.string(_root.$meta, 'partner.condition2', {}) ??
+      'Have certain capital and management ability';
+
+  @override
+  String get condition3 =>
+      TranslationOverrides.string(_root.$meta, 'partner.condition3', {}) ??
+      'Identify with our brand concept and model';
+
+  @override
+  String get condition4 =>
+      TranslationOverrides.string(_root.$meta, 'partner.condition4', {}) ??
+      'Have good business reputation';
+
+  @override
+  String get condition5 =>
+      TranslationOverrides.string(_root.$meta, 'partner.condition5', {}) ??
+      'Relevant industry experience is preferred';
+
+  @override
+  String get applicationTitle =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'partner.applicationTitle',
+        {},
+      ) ??
+      'Apply for Cooperation';
+
+  @override
+  String get nameLabel =>
+      TranslationOverrides.string(_root.$meta, 'partner.nameLabel', {}) ??
+      'Name';
+
+  @override
+  String get nameInputHint =>
+      TranslationOverrides.string(_root.$meta, 'partner.nameInputHint', {}) ??
+      'Please enter your name';
+
+  @override
+  String get companyLabel =>
+      TranslationOverrides.string(_root.$meta, 'partner.companyLabel', {}) ??
+      'Company Name';
+
+  @override
+  String get companyInputHint =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'partner.companyInputHint',
+        {},
+      ) ??
+      'Please enter company name';
+
+  @override
+  String get phoneLabel =>
+      TranslationOverrides.string(_root.$meta, 'partner.phoneLabel', {}) ??
+      'Phone Number';
+
+  @override
+  String get phoneInputHint =>
+      TranslationOverrides.string(_root.$meta, 'partner.phoneInputHint', {}) ??
+      'Please enter phone number';
+
+  @override
+  String get intentionLabel =>
+      TranslationOverrides.string(_root.$meta, 'partner.intentionLabel', {}) ??
+      'Cooperation Intention';
+
+  @override
+  String get intentionInputHint =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'partner.intentionInputHint',
+        {},
+      ) ??
+      'Briefly describe your cooperation intention';
+
+  @override
+  String get submit =>
+      TranslationOverrides.string(_root.$meta, 'partner.submit', {}) ??
+      'Submit Application';
+
+  @override
+  String get submitSuccess =>
+      TranslationOverrides.string(_root.$meta, 'partner.submitSuccess', {}) ??
+      'Application submitted successfully, we will contact you soon';
+
+  @override
+  String get submitFailed =>
+      TranslationOverrides.string(_root.$meta, 'partner.submitFailed', {}) ??
+      'Application submission failed, please try again later';
+
+  @override
+  String get incompleteInfo =>
+      TranslationOverrides.string(_root.$meta, 'partner.incompleteInfo', {}) ??
+      'Please fill in complete information';
+
+  @override
+  String get contactTitle =>
+      TranslationOverrides.string(_root.$meta, 'partner.contactTitle', {}) ??
+      'Contact Us';
+
+  @override
+  String get serviceHotline =>
+      TranslationOverrides.string(_root.$meta, 'partner.serviceHotline', {}) ??
+      'Customer Service Hotline';
+
+  @override
+  String get address =>
+      TranslationOverrides.string(_root.$meta, 'partner.address', {}) ??
+      'Address';
+
+  @override
+  String errorOccurred({required Object error}) =>
+      TranslationOverrides.string(_root.$meta, 'partner.errorOccurred', {
+        'error': error,
+      }) ??
+      'Error occurred: ${error}';
 }
 
 // Path: payment
@@ -1241,56 +1593,169 @@ class _TranslationsPaymentEn extends TranslationsPaymentZhCn {
   String get checkout =>
       TranslationOverrides.string(_root.$meta, 'payment.checkout', {}) ??
       'Checkout';
-
   @override
   String get success =>
       TranslationOverrides.string(_root.$meta, 'payment.success', {}) ??
       'Payment Successful';
-
   @override
   String get orderNotFound =>
       TranslationOverrides.string(_root.$meta, 'payment.orderNotFound', {}) ??
       'Order Not Found';
-
   @override
   String get payNow =>
       TranslationOverrides.string(_root.$meta, 'payment.payNow', {}) ??
       'Pay Now';
-
   @override
   String get initializing =>
       TranslationOverrides.string(_root.$meta, 'payment.initializing', {}) ??
       'Initializing payment...';
-
   @override
   String get cancelTitle =>
       TranslationOverrides.string(_root.$meta, 'payment.cancelTitle', {}) ??
       'Cancel Payment';
-
   @override
   String get cancelContent =>
       TranslationOverrides.string(_root.$meta, 'payment.cancelContent', {}) ??
       'Are you sure you want to cancel? Order will be cancelled';
-
   @override
   String get continuePay =>
       TranslationOverrides.string(_root.$meta, 'payment.continuePay', {}) ??
       'Continue Payment';
-
   @override
   String get cancelPay =>
       TranslationOverrides.string(_root.$meta, 'payment.cancelPay', {}) ??
       'Cancel Payment';
-
   @override
   String get amount =>
       TranslationOverrides.string(_root.$meta, 'payment.amount', {}) ??
       'Payment Amount';
-
   @override
   String get remainingTime =>
       TranslationOverrides.string(_root.$meta, 'payment.remainingTime', {}) ??
       'Time Remaining';
+}
+
+// Path: points
+class _TranslationsPointsEn extends TranslationsPointsZhCn {
+  _TranslationsPointsEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title =>
+      TranslationOverrides.string(_root.$meta, 'points.title', {}) ??
+      'My Coins';
+
+  @override
+  String get unit =>
+      TranslationOverrides.string(_root.$meta, 'points.unit', {}) ?? 'Coins';
+
+  @override
+  String get mall =>
+      TranslationOverrides.string(_root.$meta, 'points.mall', {}) ??
+      'Coin Mall';
+
+  @override
+  String get goExchange =>
+      TranslationOverrides.string(_root.$meta, 'points.goExchange', {}) ??
+      'Go Exchange';
+
+  @override
+  String get rules =>
+      TranslationOverrides.string(_root.$meta, 'points.rules', {}) ??
+      'Coin Rules';
+
+  @override
+  String get rule1 =>
+      TranslationOverrides.string(_root.$meta, 'points.rule1', {}) ??
+      'Coins are permanently valid';
+
+  @override
+  String get rule2 =>
+      TranslationOverrides.string(_root.$meta, 'points.rule2', {}) ??
+      'Extra coins can be obtained by lottery';
+
+  @override
+  String get records =>
+      TranslationOverrides.string(_root.$meta, 'points.records', {}) ??
+      'Coin Records';
+
+  @override
+  String get all =>
+      TranslationOverrides.string(_root.$meta, 'points.all', {}) ?? 'All';
+
+  @override
+  String get earned =>
+      TranslationOverrides.string(_root.$meta, 'points.earned', {}) ?? 'Earned';
+
+  @override
+  String get used =>
+      TranslationOverrides.string(_root.$meta, 'points.used', {}) ?? 'Used';
+
+  @override
+  String get noRecords =>
+      TranslationOverrides.string(_root.$meta, 'points.noRecords', {}) ??
+      'No coin records';
+
+  @override
+  String get back =>
+      TranslationOverrides.string(_root.$meta, 'points.back', {}) ?? 'Back';
+
+  @override
+  String get goLottery =>
+      TranslationOverrides.string(_root.$meta, 'points.goLottery', {}) ??
+      'Go Lottery';
+
+  @override
+  String get balance =>
+      TranslationOverrides.string(_root.$meta, 'points.balance', {}) ??
+      'Balance';
+
+  @override
+  String get coupon =>
+      TranslationOverrides.string(_root.$meta, 'points.coupon', {}) ??
+      'Coupons';
+
+  @override
+  String get noMoreProducts =>
+      TranslationOverrides.string(_root.$meta, 'points.noMoreProducts', {}) ??
+      'No more products';
+
+  @override
+  String myPoints({required Object points}) =>
+      TranslationOverrides.string(_root.$meta, 'points.myPoints', {
+        'points': points,
+      }) ??
+      'My Coins: ${points}';
+
+  @override
+  String get noProducts =>
+      TranslationOverrides.string(_root.$meta, 'points.noProducts', {}) ??
+      'No products';
+
+  @override
+  String cost({required Object points}) =>
+      TranslationOverrides.string(_root.$meta, 'points.cost', {
+        'points': points,
+      }) ??
+      '${points} Coins';
+
+  @override
+  String get exchangeNow =>
+      TranslationOverrides.string(_root.$meta, 'points.exchangeNow', {}) ??
+      'Exchange Now';
+
+  @override
+  String get insufficientPoints =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'points.insufficientPoints',
+        {},
+      ) ??
+      'Insufficient balance';
 }
 
 // Path: product
@@ -1306,93 +1771,75 @@ class _TranslationsProductEn extends TranslationsProductZhCn {
   String get title =>
       TranslationOverrides.string(_root.$meta, 'product.title', {}) ??
       'Product List';
-
   @override
   String get detail =>
       TranslationOverrides.string(_root.$meta, 'product.detail', {}) ??
       'Product Detail';
-
   @override
   String get hot =>
       TranslationOverrides.string(_root.$meta, 'product.hot', {}) ?? 'Hot';
-
   @override
   String get promotion =>
       TranslationOverrides.string(_root.$meta, 'product.promotion', {}) ??
       'Sale';
-
   @override
   String discountOff({required Object percent}) =>
       TranslationOverrides.string(_root.$meta, 'product.discountOff', {
         'percent': percent,
       }) ??
       '${percent}% OFF';
-
   @override
   String get stockFull =>
       TranslationOverrides.string(_root.$meta, 'product.stockFull', {}) ??
       'In Stock';
-
   @override
   String get stockEmpty =>
       TranslationOverrides.string(_root.$meta, 'product.stockEmpty', {}) ??
       'Out of Stock';
-
   @override
   String get addToCart =>
       TranslationOverrides.string(_root.$meta, 'product.addToCart', {}) ??
       'Add to Cart';
-
   @override
   String get addedToCart =>
       TranslationOverrides.string(_root.$meta, 'product.addedToCart', {}) ??
       'Added to Cart';
-
   @override
   String get specifications =>
       TranslationOverrides.string(_root.$meta, 'product.specifications', {}) ??
       'Specifications';
-
   @override
   String get categoryAll =>
       TranslationOverrides.string(_root.$meta, 'product.categoryAll', {}) ??
       'All';
-
   @override
   String get categoryFood =>
       TranslationOverrides.string(_root.$meta, 'product.categoryFood', {}) ??
       'Food';
-
   @override
   String get categoryDrink =>
       TranslationOverrides.string(_root.$meta, 'product.categoryDrink', {}) ??
       'Drink';
-
   @override
   String get categorySnack =>
       TranslationOverrides.string(_root.$meta, 'product.categorySnack', {}) ??
       'Snack';
-
   @override
   String get sortDefault =>
       TranslationOverrides.string(_root.$meta, 'product.sortDefault', {}) ??
       'Default';
-
   @override
   String get sortPriceAsc =>
       TranslationOverrides.string(_root.$meta, 'product.sortPriceAsc', {}) ??
       'Price: Low to High';
-
   @override
   String get sortPriceDesc =>
       TranslationOverrides.string(_root.$meta, 'product.sortPriceDesc', {}) ??
       'Price: High to Low';
-
   @override
   String get sortName =>
       TranslationOverrides.string(_root.$meta, 'product.sortName', {}) ??
       'Name';
-
   @override
   String get filterOnlyAvailable =>
       TranslationOverrides.string(
@@ -1401,7 +1848,6 @@ class _TranslationsProductEn extends TranslationsProductZhCn {
         {},
       ) ??
       'Show Available Only';
-
   @override
   String get cart =>
       TranslationOverrides.string(_root.$meta, 'product.cart', {}) ?? 'Cart';
@@ -1420,37 +1866,30 @@ class _TranslationsProfileEn extends TranslationsProfileZhCn {
   String get title =>
       TranslationOverrides.string(_root.$meta, 'profile.title', {}) ??
       'User Center';
-
   @override
   String get notLoggedIn =>
       TranslationOverrides.string(_root.$meta, 'profile.notLoggedIn', {}) ??
       'Not Logged In';
-
   @override
   String get editProfile =>
       TranslationOverrides.string(_root.$meta, 'profile.editProfile', {}) ??
       'Edit Profile';
-
   @override
   String get logout =>
       TranslationOverrides.string(_root.$meta, 'profile.logout', {}) ??
       'Logout';
-
   @override
   String get favoriteDevices =>
       TranslationOverrides.string(_root.$meta, 'profile.favoriteDevices', {}) ??
       'Favorite Devices';
-
   @override
   String get personalInfo =>
       TranslationOverrides.string(_root.$meta, 'profile.personalInfo', {}) ??
       'Personal Info';
-
   @override
   String get confirmLogout =>
       TranslationOverrides.string(_root.$meta, 'profile.confirmLogout', {}) ??
       'Confirm Logout';
-
   @override
   String get confirmLogoutContent =>
       TranslationOverrides.string(
@@ -1459,7 +1898,6 @@ class _TranslationsProfileEn extends TranslationsProfileZhCn {
         {},
       ) ??
       'Are you sure you want to logout?';
-
   @override
   String get clearCacheConfirm =>
       TranslationOverrides.string(
@@ -1468,7 +1906,6 @@ class _TranslationsProfileEn extends TranslationsProfileZhCn {
         {},
       ) ??
       'Are you sure you want to clear all cache data?';
-
   @override
   String get noFavoriteDevices =>
       TranslationOverrides.string(
@@ -1477,12 +1914,10 @@ class _TranslationsProfileEn extends TranslationsProfileZhCn {
         {},
       ) ??
       'No favorite devices';
-
   @override
   String get removeFavorite =>
       TranslationOverrides.string(_root.$meta, 'profile.removeFavorite', {}) ??
       'Unfavorite';
-
   @override
   String removeFavoriteConfirm({required Object name}) =>
       TranslationOverrides.string(
@@ -1491,18 +1926,87 @@ class _TranslationsProfileEn extends TranslationsProfileZhCn {
         {'name': name},
       ) ??
       'Are you sure you want to unfavorite "${name}"?';
-
   @override
   String get appDescription =>
       TranslationOverrides.string(_root.$meta, 'profile.appDescription', {}) ??
       'A convenient vending machine purchasing application';
-
   @override
   String version({required Object version}) =>
       TranslationOverrides.string(_root.$meta, 'profile.version', {
         'version': version,
       }) ??
       'Version: ${version}';
+
+  @override
+  String get wallet =>
+      TranslationOverrides.string(_root.$meta, 'profile.wallet', {}) ??
+      'My Wallet';
+
+  @override
+  String get coupon =>
+      TranslationOverrides.string(_root.$meta, 'profile.coupon', {}) ??
+      'Coupons';
+
+  @override
+  String get feedback =>
+      TranslationOverrides.string(_root.$meta, 'profile.feedback', {}) ??
+      'Feedback';
+
+  @override
+  String get cooperation =>
+      TranslationOverrides.string(_root.$meta, 'profile.cooperation', {}) ??
+      'Cooperation';
+
+  @override
+  String get about =>
+      TranslationOverrides.string(_root.$meta, 'profile.about', {}) ??
+      'About Us';
+
+  @override
+  String get settings =>
+      TranslationOverrides.string(_root.$meta, 'profile.settings', {}) ??
+      'Settings';
+  @override
+  late final _TranslationsProfileGenderEn gender =
+      _TranslationsProfileGenderEn._(_root);
+  @override
+  late final _TranslationsProfileInfoEn info = _TranslationsProfileInfoEn._(
+    _root,
+  );
+  @override
+  late final _TranslationsProfileAvatarEn avatar =
+      _TranslationsProfileAvatarEn._(_root);
+
+  @override
+  String get saveSuccess =>
+      TranslationOverrides.string(_root.$meta, 'profile.saveSuccess', {}) ??
+      'Saved successfully';
+
+  @override
+  String saveFailed({required Object error}) =>
+      TranslationOverrides.string(_root.$meta, 'profile.saveFailed', {
+        'error': error,
+      }) ??
+      'Save failed: ${error}';
+
+  @override
+  String get saveInfo =>
+      TranslationOverrides.string(_root.$meta, 'profile.saveInfo', {}) ??
+      'Save Information';
+
+  @override
+  String get walletBalance =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletBalance', {}) ??
+      'Wallet Balance';
+
+  @override
+  String get coin =>
+      TranslationOverrides.string(_root.$meta, 'profile.coin', {}) ?? 'Coins';
+
+  @override
+  String get couponCount =>
+      TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ??
+      'Coupons';
 }
 
 // Path: settings
@@ -1518,81 +2022,65 @@ class _TranslationsSettingsEn extends TranslationsSettingsZhCn {
   String get title =>
       TranslationOverrides.string(_root.$meta, 'settings.title', {}) ??
       'Settings';
-
   @override
   String get general =>
       TranslationOverrides.string(_root.$meta, 'settings.general', {}) ??
       'General';
-
   @override
   String get theme =>
       TranslationOverrides.string(_root.$meta, 'settings.theme', {}) ??
       'Theme Mode';
-
   @override
   String get themeLight =>
       TranslationOverrides.string(_root.$meta, 'settings.themeLight', {}) ??
       'Light';
-
   @override
   String get themeDark =>
       TranslationOverrides.string(_root.$meta, 'settings.themeDark', {}) ??
       'Dark';
-
   @override
   String get themeSystem =>
       TranslationOverrides.string(_root.$meta, 'settings.themeSystem', {}) ??
       'System';
-
   @override
   String get language =>
       TranslationOverrides.string(_root.$meta, 'settings.language', {}) ??
       'Language';
-
   @override
   String get checkUpdate =>
       TranslationOverrides.string(_root.$meta, 'settings.checkUpdate', {}) ??
       'Check Update';
-
   @override
   String get clearCache =>
       TranslationOverrides.string(_root.$meta, 'settings.clearCache', {}) ??
       'Clear Cache';
-
   @override
   String get about =>
       TranslationOverrides.string(_root.$meta, 'settings.about', {}) ?? 'About';
-
   @override
   String get deviceInfo =>
       TranslationOverrides.string(_root.$meta, 'settings.deviceInfo', {}) ??
       'Device Info';
-
   @override
   String get aboutUs =>
       TranslationOverrides.string(_root.$meta, 'settings.aboutUs', {}) ??
       'About Us';
-
   @override
   String get checkingUpdate =>
       TranslationOverrides.string(_root.$meta, 'settings.checkingUpdate', {}) ??
       'Checking for updates...';
-
   @override
   String get cacheCleared =>
       TranslationOverrides.string(_root.$meta, 'settings.cacheCleared', {}) ??
       'Cache cleared';
-
   @override
   String get english =>
       TranslationOverrides.string(_root.$meta, 'settings.english', {}) ??
       'English';
-
   @override
   String get chinese =>
       TranslationOverrides.string(_root.$meta, 'settings.chinese', {}) ??
       'Simplified Chinese';
-
   @override
   String get traditionalChinese =>
       TranslationOverrides.string(
@@ -1603,20 +2091,24 @@ class _TranslationsSettingsEn extends TranslationsSettingsZhCn {
       'Traditional Chinese';
 
   @override
+  String get themeScheme =>
+      TranslationOverrides.string(_root.$meta, 'settings.themeScheme', {}) ??
+      'Color Scheme';
+  @override
+  late final _TranslationsSettingsSchemesEn schemes =
+      _TranslationsSettingsSchemesEn._(_root);
+  @override
   String get appName =>
       TranslationOverrides.string(_root.$meta, 'settings.appName', {}) ??
       'App Name';
-
   @override
   String get packageName =>
       TranslationOverrides.string(_root.$meta, 'settings.packageName', {}) ??
       'Package Name';
-
   @override
   String get versionName =>
       TranslationOverrides.string(_root.$meta, 'settings.versionName', {}) ??
       'Version Name';
-
   @override
   String get buildNumber =>
       TranslationOverrides.string(_root.$meta, 'settings.buildNumber', {}) ??
@@ -1641,31 +2133,25 @@ class _TranslationsSplashEn extends TranslationsSplashZhCn {
   String get starting =>
       TranslationOverrides.string(_root.$meta, 'splash.starting', {}) ??
       'Starting...';
-
   @override
   String get checkingServices =>
       TranslationOverrides.string(_root.$meta, 'splash.checkingServices', {}) ??
       'Checking services...';
-
   @override
   String get loadingConfig =>
       TranslationOverrides.string(_root.$meta, 'splash.loadingConfig', {}) ??
       'Loading config...';
-
   @override
   String get checkingAuth =>
       TranslationOverrides.string(_root.$meta, 'splash.checkingAuth', {}) ??
       'Checking auth status...';
-
   @override
   String get preparingData =>
       TranslationOverrides.string(_root.$meta, 'splash.preparingData', {}) ??
       'Preparing data...';
-
   @override
   String get ready =>
       TranslationOverrides.string(_root.$meta, 'splash.ready', {}) ?? 'Ready';
-
   @override
   String get failed =>
       TranslationOverrides.string(_root.$meta, 'splash.failed', {}) ??
@@ -1685,21 +2171,18 @@ class _TranslationsTimeEn extends TranslationsTimeZhCn {
   String get justNow =>
       TranslationOverrides.string(_root.$meta, 'time.justNow', {}) ??
       'Just now';
-
   @override
   String minutesAgo({required Object minutes}) =>
       TranslationOverrides.string(_root.$meta, 'time.minutesAgo', {
         'minutes': minutes,
       }) ??
       '${minutes} mins ago';
-
   @override
   String hoursAgo({required Object hours}) =>
       TranslationOverrides.string(_root.$meta, 'time.hoursAgo', {
         'hours': hours,
       }) ??
       '${hours} hours ago';
-
   @override
   String daysAgo({required Object days}) =>
       TranslationOverrides.string(_root.$meta, 'time.daysAgo', {
@@ -1726,7 +2209,6 @@ class _TranslationsCommunityFeaturesEn
         {},
       ) ??
       'Exclusive Coupons';
-
   @override
   String get couponHint =>
       TranslationOverrides.string(
@@ -1735,7 +2217,6 @@ class _TranslationsCommunityFeaturesEn
         {},
       ) ??
       'Exclusive discounts for group members';
-
   @override
   String get tasting =>
       TranslationOverrides.string(
@@ -1744,7 +2225,6 @@ class _TranslationsCommunityFeaturesEn
         {},
       ) ??
       'New Product Tasting';
-
   @override
   String get tastingHint =>
       TranslationOverrides.string(
@@ -1753,7 +2233,6 @@ class _TranslationsCommunityFeaturesEn
         {},
       ) ??
       'Taste the latest food first';
-
   @override
   String get exchange =>
       TranslationOverrides.string(
@@ -1762,7 +2241,6 @@ class _TranslationsCommunityFeaturesEn
         {},
       ) ??
       'Food Exchange';
-
   @override
   String get exchangeHint =>
       TranslationOverrides.string(
@@ -1771,7 +2249,6 @@ class _TranslationsCommunityFeaturesEn
         {},
       ) ??
       'Share insights with food experts';
-
   @override
   String get priority =>
       TranslationOverrides.string(
@@ -1780,7 +2257,6 @@ class _TranslationsCommunityFeaturesEn
         {},
       ) ??
       'Priority Access';
-
   @override
   String get priorityHint =>
       TranslationOverrides.string(
@@ -1789,7 +2265,6 @@ class _TranslationsCommunityFeaturesEn
         {},
       ) ??
       'Priority participation in food events';
-
   @override
   String get activity =>
       TranslationOverrides.string(
@@ -1798,7 +2273,6 @@ class _TranslationsCommunityFeaturesEn
         {},
       ) ??
       'Community Events';
-
   @override
   String get activityHint =>
       TranslationOverrides.string(
@@ -1807,7 +2281,6 @@ class _TranslationsCommunityFeaturesEn
         {},
       ) ??
       'Regular offline gatherings';
-
   @override
   String get topic =>
       TranslationOverrides.string(
@@ -1816,7 +2289,6 @@ class _TranslationsCommunityFeaturesEn
         {},
       ) ??
       'Topic Discussion';
-
   @override
   String get topicHint =>
       TranslationOverrides.string(
@@ -1850,6 +2322,14 @@ class _TranslationsCouponTabsEn extends TranslationsCouponTabsZhCn {
   String get expired =>
       TranslationOverrides.string(_root.$meta, 'coupon.tabs.expired', {}) ??
       'Expired';
+  @override
+  String get canUse =>
+      TranslationOverrides.string(_root.$meta, 'coupon.tabs.canUse', {}) ??
+      'To Use';
+  @override
+  String get cannotUse =>
+      TranslationOverrides.string(_root.$meta, 'coupon.tabs.cannotUse', {}) ??
+      'Unavailable';
 }
 
 // Path: home.grid
@@ -1865,22 +2345,18 @@ class _TranslationsHomeGridEn extends TranslationsHomeGridZhCn {
   String get welfare =>
       TranslationOverrides.string(_root.$meta, 'home.grid.welfare', {}) ??
       'Welfare';
-
   @override
   String get service =>
       TranslationOverrides.string(_root.$meta, 'home.grid.service', {}) ??
       'Service';
-
   @override
   String get coupon =>
       TranslationOverrides.string(_root.$meta, 'home.grid.coupon', {}) ??
       'Coupons';
-
   @override
   String get lottery =>
       TranslationOverrides.string(_root.$meta, 'home.grid.lottery', {}) ??
       'Lucky Draw';
-
   @override
   String get invite =>
       TranslationOverrides.string(_root.$meta, 'home.grid.invite', {}) ??
@@ -1900,52 +2376,42 @@ class _TranslationsHomeLotteryEn extends TranslationsHomeLotteryZhCn {
   String get title =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.title', {}) ??
       'Lucky Draw';
-
   @override
   String get prizes =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.prizes', {}) ??
       'My Prizes';
-
   @override
   String get rules =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.rules', {}) ??
       'Draw Rules';
-
   @override
   String get remaining =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {}) ??
       'Remaining: {count}';
-
   @override
   String get spin =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.spin', {}) ??
       'Spin';
-
   @override
   String get rule1 =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.rule1', {}) ??
       'Free draws daily, complete tasks for more';
-
   @override
   String get rule2 =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.rule2', {}) ??
       'Coupons valid for 48h, Coins added automatically';
-
   @override
   String get rule3 =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.rule3', {}) ??
       'Platform reserves all rights';
-
   @override
   String get prizeUnit =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.prizeUnit', {}) ??
       'Coins';
-
   @override
   String get prizeList =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.prizeList', {}) ??
       'Prize List';
-
   @override
   String get back =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.back', {}) ??
@@ -1974,12 +2440,10 @@ class _TranslationsHomeStatusEn extends TranslationsHomeStatusZhCn {
   String get open =>
       TranslationOverrides.string(_root.$meta, 'home.status.open', {}) ??
       'Open';
-
   @override
   String get closed =>
       TranslationOverrides.string(_root.$meta, 'home.status.closed', {}) ??
       'Closed';
-
   @override
   String get mobilePayment =>
       TranslationOverrides.string(
@@ -2007,7 +2471,6 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Connection timeout, please check your network';
-
   @override
   String get sendTimeout =>
       TranslationOverrides.string(
@@ -2016,7 +2479,6 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Send timeout, please check your network';
-
   @override
   String get receiveTimeout =>
       TranslationOverrides.string(
@@ -2025,7 +2487,6 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Receive timeout, please check your network';
-
   @override
   String get badCertificate =>
       TranslationOverrides.string(
@@ -2034,12 +2495,10 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Bad certificate';
-
   @override
   String get cancel =>
       TranslationOverrides.string(_root.$meta, 'network.errors.cancel', {}) ??
       'Request cancelled';
-
   @override
   String get connectionError =>
       TranslationOverrides.string(
@@ -2048,14 +2507,12 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Connection error, please check your network';
-
   @override
   String unknown({required Object error}) =>
       TranslationOverrides.string(_root.$meta, 'network.errors.unknown', {
         'error': error,
       }) ??
       'Unknown error: ${error}';
-
   @override
   String get retryLater =>
       TranslationOverrides.string(
@@ -2064,7 +2521,6 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Please try again later';
-
   @override
   String get badRequest =>
       TranslationOverrides.string(
@@ -2073,7 +2529,6 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Bad request';
-
   @override
   String get unauthorized =>
       TranslationOverrides.string(
@@ -2082,7 +2537,6 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Unauthorized, please login again';
-
   @override
   String get forbidden =>
       TranslationOverrides.string(
@@ -2091,22 +2545,18 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Forbidden';
-
   @override
   String get notFound =>
       TranslationOverrides.string(_root.$meta, 'network.errors.notFound', {}) ??
       'Resource not found';
-
   @override
   String get timeout =>
       TranslationOverrides.string(_root.$meta, 'network.errors.timeout', {}) ??
       'Request timeout, please try again';
-
   @override
   String get conflict =>
       TranslationOverrides.string(_root.$meta, 'network.errors.conflict', {}) ??
       'Conflict';
-
   @override
   String get validationFailed =>
       TranslationOverrides.string(
@@ -2115,7 +2565,6 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Validation failed';
-
   @override
   String get tooManyRequests =>
       TranslationOverrides.string(
@@ -2124,7 +2573,6 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Too many requests, please try again later';
-
   @override
   String get internalServerError =>
       TranslationOverrides.string(
@@ -2133,7 +2581,6 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Internal server error';
-
   @override
   String get badGateway =>
       TranslationOverrides.string(
@@ -2142,7 +2589,6 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Bad gateway';
-
   @override
   String get serviceUnavailable =>
       TranslationOverrides.string(
@@ -2151,7 +2597,6 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Service unavailable';
-
   @override
   String get gatewayTimeout =>
       TranslationOverrides.string(
@@ -2160,21 +2605,18 @@ class _TranslationsNetworkErrorsEn extends TranslationsNetworkErrorsZhCn {
         {},
       ) ??
       'Gateway timeout';
-
   @override
   String serverError({required Object code}) =>
       TranslationOverrides.string(_root.$meta, 'network.errors.serverError', {
         'code': code,
       }) ??
       'Server error (${code})';
-
   @override
   String requestError({required Object code}) =>
       TranslationOverrides.string(_root.$meta, 'network.errors.requestError', {
         'code': code,
       }) ??
       'Request error (${code})';
-
   @override
   String get failed =>
       TranslationOverrides.string(_root.$meta, 'network.errors.failed', {}) ??
@@ -2203,26 +2645,161 @@ class _TranslationsOrderStatusEn extends TranslationsOrderStatusZhCn {
   String get paid =>
       TranslationOverrides.string(_root.$meta, 'order.status.paid', {}) ??
       'Paid';
-
   @override
   String get completed =>
       TranslationOverrides.string(_root.$meta, 'order.status.completed', {}) ??
       'Completed';
-
   @override
   String get cancelled =>
       TranslationOverrides.string(_root.$meta, 'order.status.cancelled', {}) ??
       'Cancelled';
-
   @override
   String get refunded =>
       TranslationOverrides.string(_root.$meta, 'order.status.refunded', {}) ??
       'Refunded';
-
   @override
   String get failed =>
       TranslationOverrides.string(_root.$meta, 'order.status.failed', {}) ??
       'Failed';
+}
+
+// Path: profile.gender
+class _TranslationsProfileGenderEn extends TranslationsProfileGenderZhCn {
+  _TranslationsProfileGenderEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get male =>
+      TranslationOverrides.string(_root.$meta, 'profile.gender.male', {}) ??
+      'Male';
+  @override
+  String get female =>
+      TranslationOverrides.string(_root.$meta, 'profile.gender.female', {}) ??
+      'Female';
+
+  @override
+  String get unknown =>
+      TranslationOverrides.string(_root.$meta, 'profile.gender.unknown', {}) ??
+      'Secret';
+}
+
+// Path: profile.info
+class _TranslationsProfileInfoEn extends TranslationsProfileInfoZhCn {
+  _TranslationsProfileInfoEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get basic =>
+      TranslationOverrides.string(_root.$meta, 'profile.info.basic', {}) ??
+      'Basic Information';
+
+  @override
+  String get other =>
+      TranslationOverrides.string(_root.$meta, 'profile.info.other', {}) ??
+      'Other Information';
+
+  @override
+  String get phone =>
+      TranslationOverrides.string(_root.$meta, 'profile.info.phone', {}) ??
+      'Phone Number';
+
+  @override
+  String get gender =>
+      TranslationOverrides.string(_root.$meta, 'profile.info.gender', {}) ??
+      'Gender';
+
+  @override
+  String get birthday =>
+      TranslationOverrides.string(_root.$meta, 'profile.info.birthday', {}) ??
+      'Birthday';
+
+  @override
+  String get email =>
+      TranslationOverrides.string(_root.$meta, 'profile.info.email', {}) ??
+      'Email';
+
+  @override
+  String get notSet =>
+      TranslationOverrides.string(_root.$meta, 'profile.info.notSet', {}) ??
+      'Not Set';
+}
+
+// Path: profile.avatar
+class _TranslationsProfileAvatarEn extends TranslationsProfileAvatarZhCn {
+  _TranslationsProfileAvatarEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get clickToChange =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'profile.avatar.clickToChange',
+        {},
+      ) ??
+      'Click to change avatar';
+
+  @override
+  String get uploading =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'profile.avatar.uploading',
+        {},
+      ) ??
+      'Avatar upload feature is under development';
+}
+
+// Path: settings.schemes
+class _TranslationsSettingsSchemesEn extends TranslationsSettingsSchemesZhCn {
+  _TranslationsSettingsSchemesEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get shadOrange =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'settings.schemes.shadOrange',
+        {},
+      ) ??
+      'Vibrant Orange (ShadOrange)';
+
+  @override
+  String get shadGreen =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'settings.schemes.shadGreen',
+        {},
+      ) ??
+      'Natural Green (ShadGreen)';
+
+  @override
+  String get bahamaBlue =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'settings.schemes.bahamaBlue',
+        {},
+      ) ??
+      'Bahama Blue (BahamaBlue)';
+
+  @override
+  String get damask =>
+      TranslationOverrides.string(_root.$meta, 'settings.schemes.damask', {}) ??
+      'Damask Red (Damask)';
 }
 
 // Path: home.lottery.prizeStats
@@ -2243,7 +2820,6 @@ class _TranslationsHomeLotteryPrizeStatsEn
         {},
       ) ??
       'Total';
-
   @override
   String get used =>
       TranslationOverrides.string(
@@ -2252,7 +2828,6 @@ class _TranslationsHomeLotteryPrizeStatsEn
         {},
       ) ??
       'Used';
-
   @override
   String get available =>
       TranslationOverrides.string(
@@ -2276,7 +2851,6 @@ class _TranslationsHomeLotteryTabsEn extends TranslationsHomeLotteryTabsZhCn {
   String get all =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.all', {}) ??
       'All';
-
   @override
   String get available =>
       TranslationOverrides.string(
@@ -2285,12 +2859,10 @@ class _TranslationsHomeLotteryTabsEn extends TranslationsHomeLotteryTabsZhCn {
         {},
       ) ??
       'Available';
-
   @override
   String get used =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.used', {}) ??
       'Used';
-
   @override
   String get expired =>
       TranslationOverrides.string(
@@ -2319,7 +2891,6 @@ class _TranslationsHomeLotteryPrizeCardEn
         {},
       ) ??
       'Coin rewards, can be used in Coin Mall';
-
   @override
   String get getTime =>
       TranslationOverrides.string(
@@ -2328,7 +2899,6 @@ class _TranslationsHomeLotteryPrizeCardEn
         {},
       ) ??
       'Got at: {time}';
-
   @override
   String get expiryTime =>
       TranslationOverrides.string(
@@ -2337,7 +2907,6 @@ class _TranslationsHomeLotteryPrizeCardEn
         {},
       ) ??
       'Expiry: {time}';
-
   @override
   String get statusExpired =>
       TranslationOverrides.string(
@@ -2356,6 +2925,85 @@ class _TranslationsHomeLotteryPrizeCardEn
 extension on TranslationsEn {
   dynamic _flatMapFunction(String path) {
     return switch (path) {
+      'about.title' =>
+        TranslationOverrides.string(_root.$meta, 'about.title', {}) ??
+            'About Us',
+      'about.appBrand' =>
+        TranslationOverrides.string(_root.$meta, 'about.appBrand', {}) ??
+            'Lunchbox Smart Vending Machine',
+      'about.shareWithFriends' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'about.shareWithFriends',
+              {},
+            ) ??
+            'Share with Friends',
+      'about.featuresTitle' =>
+        TranslationOverrides.string(_root.$meta, 'about.featuresTitle', {}) ??
+            'Our Features',
+      'about.feature1Title' =>
+        TranslationOverrides.string(_root.$meta, 'about.feature1Title', {}) ??
+            'Central Kitchen',
+      'about.feature1Desc' =>
+        TranslationOverrides.string(_root.$meta, 'about.feature1Desc', {}) ??
+            'Vending machines bring changes to diet life',
+      'about.feature2Title' =>
+        TranslationOverrides.string(_root.$meta, 'about.feature2Title', {}) ??
+            'Quick Serving',
+      'about.feature2Desc' =>
+        TranslationOverrides.string(_root.$meta, 'about.feature2Desc', {}) ??
+            'Different from traditional takeout and restaurants',
+      'about.feature3Title' =>
+        TranslationOverrides.string(_root.$meta, 'about.feature3Title', {}) ??
+            'Entrepreneur Partner',
+      'about.feature3Desc' =>
+        TranslationOverrides.string(_root.$meta, 'about.feature3Desc', {}) ??
+            'A risk-free investment tool',
+      'about.feature4Title' =>
+        TranslationOverrides.string(_root.$meta, 'about.feature4Title', {}) ??
+            'Patented Machine',
+      'about.feature4Desc' =>
+        TranslationOverrides.string(_root.$meta, 'about.feature4Desc', {}) ??
+            'Wealth creation machine for everyone',
+      'about.policyTitle' =>
+        TranslationOverrides.string(_root.$meta, 'about.policyTitle', {}) ??
+            'Policy & Terms',
+      'about.userAgreementAndPrivacy' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'about.userAgreementAndPrivacy',
+              {},
+            ) ??
+            'User Agreement & Privacy Policy',
+      'about.viewDetails' =>
+        TranslationOverrides.string(_root.$meta, 'about.viewDetails', {}) ??
+            'View Details',
+      'about.contactTitle' =>
+        TranslationOverrides.string(_root.$meta, 'about.contactTitle', {}) ??
+            'Contact Us',
+      'about.customerServiceHotline' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'about.customerServiceHotline',
+              {},
+            ) ??
+            'Customer Service Hotline',
+      'about.customerServiceNumber' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'about.customerServiceNumber',
+              {},
+            ) ??
+            '400-114-8818',
+      'about.companyAddress' =>
+        TranslationOverrides.string(_root.$meta, 'about.companyAddress', {}) ??
+            'Company Address',
+      'about.addressDetails' =>
+        TranslationOverrides.string(_root.$meta, 'about.addressDetails', {}) ??
+            'Room 1510, Building 1, No. 1 Kehui Road, Songshan Lake Park, Dongguan, Guangdong',
+      'about.shareText' =>
+        TranslationOverrides.string(_root.$meta, 'about.shareText', {}) ??
+            'Come and use the Lunchbox Smart Vending Machine!',
       'auth.loginTitle' =>
         TranslationOverrides.string(_root.$meta, 'auth.loginTitle', {}) ??
             'Welcome Back',
@@ -2680,6 +3328,12 @@ extension on TranslationsEn {
       'coupon.tabs.expired' =>
         TranslationOverrides.string(_root.$meta, 'coupon.tabs.expired', {}) ??
             'Expired',
+      'coupon.tabs.canUse' =>
+        TranslationOverrides.string(_root.$meta, 'coupon.tabs.canUse', {}) ??
+            'To Use',
+      'coupon.tabs.cannotUse' =>
+        TranslationOverrides.string(_root.$meta, 'coupon.tabs.cannotUse', {}) ??
+            'Unavailable',
       'coupon.unit' =>
         TranslationOverrides.string(_root.$meta, 'coupon.unit', {}) ?? '\$',
       'coupon.condition' =>
@@ -2721,6 +3375,26 @@ extension on TranslationsEn {
               'amount': amount,
             }) ??
             '\$ ${amount} Off',
+      'coupon.noCoupons' =>
+        TranslationOverrides.string(_root.$meta, 'coupon.noCoupons', {}) ??
+            'No coupons available',
+      'coupon.expiryPrefix' =>
+        TranslationOverrides.string(_root.$meta, 'coupon.expiryPrefix', {}) ??
+            'Expires at: ',
+      'coupon.statusAvailable' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'coupon.statusAvailable',
+              {},
+            ) ??
+            'Available',
+      'coupon.statusUnavailable' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'coupon.statusUnavailable',
+              {},
+            ) ??
+            'Unavailable',
       'device.title' =>
         TranslationOverrides.string(_root.$meta, 'device.title', {}) ??
             'Device Detail',
@@ -2887,6 +3561,80 @@ extension on TranslationsEn {
       'device_info.uniqueId' =>
         TranslationOverrides.string(_root.$meta, 'device_info.uniqueId', {}) ??
             'Unique ID',
+      'feedback.title' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.title', {}) ??
+            'Feedback',
+      'feedback.subtitle' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.subtitle', {}) ??
+            'Your feedback is our motivation for progress',
+      'feedback.selectType' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.selectType', {}) ??
+            'Select Feedback Type',
+      'feedback.errorReport' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.errorReport', {}) ??
+            'Error Report',
+      'feedback.suggestion' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.suggestion', {}) ??
+            'Suggestion',
+      'feedback.complaint' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.complaint', {}) ??
+            'Complaint',
+      'feedback.other' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.other', {}) ??
+            'Other',
+      'feedback.description' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.description', {}) ??
+            'Problem Description',
+      'feedback.titleHint' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.titleHint', {}) ??
+            'Please enter the problem title (Required)',
+      'feedback.contentHint' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.contentHint', {}) ??
+            'Please describe the problem or suggestion in detail (Required)',
+      'feedback.uploadScreenshot' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'feedback.uploadScreenshot',
+              {},
+            ) ??
+            'Upload Screenshot (Optional)',
+      'feedback.addImage' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.addImage', {}) ??
+            'Add Image',
+      'feedback.uploadLimitHint' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'feedback.uploadLimitHint',
+              {},
+            ) ??
+            'Up to 3 images, each not exceeding 2MB, support jpg, png formats',
+      'feedback.contactOptional' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'feedback.contactOptional',
+              {},
+            ) ??
+            'Contact Information (Optional)',
+      'feedback.contactInputHint' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'feedback.contactInputHint',
+              {},
+            ) ??
+            'Please enter your phone number or email for us to contact you',
+      'feedback.submit' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.submit', {}) ??
+            'Submit Feedback',
+      'feedback.submitSuccess' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'feedback.submitSuccess',
+              {},
+            ) ??
+            'Feedback submitted successfully, thank you for your support',
+      'feedback.submitFailed' =>
+        TranslationOverrides.string(_root.$meta, 'feedback.submitFailed', {}) ??
+            'Feedback submission failed, please try again later',
       'help.title' =>
         TranslationOverrides.string(_root.$meta, 'help.title', {}) ??
             'Help Center',
@@ -3427,6 +4175,204 @@ extension on TranslationsEn {
               'error': error,
             }) ??
             'Create order failed: ${error}',
+      'partner.title' =>
+        TranslationOverrides.string(_root.$meta, 'partner.title', {}) ??
+            'Partner Cooperation',
+      'partner.subtitle' =>
+        TranslationOverrides.string(_root.$meta, 'partner.subtitle', {}) ??
+            'Join hands to create a better future',
+      'partner.advantages' =>
+        TranslationOverrides.string(_root.$meta, 'partner.advantages', {}) ??
+            'Cooperation Advantages',
+      'partner.advantage1Title' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.advantage1Title',
+              {},
+            ) ??
+            'Generous Returns',
+      'partner.advantage1Desc' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.advantage1Desc',
+              {},
+            ) ??
+            'Provide competitive profit sharing for your investment',
+      'partner.advantage2Title' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.advantage2Title',
+              {},
+            ) ??
+            'Brand Support',
+      'partner.advantage2Desc' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.advantage2Desc',
+              {},
+            ) ??
+            'Share well-known brand resources and customer trust',
+      'partner.advantage3Title' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.advantage3Title',
+              {},
+            ) ??
+            'Marketing Support',
+      'partner.advantage3Desc' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.advantage3Desc',
+              {},
+            ) ??
+            'Professional marketing team for full support',
+      'partner.advantage4Title' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.advantage4Title',
+              {},
+            ) ??
+            'Training Support',
+      'partner.advantage4Desc' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.advantage4Desc',
+              {},
+            ) ??
+            'Professional training courses to help you master skills',
+      'partner.process' =>
+        TranslationOverrides.string(_root.$meta, 'partner.process', {}) ??
+            'Cooperation Process',
+      'partner.process1Title' =>
+        TranslationOverrides.string(_root.$meta, 'partner.process1Title', {}) ??
+            'Submit Application',
+      'partner.process1Desc' =>
+        TranslationOverrides.string(_root.$meta, 'partner.process1Desc', {}) ??
+            'Fill out the application form and submit relevant information',
+      'partner.process2Title' =>
+        TranslationOverrides.string(_root.$meta, 'partner.process2Title', {}) ??
+            'Qualification Review',
+      'partner.process2Desc' =>
+        TranslationOverrides.string(_root.$meta, 'partner.process2Desc', {}) ??
+            'We will complete review within 3-5 working days',
+      'partner.process3Title' =>
+        TranslationOverrides.string(_root.$meta, 'partner.process3Title', {}) ??
+            'Interview',
+      'partner.process3Desc' =>
+        TranslationOverrides.string(_root.$meta, 'partner.process3Desc', {}) ??
+            'Arrange an interview to understand cooperation details',
+      'partner.process4Title' =>
+        TranslationOverrides.string(_root.$meta, 'partner.process4Title', {}) ??
+            'Sign Agreement',
+      'partner.process4Desc' =>
+        TranslationOverrides.string(_root.$meta, 'partner.process4Desc', {}) ??
+            'Sign formal agreement after reaching consensus',
+      'partner.process5Title' =>
+        TranslationOverrides.string(_root.$meta, 'partner.process5Title', {}) ??
+            'Start Cooperation',
+      'partner.process5Desc' =>
+        TranslationOverrides.string(_root.$meta, 'partner.process5Desc', {}) ??
+            'Formally launch cooperation and enjoy support services',
+      'partner.conditions' =>
+        TranslationOverrides.string(_root.$meta, 'partner.conditions', {}) ??
+            'Cooperation Conditions',
+      'partner.condition1' =>
+        TranslationOverrides.string(_root.$meta, 'partner.condition1', {}) ??
+            'Have legal business qualifications',
+      'partner.condition2' =>
+        TranslationOverrides.string(_root.$meta, 'partner.condition2', {}) ??
+            'Have certain capital and management ability',
+      'partner.condition3' =>
+        TranslationOverrides.string(_root.$meta, 'partner.condition3', {}) ??
+            'Identify with our brand concept and model',
+      'partner.condition4' =>
+        TranslationOverrides.string(_root.$meta, 'partner.condition4', {}) ??
+            'Have good business reputation',
+      'partner.condition5' =>
+        TranslationOverrides.string(_root.$meta, 'partner.condition5', {}) ??
+            'Relevant industry experience is preferred',
+      'partner.applicationTitle' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.applicationTitle',
+              {},
+            ) ??
+            'Apply for Cooperation',
+      'partner.nameLabel' =>
+        TranslationOverrides.string(_root.$meta, 'partner.nameLabel', {}) ??
+            'Name',
+      'partner.nameInputHint' =>
+        TranslationOverrides.string(_root.$meta, 'partner.nameInputHint', {}) ??
+            'Please enter your name',
+      'partner.companyLabel' =>
+        TranslationOverrides.string(_root.$meta, 'partner.companyLabel', {}) ??
+            'Company Name',
+      'partner.companyInputHint' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.companyInputHint',
+              {},
+            ) ??
+            'Please enter company name',
+      'partner.phoneLabel' =>
+        TranslationOverrides.string(_root.$meta, 'partner.phoneLabel', {}) ??
+            'Phone Number',
+      'partner.phoneInputHint' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.phoneInputHint',
+              {},
+            ) ??
+            'Please enter phone number',
+      'partner.intentionLabel' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.intentionLabel',
+              {},
+            ) ??
+            'Cooperation Intention',
+      'partner.intentionInputHint' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.intentionInputHint',
+              {},
+            ) ??
+            'Briefly describe your cooperation intention',
+      'partner.submit' =>
+        TranslationOverrides.string(_root.$meta, 'partner.submit', {}) ??
+            'Submit Application',
+      'partner.submitSuccess' =>
+        TranslationOverrides.string(_root.$meta, 'partner.submitSuccess', {}) ??
+            'Application submitted successfully, we will contact you soon',
+      'partner.submitFailed' =>
+        TranslationOverrides.string(_root.$meta, 'partner.submitFailed', {}) ??
+            'Application submission failed, please try again later',
+      'partner.incompleteInfo' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.incompleteInfo',
+              {},
+            ) ??
+            'Please fill in complete information',
+      'partner.contactTitle' =>
+        TranslationOverrides.string(_root.$meta, 'partner.contactTitle', {}) ??
+            'Contact Us',
+      'partner.serviceHotline' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'partner.serviceHotline',
+              {},
+            ) ??
+            'Customer Service Hotline',
+      'partner.address' =>
+        TranslationOverrides.string(_root.$meta, 'partner.address', {}) ??
+            'Address',
+      'partner.errorOccurred' =>
+        ({required Object error}) =>
+            TranslationOverrides.string(_root.$meta, 'partner.errorOccurred', {
+              'error': error,
+            }) ??
+            'Error occurred: ${error}',
       'payment.checkout' =>
         TranslationOverrides.string(_root.$meta, 'payment.checkout', {}) ??
             'Checkout',
@@ -3460,6 +4406,78 @@ extension on TranslationsEn {
       'payment.remainingTime' =>
         TranslationOverrides.string(_root.$meta, 'payment.remainingTime', {}) ??
             'Time Remaining',
+      'points.title' =>
+        TranslationOverrides.string(_root.$meta, 'points.title', {}) ??
+            'My Coins',
+      'points.unit' =>
+        TranslationOverrides.string(_root.$meta, 'points.unit', {}) ?? 'Coins',
+      'points.mall' =>
+        TranslationOverrides.string(_root.$meta, 'points.mall', {}) ??
+            'Coin Mall',
+      'points.goExchange' =>
+        TranslationOverrides.string(_root.$meta, 'points.goExchange', {}) ??
+            'Go Exchange',
+      'points.rules' =>
+        TranslationOverrides.string(_root.$meta, 'points.rules', {}) ??
+            'Coin Rules',
+      'points.rule1' =>
+        TranslationOverrides.string(_root.$meta, 'points.rule1', {}) ??
+            'Coins are permanently valid',
+      'points.rule2' =>
+        TranslationOverrides.string(_root.$meta, 'points.rule2', {}) ??
+            'Extra coins can be obtained by lottery',
+      'points.records' =>
+        TranslationOverrides.string(_root.$meta, 'points.records', {}) ??
+            'Coin Records',
+      'points.all' =>
+        TranslationOverrides.string(_root.$meta, 'points.all', {}) ?? 'All',
+      'points.earned' =>
+        TranslationOverrides.string(_root.$meta, 'points.earned', {}) ??
+            'Earned',
+      'points.used' =>
+        TranslationOverrides.string(_root.$meta, 'points.used', {}) ?? 'Used',
+      'points.noRecords' =>
+        TranslationOverrides.string(_root.$meta, 'points.noRecords', {}) ??
+            'No coin records',
+      'points.back' =>
+        TranslationOverrides.string(_root.$meta, 'points.back', {}) ?? 'Back',
+      'points.goLottery' =>
+        TranslationOverrides.string(_root.$meta, 'points.goLottery', {}) ??
+            'Go Lottery',
+      'points.balance' =>
+        TranslationOverrides.string(_root.$meta, 'points.balance', {}) ??
+            'Balance',
+      'points.coupon' =>
+        TranslationOverrides.string(_root.$meta, 'points.coupon', {}) ??
+            'Coupons',
+      'points.noMoreProducts' =>
+        TranslationOverrides.string(_root.$meta, 'points.noMoreProducts', {}) ??
+            'No more products',
+      'points.myPoints' =>
+        ({required Object points}) =>
+            TranslationOverrides.string(_root.$meta, 'points.myPoints', {
+              'points': points,
+            }) ??
+            'My Coins: ${points}',
+      'points.noProducts' =>
+        TranslationOverrides.string(_root.$meta, 'points.noProducts', {}) ??
+            'No products',
+      'points.cost' =>
+        ({required Object points}) =>
+            TranslationOverrides.string(_root.$meta, 'points.cost', {
+              'points': points,
+            }) ??
+            '${points} Coins',
+      'points.exchangeNow' =>
+        TranslationOverrides.string(_root.$meta, 'points.exchangeNow', {}) ??
+            'Exchange Now',
+      'points.insufficientPoints' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'points.insufficientPoints',
+              {},
+            ) ??
+            'Insufficient balance',
       'product.title' =>
         TranslationOverrides.string(_root.$meta, 'product.title', {}) ??
             'Product List',
@@ -3603,6 +4621,92 @@ extension on TranslationsEn {
               'version': version,
             }) ??
             'Version: ${version}',
+      'profile.wallet' =>
+        TranslationOverrides.string(_root.$meta, 'profile.wallet', {}) ??
+            'My Wallet',
+      'profile.coupon' =>
+        TranslationOverrides.string(_root.$meta, 'profile.coupon', {}) ??
+            'Coupons',
+      'profile.feedback' =>
+        TranslationOverrides.string(_root.$meta, 'profile.feedback', {}) ??
+            'Feedback',
+      'profile.cooperation' =>
+        TranslationOverrides.string(_root.$meta, 'profile.cooperation', {}) ??
+            'Cooperation',
+      'profile.about' =>
+        TranslationOverrides.string(_root.$meta, 'profile.about', {}) ??
+            'About Us',
+      'profile.settings' =>
+        TranslationOverrides.string(_root.$meta, 'profile.settings', {}) ??
+            'Settings',
+      'profile.gender.male' =>
+        TranslationOverrides.string(_root.$meta, 'profile.gender.male', {}) ??
+            'Male',
+      'profile.gender.female' =>
+        TranslationOverrides.string(_root.$meta, 'profile.gender.female', {}) ??
+            'Female',
+      'profile.gender.unknown' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'profile.gender.unknown',
+              {},
+            ) ??
+            'Secret',
+      'profile.info.basic' =>
+        TranslationOverrides.string(_root.$meta, 'profile.info.basic', {}) ??
+            'Basic Information',
+      'profile.info.other' =>
+        TranslationOverrides.string(_root.$meta, 'profile.info.other', {}) ??
+            'Other Information',
+      'profile.info.phone' =>
+        TranslationOverrides.string(_root.$meta, 'profile.info.phone', {}) ??
+            'Phone Number',
+      'profile.info.gender' =>
+        TranslationOverrides.string(_root.$meta, 'profile.info.gender', {}) ??
+            'Gender',
+      'profile.info.birthday' =>
+        TranslationOverrides.string(_root.$meta, 'profile.info.birthday', {}) ??
+            'Birthday',
+      'profile.info.email' =>
+        TranslationOverrides.string(_root.$meta, 'profile.info.email', {}) ??
+            'Email',
+      'profile.info.notSet' =>
+        TranslationOverrides.string(_root.$meta, 'profile.info.notSet', {}) ??
+            'Not Set',
+      'profile.avatar.clickToChange' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'profile.avatar.clickToChange',
+              {},
+            ) ??
+            'Click to change avatar',
+      'profile.avatar.uploading' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'profile.avatar.uploading',
+              {},
+            ) ??
+            'Avatar upload feature is under development',
+      'profile.saveSuccess' =>
+        TranslationOverrides.string(_root.$meta, 'profile.saveSuccess', {}) ??
+            'Saved successfully',
+      'profile.saveFailed' =>
+        ({required Object error}) =>
+            TranslationOverrides.string(_root.$meta, 'profile.saveFailed', {
+              'error': error,
+            }) ??
+            'Save failed: ${error}',
+      'profile.saveInfo' =>
+        TranslationOverrides.string(_root.$meta, 'profile.saveInfo', {}) ??
+            'Save Information',
+      'profile.walletBalance' =>
+        TranslationOverrides.string(_root.$meta, 'profile.walletBalance', {}) ??
+            'Wallet Balance',
+      'profile.coin' =>
+        TranslationOverrides.string(_root.$meta, 'profile.coin', {}) ?? 'Coins',
+      'profile.couponCount' =>
+        TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ??
+            'Coupons',
       'settings.title' =>
         TranslationOverrides.string(_root.$meta, 'settings.title', {}) ??
             'Settings',
@@ -3662,6 +4766,37 @@ extension on TranslationsEn {
               {},
             ) ??
             'Traditional Chinese',
+      'settings.themeScheme' =>
+        TranslationOverrides.string(_root.$meta, 'settings.themeScheme', {}) ??
+            'Color Scheme',
+      'settings.schemes.shadOrange' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'settings.schemes.shadOrange',
+              {},
+            ) ??
+            'Vibrant Orange (ShadOrange)',
+      'settings.schemes.shadGreen' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'settings.schemes.shadGreen',
+              {},
+            ) ??
+            'Natural Green (ShadGreen)',
+      'settings.schemes.bahamaBlue' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'settings.schemes.bahamaBlue',
+              {},
+            ) ??
+            'Bahama Blue (BahamaBlue)',
+      'settings.schemes.damask' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'settings.schemes.damask',
+              {},
+            ) ??
+            'Damask Red (Damask)',
       'settings.appName' =>
         TranslationOverrides.string(_root.$meta, 'settings.appName', {}) ??
             'App Name',

@@ -12,5 +12,35 @@
   "removeFavorite": "取消收藏",
   "removeFavoriteConfirm": "確定要取消收藏\"${name}\"嗎？",
   "appDescription": "一個便捷的自動售貨機購買應用",
-  "version": "版本：${version}"
+  "version": "版本：${version}",
+  "wallet": "我的錢包",
+  "coupon": "優惠券",
+  "feedback": "問題反饋",
+  "cooperation": "合作商加盟",
+  "about": "關於我們",
+  "settings": "設置",
+  "gender": {
+    "male": "男",
+    "female": "女",
+    "unknown": "保密"
+  },
+  "info": {
+    "basic": "基本信息",
+    "other": "其他信息",
+    "phone": "手機號",
+    "gender": "性別",
+    "birthday": "生日",
+    "email": "郵箱",
+    "notSet": "未設置"
+  },
+  "avatar": {
+    "clickToChange": "點擊更換頭像",
+    "uploading": "頭像上傳功能開發中"
+  },
+  "saveSuccess": "保存成功",
+  "saveFailed": "保存失敗: ${error}",
+  "saveInfo": "保存信息",
+  "walletBalance": "錢包餘額",
+  "coin": "乖乖幣",
+  "couponCount": "優惠券"
 }

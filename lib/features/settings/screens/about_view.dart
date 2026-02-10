@@ -138,7 +138,7 @@ class AboutView extends ConsumerWidget {
             ],
           ),
         ),
-        if (label != '构建号')
+        if (label != t.settings.buildNumber)
           Divider(
             height: 1,
             indent: 16.w,

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:lunchbox/features/profile/entities/mall_product_model.dart';
 import 'package:lunchbox/features/profile/repositories/points_repository.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 class PointsMallView extends ConsumerStatefulWidget {
   const PointsMallView({super.key});
@@ -34,7 +35,7 @@ class _PointsMallViewState extends ConsumerState<PointsMallView>
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('乖乖币商城'),
+        title: Text(t.points.mall),
         centerTitle: true,
         backgroundColor:
             theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
@@ -50,10 +51,10 @@ class _PointsMallViewState extends ConsumerState<PointsMallView>
               indicatorColor: theme.colorScheme.primary,
               labelColor: theme.colorScheme.primary,
               unselectedLabelColor: theme.hintColor,
-              tabs: const [
-                Tab(text: '全部'),
-                Tab(text: '余额'),
-                Tab(text: '优惠券'),
+              tabs: [
+                Tab(text: t.points.all),
+                Tab(text: t.points.balance),
+                Tab(text: t.points.coupon),
               ],
             ),
           ),
@@ -70,7 +71,7 @@ class _PointsMallViewState extends ConsumerState<PointsMallView>
           Padding(
             padding: EdgeInsets.all(16.h),
             child: Text(
-              '没有更多商品了',
+              t.points.noMoreProducts,
               style: TextStyle(color: theme.hintColor, fontSize: 12.sp),
             ),
           ),
@@ -81,6 +82,9 @@ class _PointsMallViewState extends ConsumerState<PointsMallView>
 
   Widget _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
+    final balanceAsync = ref.watch(pointsBalanceProvider);
+    final balance = balanceAsync.maybeWhen(data: (v) => v, orElse: () => 0);
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 40.h),
@@ -98,7 +102,7 @@ class _PointsMallViewState extends ConsumerState<PointsMallView>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '乖乖币商城',
+            t.points.mall,
             style: TextStyle(
               color: theme.colorScheme.onPrimary,
               fontSize: 24.sp,
@@ -113,7 +117,7 @@ class _PointsMallViewState extends ConsumerState<PointsMallView>
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Text(
-              '我的乖乖币: 300',
+              t.points.myPoints(points: balance),
               style: TextStyle(
                 color: theme.colorScheme.onPrimary,
                 fontSize: 14.sp,
@@ -143,7 +147,7 @@ class _PointsMallViewState extends ConsumerState<PointsMallView>
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  '暂无商品',
+                  t.points.noProducts,
                   style: TextStyle(color: theme.hintColor, fontSize: 14.sp),
                 ),
               ],
@@ -166,7 +170,7 @@ class _PointsMallViewState extends ConsumerState<PointsMallView>
           children: [
             Icon(Symbols.error, size: 48.sp, color: theme.colorScheme.error),
             SizedBox(height: 8.h),
-            Text('加载失败: $error'),
+            Text('${t.common.loadFailed}: $error'),
           ],
         ),
       ),
@@ -212,7 +216,7 @@ class _PointsMallViewState extends ConsumerState<PointsMallView>
                   ),
                 ),
                 Text(
-                  '余额',
+                  t.points.balance,
                   style: TextStyle(
                     color: theme.colorScheme.primary,
                     fontSize: 12.sp,
@@ -249,10 +253,11 @@ class _PointsMallViewState extends ConsumerState<PointsMallView>
                           borderRadius: BorderRadius.circular(4.r),
                         ),
                         child: Text(
-                          '热门',
+                          'HOT',
                           style: TextStyle(
                             color: theme.colorScheme.onTertiary,
                             fontSize: 10.sp,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -261,66 +266,36 @@ class _PointsMallViewState extends ConsumerState<PointsMallView>
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  '余额 ¥${product.amountValue}.00',
-                  style: TextStyle(color: theme.hintColor, fontSize: 12.sp),
-                ),
-                SizedBox(height: 8.h),
-                RichText(
-                  text: TextSpan(
-                    style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
-                    children: [
-                      const TextSpan(text: '需要 '),
-                      TextSpan(
-                        text: '${product.pointsCost} 乖乖币',
-                        style: TextStyle(
-                          color: theme.colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  t.points.cost(points: product.pointsCost),
+                  style: TextStyle(
+                    color: theme.colorScheme.primary,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
             ),
           ),
           // Right: Button
-          canAfford
-              ? ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 8.h,
-                    ),
-                  ),
-                  child: Text(
-                    '立即兑换',
-                    style: TextStyle(color: theme.colorScheme.onPrimary),
-                  ),
-                )
-              : Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 8.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.disabledColor,
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: Text(
-                    '乖乖币不足',
-                    style: TextStyle(
-                      color: theme.colorScheme.onSurface.withValues(
-                        alpha: 0.38,
-                      ),
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                ),
+          SizedBox(width: 12.w),
+          ElevatedButton(
+            onPressed: canAfford ? () {} : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: canAfford
+                  ? theme.colorScheme.primary
+                  : theme.disabledColor,
+              foregroundColor: theme.colorScheme.onPrimary,
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              elevation: 0,
+            ),
+            child: Text(
+              canAfford ? t.points.exchangeNow : t.points.insufficientPoints,
+              style: TextStyle(fontSize: 12.sp),
+            ),
+          ),
         ],
       ),
     );

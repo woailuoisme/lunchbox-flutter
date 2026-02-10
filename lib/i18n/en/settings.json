@@ -16,6 +16,13 @@
   "english": "English",
   "chinese": "Simplified Chinese",
   "traditionalChinese": "Traditional Chinese",
+  "themeScheme": "Color Scheme",
+  "schemes": {
+    "shadOrange": "Vibrant Orange (ShadOrange)",
+    "shadGreen": "Natural Green (ShadGreen)",
+    "bahamaBlue": "Bahama Blue (BahamaBlue)",
+    "damask": "Damask Red (Damask)"
+  },
   "appName": "App Name",
   "packageName": "Package Name",
   "versionName": "Version Name",

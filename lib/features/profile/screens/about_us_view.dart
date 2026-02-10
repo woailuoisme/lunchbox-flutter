@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
@@ -37,7 +38,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('关于我们'),
+        title: Text(t.about.title),
         centerTitle: true,
         backgroundColor:
             theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
@@ -64,7 +65,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
                   onPressed: _shareApp,
                   icon: Icon(Symbols.share, color: theme.colorScheme.onPrimary),
                   label: Text(
-                    '分享给朋友',
+                    t.about.shareWithFriends,
                     style: TextStyle(color: theme.colorScheme.onPrimary),
                   ),
                   style: ElevatedButton.styleFrom(
@@ -117,7 +118,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
           ),
           SizedBox(height: 16.h),
           Text(
-            '好小乖智能盒饭售卖机',
+            t.about.appBrand,
             style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8.h),
@@ -139,7 +140,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 32.w),
             child: Text(
-              '专注于为用户提供优质的美食服务，让每一餐都充满温暖与美味。',
+              t.profile.appDescription,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: theme.textTheme.bodyMedium?.color?.withValues(
@@ -167,7 +168,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionTitle(context, '我们的特色'),
+          _buildSectionTitle(context, t.about.featuresTitle),
           SizedBox(height: 16.h),
           GridView.count(
             shrinkWrap: true,
@@ -180,17 +181,27 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
               _buildFeatureItem(
                 context,
                 Symbols.restaurant,
-                '中餐央厨',
-                '售卖机为饮食生活带来的改变',
+                t.about.feature1Title,
+                t.about.feature1Desc,
               ),
               _buildFeatureItem(
                 context,
                 Symbols.rocket_launch,
-                '出餐迅速',
-                '区别于传统外卖和餐饮店的三维入口',
+                t.about.feature2Title,
+                t.about.feature2Desc,
               ),
-              _buildFeatureItem(context, Symbols.star, '创业搭档', '一个无风险的投资创业利器'),
-              _buildFeatureItem(context, Symbols.diamond, '专利机器', '世上再无穷人的造富机'),
+              _buildFeatureItem(
+                context,
+                Symbols.star,
+                t.about.feature3Title,
+                t.about.feature3Desc,
+              ),
+              _buildFeatureItem(
+                context,
+                Symbols.diamond,
+                t.about.feature4Title,
+                t.about.feature4Desc,
+              ),
             ],
           ),
         ],
@@ -252,16 +263,19 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionTitle(context, '政策条款'),
+          _buildSectionTitle(context, t.about.policyTitle),
           SizedBox(height: 16.h),
           ListTile(
             leading: Icon(
               Symbols.description,
               color: theme.colorScheme.primary,
             ),
-            title: Text('用户协议与隐私政策', style: TextStyle(fontSize: 14.sp)),
+            title: Text(
+              t.about.userAgreementAndPrivacy,
+              style: TextStyle(fontSize: 14.sp),
+            ),
             subtitle: Text(
-              '查看详细条款',
+              t.about.viewDetails,
               style: TextStyle(
                 fontSize: 12.sp,
                 color: theme.textTheme.bodySmall?.color,
@@ -287,19 +301,19 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionTitle(context, '联系我们'),
+          _buildSectionTitle(context, t.about.contactTitle),
           SizedBox(height: 16.h),
           ListTile(
             leading: Icon(Symbols.phone, color: theme.colorScheme.primary),
             title: Text(
-              '客服热线',
+              t.about.customerServiceHotline,
               style: TextStyle(
                 fontSize: 12.sp,
                 color: theme.textTheme.bodySmall?.color,
               ),
             ),
             subtitle: Text(
-              '400-114-8818',
+              t.about.customerServiceNumber,
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
@@ -316,14 +330,14 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
               color: theme.colorScheme.primary,
             ),
             title: Text(
-              '公司地址',
+              t.about.companyAddress,
               style: TextStyle(
                 fontSize: 12.sp,
                 color: theme.textTheme.bodySmall?.color,
               ),
             ),
             subtitle: Text(
-              '广东省东莞市松山湖园区科汇路1号1栋1510室',
+              t.about.addressDetails,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: theme.textTheme.bodyLarge?.color,

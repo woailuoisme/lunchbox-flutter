@@ -1,0 +1,20 @@
+{
+  "title": "問題反饋",
+  "subtitle": "您的反饋是我們進步的動力",
+  "selectType": "選擇反饋類型",
+  "errorReport": "錯誤報告",
+  "suggestion": "建議",
+  "complaint": "投訴",
+  "other": "其他",
+  "description": "問題描述",
+  "titleHint": "請輸入問題標題 (必填)",
+  "contentHint": "請詳細描述您遇到的問題或建議 (必填)",
+  "uploadScreenshot": "上傳截圖 (可選)",
+  "addImage": "添加圖片",
+  "uploadLimitHint": "最多可上傳3張圖片，每張不超過2MB，支持jpg、png格式",
+  "contactOptional": "聯繫方式 (可選)",
+  "contactInputHint": "請輸入您的手機號或郵箱，方便我們聯繫您",
+  "submit": "提交反饋",
+  "submitSuccess": "反饋提交成功，感謝您的支持",
+  "submitFailed": "反饋提交失敗，請稍後重試"
+}

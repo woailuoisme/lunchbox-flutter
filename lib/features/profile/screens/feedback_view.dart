@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class FeedbackView extends ConsumerStatefulWidget {
@@ -19,7 +20,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('问题反馈'),
+        title: Text(t.feedback.title),
         centerTitle: true,
         backgroundColor:
             theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
@@ -51,7 +52,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
                   ),
                 ),
                 child: Text(
-                  '提交反馈',
+                  t.feedback.submit,
                   style: TextStyle(
                     fontSize: 16.sp,
                     color: theme.colorScheme.onPrimary,
@@ -77,12 +78,12 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
           ),
           SizedBox(height: 8.h),
           Text(
-            '问题反馈',
+            t.feedback.title,
             style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 4.h),
           Text(
-            '您的反馈是我们进步的动力',
+            t.feedback.subtitle,
             style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
           ),
         ],
@@ -95,20 +96,24 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
     final List<Map<String, dynamic>> types = [
       {
         'icon': Symbols.block,
-        'label': '错误报告',
+        'label': t.feedback.errorReport,
         'color': theme.colorScheme.error,
       },
       {
         'icon': Symbols.lightbulb,
-        'label': '建议',
+        'label': t.feedback.suggestion,
         'color': theme.colorScheme.tertiary,
       },
       {
         'icon': Symbols.sentiment_dissatisfied,
-        'label': '投诉',
+        'label': t.feedback.complaint,
         'color': theme.colorScheme.secondary,
       },
-      {'icon': Symbols.help, 'label': '其他', 'color': theme.colorScheme.primary},
+      {
+        'icon': Symbols.help,
+        'label': t.feedback.other,
+        'color': theme.colorScheme.primary,
+      },
     ];
 
     return Container(
@@ -121,7 +126,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '选择反馈类型',
+            t.feedback.selectType,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 16.h),
@@ -195,13 +200,13 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '问题描述',
+            t.feedback.description,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 16.h),
           TextField(
             decoration: InputDecoration(
-              hintText: '请输入问题标题 (必填)',
+              hintText: t.feedback.titleHint,
               filled: true,
               fillColor: theme.colorScheme.surfaceContainerHighest.withValues(
                 alpha: 0.3,
@@ -221,7 +226,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
             maxLines: 5,
             maxLength: 500,
             decoration: InputDecoration(
-              hintText: '请详细描述您遇到的问题或建议 (必填)',
+              hintText: t.feedback.contentHint,
               filled: true,
               fillColor: theme.colorScheme.surfaceContainerHighest.withValues(
                 alpha: 0.3,
@@ -251,7 +256,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '上传截图 (可选)',
+            t.feedback.uploadScreenshot,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 16.h),
@@ -271,7 +276,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
                 Icon(Symbols.add, color: theme.hintColor),
                 SizedBox(height: 4.h),
                 Text(
-                  '添加图片',
+                  t.feedback.addImage,
                   style: TextStyle(fontSize: 10.sp, color: theme.hintColor),
                 ),
               ],
@@ -279,7 +284,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
           ),
           SizedBox(height: 8.h),
           Text(
-            '最多可上传3张图片，每张不超过2MB，支持jpg、png格式',
+            t.feedback.uploadLimitHint,
             style: TextStyle(fontSize: 10.sp, color: theme.hintColor),
           ),
         ],
@@ -299,13 +304,13 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '联系方式 (可选)',
+            t.feedback.contactOptional,
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 16.h),
           TextField(
             decoration: InputDecoration(
-              hintText: '请输入您的手机号或邮箱，方便我们联系您',
+              hintText: t.feedback.contactInputHint,
               filled: true,
               fillColor: theme.colorScheme.surfaceContainerHighest.withValues(
                 alpha: 0.3,

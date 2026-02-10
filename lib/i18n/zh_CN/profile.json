@@ -1,5 +1,5 @@
 {
-  "title": "我的",
+  "title": "个人中心",
   "notLoggedIn": "未登录",
   "editProfile": "编辑资料",
   "logout": "退出登录",
@@ -19,6 +19,27 @@
   "cooperation": "合作商加盟",
   "about": "关于我们",
   "settings": "设置",
+  "gender": {
+    "male": "男",
+    "female": "女",
+    "unknown": "保密"
+  },
+  "info": {
+    "basic": "基本信息",
+    "other": "其他信息",
+    "phone": "手机号",
+    "gender": "性别",
+    "birthday": "生日",
+    "email": "邮箱",
+    "notSet": "未设置"
+  },
+  "avatar": {
+    "clickToChange": "点击更换头像",
+    "uploading": "头像上传功能开发中"
+  },
+  "saveSuccess": "保存成功",
+  "saveFailed": "保存失败: ${error}",
+  "saveInfo": "保存信息",
   "walletBalance": "钱包余额",
   "coin": "乖乖币",
   "couponCount": "优惠券"

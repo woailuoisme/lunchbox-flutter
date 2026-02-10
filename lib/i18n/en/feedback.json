@@ -1,0 +1,20 @@
+{
+  "title": "Feedback",
+  "subtitle": "Your feedback is our motivation for progress",
+  "selectType": "Select Feedback Type",
+  "errorReport": "Error Report",
+  "suggestion": "Suggestion",
+  "complaint": "Complaint",
+  "other": "Other",
+  "description": "Problem Description",
+  "titleHint": "Please enter the problem title (Required)",
+  "contentHint": "Please describe the problem or suggestion in detail (Required)",
+  "uploadScreenshot": "Upload Screenshot (Optional)",
+  "addImage": "Add Image",
+  "uploadLimitHint": "Up to 3 images, each not exceeding 2MB, support jpg, png formats",
+  "contactOptional": "Contact Information (Optional)",
+  "contactInputHint": "Please enter your phone number or email for us to contact you",
+  "submit": "Submit Feedback",
+  "submitSuccess": "Feedback submitted successfully, thank you for your support",
+  "submitFailed": "Feedback submission failed, please try again later"
+}
