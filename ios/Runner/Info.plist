@@ -62,5 +62,11 @@
 		<string>我们需要您的位置来提供附近的售货机服务</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
-	</dict>
+			<key>CFBundleLocalizations</key>
+		<array>
+				<string>en</string>
+				<string>zh-CN</string>
+				<string>zh-TW</string>
+		</array>
+</dict>
 </plist>

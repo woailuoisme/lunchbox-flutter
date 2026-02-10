@@ -14,6 +14,8 @@ import 'package:lunchbox/features/profile/profile.dart';
 import 'package:lunchbox/features/settings/settings.dart';
 import 'package:lunchbox/features/splash/splash.dart';
 import 'package:lunchbox/routes/app_routes.dart';
+import 'package:lunchbox/core/utils/page_transition_page.dart';
+import 'package:page_transition/page_transition.dart';
 
 part 'routes.g.dart';
 
@@ -42,7 +44,12 @@ class LoginRoute extends GoRouteData with $LoginRoute {
   const LoginRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const LoginView();
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      PageTransitionPage(
+        key: state.pageKey,
+        child: const LoginView(),
+        type: PageTransitionType.rightToLeft,
+      );
 }
 
 @TypedGoRoute<RegisterRoute>(path: AppRoutes.register)
@@ -50,8 +57,12 @@ class RegisterRoute extends GoRouteData with $RegisterRoute {
   const RegisterRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const RegisterView();
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      PageTransitionPage(
+        key: state.pageKey,
+        child: const RegisterView(),
+        type: PageTransitionType.rightToLeft,
+      );
 }
 
 @TypedGoRoute<ForgotPasswordRoute>(path: AppRoutes.forgotPassword)
@@ -59,8 +70,12 @@ class ForgotPasswordRoute extends GoRouteData with $ForgotPasswordRoute {
   const ForgotPasswordRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const ForgotPasswordView();
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      PageTransitionPage(
+        key: state.pageKey,
+        child: const ForgotPasswordView(),
+        type: PageTransitionType.rightToLeft,
+      );
 }
 
 // 城市选择
@@ -69,8 +84,12 @@ class CitySelectionRoute extends GoRouteData with $CitySelectionRoute {
   const CitySelectionRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const CitySelectionView();
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      PageTransitionPage(
+        key: state.pageKey,
+        child: const CitySelectionView(),
+        type: PageTransitionType.bottomToTop,
+      );
 }
 
 // 首页功能入口
@@ -173,8 +192,12 @@ class ProductDetailRoute extends GoRouteData with $ProductDetailRoute {
   final String id;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      ProductDetailView(productId: id);
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      PageTransitionPage(
+        key: state.pageKey,
+        child: ProductDetailView(productId: id),
+        type: PageTransitionType.rightToLeftWithFade,
+      );
 }
 
 // 购物车
@@ -183,7 +206,12 @@ class CartRoute extends GoRouteData with $CartRoute {
   const CartRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const CartView();
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      PageTransitionPage(
+        key: state.pageKey,
+        child: const CartView(),
+        type: PageTransitionType.rightToLeft,
+      );
 }
 
 // 订单确认
@@ -192,8 +220,12 @@ class OrderConfirmRoute extends GoRouteData with $OrderConfirmRoute {
   const OrderConfirmRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const OrderConfirmView();
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      PageTransitionPage(
+        key: state.pageKey,
+        child: const OrderConfirmView(),
+        type: PageTransitionType.rightToLeft,
+      );
 }
 
 // 订单详情 /order/:id

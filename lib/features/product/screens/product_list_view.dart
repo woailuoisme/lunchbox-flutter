@@ -155,7 +155,13 @@ class _ProductContent extends ConsumerWidget {
               },
             ),
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (_, __) => const SizedBox(),
+            error: (e, s) => Center(
+              child: Icon(
+                Symbols.error,
+                size: 24.sp,
+                color: theme.colorScheme.error,
+              ),
+            ),
           ),
         ),
 
@@ -192,7 +198,7 @@ class _ProductContent extends ConsumerWidget {
                     bottom: 80.h, // 留出FAB空间
                   ),
                   itemCount: products.length,
-                  separatorBuilder: (_, __) => SizedBox(height: 12.h),
+                  separatorBuilder: (context, index) => SizedBox(height: 12.h),
                   itemBuilder: (context, index) {
                     return _ProductItem(product: products[index]);
                   },

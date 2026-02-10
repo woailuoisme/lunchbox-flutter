@@ -1,8 +1,25 @@
-base_locale: zh_CN
-fallback_strategy: base_locale
-input_directory: lib/i18n
-input_file_pattern: .json
-output_directory: lib/i18n
-output_file_name: translations.g.dart
-flutter_integration: true
-namespaces: true
+# 基础配置
+base_locale: zh_CN              # 默认语言（开发主语言），作为翻译的基准
+fallback_strategy: base_locale  # 回退策略：当目标语言缺失翻译时，自动回退显示默认语言的内容
+
+# 输入输出路径
+input_directory: lib/i18n       # 翻译文件（JSON/YAML/ARB）所在的根目录
+input_file_pattern: .json       # 翻译文件的后缀模式 (配合 namespaces 使用)
+output_directory: lib/i18n      # 生成的 Dart 代码输出目录
+output_file_name: translations.g.dart # 生成的 Dart 文件名
+
+# 集成选项
+flutter_integration: true       # 启用 Flutter 集成（生成 LocalizationsDelegate 等 Flutter 特定代码）
+namespaces: true                # 启用命名空间：允许将翻译拆分到多个文件中（如 home.json, settings.json）
+
+# 优化配置
+timestamp: false                # 禁用生成时间戳：避免仅因重新生成导致文件变动，减少 Git 冲突
+statistics: false               # 禁用统计信息：简化生成文件的头部注释
+format: # 代码格式化配置
+  enabled: true                 # 生成后自动格式化代码
+  width: 120                    # 格式化时的最大行宽
+
+string_interpolation: dart      # 插值风格：使用 Dart 原生风格 ($name)，也可以选 double_braces ({name})
+
+# 高级功能
+translation_overrides: true     # 启用翻译覆盖：允许在运行时动态替换翻译内容（支持热更新或后台下发文案）
