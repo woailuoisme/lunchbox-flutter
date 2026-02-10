@@ -50,22 +50,32 @@ class _LoginViewState extends ConsumerState<LoginView> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: 60.h),
-              _buildHeader(colorScheme),
-              SizedBox(height: 60.h),
-              _buildLoginForm(colorScheme),
-              SizedBox(height: 24.h),
-              _buildLoginButton(colorScheme),
-              SizedBox(height: 16.h),
-              _buildFooterLinks(colorScheme),
-              SizedBox(height: 24.h),
-            ],
-          ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: 24.h),
+                      _buildHeader(colorScheme),
+                      SizedBox(height: 60.h),
+                      _buildLoginForm(colorScheme),
+                      SizedBox(height: 24.h),
+                      _buildLoginButton(colorScheme),
+                      SizedBox(height: 16.h),
+                      _buildFooterLinks(colorScheme),
+                      SizedBox(height: 24.h),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -84,20 +94,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget _buildHeader(ColorScheme colorScheme) {
     return Column(
       children: [
-        Container(
-          width: 80.w,
-          height: 80.w,
-          decoration: BoxDecoration(
-            color: colorScheme.primary,
-            borderRadius: BorderRadius.circular(20.r),
-          ),
-          child: Icon(
-            Symbols.lunch_dining,
-            size: 48.sp,
-            color: colorScheme.onPrimary,
-          ),
-        ),
-        SizedBox(height: 24.h),
         Text(
           t.auth.loginTitle,
           style: TextStyle(

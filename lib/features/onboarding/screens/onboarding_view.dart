@@ -52,21 +52,13 @@ class OnboardingView extends ConsumerWidget {
         PageViewModel(
           title: t.onboarding.findDevicesTitle,
           body: t.onboarding.findDevicesBody,
-          image: _buildImage(
-            context,
-            Symbols.location_on,
-            colorScheme.secondary,
-          ),
+          image: _buildImage(context, Symbols.location_on, colorScheme.primary),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: t.onboarding.paymentTitle,
           body: t.onboarding.paymentBody,
-          image: _buildImage(
-            context,
-            Symbols.credit_card,
-            colorScheme.tertiary,
-          ),
+          image: _buildImage(context, Symbols.credit_card, colorScheme.primary),
           decoration: pageDecoration,
         ),
       ],

@@ -168,6 +168,10 @@ melos:
       run: ./scripts/melos.sh fix
       description: 自动修复代码问题
 
+    ready:
+      run: ./scripts/melos.sh ready
+      description: 执行代码准备 (format + fix)
+
     test:
       run: ./scripts/melos.sh test
       description: 运行测试
