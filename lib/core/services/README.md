@@ -1,178 +1,102 @@
-# Core Services
+# 核心服务 (Core Services)
 
-This directory contains core application services that provide essential functionality across the app.
+本目录包含应用的核心服务，这些服务为整个应用提供基础功能支持。
 
-## ToastService
+## 文件结构
 
-The `ToastService` provides a unified way to display toast notifications throughout the application.
-
-### Features
-
-- **Four notification types**: Success, Error, Info, and Warning
-- **Customizable**: Custom titles, durations, and contexts
-- **Consistent styling**: Uses Toastification with fillColored style
-- **Automatic positioning**: Top-center alignment
-- **Interactive**: Supports drag-to-close, pause-on-hover, and progress bar
-
-### Usage
-
-#### Basic Usage
-
-```dart
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lunchbox/core/services/toast_service.dart';
-
-class MyWidget extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final toastService = ref.read(toastServiceProvider);
-    
-    return ElevatedButton(
-      onPressed: () {
-        // Show success toast
-        toastService.showSuccess('操作成功！');
-      },
-      child: Text('Submit'),
-    );
-  }
-}
+```
+lib/core/services/
+├── api_service.dart       # 基于 Dio 的网络请求服务
+├── database_service.dart  # 基于 Drift (SQLite) 的本地数据库服务
+├── location_service.dart  # 基于 Geolocator 的位置服务
+├── permission_service.dart # 基于 Permission Handler 的权限管理服务
+├── storage_service.dart   # 基于 SharedPreferences 的持久化存储服务
+├── toast_service.dart     # 基于 Toastification 的通知提醒服务
+├── services.dart          # 导出所有服务的统一入口
+└── README.md              # 本文档
 ```
 
-#### With Custom Title
+## 核心服务说明
 
-```dart
-toastService.showSuccess(
-  '数据已保存',
-  title: '保存成功',
-);
-```
+### 1. ApiService (`api_service.dart`)
 
-#### With Custom Duration
+提供统一的 HTTP 网络请求接口，封装了常用的 `GET`、`POST`、`PUT`、`DELETE` 等方法。
 
-```dart
-toastService.showError(
-  '网络连接失败，请检查网络设置',
-  autoCloseDuration: Duration(seconds: 10),
-);
-```
+- **依赖**: `dio`
+- **Provider**: `apiServiceProvider`
+- **主要功能**:
+  - 自动注入 `Dio` 实例（包含拦截器配置）。
+  - 提供类型安全的响应处理。
 
-#### With Context (Optional)
+### 2. DatabaseService (`database_service.dart`)
 
-```dart
-toastService.showInfo(
-  '正在加载数据...',
-  context: context, // Optional, uses global navigator key if not provided
-);
-```
+管理应用的本地关系型数据库，用于存储复杂的数据结构（如购物车）。
 
-### API Reference
+- **依赖**: `drift`, `sqlite3`
+- **Provider**: `databaseServiceProvider`
+- **核心表**:
+  - `CartItems`: 存储购物车商品、数量及规格。
+- **功能**:
+  - 支持数据库版本迁移管理。
+  - 提供响应式（Stream）的查询接口。
 
-#### showSuccess
+### 3. LocationService (`location_service.dart`)
 
-Displays a success message with a green background and check icon.
+处理与地理位置相关的逻辑。
 
-```dart
-void showSuccess(
-  String message, {
-  String? title,              // Default: "成功"
-  Duration? autoCloseDuration, // Default: 3 seconds
-  BuildContext? context,
-})
-```
+- **依赖**: `geolocator`
+- **Provider**: `locationServiceProvider`
+- **主要功能**:
+  - 获取设备当前经纬度坐标。
+  - 计算两个坐标点之间的距离（米）。
+  - 自动检查位置服务状态并请求权限。
 
-#### showError
+### 4. PermissionService (`permission_service.dart`)
 
-Displays an error message with a red background and error icon.
+统一管理应用所需的各项硬件权限。
 
-```dart
-void showError(
-  String message, {
-  String? title,              // Default: "错误"
-  Duration? autoCloseDuration, // Default: 5 seconds
-  BuildContext? context,
-})
-```
+- **依赖**: `permission_handler`
+- **Provider**: `permissionServiceProvider`
+- **主要功能**:
+  - 检查并请求：相机、相册（Android 13+ 特殊处理）、位置、通知权限。
+  - 提供打开系统设置页面的便捷方法。
 
-#### showInfo
+### 5. StorageService (`storage_service.dart`)
 
-Displays an informational message with a blue background and info icon.
+提供简单的键值对（Key-Value）持久化存储。
 
-```dart
-void showInfo(
-  String message, {
-  String? title,              // Default: "提示"
-  Duration? autoCloseDuration, // Default: 3 seconds
-  BuildContext? context,
-})
-```
+- **依赖**: `shared_preferences`
+- **Provider**: `storageServiceProvider`
+- **主要功能**:
+  - 泛型读写接口（String, int, bool, double, List<String>）。
+  - 异常捕获与日志记录。
+  - 清理存储空间。
 
-#### showWarning
+### 6. ToastService (`toast_service.dart`)
 
-Displays a warning message with an orange background and warning icon.
+提供全应用统一的 UI 提示组件。
 
-```dart
-void showWarning(
-  String message, {
-  String? title,              // Default: "警告"
-  Duration? autoCloseDuration, // Default: 3 seconds
-  BuildContext? context,
-})
-```
+- **依赖**: `toastification`
+- **Provider**: `toastServiceProvider`
+- **通知类型**:
+  - `showSuccess`: 成功（绿色）
+  - `showError`: 错误（红色）
+  - `showInfo`: 信息（蓝色）
+  - `showWarning`: 警告（橙色）
+- **特点**: 支持自动关闭、进度条显示、点击关闭、毛玻璃特效等。
 
-### Integration with Error Handling
+## 使用建议
 
-The ToastService integrates seamlessly with the error handling system:
+1. **获取服务**: 推荐在 Riverpod 的 Provider 或 `ConsumerWidget` 中通过 `ref.watch` 或 `ref.read` 获取对应服务。
+   ```dart
+   final apiService = ref.read(apiServiceProvider);
+   ```
+2. **统一导出**: 外部模块只需导入 `import 'package:lunchbox/core/services/services.dart';` 即可访问所有服务类。
+3. **初始化**: 像 `SharedPreferences` 这样的服务通常需要在 `main.dart` 中提前初始化。
 
-```dart
-final result = await repository.getData();
+## 需求验证
 
-result.fold(
-  (failure) {
-    final message = failure.when(
-      network: (msg, _) => '网络错误：$msg',
-      server: (msg, _) => '服务器错误：$msg',
-      cache: (msg) => '缓存错误：$msg',
-      notFound: (resource) => '未找到：$resource',
-      unauthorized: () => '未授权，请重新登录',
-      validation: (msg, _) => '验证错误：$msg',
-    );
-    ref.read(toastServiceProvider).showError(message);
-  },
-  (data) {
-    ref.read(toastServiceProvider).showSuccess('数据加载成功');
-    // Handle success
-  },
-);
-```
-
-### Configuration
-
-The ToastService uses the following default configurations:
-
-- **Position**: Top center
-- **Animation Duration**: 300ms
-- **Success/Info/Warning Duration**: 3 seconds
-- **Error Duration**: 5 seconds (longer for users to read error messages)
-- **Style**: Fill colored
-- **Features**: Progress bar, drag-to-close, pause-on-hover, blur effect
-
-### Requirements
-
-- **Requirement 4.1**: Success message display ✓
-- **Requirement 4.2**: Error message display ✓
-- **Requirement 4.3**: Info message display ✓
-- **Requirement 4.4**: Warning message display ✓
-- **Requirement 4.5**: Dismissible toasts with appropriate duration ✓
-- **Requirement 4.6**: Customizable position, animation, and style ✓
-
-### Testing
-
-See `test/core/services/toast_service_test.dart` for unit tests.
-
-The service is tested for:
-- Provider creation
-- Navigator key injection
-- Method availability
-- Basic functionality
-
-Note: Full integration tests with actual toast display should be done in widget/integration tests with proper context setup.
+- **需求 4.1-4.4**: 提供四种类型的 Toast 提示 ✅
+- **需求 4.5-4.6**: Toast 支持自定义时长、位置和样式 ✅
+- **权限管理**: 封装了 Android 13+ 的权限适配逻辑 ✅
+- **数据持久化**: 同时支持 SQLite (复杂数据) 和 SharedPreferences (简单配置) ✅

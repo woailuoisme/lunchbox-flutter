@@ -2,9 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 import 'package:lunchbox/core/network/interceptors/auth_interceptor.dart';
 import 'package:lunchbox/core/network/interceptors/error_handling_interceptor.dart';
+import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/core/values/app_constants.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 part 'dio_provider.g.dart';
 
@@ -52,10 +53,15 @@ Dio dio(Ref ref) {
 
   if (AppConstants.dioDebug) {
     dio.interceptors.add(
-      PrettyDioLogger(
-        requestHeader: true,
-        requestBody: true,
-        responseHeader: true,
+      TalkerDioLogger(
+        talker: LoggerUtils.instance,
+        settings: const TalkerDioLoggerSettings(
+          printRequestHeaders: true,
+          printResponseHeaders: true,
+          printResponseMessage: true,
+          printRequestData: true,
+          printResponseData: true,
+        ),
       ),
     );
   }
