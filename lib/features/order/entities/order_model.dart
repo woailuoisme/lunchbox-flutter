@@ -8,6 +8,7 @@ part 'order_model.freezed.dart';
 part 'order_model.g.dart';
 
 /// 订单状态枚举
+@JsonEnum()
 enum OrderStatus {
   pending, // 待支付
   paid, // 已支付
@@ -18,6 +19,7 @@ enum OrderStatus {
 }
 
 /// 支付方式枚举
+@JsonEnum()
 enum PaymentMethod {
   wechatPay, // 微信支付
   alipay, // 支付宝
