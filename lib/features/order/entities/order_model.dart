@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/device/device.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 part 'order_model.freezed.dart';
 part 'order_model.g.dart';
@@ -139,6 +141,59 @@ abstract class OrderModel with _$OrderModel {
         return '现金支付';
       case PaymentMethod.stripe:
         return 'Stripe支付';
+    }
+  }
+}
+
+extension OrderStatusX on OrderStatus {
+  String get label {
+    switch (this) {
+      case OrderStatus.pending:
+        return t.order.status.pending;
+      case OrderStatus.paid:
+        return t.order.status.paid;
+      case OrderStatus.completed:
+        return t.order.status.completed;
+      case OrderStatus.cancelled:
+        return t.order.status.cancelled;
+      case OrderStatus.refunded:
+        return t.order.status.refunded;
+      case OrderStatus.failed:
+        return t.order.status.failed;
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case OrderStatus.pending:
+        return Colors.orange;
+      case OrderStatus.paid:
+        return Colors.green;
+      case OrderStatus.completed:
+        return Colors.blue;
+      case OrderStatus.cancelled:
+        return Colors.grey;
+      case OrderStatus.refunded:
+        return Colors.purple;
+      case OrderStatus.failed:
+        return Colors.red;
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case OrderStatus.pending:
+        return Icons.access_time_filled;
+      case OrderStatus.paid:
+        return Icons.check_circle;
+      case OrderStatus.completed:
+        return Icons.task_alt;
+      case OrderStatus.cancelled:
+        return Icons.cancel;
+      case OrderStatus.refunded:
+        return Icons.remove_circle;
+      case OrderStatus.failed:
+        return Icons.error;
     }
   }
 }

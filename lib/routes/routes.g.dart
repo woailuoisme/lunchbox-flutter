@@ -33,7 +33,6 @@ List<RouteBase> get $appRoutes => [
   $feedbackRoute,
   $partnerRoute,
   $aboutUsRoute,
-  $helpRoute,
   $settingsRoute,
   $mainShellRoute,
 ];
@@ -726,29 +725,6 @@ mixin $AboutUsRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/about-us');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
-
-RouteBase get $helpRoute =>
-    GoRouteData.$route(path: '/help', factory: $HelpRoute._fromState);
-
-mixin $HelpRoute on GoRouteData {
-  static HelpRoute _fromState(GoRouterState state) => const HelpRoute();
-
-  @override
-  String get location => GoRouteData.$location('/help');
 
   @override
   void go(BuildContext context) => context.go(location);

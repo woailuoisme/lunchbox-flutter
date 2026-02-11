@@ -1,5 +1,7 @@
 {
   "myOrders": "My Orders",
+  "foodOrder": "Food Order",
+  "mallOrder": "Mall Order",
   "noOrders": "No Orders",
   "detail": "Order Detail",
   "status": {
@@ -35,5 +37,29 @@
   "actualAmount": "Actual Amount",
   "totalLabel": "Total: ",
   "submitOrder": "Submit Order",
-  "createFailed": "Create order failed: ${error}"
+  "createFailed": "Create order failed: ${error}",
+  "retry": "Retry",
+  "loadFailed": "Load failed: ${error}",
+  "specs": "Specs: ${specs}",
+  "summary": "Total ${count} items: ",
+  "refund": "Refund",
+  "viewCode": "View Code",
+  "deleteOrder": "Delete Order",
+  "reorder": "Buy Again",
+  "paySuccess": "Payment Successful",
+  "reorderSuccess": "Reordered Successfully",
+  "refundNotAvailable": "Refund not available yet",
+  "deleteNotAvailable": "Delete not available yet",
+  "operationFailed": "Operation failed: ${error}",
+  "scanQrHint": "Please scan QR code at the machine",
+  "pickupCodeHint": "Please pick up with code, enjoy your meal",
+  "storeInfo": "Store Info",
+  "productInfo": "Product Info",
+  "device": "Device",
+  "applyRefund": "Apply Refund",
+  "contactService": "Contact Service",
+  "serviceNotAvailable": "Service not available yet",
+  "paymentStripe": "Stripe (Credit Card)",
+  "paymentWechat": "WeChat Pay",
+  "paymentAlipay": "Alipay"
 }

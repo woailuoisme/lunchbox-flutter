@@ -413,7 +413,9 @@ class DeviceDetailView extends ConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      '${product.discountPercentage}% OFF',
+                      t.product.discountOff(
+                        percent: product.discountPercentage,
+                      ),
                       style: TextStyle(
                         fontSize: 10.sp,
                         color: theme.colorScheme.onError,
@@ -478,7 +480,9 @@ class DeviceDetailView extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '¥${product.price.toStringAsFixed(2)}',
+                          t.common.price(
+                            price: product.price.toStringAsFixed(2),
+                          ),
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
@@ -487,7 +491,9 @@ class DeviceDetailView extends ConsumerWidget {
                         ),
                         if (product.hasDiscount)
                           Text(
-                            '¥${product.originalPrice!.toStringAsFixed(2)}',
+                            t.common.price(
+                              price: product.originalPrice!.toStringAsFixed(2),
+                            ),
                             style: TextStyle(
                               fontSize: 12.sp,
                               color: theme.colorScheme.onSurfaceVariant,

@@ -20,8 +20,19 @@
   "loadFailed": "加载失败",
   "unknownError": "未知错误",
   "developing": "页面正在开发中",
-  "appName": "饭盒售货机",
+  "appName": "好小乖",
   "logout": "退出",
   "pullToRefresh": "下拉刷新",
-  "releaseToRefresh": "释放刷新"
+  "releaseToRefresh": "释放刷新",
+  "refreshing": "正在刷新...",
+  "noMoreData": "- 已经到底啦 -",
+  "price": "¥${price}",
+  "networkError": "网络错误：${message}",
+  "networkErrorWithCode": "网络错误 (${statusCode})：${message}",
+  "serverError": "服务器错误 (${statusCode})：${message}",
+  "cacheError": "缓存错误：${message}",
+  "notFound": "未找到：${resource}",
+  "unauthorized": "未授权，请重新登录",
+  "validationError": "验证错误：${message}",
+  "validationErrorWithDetails": "验证错误：${message} (${errors})"
 }

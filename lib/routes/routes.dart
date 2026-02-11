@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lunchbox/core/utils/page_transition_page.dart';
 import 'package:lunchbox/core/widgets/gnav_scaffold.dart';
 import 'package:lunchbox/features/auth/auth.dart';
 import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/device/device.dart';
-import 'package:lunchbox/features/help/help.dart';
 import 'package:lunchbox/features/home/home.dart';
 import 'package:lunchbox/features/onboarding/onboarding.dart';
 import 'package:lunchbox/features/order/order.dart';
@@ -14,7 +14,6 @@ import 'package:lunchbox/features/profile/profile.dart';
 import 'package:lunchbox/features/settings/settings.dart';
 import 'package:lunchbox/features/splash/splash.dart';
 import 'package:lunchbox/routes/app_routes.dart';
-import 'package:lunchbox/core/utils/page_transition_page.dart';
 import 'package:page_transition/page_transition.dart';
 
 part 'routes.g.dart';
@@ -322,15 +321,6 @@ class AboutUsRoute extends GoRouteData with $AboutUsRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const AboutUsView();
-}
-
-// 帮助中心
-@TypedGoRoute<HelpRoute>(path: AppRoutes.help)
-class HelpRoute extends GoRouteData with $HelpRoute {
-  const HelpRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) => const HelpView();
 }
 
 // 设置相关路由

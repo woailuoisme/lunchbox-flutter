@@ -25,5 +25,13 @@
   "noDevicesNearby": "附近暫無設備",
   "maintenance": "維護中",
   "unknown": "未知",
-  "cashPayment": "現金支付"
+  "cashPayment": "現金支付",
+  "loadedFrequent": "已載入 ${count} 個常用設備",
+  "noFrequentDevices": "暫無常去營業點",
+  "noNearbyDevices": "暫無附近營業點",
+  "businessHoursDefault": "09:00-18:00",
+  "enabled": "已啟用",
+  "frequent": "常去營業點",
+  "menu": "菜單",
+  "classicMenu": "經典菜單"
 }

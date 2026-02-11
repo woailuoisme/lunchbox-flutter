@@ -6,6 +6,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/features/order/providers/order_notifier.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 
 /// 订单列表视图 (食品/商城)
@@ -30,11 +31,20 @@ class _OrderListViewState extends ConsumerState<OrderListView>
     'cancelled', // 退款/取消
   ];
 
-  final List<String> _filterTitles = ['全部订单', '待支付', '已支付', '已完成', '退款/取消'];
+  late final List<String> _filterTitles;
 
   @override
   void initState() {
     super.initState();
+    // Initialize filter titles here to access translations
+    _filterTitles = [
+      t.order.status.all,
+      t.order.status.pending,
+      t.order.status.paid,
+      t.order.status.completed,
+      '${t.order.status.refunded}/${t.order.status.cancelled}',
+    ];
+
     _tabController = TabController(length: _filterValues.length, vsync: this);
 
     // 为每个 Tab 初始化一个 PagingController
@@ -93,7 +103,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text('订单已取消')));
+            ).showSnackBar(SnackBar(content: Text(t.order.orderCancelled)));
             _refreshCurrentTab();
           }
           break;
@@ -103,7 +113,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text('支付成功')));
+            ).showSnackBar(SnackBar(content: Text(t.order.paySuccess)));
             _refreshCurrentTab();
           }
           break;
@@ -112,7 +122,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           if (context.mounted && newOrder != null) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text('已重新下单')));
+            ).showSnackBar(SnackBar(content: Text(t.order.reorderSuccess)));
             _refreshCurrentTab();
             // Navigate to detail of new order
             context.push(
@@ -131,7 +141,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text('退款功能暂未开放')));
+            ).showSnackBar(SnackBar(content: Text(t.order.refundNotAvailable)));
           }
           break;
         case 'delete':
@@ -139,15 +149,15 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text('删除功能暂未开放')));
+            ).showSnackBar(SnackBar(content: Text(t.order.deleteNotAvailable)));
           }
           break;
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('操作失败: ${e.toString()}')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(t.order.operationFailed(error: e.toString()))),
+        );
       }
     }
   }
@@ -163,7 +173,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
         elevation: 0,
         centerTitle: true,
         title: Text(
-          '食品订单',
+          t.order.foodOrder,
           style: TextStyle(
             color: theme.appBarTheme.foregroundColor,
             fontSize: 18.sp,
@@ -252,10 +262,12 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('加载失败: ${controller.error}'),
+                    Text(
+                      t.order.loadFailed(error: controller.error.toString()),
+                    ),
                     ElevatedButton(
                       onPressed: () => controller.refresh(),
-                      child: const Text('重试'),
+                      child: Text(t.order.retry),
                     ),
                   ],
                 ),
@@ -283,7 +295,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           Icon(Icons.receipt_long, size: 64.sp, color: theme.disabledColor),
           SizedBox(height: 16.h),
           Text(
-            '暂无订单',
+            t.order.noOrders,
             style: TextStyle(color: theme.hintColor, fontSize: 14.sp),
           ),
         ],
@@ -298,8 +310,8 @@ class _OrderListViewState extends ConsumerState<OrderListView>
     }
 
     final item = order.items.first;
-    final statusText = _getStatusText(order.status);
-    final statusColor = _getStatusColor(order.status);
+    final statusText = order.status.label;
+    final statusColor = order.status.color;
 
     return GestureDetector(
       onTap: () {
@@ -344,7 +356,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                       ],
                       if (order.storeName == null)
                         Text(
-                          '订单号：${order.id.substring(order.id.length > 8 ? order.id.length - 8 : 0)}',
+                          '${t.order.orderIdLabel}${order.id.substring(order.id.length > 8 ? order.id.length - 8 : 0)}',
                           style: TextStyle(
                             fontSize: 13.sp,
                             color: theme.hintColor,
@@ -420,7 +432,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        '规格：${item.product.specifications}',
+                        t.order.specs(specs: item.product.specifications ?? ''),
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: theme.hintColor,
@@ -431,7 +443,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            '共${order.items.length}件 合计：',
+                            t.order.summary(count: order.items.length),
                             style: TextStyle(
                               fontSize: 12.sp,
                               color: theme.hintColor,
@@ -510,7 +522,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
     if (order.status == OrderStatus.paid) {
       buttons.add(
         _buildButton(
-          '退款',
+          t.order.refund,
           textColor: theme.hintColor,
           borderColor: theme.dividerColor,
           onTap: () => _handleAction(order, 'refund', context),
@@ -519,7 +531,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
       buttons.add(SizedBox(width: 8.w));
       buttons.add(
         _buildButton(
-          '查看券码',
+          t.order.viewCode,
           textColor: theme.colorScheme.primary,
           borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'view_code', context),
@@ -529,7 +541,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
         order.status == OrderStatus.refunded) {
       buttons.add(
         _buildButton(
-          '删除订单',
+          t.order.deleteOrder,
           textColor: theme.hintColor,
           borderColor: theme.dividerColor,
           onTap: () => _handleAction(order, 'delete', context),
@@ -538,7 +550,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
       buttons.add(SizedBox(width: 8.w));
       buttons.add(
         _buildButton(
-          '重新购买',
+          t.order.reorder,
           textColor: theme.colorScheme.primary,
           borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'reorder', context),
@@ -547,7 +559,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
     } else if (order.status == OrderStatus.pending) {
       buttons.add(
         _buildButton(
-          '取消订单',
+          t.order.cancelOrder,
           textColor: theme.hintColor,
           borderColor: theme.dividerColor,
           onTap: () => _handleAction(order, 'cancel', context),
@@ -556,7 +568,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
       buttons.add(SizedBox(width: 8.w));
       buttons.add(
         _buildButton(
-          '立即支付',
+          t.order.payNow,
           textColor: theme.colorScheme.primary,
           borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'pay', context),
@@ -565,7 +577,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
     } else if (order.status == OrderStatus.cancelled) {
       buttons.add(
         _buildButton(
-          '重新购买',
+          t.order.reorder,
           textColor: theme.colorScheme.primary,
           borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'reorder', context),
@@ -596,40 +608,5 @@ class _OrderListViewState extends ConsumerState<OrderListView>
         ),
       ),
     );
-  }
-
-  String _getStatusText(OrderStatus status) {
-    switch (status) {
-      case OrderStatus.pending:
-        return '待支付';
-      case OrderStatus.paid:
-        return '已支付';
-      case OrderStatus.completed:
-        return '已完成';
-      case OrderStatus.cancelled:
-        return '已取消';
-      case OrderStatus.refunded:
-        return '已退款';
-      case OrderStatus.failed:
-        return '支付失败';
-    }
-  }
-
-  Color _getStatusColor(OrderStatus status) {
-    final theme = Theme.of(context);
-    switch (status) {
-      case OrderStatus.pending:
-        return theme.colorScheme.error; // Red for pending/attention
-      case OrderStatus.paid:
-        return theme.colorScheme.primary; // Primary for paid
-      case OrderStatus.completed:
-        return theme.colorScheme.secondary; // Secondary/Greenish for completed
-      case OrderStatus.cancelled:
-        return theme.hintColor; // Grey for cancelled
-      case OrderStatus.refunded:
-        return theme.hintColor;
-      case OrderStatus.failed:
-        return theme.colorScheme.error;
-    }
   }
 }

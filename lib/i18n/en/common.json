@@ -23,5 +23,16 @@
   "appName": "E-Lunchbox",
   "logout": "Logout",
   "pullToRefresh": "Pull to refresh",
-  "releaseToRefresh": "Release to refresh"
+  "releaseToRefresh": "Release to refresh",
+  "refreshing": "Refreshing...",
+  "noMoreData": "- No more data -",
+  "price": "¥${price}",
+  "networkError": "Network Error: ${message}",
+  "networkErrorWithCode": "Network Error (${statusCode}): ${message}",
+  "serverError": "Server Error (${statusCode}): ${message}",
+  "cacheError": "Cache Error: ${message}",
+  "notFound": "Not Found: ${resource}",
+  "unauthorized": "Unauthorized, please login again",
+  "validationError": "Validation Error: ${message}",
+  "validationErrorWithDetails": "Validation Error: ${message} (${errors})"
 }

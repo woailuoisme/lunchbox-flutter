@@ -29,11 +29,11 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/api/auth/login',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/api/auth/login',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -41,7 +41,7 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     try {
       _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) => json as dynamic,
+        (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -60,11 +60,11 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/api/auth/register',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/api/auth/register',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -72,7 +72,7 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     try {
       _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) => json as dynamic,
+        (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -90,11 +90,11 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     final _options = _setStreamType<ApiResponse<void>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/api/auth/logout',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/api/auth/logout',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -117,11 +117,11 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     final _options = _setStreamType<ApiResponse<UserModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/api/users/profile',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/api/users/profile',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -129,7 +129,7 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     try {
       _value = ApiResponse<UserModel>.fromJson(
         _result.data!,
-            (json) => UserModel.fromJson(json as Map<String, dynamic>),
+        (json) => UserModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -140,7 +140,8 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
 
   @override
   Future<ApiResponse<UserModel>> updateUserProfile(
-      Map<String, dynamic> body,) async {
+    Map<String, dynamic> body,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -149,11 +150,11 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     final _options = _setStreamType<ApiResponse<UserModel>>(
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/api/users/profile',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/api/users/profile',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -161,7 +162,7 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     try {
       _value = ApiResponse<UserModel>.fromJson(
         _result.data!,
-            (json) => UserModel.fromJson(json as Map<String, dynamic>),
+        (json) => UserModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -180,11 +181,11 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     final _options = _setStreamType<ApiResponse<bool>>(
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/api/users/password',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/api/users/password',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -192,7 +193,7 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     try {
       _value = ApiResponse<bool>.fromJson(
         _result.data!,
-            (json) => json as bool,
+        (json) => json as bool,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -211,11 +212,11 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/api/auth/refresh',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/api/auth/refresh',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -223,7 +224,7 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     try {
       _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) => json as dynamic,
+        (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -234,7 +235,8 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
 
   @override
   Future<ApiResponse<void>> sendVerificationCode(
-      Map<String, dynamic> body,) async {
+    Map<String, dynamic> body,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -243,11 +245,11 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     final _options = _setStreamType<ApiResponse<void>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/api/auth/send-code',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/api/auth/send-code',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -271,11 +273,11 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/api/auth/verify-code',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/api/auth/verify-code',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -283,7 +285,7 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     try {
       _value = ApiResponse<dynamic>.fromJson(
         _result.data!,
-            (json) => json as dynamic,
+        (json) => json as dynamic,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -302,11 +304,11 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     final _options = _setStreamType<ApiResponse<bool>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/api/users/favorite-devices',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/api/users/favorite-devices',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -314,7 +316,7 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     try {
       _value = ApiResponse<bool>.fromJson(
         _result.data!,
-            (json) => json as bool,
+        (json) => json as bool,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -332,11 +334,11 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     final _options = _setStreamType<ApiResponse<bool>>(
       Options(method: 'DELETE', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/api/users/favorite-devices/${deviceId}',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/api/users/favorite-devices/${deviceId}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -344,7 +346,7 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
     try {
       _value = ApiResponse<bool>.fromJson(
         _result.data!,
-            (json) => json as bool,
+        (json) => json as bool,
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -367,9 +369,7 @@ class _AuthRemoteDataSource implements AuthRemoteDataSource {
   }
 
   String _combineBaseUrls(String dioBaseUrl, String? baseUrl) {
-    if (baseUrl == null || baseUrl
-        .trim()
-        .isEmpty) {
+    if (baseUrl == null || baseUrl.trim().isEmpty) {
       return dioBaseUrl;
     }
 

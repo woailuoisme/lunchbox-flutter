@@ -334,14 +334,14 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
           ),
           SizedBox(height: 16.h),
           Text(
-            '未找到相关城市',
+            t.city.noResult,
             style: TextStyle(
               fontSize: 16.sp,
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           SizedBox(height: 8.h),
-          TextButton(onPressed: _showAllCities, child: const Text('查看所有城市')),
+          TextButton(onPressed: _showAllCities, child: Text(t.city.viewAll)),
         ],
       ),
     );

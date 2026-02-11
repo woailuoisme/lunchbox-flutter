@@ -1,0 +1,41 @@
+{
+  "title": "Team Ordering",
+  "bannerTitle": "Team Ordering",
+  "bannerSubtitle": "Group Order · Team Dinner · Corporate Team Building",
+  "tag1": "Professional Service",
+  "tag2": "Discount Price",
+  "tag3": "Convenient & Efficient",
+  "scenarios": {
+    "title": "Applicable Scenarios",
+    "subtitle": "Meet different team needs",
+    "team": "Team Ordering",
+    "teamDesc": "Corporate team building, department dinner",
+    "reserve": "Reservation Ordering",
+    "reserveDesc": "Book in advance, pick up on time",
+    "vip": "VIP Ordering",
+    "vipDesc": "Bulk ordering, exclusive service"
+  },
+  "process": {
+    "title": "Process",
+    "subtitle": "Simple three steps, easy booking",
+    "step1Title": "Contact Service",
+    "step1Desc": "Call hotline or consult online to explain dining needs",
+    "step2Title": "Confirm Plan",
+    "step2Desc": "Customer service customizes exclusive plan, confirms dishes and prices",
+    "step3Title": "Complete Booking",
+    "step3Desc": "Confirm order info, pick up at store on time"
+  },
+  "advantages": {
+    "title": "Service Advantages",
+    "subtitle": "Professional team, trustworthy",
+    "custom": "Professional Customization",
+    "customDesc": "Provide personalized customization based on team size and taste",
+    "reserve": "Advance Reservation",
+    "reserveDesc": "Support advance reservation, arrange dining time reasonably, avoid waiting",
+    "price": "Discount Price",
+    "priceDesc": "Team ordering enjoys more discounts, bulk is cheaper",
+    "quality": "Quality Assurance",
+    "qualityDesc": "Strictly control ingredient quality, ensure every meal is fresh and delicious"
+  },
+  "bookNow": "Book Now"
+}

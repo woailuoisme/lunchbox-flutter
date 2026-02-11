@@ -12,6 +12,7 @@ import 'package:lunchbox/routes/app_routes.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
 import 'package:lunchbox/features/device/repositories/simulated_device_repository.dart';
 import 'package:lunchbox/features/device/screens/city_selection_view.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 设备列表视图 (取餐机)
 ///
@@ -141,7 +142,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          '取餐机',
+          t.device.title,
           style: TextStyle(
             color: theme.colorScheme.onSurface,
             fontSize: 18.sp,
@@ -188,9 +189,9 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                 fontSize: 16.sp,
                 fontWeight: FontWeight.normal,
               ),
-              tabs: const [
-                Tab(text: '常去营业点'),
-                Tab(text: '附近营业点'),
+              tabs: [
+                Tab(text: t.device.frequent),
+                Tab(text: t.device.nearby),
               ],
             ),
           ),
@@ -216,7 +217,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
         // 顶部提示条
         SliverToBoxAdapter(
           child: _buildStatusBanner(
-            text: '已加载3个常用设备',
+            text: t.device.loadedFrequent(count: 3),
             icon: Icons.refresh,
             bgColor: Colors.green.shade50, // 浅绿色背景
             textColor: Colors.green, // 绿色文字
@@ -237,7 +238,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                         _buildDeviceCard(item, theme),
                     noItemsFoundIndicatorBuilder: (context) => Center(
                       child: Text(
-                        '暂无常去营业点',
+                        t.device.noFrequentDevices,
                         style: TextStyle(
                           color: theme.colorScheme.outline,
                           fontSize: 14.sp,
@@ -255,7 +256,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
             padding: EdgeInsets.only(bottom: 20.h),
             child: Center(
               child: Text(
-                '- 已经到底啦 -',
+                t.common.noMoreData,
                 style: TextStyle(
                   color: theme.colorScheme.outline,
                   fontSize: 12.sp,
@@ -279,7 +280,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
         // 顶部提示条
         SliverToBoxAdapter(
           child: _buildStatusBanner(
-            text: '正在刷新...',
+            text: t.common.refreshing,
             icon: Icons.refresh,
             bgColor: Colors.green.shade50,
             textColor: Colors.green,
@@ -303,7 +304,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                         _buildDeviceCard(item, theme),
                     noItemsFoundIndicatorBuilder: (context) => Center(
                       child: Text(
-                        '暂无附近营业点',
+                        t.device.noNearbyDevices,
                         style: TextStyle(
                           color: theme.colorScheme.outline,
                           fontSize: 14.sp,
@@ -534,7 +535,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        '09:00-18:00', // 暂无营业时间字段，使用默认
+                        t.device.businessHoursDefault, // 暂无营业时间字段，使用默认
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: theme.colorScheme.outline,
@@ -563,11 +564,11 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
             Row(
               children: [
                 if (device.isOnline)
-                  _buildStatusTag('在线', Colors.lightGreen)
+                  _buildStatusTag(t.device.online, Colors.lightGreen)
                 else
-                  _buildStatusTag('离线', theme.colorScheme.outline),
+                  _buildStatusTag(t.device.offline, theme.colorScheme.outline),
                 SizedBox(width: 8.w),
-                _buildStatusTag('已启用', Colors.blue),
+                _buildStatusTag(t.device.enabled, Colors.blue),
                 const Spacer(),
                 Text(
                   '500m', // 暂无距离字段，使用模拟

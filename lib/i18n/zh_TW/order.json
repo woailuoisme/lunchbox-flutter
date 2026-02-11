@@ -1,5 +1,7 @@
 {
   "myOrders": "我的訂單",
+  "foodOrder": "食品訂單",
+  "mallOrder": "商城訂單",
   "noOrders": "暫無訂單",
   "detail": "訂單詳情",
   "status": {

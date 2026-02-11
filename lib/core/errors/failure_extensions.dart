@@ -1,6 +1,8 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:lunchbox/core/errors/failure.dart';
 
+import 'package:lunchbox/i18n/translations.g.dart';
+
 /// Extension methods for Failure to provide user-friendly error messages
 /// and convenient error handling patterns.
 ///
@@ -20,22 +22,29 @@ extension FailureExtensions on Failure {
     return when(
       network: (message, statusCode) {
         if (statusCode != null) {
-          return '网络错误 ($statusCode)：$message';
+          return t.common.networkErrorWithCode(
+            statusCode: statusCode,
+            message: message,
+          );
         }
-        return '网络错误：$message';
+        return t.common.networkError(message: message);
       },
-      server: (message, statusCode) => '服务器错误 ($statusCode)：$message',
-      cache: (message) => '缓存错误：$message',
-      notFound: (resource) => '未找到：$resource',
-      unauthorized: () => '未授权，请重新登录',
+      server: (message, statusCode) =>
+          t.common.serverError(statusCode: statusCode, message: message),
+      cache: (message) => t.common.cacheError(message: message),
+      notFound: (resource) => t.common.notFound(resource: resource),
+      unauthorized: () => t.common.unauthorized,
       validation: (message, fieldErrors) {
         if (fieldErrors != null && fieldErrors.isNotEmpty) {
           final errors = fieldErrors.entries
               .map((e) => '${e.key}: ${e.value}')
               .join(', ');
-          return '验证错误：$message ($errors)';
+          return t.common.validationErrorWithDetails(
+            message: message,
+            errors: errors,
+          );
         }
-        return '验证错误：$message';
+        return t.common.validationError(message: message);
       },
     );
   }

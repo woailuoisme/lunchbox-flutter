@@ -212,7 +212,7 @@ class OrderConfirmView extends ConsumerWidget {
               _buildPaymentOption(
                 context,
                 'stripe',
-                'Stripe (Credit Card)',
+                t.order.paymentStripe,
                 Icons.credit_card,
                 theme.colorScheme.primary,
                 selectedMethod,

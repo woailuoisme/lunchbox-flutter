@@ -20,8 +20,19 @@
   "loadFailed": "載入失敗",
   "unknownError": "未知錯誤",
   "developing": "頁面正在开发中",
-  "appName": "飯盒售貨機",
+  "appName": "好小乖",
   "logout": "登出",
   "pullToRefresh": "下拉重新整理",
-  "releaseToRefresh": "釋放重新整理"
+  "releaseToRefresh": "釋放重新整理",
+  "refreshing": "正在重新整理...",
+  "noMoreData": "- 已經到底啦 -",
+  "price": "¥${price}",
+  "networkError": "網路錯誤：${message}",
+  "networkErrorWithCode": "網路錯誤 (${statusCode})：${message}",
+  "serverError": "伺服器錯誤 (${statusCode})：${message}",
+  "cacheError": "快取錯誤：${message}",
+  "notFound": "未找到：${resource}",
+  "unauthorized": "未授權，請重新登入",
+  "validationError": "驗證錯誤：${message}",
+  "validationErrorWithDetails": "驗證錯誤：${message} (${errors})"
 }

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/features/order/providers/order_notifier.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -27,7 +28,7 @@ class OrderDetailView extends ConsumerWidget {
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text('订单已取消')));
+            ).showSnackBar(SnackBar(content: Text(t.order.orderCancelled)));
             // 刷新订单状态
             ref.read(orderProvider.notifier).loadOrderById(order.id);
           }
@@ -38,7 +39,7 @@ class OrderDetailView extends ConsumerWidget {
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text('支付成功')));
+            ).showSnackBar(SnackBar(content: Text(t.order.paySuccess)));
           }
           break;
         case 'reorder':
@@ -46,7 +47,7 @@ class OrderDetailView extends ConsumerWidget {
           if (context.mounted && newOrder != null) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text('已重新下单')));
+            ).showSnackBar(SnackBar(content: Text(t.order.reorderSuccess)));
             // 跳转到新订单详情（替换当前页面）
             context.pushReplacement(
               '${AppRoutes.orderDetail}/${newOrder.id}',
@@ -58,29 +59,29 @@ class OrderDetailView extends ConsumerWidget {
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text('退款功能暂未开放')));
+            ).showSnackBar(SnackBar(content: Text(t.order.refundNotAvailable)));
           }
           break;
         case 'delete':
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text('删除功能暂未开放')));
+            ).showSnackBar(SnackBar(content: Text(t.order.deleteNotAvailable)));
           }
           break;
         case 'contact_service':
           if (context.mounted) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text('客服功能暂未开放')));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(t.order.serviceNotAvailable)),
+            );
           }
           break;
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('操作失败: ${e.toString()}')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(t.order.operationFailed(error: e.toString()))),
+        );
       }
     }
   }
@@ -105,7 +106,7 @@ class OrderDetailView extends ConsumerWidget {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('订单详情'),
+        title: Text(t.order.detail),
         backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         centerTitle: true,
@@ -186,7 +187,7 @@ class OrderDetailView extends ConsumerWidget {
       child: Row(
         children: [
           Icon(
-            _getStatusIcon(order.status),
+            order.status.icon,
             size: 40.sp,
             color: theme.colorScheme.onPrimary,
           ),
@@ -195,7 +196,7 @@ class OrderDetailView extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                _getStatusText(order.status),
+                order.status.label,
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
@@ -265,7 +266,7 @@ class OrderDetailView extends ConsumerWidget {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  '请对准柜机扫描二维码',
+                  t.order.scanQrHint,
                   style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
                 ),
               ],
@@ -313,7 +314,7 @@ class OrderDetailView extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Text(
-                '请凭码取餐，祝您用餐愉快',
+                t.order.pickupCodeHint,
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: theme.colorScheme.error,
@@ -340,7 +341,7 @@ class OrderDetailView extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '门店信息',
+            t.order.storeInfo,
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
@@ -399,7 +400,7 @@ class OrderDetailView extends ConsumerWidget {
           Padding(
             padding: EdgeInsets.all(16.w),
             child: Text(
-              '商品信息',
+              t.order.productInfo,
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
@@ -446,7 +447,9 @@ class OrderDetailView extends ConsumerWidget {
                         ),
                         SizedBox(height: 4.h),
                         Text(
-                          '规格：${item.product.specifications}',
+                          t.order.specs(
+                            specs: item.product.specifications ?? '',
+                          ),
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: theme.hintColor,
@@ -487,7 +490,7 @@ class OrderDetailView extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  '共${order.items.length}件商品 合计：',
+                  t.order.summary(count: order.items.length),
                   style: TextStyle(fontSize: 13.sp, color: theme.hintColor),
                 ),
                 Text(
@@ -522,7 +525,7 @@ class OrderDetailView extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '订单信息',
+            t.order.info,
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
@@ -530,18 +533,26 @@ class OrderDetailView extends ConsumerWidget {
             ),
           ),
           SizedBox(height: 16.h),
-          _buildInfoRow(context, '订单编号', order.id),
-          _buildInfoRow(context, '下单时间', dateFormat.format(order.createdAt)),
+          _buildInfoRow(context, t.order.id, order.id),
+          _buildInfoRow(
+            context,
+            t.order.createdAt,
+            dateFormat.format(order.createdAt),
+          ),
           if (order.paidAt != null)
-            _buildInfoRow(context, '支付时间', dateFormat.format(order.paidAt!)),
+            _buildInfoRow(
+              context,
+              t.order.paidAt,
+              dateFormat.format(order.paidAt!),
+            ),
           if (order.paymentMethod != null)
             _buildInfoRow(
               context,
-              '支付方式',
+              t.order.paymentMethod,
               _getPaymentMethodText(order.paymentMethod!),
             ),
           if (order.device != null)
-            _buildInfoRow(context, '取餐设备', order.device!.name),
+            _buildInfoRow(context, t.order.device, order.device!.name),
         ],
       ),
     );
@@ -587,7 +598,7 @@ class OrderDetailView extends ConsumerWidget {
       buttons = [
         _buildButton(
           context,
-          '申请退款',
+          t.order.applyRefund,
           textColor: theme.hintColor,
           borderColor: theme.dividerColor,
           onTap: () => _handleAction(order, 'refund', context, ref),
@@ -595,7 +606,7 @@ class OrderDetailView extends ConsumerWidget {
         SizedBox(width: 12.w),
         _buildButton(
           context,
-          '联系客服',
+          t.order.contactService,
           textColor: theme.hintColor,
           borderColor: theme.dividerColor,
           onTap: () => _handleAction(order, 'contact_service', context, ref),
@@ -606,7 +617,7 @@ class OrderDetailView extends ConsumerWidget {
       buttons = [
         _buildButton(
           context,
-          '删除订单',
+          t.order.deleteOrder,
           textColor: theme.hintColor,
           borderColor: theme.dividerColor,
           onTap: () => _handleAction(order, 'delete', context, ref),
@@ -614,7 +625,7 @@ class OrderDetailView extends ConsumerWidget {
         SizedBox(width: 12.w),
         _buildButton(
           context,
-          '重新购买',
+          t.order.reorder,
           textColor: theme.colorScheme.primary,
           borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'reorder', context, ref),
@@ -624,7 +635,7 @@ class OrderDetailView extends ConsumerWidget {
       buttons = [
         _buildButton(
           context,
-          '取消订单',
+          t.order.cancelOrder,
           textColor: theme.hintColor,
           borderColor: theme.dividerColor,
           onTap: () => _handleAction(order, 'cancel', context, ref),
@@ -632,38 +643,27 @@ class OrderDetailView extends ConsumerWidget {
         SizedBox(width: 12.w),
         _buildButton(
           context,
-          '立即支付',
-          textColor: theme.colorScheme.onPrimary,
-          borderColor: theme.colorScheme.primary,
-          backgroundColor: theme.colorScheme.primary,
-          onTap: () => _handleAction(order, 'pay', context, ref),
-        ),
-      ];
-    } else if (order.status == OrderStatus.completed) {
-      buttons = [
-        _buildButton(
-          context,
-          '重新购买',
+          t.order.payNow,
           textColor: theme.colorScheme.primary,
           borderColor: theme.colorScheme.primary,
-          onTap: () => _handleAction(order, 'reorder', context, ref),
+          onTap: () => _handleAction(order, 'pay', context, ref),
         ),
       ];
     }
 
     if (buttons.isEmpty) {
-      return const SizedBox.shrink();
+      return const SizedBox();
     }
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: theme.cardColor,
         boxShadow: [
           BoxShadow(
             color: theme.shadowColor.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
+            offset: const Offset(0, -4),
+            blurRadius: 16,
           ),
         ],
       ),
@@ -674,80 +674,39 @@ class OrderDetailView extends ConsumerWidget {
     );
   }
 
-  /// 构建操作按钮
   Widget _buildButton(
     BuildContext context,
     String text, {
     required Color textColor,
     required Color borderColor,
-    Color? backgroundColor,
     required VoidCallback onTap,
   }) {
-    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: backgroundColor ?? theme.cardColor,
           border: Border.all(color: borderColor, width: 1),
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(20.r),
         ),
         child: Text(
           text,
-          style: TextStyle(fontSize: 13.sp, color: textColor),
+          style: TextStyle(fontSize: 14.sp, color: textColor),
         ),
       ),
     );
   }
 
-  /// 获取订单状态文本
-  String _getStatusText(OrderStatus status) {
-    switch (status) {
-      case OrderStatus.pending:
-        return '待支付';
-      case OrderStatus.paid:
-        return '已支付';
-      case OrderStatus.completed:
-        return '已完成';
-      case OrderStatus.cancelled:
-        return '已取消';
-      case OrderStatus.refunded:
-        return '已退款';
-      case OrderStatus.failed:
-        return '支付失败';
-    }
-  }
-
-  /// 获取订单状态图标
-  IconData _getStatusIcon(OrderStatus status) {
-    switch (status) {
-      case OrderStatus.pending:
-        return Icons.schedule;
-      case OrderStatus.paid:
-        return Icons.check_circle_outline;
-      case OrderStatus.completed:
-        return Icons.task_alt;
-      case OrderStatus.cancelled:
-        return Icons.cancel_outlined;
-      case OrderStatus.refunded:
-        return Icons.remove_circle_outline;
-      case OrderStatus.failed:
-        return Icons.error_outline;
-    }
-  }
-
-  /// 获取支付方式文本
   String _getPaymentMethodText(PaymentMethod method) {
     switch (method) {
-      case PaymentMethod.wechatPay:
-        return '微信支付';
-      case PaymentMethod.alipay:
-        return '支付宝';
-      case PaymentMethod.cash:
-        return '现金支付';
       case PaymentMethod.stripe:
-        return 'Stripe支付';
+        return t.order.paymentStripe;
+      case PaymentMethod.wechatPay:
+        return t.order.paymentWechat;
+      case PaymentMethod.alipay:
+        return t.order.paymentAlipay;
+      default:
+        return t.order.unknown;
     }
   }
 }

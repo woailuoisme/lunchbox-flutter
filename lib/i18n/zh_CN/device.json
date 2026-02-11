@@ -40,5 +40,9 @@
   "maintenance": "维护中",
   "unknown": "未知",
   "cashPayment": "现金支付",
-  "enabled": "已启用"
+  "enabled": "已启用",
+  "loadedFrequent": "已加载 ${count} 个常用设备",
+  "noFrequentDevices": "暂无常去营业点",
+  "noNearbyDevices": "暂无附近营业点",
+  "businessHoursDefault": "09:00-18:00"
 }
