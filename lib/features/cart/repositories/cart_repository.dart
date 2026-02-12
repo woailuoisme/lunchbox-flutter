@@ -125,6 +125,13 @@ class CartRepository {
     }
   }
 
+  /// 从购物车移除多个商品
+  void removeItems(List<String> itemIds) {
+    final cartItems = getCartItems();
+    cartItems.removeWhere((item) => itemIds.contains(item.id));
+    _saveCartItems(cartItems);
+  }
+
   /// 清空购物车
   void clearCart() {
     _storage.remove(cartStorageKey);

@@ -43,128 +43,110 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
         backgroundColor:
             theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
         elevation: 0,
+        scrolledUnderElevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 32.h),
-            _buildLogoSection(context),
-            SizedBox(height: 32.h),
-            _buildFeaturesSection(context),
-            SizedBox(height: 16.h),
-            _buildPolicySection(context),
-            SizedBox(height: 16.h),
-            _buildContactSection(context),
-            SizedBox(height: 32.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: SizedBox(height: 24.h)),
+          SliverToBoxAdapter(child: _buildLogoSection(context)),
+          SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+          SliverToBoxAdapter(child: _buildFeaturesSection(context)),
+          SliverToBoxAdapter(child: SizedBox(height: 24.h)),
+          SliverToBoxAdapter(child: _buildPolicySection(context)),
+          SliverToBoxAdapter(child: SizedBox(height: 24.h)),
+          SliverToBoxAdapter(child: _buildContactSection(context)),
+          SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
               child: SizedBox(
                 width: double.infinity,
-                height: 48.h,
-                child: ElevatedButton.icon(
+                height: 50.h,
+                child: FilledButton.icon(
                   onPressed: _shareApp,
-                  icon: Icon(Symbols.share, color: theme.colorScheme.onPrimary),
+                  icon: const Icon(Symbols.share, size: 20),
                   label: Text(
                     t.about.shareWithFriends,
-                    style: TextStyle(color: theme.colorScheme.onPrimary),
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
+                  style: FilledButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24.r),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 32.h),
-          ],
-        ),
+          ),
+          SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+        ],
       ),
     );
   }
 
   Widget _buildLogoSection(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
-      padding: EdgeInsets.symmetric(vertical: 32.h),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      child: Column(
-        children: [
-          Container(
-            width: 80.w,
-            height: 80.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: theme.shadowColor.withValues(alpha: 0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-              image: const DecorationImage(
-                image: NetworkImage(
-                  'https://picsum.photos/seed/logo/200',
-                ), // Replace with actual logo asset
-                fit: BoxFit.cover,
+    return Column(
+      children: [
+        Container(
+          width: 100.w,
+          height: 100.w,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: theme.shadowColor.withValues(alpha: 0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
+            ],
+            image: const DecorationImage(
+              image: NetworkImage('https://picsum.photos/seed/logo/200'),
+              fit: BoxFit.cover,
             ),
           ),
-          SizedBox(height: 16.h),
-          Text(
-            t.about.appBrand,
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 20.h),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(16.r),
           ),
-          SizedBox(height: 8.h),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Text(
-              'v$_version',
-              style: TextStyle(
-                color: theme.colorScheme.primary,
-                fontSize: 12.sp,
-              ),
+          child: Text(
+            'Version $_version',
+            style: TextStyle(
+              color: theme.colorScheme.primary,
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 16.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32.w),
-            child: Text(
-              t.profile.appDescription,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: theme.textTheme.bodyMedium?.color?.withValues(
-                  alpha: 0.6,
-                ),
-                fontSize: 14.sp,
-                height: 1.5,
-              ),
+        ),
+        SizedBox(height: 16.h),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40.w),
+          child: Text(
+            t.profile.appDescription,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
+              fontSize: 14.sp,
+              height: 1.5,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildFeaturesSection(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -174,33 +156,37 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: 2,
-            mainAxisSpacing: 16.w,
-            crossAxisSpacing: 16.w,
-            childAspectRatio: 1.2,
+            mainAxisSpacing: 12.w,
+            crossAxisSpacing: 12.w,
+            childAspectRatio: 1.3,
             children: [
               _buildFeatureItem(
                 context,
                 Symbols.restaurant,
                 t.about.feature1Title,
                 t.about.feature1Desc,
+                theme.colorScheme.primary,
               ),
               _buildFeatureItem(
                 context,
                 Symbols.rocket_launch,
                 t.about.feature2Title,
                 t.about.feature2Desc,
+                theme.colorScheme.primary,
               ),
               _buildFeatureItem(
                 context,
                 Symbols.star,
                 t.about.feature3Title,
                 t.about.feature3Desc,
+                theme.colorScheme.primary,
               ),
               _buildFeatureItem(
                 context,
                 Symbols.diamond,
                 t.about.feature4Title,
                 t.about.feature4Desc,
+                theme.colorScheme.primary,
               ),
             ],
           ),
@@ -214,35 +200,52 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
     IconData icon,
     String title,
     String desc,
+    Color color,
   ) {
     final theme = Theme.of(context);
     return Container(
-      padding: EdgeInsets.all(12.w),
+      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(8.r),
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: theme.shadowColor.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: 28.sp,
-            color: theme.colorScheme.primary,
-          ), // Simplified color
-          SizedBox(height: 8.h),
+          Container(
+            padding: EdgeInsets.all(8.w),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Icon(icon, size: 20.sp, color: color),
+          ),
+          const Spacer(),
           Text(
             title,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.bold,
+              color: theme.textTheme.titleMedium?.color,
+            ),
           ),
           SizedBox(height: 4.h),
           Text(
             desc,
-            textAlign: TextAlign.center,
-            maxLines: 2,
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: 10.sp,
+              fontSize: 11.sp,
               color: theme.textTheme.bodySmall?.color,
             ),
           ),
@@ -253,36 +256,60 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
 
   Widget _buildPolicySection(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionTitle(context, t.about.policyTitle),
-          SizedBox(height: 16.h),
-          ListTile(
-            leading: Icon(
-              Symbols.description,
-              color: theme.colorScheme.primary,
+          SizedBox(height: 12.h),
+          Container(
+            decoration: BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: BorderRadius.circular(16.r),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.shadowColor.withValues(alpha: 0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            title: Text(
-              t.about.userAgreementAndPrivacy,
-              style: TextStyle(fontSize: 14.sp),
-            ),
-            subtitle: Text(
-              t.about.viewDetails,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: theme.textTheme.bodySmall?.color,
+            child: ListTile(
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 4.h,
+              ),
+              leading: Container(
+                padding: EdgeInsets.all(8.w),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Symbols.description,
+                  color: theme.colorScheme.primary,
+                  size: 20.sp,
+                ),
+              ),
+              title: Text(
+                t.about.userAgreementAndPrivacy,
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+              ),
+              subtitle: Text(
+                t.about.viewDetails,
+                style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
+              ),
+              trailing: Icon(
+                Symbols.chevron_right,
+                size: 20.sp,
+                color: theme.hintColor,
+              ),
+              onTap: () {},
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.r),
               ),
             ),
-            trailing: const Icon(Symbols.arrow_forward_ios, size: 16),
-            onTap: () {},
           ),
         ],
       ),
@@ -291,62 +318,117 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
 
   Widget _buildContactSection(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionTitle(context, t.about.contactTitle),
-          SizedBox(height: 16.h),
-          ListTile(
-            leading: Icon(Symbols.phone, color: theme.colorScheme.primary),
-            title: Text(
-              t.about.customerServiceHotline,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: theme.textTheme.bodySmall?.color,
-              ),
+          SizedBox(height: 12.h),
+          Container(
+            decoration: BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: BorderRadius.circular(16.r),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.shadowColor.withValues(alpha: 0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            subtitle: Text(
-              t.about.customerServiceNumber,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: theme.textTheme.bodyLarge?.color,
-              ),
+            child: Column(
+              children: [
+                _buildContactTile(
+                  context,
+                  icon: Symbols.phone,
+                  title: t.about.customerServiceHotline,
+                  subtitle: t.about.customerServiceNumber,
+                  onTap: _launchPhone,
+                  isFirst: true,
+                ),
+                Divider(
+                  height: 1,
+                  indent: 56.w,
+                  color: theme.dividerColor.withValues(alpha: 0.5),
+                ),
+                _buildContactTile(
+                  context,
+                  icon: Symbols.location_on,
+                  title: t.about.companyAddress,
+                  subtitle: t.about.addressDetails,
+                  onTap: _launchMap,
+                  isLast: true,
+                ),
+              ],
             ),
-            trailing: const Icon(Symbols.arrow_forward_ios, size: 16),
-            onTap: _launchPhone,
-          ),
-          Divider(height: 1, color: theme.dividerColor),
-          ListTile(
-            leading: Icon(
-              Symbols.location_on,
-              color: theme.colorScheme.primary,
-            ),
-            title: Text(
-              t.about.companyAddress,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: theme.textTheme.bodySmall?.color,
-              ),
-            ),
-            subtitle: Text(
-              t.about.addressDetails,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: theme.textTheme.bodyLarge?.color,
-              ),
-            ),
-            trailing: const Icon(Symbols.arrow_forward_ios, size: 16),
-            onTap: _launchMap,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildContactTile(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+    bool isFirst = false,
+    bool isLast = false,
+  }) {
+    final theme = Theme.of(context);
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+      leading: Container(
+        padding: EdgeInsets.all(8.w),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: theme.colorScheme.primary, size: 20.sp),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
+      ),
+      subtitle: Padding(
+        padding: EdgeInsets.only(top: 4.h),
+        child: Text(
+          subtitle,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+            color: theme.textTheme.bodyLarge?.color,
+          ),
+        ),
+      ),
+      trailing: Icon(
+        Symbols.chevron_right,
+        size: 20.sp,
+        color: theme.hintColor,
+      ),
+      onTap: onTap,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: isFirst ? Radius.circular(16.r) : Radius.zero,
+          bottom: isLast ? Radius.circular(16.r) : Radius.zero,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(BuildContext context, String title) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: EdgeInsets.only(left: 4.w),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.bold,
+          color: theme.textTheme.titleMedium?.color,
+        ),
       ),
     );
   }
@@ -385,20 +467,6 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
   Future<void> _shareApp() async {
     await SharePlus.instance.share(
       ShareParams(text: 'Lunchbox - 您的专属午餐管家\n版本: $_version'),
-    );
-  }
-
-  Widget _buildSectionTitle(BuildContext context, String title) {
-    final theme = Theme.of(context);
-    return Row(
-      children: [
-        Container(width: 4.w, height: 16.h, color: theme.colorScheme.primary),
-        SizedBox(width: 8.w),
-        Text(
-          title,
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-        ),
-      ],
     );
   }
 }

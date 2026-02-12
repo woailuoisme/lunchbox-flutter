@@ -1,3 +1,4 @@
+import 'package:alphabet_list_view/alphabet_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,10 +81,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
           // 搜索框
           _buildSearchBar(theme),
 
-          // 热门城市
-          _buildHotCities(theme),
-
-          // 城市列表
+          // 城市列表 (包含热门城市)
           Expanded(child: _buildCityList(theme)),
         ],
       ),
@@ -95,77 +93,45 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
     final searchQuery = ref.watch(citySearchQueryProvider);
 
     return Container(
-      padding: EdgeInsets.all(16.w),
-      color: theme.colorScheme.surface,
-      child: TextField(
-        controller: _searchController,
-        decoration: InputDecoration(
-          hintText: t.city.search,
-          prefixIcon: const Icon(Icons.search),
-          suffixIcon: searchQuery.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: _showAllCities,
-                )
-              : const SizedBox.shrink(),
-          filled: true,
-          fillColor: theme.colorScheme.surfaceContainerHighest,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.r),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 12.h,
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      color: theme.scaffoldBackgroundColor,
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.shadow.withValues(alpha: 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: TextField(
+          controller: _searchController,
+          decoration: InputDecoration(
+            hintText: t.city.search,
+            prefixIcon: Icon(
+              Icons.search,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+            suffixIcon: searchQuery.isNotEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: _showAllCities,
+                  )
+                : null,
+            filled: true,
+            fillColor: theme.colorScheme.surfaceContainerHigh,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16.r),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+              vertical: 12.h,
+            ),
           ),
         ),
       ),
-    );
-  }
-
-  /// 构建热门城市
-  Widget _buildHotCities(ThemeData theme) {
-    final hotCitiesAsync = ref.watch(hotCitiesProvider);
-    final searchQuery = ref.watch(citySearchQueryProvider);
-
-    if (searchQuery.isNotEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return hotCitiesAsync.when(
-      data: (cities) {
-        if (cities.isEmpty) {
-          return const SizedBox.shrink();
-        }
-
-        return Container(
-          color: theme.colorScheme.surface,
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                t.city.hot,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.onSurface,
-                ),
-              ),
-              SizedBox(height: 12.h),
-              Wrap(
-                spacing: 12.w,
-                runSpacing: 12.h,
-                children: cities
-                    .map((city) => _buildCityChip(city, theme))
-                    .toList(),
-              ),
-            ],
-          ),
-        );
-      },
-      loading: () => const SizedBox.shrink(), // 热门城市加载中不占位，或者显示骨架屏
-      error: (_, _) => const SizedBox.shrink(),
     );
   }
 
@@ -192,52 +158,9 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
   /// 构建城市列表
   Widget _buildCityList(ThemeData theme) {
     final allCitiesAsync = ref.watch(allCitiesProvider);
-
-    // 如果是搜索状态，使用 filteredCitiesProvider
-    // 如果不是搜索状态，使用 groupedCitiesProvider (如果我们需要分组显示)
-    // 原始代码在搜索时显示列表，未搜索时也显示列表（但可能分组）
-    // 这里为了简单，我们统一使用 filteredCitiesProvider，它在无搜索词时返回所有城市
-    //
-    // 实际上，如果我们需要分组显示（按首字母），我们需要判断 searchQuery
-
     final searchQuery = ref.watch(citySearchQueryProvider);
 
-    if (searchQuery.isEmpty) {
-      // 分组显示逻辑
-      final groupedCities = ref.watch(groupedCitiesProvider);
-      // groupedCitiesProvider 依赖 allCitiesProvider，所以如果 allCities 还在加载，它可能为空
-      // 我们还是应该依赖 allCitiesAsync 的状态
-
-      return allCitiesAsync.when(
-        data: (_) {
-          if (groupedCities.isEmpty) {
-            return _buildEmptyState(theme);
-          }
-
-          return RefreshIndicator(
-            onRefresh: () async {
-              ref
-                ..invalidate(allCitiesProvider)
-                ..invalidate(hotCitiesProvider);
-              await ref.read(allCitiesProvider.future);
-            },
-            child: ListView.builder(
-              itemCount: groupedCities.length,
-              itemBuilder: (context, index) {
-                final initial = groupedCities.keys.elementAt(index);
-                final cities = groupedCities[initial]!;
-                return _buildGroupedItem(initial, cities, theme);
-              },
-            ),
-          );
-        },
-        loading: () => const LoadingWidget(),
-        error: (err, stack) => app_error.ErrorWidget(
-          message: err.toString(),
-          onRetry: () => ref.refresh(allCitiesProvider),
-        ),
-      );
-    } else {
+    if (searchQuery.isNotEmpty) {
       // 搜索结果列表
       final filteredCities = ref.watch(filteredCitiesProvider);
 
@@ -262,31 +185,149 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
         ),
       );
     }
-  }
 
-  Widget _buildGroupedItem(
-    String initial,
-    List<CityModel> cities,
-    ThemeData theme,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-          color: theme.scaffoldBackgroundColor,
-          width: double.infinity,
-          child: Text(
-            initial,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onSurfaceVariant,
+    // 分组显示逻辑
+    final groupedCities = ref.watch(groupedCitiesProvider);
+    final hotCitiesAsync = ref.watch(hotCitiesProvider);
+
+    return allCitiesAsync.when(
+      data: (_) {
+        if (groupedCities.isEmpty) {
+          return _buildEmptyState(theme);
+        }
+
+        // 构建 AlphabetListView 数据源
+        final List<AlphabetListViewItemGroup> items = [];
+
+        // 添加热门城市
+        if (hotCitiesAsync.hasValue && hotCitiesAsync.value!.isNotEmpty) {
+          items.add(
+            AlphabetListViewItemGroup(
+              tag: '★',
+              children: [_buildHotCitiesGrid(hotCitiesAsync.value!, theme)],
+            ),
+          );
+        }
+
+        // 添加分组城市
+        items.addAll(
+          groupedCities.entries.map((entry) {
+            return AlphabetListViewItemGroup(
+              tag: entry.key,
+              children: entry.value
+                  .map((city) => _buildCityItem(city, theme))
+                  .toList(),
+            );
+          }),
+        );
+
+        return AlphabetListView(
+          items: items,
+          options: AlphabetListViewOptions(
+            listOptions: ListOptions(
+              stickySectionHeader: true,
+              listHeaderBuilder: (context, symbol) {
+                return Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 8.h,
+                  ),
+                  color: theme.colorScheme.surfaceContainer,
+                  width: double.infinity,
+                  child: Text(
+                    symbol == '★' ? t.city.hot : symbol,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+            ),
+            scrollbarOptions: ScrollbarOptions(
+              symbolBuilder: (context, symbol, state) {
+                final isActive = state == AlphabetScrollbarItemState.active;
+                return Center(
+                  child: Container(
+                    width: 24.w,
+                    height: 24.w,
+                    decoration: isActive
+                        ? BoxDecoration(
+                            color: theme.colorScheme.primary,
+                            shape: BoxShape.circle,
+                          )
+                        : null,
+                    alignment: Alignment.center,
+                    child: Text(
+                      symbol,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: isActive
+                            ? theme.colorScheme.onPrimary
+                            : theme.colorScheme.onSurfaceVariant,
+                        fontWeight: isActive
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              backgroundColor: Colors.transparent,
+              width: 32.w,
+              padding: EdgeInsets.symmetric(vertical: 8.h),
+            ),
+            overlayOptions: OverlayOptions(
+              showOverlay: true,
+              overlayBuilder: (context, symbol) {
+                return Container(
+                  alignment: Alignment.center,
+                  width: 64.w,
+                  height: 64.w,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.9),
+                    borderRadius: BorderRadius.circular(16.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: theme.colorScheme.shadow.withValues(alpha: 0.2),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    symbol == '★' ? '★' : symbol,
+                    style: TextStyle(
+                      fontSize: 32.sp,
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onPrimary,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
-        ),
-        ...cities.map((city) => _buildCityItem(city, theme)),
-      ],
+        );
+      },
+      loading: () => const LoadingWidget(),
+      error: (err, stack) => app_error.ErrorWidget(
+        message: err.toString(),
+        onRetry: () => ref.refresh(allCitiesProvider),
+      ),
+    );
+  }
+
+  /// 构建热门城市网格
+  Widget _buildHotCitiesGrid(List<CityModel> cities, ThemeData theme) {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      color: theme.scaffoldBackgroundColor,
+      child: Wrap(
+        spacing: 12.w,
+        runSpacing: 12.h,
+        children: cities.map((city) => _buildCityChip(city, theme)).toList(),
+      ),
     );
   }
 

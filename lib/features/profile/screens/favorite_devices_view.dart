@@ -69,7 +69,7 @@ class FavoriteDevicesView extends ConsumerWidget {
       margin: EdgeInsets.only(bottom: 12.h),
       child: InkWell(
         onTap: () {
-          context.push('${AppRoutes.deviceDetail}/${device.id}', extra: device);
+          context.push('${AppRoutes.productList}/${device.id}', extra: device);
         },
         borderRadius: BorderRadius.circular(8.r),
         child: Padding(

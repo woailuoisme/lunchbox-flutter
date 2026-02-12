@@ -243,8 +243,17 @@ class TranslationsCartZhCn {
   /// zh-CN: '清空'
   String get clear => TranslationOverrides.string(_root.$meta, 'cart.clear', {}) ?? '清空';
 
+  /// zh-CN: '清空购物车'
+  String get clearCart => TranslationOverrides.string(_root.$meta, 'cart.clearCart', {}) ?? '清空购物车';
+
+  /// zh-CN: '确定要清空购物车吗？'
+  String get clearCartConfirm => TranslationOverrides.string(_root.$meta, 'cart.clearCartConfirm', {}) ?? '确定要清空购物车吗？';
+
   /// zh-CN: '购物车是空的'
   String get empty => TranslationOverrides.string(_root.$meta, 'cart.empty', {}) ?? '购物车是空的';
+
+  /// zh-CN: '快去选购心仪的商品吧'
+  String get emptyHint => TranslationOverrides.string(_root.$meta, 'cart.emptyHint', {}) ?? '快去选购心仪的商品吧';
 
   /// zh-CN: '合计'
   String get total => TranslationOverrides.string(_root.$meta, 'cart.total', {}) ?? '合计';
@@ -254,6 +263,14 @@ class TranslationsCartZhCn {
 
   /// zh-CN: '去逛逛'
   String get goShopping => TranslationOverrides.string(_root.$meta, 'cart.goShopping', {}) ?? '去逛逛';
+
+  /// zh-CN: '确定要删除这 ${count} 个商品吗？'
+  String deleteConfirm({required Object count}) =>
+      TranslationOverrides.string(_root.$meta, 'cart.deleteConfirm', {'count': count}) ?? '确定要删除这 ${count} 个商品吗？';
+
+  /// zh-CN: '已选择 ${count} 项'
+  String selectedCount({required Object count}) =>
+      TranslationOverrides.string(_root.$meta, 'cart.selectedCount', {'count': count}) ?? '已选择 ${count} 项';
 }
 
 // Path: city
@@ -425,6 +442,12 @@ class TranslationsCommonZhCn {
         'errors': errors,
       }) ??
       '验证错误：${message} (${errors})';
+
+  /// zh-CN: '全选'
+  String get selectAll => TranslationOverrides.string(_root.$meta, 'common.selectAll', {}) ?? '全选';
+
+  /// zh-CN: '取消全选'
+  String get deselectAll => TranslationOverrides.string(_root.$meta, 'common.deselectAll', {}) ?? '取消全选';
 }
 
 // Path: community
@@ -1655,6 +1678,8 @@ class TranslationsProfileZhCn {
 
   /// zh-CN: '优惠券'
   String get couponCount => TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ?? '优惠券';
+
+  late final TranslationsProfileWalletPageZhCn walletPage = TranslationsProfileWalletPageZhCn.internal(_root);
 }
 
 // Path: settings
@@ -2263,6 +2288,63 @@ class TranslationsProfileAvatarZhCn {
   String get uploading => TranslationOverrides.string(_root.$meta, 'profile.avatar.uploading', {}) ?? '头像上传功能开发中';
 }
 
+// Path: profile.walletPage
+class TranslationsProfileWalletPageZhCn {
+  TranslationsProfileWalletPageZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '钱包'
+  String get title => TranslationOverrides.string(_root.$meta, 'profile.walletPage.title', {}) ?? '钱包';
+
+  /// zh-CN: '充值'
+  String get topUp => TranslationOverrides.string(_root.$meta, 'profile.walletPage.topUp', {}) ?? '充值';
+
+  /// zh-CN: '钱包余额'
+  String get balance => TranslationOverrides.string(_root.$meta, 'profile.walletPage.balance', {}) ?? '钱包余额';
+
+  /// zh-CN: '选择充值金额'
+  String get selectAmount =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.selectAmount', {}) ?? '选择充值金额';
+
+  /// zh-CN: '规则说明'
+  String get rule => TranslationOverrides.string(_root.$meta, 'profile.walletPage.rule', {}) ?? '规则说明';
+
+  /// zh-CN: '充值部分套餐可获取乖乖币，自选金额充值不获取乖乖币'
+  String get ruleDesc =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.ruleDesc', {}) ?? '充值部分套餐可获取乖乖币，自选金额充值不获取乖乖币';
+
+  /// zh-CN: '自选金额'
+  String get customAmount => TranslationOverrides.string(_root.$meta, 'profile.walletPage.customAmount', {}) ?? '自选金额';
+
+  /// zh-CN: '仅限500元以上充值'
+  String get customAmountHint =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.customAmountHint', {}) ?? '仅限500元以上充值';
+
+  /// zh-CN: '实付¥${amount}'
+  String realPay({required Object amount}) =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.realPay', {'amount': amount}) ?? '实付¥${amount}';
+
+  /// zh-CN: '送${amount}乖乖币'
+  String bonus({required Object amount}) =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.bonus', {'amount': amount}) ?? '送${amount}乖乖币';
+
+  /// zh-CN: '无乖乖币'
+  String get noBonus => TranslationOverrides.string(_root.$meta, 'profile.walletPage.noBonus', {}) ?? '无乖乖币';
+
+  /// zh-CN: '充值记录'
+  String get history => TranslationOverrides.string(_root.$meta, 'profile.walletPage.history', {}) ?? '充值记录';
+
+  /// zh-CN: '共${count}笔'
+  String historyCount({required Object count}) =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.historyCount', {'count': count}) ?? '共${count}笔';
+
+  /// zh-CN: '暂无充值记录'
+  String get noHistory => TranslationOverrides.string(_root.$meta, 'profile.walletPage.noHistory', {}) ?? '暂无充值记录';
+}
+
 // Path: settings.schemes
 class TranslationsSettingsSchemesZhCn {
   TranslationsSettingsSchemesZhCn.internal(this._root);
@@ -2526,10 +2608,21 @@ extension on Translations {
           'auth.slogan' => TranslationOverrides.string(_root.$meta, 'auth.slogan', {}) ?? '便捷购买，美味随行',
           'cart.title' => TranslationOverrides.string(_root.$meta, 'cart.title', {}) ?? '购物车',
           'cart.clear' => TranslationOverrides.string(_root.$meta, 'cart.clear', {}) ?? '清空',
+          'cart.clearCart' => TranslationOverrides.string(_root.$meta, 'cart.clearCart', {}) ?? '清空购物车',
+          'cart.clearCartConfirm' =>
+            TranslationOverrides.string(_root.$meta, 'cart.clearCartConfirm', {}) ?? '确定要清空购物车吗？',
           'cart.empty' => TranslationOverrides.string(_root.$meta, 'cart.empty', {}) ?? '购物车是空的',
+          'cart.emptyHint' => TranslationOverrides.string(_root.$meta, 'cart.emptyHint', {}) ?? '快去选购心仪的商品吧',
           'cart.total' => TranslationOverrides.string(_root.$meta, 'cart.total', {}) ?? '合计',
           'cart.checkout' => TranslationOverrides.string(_root.$meta, 'cart.checkout', {}) ?? '结算',
           'cart.goShopping' => TranslationOverrides.string(_root.$meta, 'cart.goShopping', {}) ?? '去逛逛',
+          'cart.deleteConfirm' =>
+            ({required Object count}) =>
+                TranslationOverrides.string(_root.$meta, 'cart.deleteConfirm', {'count': count}) ??
+                '确定要删除这 ${count} 个商品吗？',
+          'cart.selectedCount' =>
+            ({required Object count}) =>
+                TranslationOverrides.string(_root.$meta, 'cart.selectedCount', {'count': count}) ?? '已选择 ${count} 项',
           'city.title' => TranslationOverrides.string(_root.$meta, 'city.title', {}) ?? '选择城市',
           'city.search' => TranslationOverrides.string(_root.$meta, 'city.search', {}) ?? '搜索城市',
           'city.hot' => TranslationOverrides.string(_root.$meta, 'city.hot', {}) ?? '热门城市',
@@ -2610,6 +2703,8 @@ extension on Translations {
                   'errors': errors,
                 }) ??
                 '验证错误：${message} (${errors})',
+          'common.selectAll' => TranslationOverrides.string(_root.$meta, 'common.selectAll', {}) ?? '全选',
+          'common.deselectAll' => TranslationOverrides.string(_root.$meta, 'common.deselectAll', {}) ?? '取消全选',
           'community.title' => TranslationOverrides.string(_root.$meta, 'community.title', {}) ?? '社群福利',
           'community.join' => TranslationOverrides.string(_root.$meta, 'community.join', {}) ?? '加入社群',
           'community.share' => TranslationOverrides.string(_root.$meta, 'community.share', {}) ?? '与美食爱好者一起分享美味',
@@ -3189,6 +3284,9 @@ extension on Translations {
           'product.categoryDrink' => TranslationOverrides.string(_root.$meta, 'product.categoryDrink', {}) ?? '饮料',
           'product.categorySnack' => TranslationOverrides.string(_root.$meta, 'product.categorySnack', {}) ?? '零食',
           'product.sortDefault' => TranslationOverrides.string(_root.$meta, 'product.sortDefault', {}) ?? '默认排序',
+          _ => null,
+        } ??
+        switch (path) {
           'product.sortPriceAsc' => TranslationOverrides.string(_root.$meta, 'product.sortPriceAsc', {}) ?? '价格从低到高',
           'product.sortPriceDesc' => TranslationOverrides.string(_root.$meta, 'product.sortPriceDesc', {}) ?? '价格从高到低',
           'product.sortName' => TranslationOverrides.string(_root.$meta, 'product.sortName', {}) ?? '按名称排序',
@@ -3197,9 +3295,6 @@ extension on Translations {
           'product.cart' => TranslationOverrides.string(_root.$meta, 'product.cart', {}) ?? '购物车',
           'profile.title' => TranslationOverrides.string(_root.$meta, 'profile.title', {}) ?? '个人中心',
           'profile.notLoggedIn' => TranslationOverrides.string(_root.$meta, 'profile.notLoggedIn', {}) ?? '未登录',
-          _ => null,
-        } ??
-        switch (path) {
           'profile.editProfile' => TranslationOverrides.string(_root.$meta, 'profile.editProfile', {}) ?? '编辑资料',
           'profile.logout' => TranslationOverrides.string(_root.$meta, 'profile.logout', {}) ?? '退出登录',
           'profile.favoriteDevices' =>
@@ -3250,6 +3345,40 @@ extension on Translations {
           'profile.walletBalance' => TranslationOverrides.string(_root.$meta, 'profile.walletBalance', {}) ?? '钱包余额',
           'profile.coin' => TranslationOverrides.string(_root.$meta, 'profile.coin', {}) ?? '乖乖币',
           'profile.couponCount' => TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ?? '优惠券',
+          'profile.walletPage.title' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.title', {}) ?? '钱包',
+          'profile.walletPage.topUp' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.topUp', {}) ?? '充值',
+          'profile.walletPage.balance' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.balance', {}) ?? '钱包余额',
+          'profile.walletPage.selectAmount' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.selectAmount', {}) ?? '选择充值金额',
+          'profile.walletPage.rule' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rule', {}) ?? '规则说明',
+          'profile.walletPage.ruleDesc' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.ruleDesc', {}) ?? '充值部分套餐可获取乖乖币，自选金额充值不获取乖乖币',
+          'profile.walletPage.customAmount' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.customAmount', {}) ?? '自选金额',
+          'profile.walletPage.customAmountHint' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.customAmountHint', {}) ?? '仅限500元以上充值',
+          'profile.walletPage.realPay' =>
+            ({required Object amount}) =>
+                TranslationOverrides.string(_root.$meta, 'profile.walletPage.realPay', {'amount': amount}) ??
+                '实付¥${amount}',
+          'profile.walletPage.bonus' =>
+            ({required Object amount}) =>
+                TranslationOverrides.string(_root.$meta, 'profile.walletPage.bonus', {'amount': amount}) ??
+                '送${amount}乖乖币',
+          'profile.walletPage.noBonus' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.noBonus', {}) ?? '无乖乖币',
+          'profile.walletPage.history' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.history', {}) ?? '充值记录',
+          'profile.walletPage.historyCount' =>
+            ({required Object count}) =>
+                TranslationOverrides.string(_root.$meta, 'profile.walletPage.historyCount', {'count': count}) ??
+                '共${count}笔',
+          'profile.walletPage.noHistory' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.noHistory', {}) ?? '暂无充值记录',
           'settings.title' => TranslationOverrides.string(_root.$meta, 'settings.title', {}) ?? '设置',
           'settings.general' => TranslationOverrides.string(_root.$meta, 'settings.general', {}) ?? '通用',
           'settings.theme' => TranslationOverrides.string(_root.$meta, 'settings.theme', {}) ?? '主题模式',

@@ -32,7 +32,6 @@ class AppRoutes {
 
   // 设备相关
   static const String deviceList = '/devices';
-  static const String deviceDetail = '/device'; // 实际路径为 /device/:id
 
   // 产品相关
   static const String productList = '/products';
@@ -42,7 +41,6 @@ class AppRoutes {
   static const String cart = '/cart';
 
   // 订单相关
-  static const String orderConfirm = '/order-confirm';
   static const String orderList = '/orders';
   static const String orderDetail = '/order'; // 实际路径为 /order/:id
 

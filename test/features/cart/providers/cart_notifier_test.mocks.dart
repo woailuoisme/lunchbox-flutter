@@ -70,6 +70,12 @@ class MockCartRepository extends _i1.Mock implements _i2.CartRepository {
       );
 
   @override
+  void removeItems(List<String>? itemIds) => super.noSuchMethod(
+    Invocation.method(#removeItems, [itemIds]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
   void clearCart() => super.noSuchMethod(
     Invocation.method(#clearCart, []),
     returnValueForMissingStub: null,

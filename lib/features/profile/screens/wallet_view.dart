@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:lunchbox/features/profile/repositories/wallet_repository.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 class WalletView extends ConsumerWidget {
   const WalletView({super.key});
@@ -13,7 +14,7 @@ class WalletView extends ConsumerWidget {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('钱包'),
+        title: Text(t.profile.walletPage.title),
         centerTitle: true,
         backgroundColor:
             theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
@@ -26,6 +27,7 @@ class WalletView extends ConsumerWidget {
           SliverToBoxAdapter(child: _buildTopUpSection(context)),
           SliverToBoxAdapter(child: SizedBox(height: 16.h)),
           SliverToBoxAdapter(child: _buildTransactionHistory(context, ref)),
+          SliverToBoxAdapter(child: SizedBox(height: 32.h)),
         ],
       ),
     );
@@ -42,75 +44,111 @@ class WalletView extends ConsumerWidget {
 
     return Container(
       margin: EdgeInsets.all(16.w),
-      padding: EdgeInsets.symmetric(vertical: 24.h),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            theme.colorScheme.primary,
-            theme.colorScheme.primary.withValues(alpha: 0.8),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.primary.withValues(alpha: 0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
+      child: Stack(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '钱包余额',
-                style: TextStyle(
-                  color: theme.colorScheme.onPrimary,
-                  fontSize: 14.sp,
-                ),
-              ),
-              SizedBox(width: 4.w),
-              const Text('💰', style: TextStyle(fontSize: 14)),
-            ],
-          ),
-          SizedBox(height: 12.h),
-          Text(
-            '¥ ${balance.toStringAsFixed(2)}',
-            style: TextStyle(
-              color: theme.colorScheme.onPrimary,
-              fontSize: 32.sp,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 20.h),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+            padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 24.w),
             decoration: BoxDecoration(
-              color: theme.colorScheme.surface,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  theme.colorScheme.primary,
+                  theme.colorScheme.primary.withValues(alpha: 0.8),
+                ],
+              ),
               borderRadius: BorderRadius.circular(20.r),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Symbols.credit_card,
-                  color: theme.colorScheme.primary,
-                  size: 16.sp,
-                ),
-                SizedBox(width: 8.w),
-                Text(
-                  '充值',
-                  style: TextStyle(
-                    color: theme.colorScheme.primary,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  blurRadius: 16,
+                  offset: const Offset(0, 8),
                 ),
               ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Symbols.account_balance_wallet,
+                      size: 18.sp,
+                      color: theme.colorScheme.onPrimary.withValues(alpha: 0.9),
+                    ),
+                    SizedBox(width: 8.w),
+                    Text(
+                      t.profile.walletPage.balance,
+                      style: TextStyle(
+                        color: theme.colorScheme.onPrimary.withValues(
+                          alpha: 0.9,
+                        ),
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '¥ ${balance.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color: theme.colorScheme.onPrimary,
+                        fontSize: 36.sp,
+                        fontWeight: FontWeight.bold,
+                        height: 1.0,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 8.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surface.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(24.r),
+                        border: Border.all(
+                          color: theme.colorScheme.surface.withValues(
+                            alpha: 0.3,
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Symbols.add,
+                            color: theme.colorScheme.onPrimary,
+                            size: 16.sp,
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            t.profile.walletPage.topUp,
+                            style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            right: -20,
+            top: -20,
+            child: Icon(
+              Symbols.account_balance_wallet,
+              size: 120.sp,
+              color: theme.colorScheme.onPrimary.withValues(alpha: 0.1),
             ),
           ),
         ],
@@ -121,8 +159,19 @@ class WalletView extends ConsumerWidget {
   Widget _buildTopUpSection(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      color: theme.cardColor,
-      padding: EdgeInsets.all(16.w),
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.all(20.w),
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: theme.shadowColor.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -130,64 +179,99 @@ class WalletView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '选择充值金额',
+                t.profile.walletPage.selectAmount,
                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.tertiaryContainer,
-                  borderRadius: BorderRadius.circular(4.r),
-                  border: Border.all(color: theme.colorScheme.tertiary),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Symbols.description,
-                      size: 14.sp,
-                      color: theme.colorScheme.onTertiaryContainer,
-                    ),
-                    SizedBox(width: 4.w),
-                    Text(
-                      '规则说明',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: theme.colorScheme.onTertiaryContainer,
+              InkWell(
+                onTap: () {
+                  // TODO: Show rules dialog
+                },
+                borderRadius: BorderRadius.circular(12.r),
+                child: Padding(
+                  padding: EdgeInsets.all(4.w),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Symbols.info,
+                        size: 14.sp,
+                        color: theme.colorScheme.primary,
                       ),
-                    ),
-                  ],
+                      SizedBox(width: 4.w),
+                      Text(
+                        t.profile.walletPage.rule,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 16.h),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(8.w),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
             decoration: BoxDecoration(
-              color: theme.colorScheme.secondaryContainer,
-              borderRadius: BorderRadius.circular(4.r),
-            ),
-            child: Text(
-              '充值部分套餐可获取乖乖币，自选金额充值不获取乖乖币',
-              style: TextStyle(
-                color: theme.colorScheme.onSecondaryContainer,
-                fontSize: 12.sp,
+              color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(
+                color: theme.colorScheme.primary.withValues(alpha: 0.1),
               ),
             ),
+            child: Row(
+              children: [
+                Icon(
+                  Symbols.campaign,
+                  size: 16.sp,
+                  color: theme.colorScheme.primary,
+                ),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: Text(
+                    t.profile.walletPage.ruleDesc,
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontSize: 12.sp,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 20.h),
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 3,
+            crossAxisCount: 2,
             mainAxisSpacing: 12.w,
             crossAxisSpacing: 12.w,
-            childAspectRatio: 1.2,
+            childAspectRatio: 2.2,
             children: [
-              _buildTopUpOption(context, '100元', '实付¥95', '无乖乖币'),
-              _buildTopUpOption(context, '300元', '实付¥285', '送300乖乖币'),
-              _buildTopUpOption(context, '500元', '实付¥475', '送400乖乖币'),
+              _buildTopUpOption(
+                context,
+                '100元',
+                t.profile.walletPage.realPay(amount: 95),
+                t.profile.walletPage.noBonus,
+                false,
+              ),
+              _buildTopUpOption(
+                context,
+                '300元',
+                t.profile.walletPage.realPay(amount: 285),
+                t.profile.walletPage.bonus(amount: 300),
+                true, // Highlight recommended option
+              ),
+              _buildTopUpOption(
+                context,
+                '500元',
+                t.profile.walletPage.realPay(amount: 475),
+                t.profile.walletPage.bonus(amount: 400),
+                false,
+              ),
               _buildCustomAmountOption(context),
             ],
           ),
@@ -201,32 +285,80 @@ class WalletView extends ConsumerWidget {
     String amount,
     String realPay,
     String bonus,
+    bool isRecommended,
   ) {
     final theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: theme.dividerColor),
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            amount,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            color: isRecommended
+                ? theme.colorScheme.primary.withValues(alpha: 0.05)
+                : theme.cardColor,
+            border: Border.all(
+              color: isRecommended
+                  ? theme.colorScheme.primary
+                  : theme.dividerColor,
+              width: isRecommended ? 1.5 : 1,
+            ),
+            borderRadius: BorderRadius.circular(12.r),
           ),
-          SizedBox(height: 4.h),
-          Text(
-            realPay,
-            style: TextStyle(fontSize: 12.sp, color: theme.colorScheme.primary),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                amount,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: isRecommended
+                      ? theme.colorScheme.primary
+                      : theme.textTheme.bodyLarge?.color,
+                ),
+              ),
+              SizedBox(height: 2.h),
+              Text(
+                bonus,
+                style: TextStyle(
+                  fontSize: 10.sp,
+                  color: isRecommended
+                      ? theme.colorScheme.primary
+                      : theme.hintColor,
+                  fontWeight: isRecommended
+                      ? FontWeight.w600
+                      : FontWeight.normal,
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 2.h),
-          Text(
-            bonus,
-            style: TextStyle(fontSize: 10.sp, color: theme.hintColor),
+        ),
+        if (isRecommended)
+          Positioned(
+            top: -8,
+            right: -8,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.error,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8.r),
+                  bottomLeft: Radius.circular(8.r),
+                ),
+              ),
+              child: Text(
+                'HOT',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 8.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
-        ],
-      ),
+      ],
     );
   }
 
@@ -235,18 +367,18 @@ class WalletView extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: theme.dividerColor),
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            '自选金额',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            t.profile.walletPage.customAmount,
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 4.h),
           Text(
-            '仅限500元以上充值',
+            t.profile.walletPage.customAmountHint,
             style: TextStyle(fontSize: 10.sp, color: theme.hintColor),
             textAlign: TextAlign.center,
           ),
@@ -260,8 +392,19 @@ class WalletView extends ConsumerWidget {
     final transactionsAsync = ref.watch(walletTransactionsProvider);
 
     return Container(
-      color: theme.cardColor,
-      padding: EdgeInsets.all(16.w),
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.all(20.w),
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: theme.shadowColor.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       constraints: BoxConstraints(minHeight: 200.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,13 +412,29 @@ class WalletView extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '充值记录',
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Container(
+                    width: 4.w,
+                    height: 16.h,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary,
+                      borderRadius: BorderRadius.circular(2.r),
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    t.profile.walletPage.history,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
               transactionsAsync.when(
                 data: (transactions) => Text(
-                  '共${transactions.length}笔',
+                  t.profile.walletPage.historyCount(count: transactions.length),
                   style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
                 ),
                 loading: () => const SizedBox.shrink(),
@@ -283,52 +442,119 @@ class WalletView extends ConsumerWidget {
               ),
             ],
           ),
-          SizedBox(height: 32.h),
+          SizedBox(height: 16.h),
           transactionsAsync.when(
             data: (transactions) {
               if (transactions.isEmpty) {
                 return Center(
-                  child: Column(
-                    children: [
-                      Icon(
-                        Symbols.edit_note,
-                        size: 48.sp,
-                        color: theme.disabledColor,
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        '暂无充值记录',
-                        style: TextStyle(
-                          color: theme.hintColor,
-                          fontSize: 14.sp,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 32.h),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Symbols.receipt_long,
+                          size: 48.sp,
+                          color: theme.disabledColor.withValues(alpha: 0.3),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 12.h),
+                        Text(
+                          t.profile.walletPage.noHistory,
+                          style: TextStyle(
+                            color: theme.hintColor,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }
-              return Column(
-                children: transactions
-                    .map(
-                      (t) => ListTile(
-                        title: Text(t.title),
-                        subtitle: Text(t.date),
-                        trailing: Text(
-                          '${t.type == 'recharge' ? '+' : '-'} ${t.amount.toStringAsFixed(2)}',
+              return ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: transactions.length,
+                separatorBuilder: (context, index) => Divider(
+                  height: 1,
+                  color: theme.dividerColor.withValues(alpha: 0.5),
+                  indent: 56.w,
+                ),
+                itemBuilder: (context, index) {
+                  final transaction = transactions[index];
+                  final isRecharge = transaction.type == 'recharge';
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40.w,
+                          height: 40.w,
+                          decoration: BoxDecoration(
+                            color: isRecharge
+                                ? theme.colorScheme.primaryContainer
+                                : theme.colorScheme.secondaryContainer,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            isRecharge
+                                ? Symbols.account_balance_wallet
+                                : Symbols.shopping_bag,
+                            size: 20.sp,
+                            color: isRecharge
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.secondary,
+                          ),
+                        ),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                transaction.title,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(height: 4.h),
+                              Text(
+                                transaction.date,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: theme.hintColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          '${isRecharge ? '+' : '-'} ${transaction.amount.toStringAsFixed(2)}',
                           style: TextStyle(
-                            color: t.type == 'recharge'
+                            fontSize: 16.sp,
+                            color: isRecharge
                                 ? theme.colorScheme.primary
                                 : theme.textTheme.bodyLarge?.color,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    )
-                    .toList(),
+                      ],
+                    ),
+                  );
+                },
               );
             },
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, _) => Center(child: Text('加载失败: $error')),
+            loading: () => const Center(
+              child: Padding(
+                padding: EdgeInsets.all(24.0),
+                child: CircularProgressIndicator(),
+              ),
+            ),
+            error: (error, _) => Center(
+              child: Padding(
+                padding: EdgeInsets.all(24.0),
+                child: Text('${t.common.loadFailed}: $error'),
+              ),
+            ),
           ),
         ],
       ),

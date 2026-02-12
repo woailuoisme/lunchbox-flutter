@@ -42,5 +42,21 @@
   "saveInfo": "Save Information",
   "walletBalance": "Wallet Balance",
   "coin": "Coins",
-  "couponCount": "Coupons"
+  "couponCount": "Coupons",
+  "walletPage": {
+    "title": "Wallet",
+    "topUp": "Top Up",
+    "balance": "Balance",
+    "selectAmount": "Select Amount",
+    "rule": "Rules",
+    "ruleDesc": "Top up specific packages to get coins. Custom amount does not get coins.",
+    "customAmount": "Custom Amount",
+    "customAmountHint": "Only for amounts above ¥500",
+    "realPay": "Pay ¥${amount}",
+    "bonus": "Get ${amount} coins",
+    "noBonus": "No coins",
+    "history": "History",
+    "historyCount": "Total ${count}",
+    "noHistory": "No transaction history"
+  }
 }

@@ -11,11 +11,13 @@ abstract class CartState with _$CartState {
   }) = _CartState;
   const CartState._();
 
-  double get totalAmount =>
-      cartItems.fold(0, (total, item) => total + item.totalPrice);
+  double get totalAmount => cartItems
+      .where((item) => item.isSelected)
+      .fold(0, (total, item) => total + item.totalPrice);
 
-  int get totalQuantity =>
-      cartItems.fold(0, (count, item) => count + item.quantity);
+  int get totalQuantity => cartItems
+      .where((item) => item.isSelected)
+      .fold(0, (count, item) => count + item.quantity);
 
   bool get isEmpty => cartItems.isEmpty;
 }

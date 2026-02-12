@@ -18,27 +18,11 @@ class ProductListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceAsync = ref.watch(deviceDetailProvider(deviceId));
-    final cartState = ref.watch(cartProvider);
     final theme = Theme.of(context);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: Text(t.product.title),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () => context.push('/cart'),
-            icon: Badge(
-              label: Text(cartState.totalQuantity.toString()),
-              isLabelVisible: cartState.totalQuantity > 0,
-              backgroundColor: theme.colorScheme.error,
-              child: const Icon(Symbols.shopping_cart),
-            ),
-          ),
-          IconButton(onPressed: () {}, icon: const Icon(Symbols.more_horiz)),
-        ],
-      ),
+      appBar: AppBar(title: Text(t.product.title), centerTitle: true),
       body: deviceAsync.when(
         data: (device) => Column(
           children: [
@@ -57,45 +41,75 @@ class ProductListView extends ConsumerWidget {
   Widget _buildDeviceHeader(BuildContext context, DeviceModel device) {
     final theme = Theme.of(context);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      color: theme.colorScheme.surface,
+      padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        boxShadow: [
+          BoxShadow(
+            color: theme.shadowColor.withValues(alpha: 0.05),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Container(
-                width: 8.w,
-                height: 8.w,
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                 decoration: BoxDecoration(
                   color: device.isOnline
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.error,
-                  shape: BoxShape.circle,
+                      ? theme.colorScheme.primaryContainer
+                      : theme.colorScheme.errorContainer,
+                  borderRadius: BorderRadius.circular(4.r),
                 ),
-              ),
-              SizedBox(width: 8.w),
-              Text(
-                device.isOnline
-                    ? t.device.statusOnline
-                    : t.device.statusOffline,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: device.isOnline
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.error,
-                  fontWeight: FontWeight.bold,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      device.isOnline ? Symbols.check_circle : Symbols.error,
+                      size: 10.sp,
+                      color: device.isOnline
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.error,
+                      fill: 1.0,
+                    ),
+                    SizedBox(width: 6.w),
+                    Text(
+                      device.isOnline
+                          ? t.device.statusOnline
+                          : t.device.statusOffline,
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        color: device.isOnline
+                            ? theme.colorScheme.onPrimaryContainer
+                            : theme.colorScheme.onErrorContainer,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const Spacer(),
-              // 距离暂时mock，或者需要从device中获取（如果有）
+              Icon(
+                Symbols.location_on,
+                size: 14.sp,
+                color: theme.colorScheme.primary,
+              ),
+              SizedBox(width: 4.w),
               Text(
                 '57.2km',
-                style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: 12.h),
           Row(
             children: [
               Expanded(
@@ -105,22 +119,37 @@ class ProductListView extends ConsumerWidget {
                     Text(
                       device.name,
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
-                        color: theme.textTheme.titleMedium?.color,
+                        color: theme.colorScheme.onSurface,
+                        letterSpacing: -0.5,
                       ),
                     ),
                     SizedBox(height: 4.h),
-                    Text(
-                      device.location.address ?? '',
-                      style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Row(
+                      children: [
+                        Icon(
+                          Symbols.store,
+                          size: 14.sp,
+                          color: theme.colorScheme.outline,
+                        ),
+                        SizedBox(width: 4.w),
+                        Expanded(
+                          child: Text(
+                            device.location.address ?? '',
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              color: theme.colorScheme.outline,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-              Icon(Symbols.arrow_right, color: theme.hintColor, size: 20.sp),
             ],
           ),
         ],
@@ -138,78 +167,173 @@ class _ProductContent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final categoriesAsync = ref.watch(productCategoriesProvider(deviceId));
     final productsAsync = ref.watch(filteredProductsProvider(deviceId));
+    final cartState = ref.watch(cartProvider);
     final theme = Theme.of(context);
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
       children: [
-        // 左侧分类栏
-        SizedBox(
-          width: 86.w,
-          child: categoriesAsync.when(
-            data: (categories) => ListView.builder(
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                final category = categories[index];
-                return _CategoryItem(category: category);
-              },
-            ),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (e, s) => Center(
-              child: Icon(
-                Symbols.error,
-                size: 24.sp,
-                color: theme.colorScheme.error,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 左侧分类栏
+            SizedBox(
+              width: 90.w,
+              child: Container(
+                color: theme.colorScheme.surfaceContainerLow,
+                child: categoriesAsync.when(
+                  data: (categories) => ListView.builder(
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final category = categories[index];
+                      return _CategoryItem(category: category);
+                    },
+                  ),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (e, s) => Center(
+                    child: Icon(
+                      Symbols.error,
+                      size: 24.sp,
+                      color: theme.colorScheme.error,
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
+
+            // 右侧商品列表
+            Expanded(
+              child: Container(
+                color: theme.scaffoldBackgroundColor,
+                child: productsAsync.when(
+                  data: (products) {
+                    if (products.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Symbols.inventory_2,
+                              size: 48.sp,
+                              color: theme.disabledColor,
+                            ),
+                            SizedBox(height: 8.h),
+                            Text(
+                              t.order.noOrders,
+                              style: TextStyle(color: theme.disabledColor),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return ListView.separated(
+                      padding: EdgeInsets.only(
+                        left: 12.w,
+                        right: 12.w,
+                        top: 12.h,
+                        bottom: 100.h, // 留出底部购物车栏空间
+                      ),
+                      itemCount: products.length,
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 12.h),
+                      itemBuilder: (context, index) {
+                        return _ProductItem(product: products[index]);
+                      },
+                    );
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (e, _) => Center(child: Text(e.toString())),
+                ),
+              ),
+            ),
+          ],
         ),
 
-        // 右侧商品列表
-        Expanded(
-          child: Container(
-            color: theme.scaffoldBackgroundColor,
-            child: productsAsync.when(
-              data: (products) {
-                if (products.isEmpty) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Symbols.inventory_2,
-                          size: 48.sp,
-                          color: theme.disabledColor,
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          t.order.noOrders,
-                          style: TextStyle(color: theme.disabledColor),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-                return ListView.separated(
-                  padding: EdgeInsets.only(
-                    left: 12.w,
-                    right: 12.w,
-                    top: 12.h,
-                    bottom: 80.h, // 留出FAB空间
+        // 底部购物车栏
+        if (!cartState.isEmpty)
+          Positioned(
+            left: 16.w,
+            right: 16.w,
+            bottom: 24.h + MediaQuery.of(context).padding.bottom,
+            child: _buildCartBar(context, cartState),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildCartBar(BuildContext context, CartState cartState) {
+    final theme = Theme.of(context);
+    return Container(
+      height: 56.h,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.onSurface,
+        borderRadius: BorderRadius.circular(28.h),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => context.push('/cart'),
+          borderRadius: BorderRadius.circular(28.h),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Row(
+              children: [
+                // 购物车图标和数量
+                Badge(
+                  label: Text(
+                    cartState.totalQuantity.toString(),
+                    style: const TextStyle(color: Colors.white),
                   ),
-                  itemCount: products.length,
-                  separatorBuilder: (context, index) => SizedBox(height: 12.h),
-                  itemBuilder: (context, index) {
-                    return _ProductItem(product: products[index]);
-                  },
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, _) => Center(child: Text(e.toString())),
+                  backgroundColor: theme.colorScheme.primary,
+                  child: Icon(
+                    Symbols.shopping_cart,
+                    color: theme.colorScheme.surface,
+                    size: 24.sp,
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                // 总价
+                Text(
+                  '¥${cartState.totalAmount.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    color: theme.colorScheme.surface,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Spacer(),
+                // 去结算按钮
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 8.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(20.h),
+                  ),
+                  child: Text(
+                    t.cart.checkout,
+                    style: TextStyle(
+                      color: theme.colorScheme.onPrimary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }
@@ -230,38 +354,40 @@ class _CategoryItem extends ConsumerWidget {
         ref.read(productCategoryProvider.notifier).update(category);
       },
       child: Container(
-        height: 50.h,
+        height: 56.h,
         alignment: Alignment.center,
-        color: isSelected
-            ? theme.scaffoldBackgroundColor
-            : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        child: Row(
+        color: isSelected ? theme.scaffoldBackgroundColor : Colors.transparent,
+        child: Stack(
           children: [
-            if (isSelected)
-              Container(
-                width: 4.w,
-                height: 24.h,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(4.r),
-                    bottomRight: Radius.circular(4.r),
-                  ),
-                ),
-              ),
-            Expanded(
+            Center(
               child: Text(
                 _getCategoryName(category),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  fontSize: 13.sp,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                   color: isSelected
-                      ? theme.textTheme.bodyMedium?.color
-                      : theme.hintColor,
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
+            if (isSelected)
+              Positioned(
+                left: 0,
+                top: 16.h,
+                bottom: 16.h,
+                child: Container(
+                  width: 4.w,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(4.r),
+                      bottomRight: Radius.circular(4.r),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -292,30 +418,46 @@ class _ProductItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final cartState = ref.watch(cartProvider);
+
+    // Find item in cart to get quantity
+    final cartItem = cartState.cartItems
+        .where((item) => item.productId == product.id)
+        .firstOrNull;
+    final quantity = cartItem?.quantity ?? 0;
 
     return InkWell(
       onTap: () => context.push('/product/${product.id}'),
+      borderRadius: BorderRadius.circular(12.r),
       child: Container(
-        padding: EdgeInsets.all(8.w),
+        padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
           color: theme.cardColor,
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [
+            BoxShadow(
+              color: theme.shadowColor.withValues(alpha: 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 图片
             ClipRRect(
-              borderRadius: BorderRadius.circular(4.r),
+              borderRadius: BorderRadius.circular(8.r),
               child: SizedBox(
-                width: 80.w,
-                height: 80.w,
+                width: 88.w,
+                height: 88.w,
                 child: Stack(
+                  fit: StackFit.expand,
                   children: [
                     AppImage(
                       imageUrl: product.imageUrl,
-                      width: 80.w,
-                      height: 80.w,
+                      width: 88.w,
+                      height: 88.w,
                     ),
                     if (!product.hasStock)
                       Container(
@@ -334,7 +476,7 @@ class _ProductItem extends ConsumerWidget {
                 ),
               ),
             ),
-            SizedBox(width: 10.w),
+            SizedBox(width: 12.w),
             // 内容
             Expanded(
               child: Column(
@@ -345,20 +487,21 @@ class _ProductItem extends ConsumerWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     '${t.product.monthlySales} ${product.monthlySales}',
-                    style: TextStyle(fontSize: 10.sp, color: theme.hintColor),
+                    style: TextStyle(fontSize: 11.sp, color: theme.hintColor),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     '${t.product.stock}: ${product.stock}',
                     style: TextStyle(
-                      fontSize: 10.sp,
+                      fontSize: 11.sp,
                       color: product.hasStock
                           ? theme.hintColor
                           : theme.colorScheme.error,
@@ -367,27 +510,51 @@ class _ProductItem extends ConsumerWidget {
                   SizedBox(height: 8.h),
                   Row(
                     children: [
-                      Text(
-                        '¥${product.price.toStringAsFixed(2)}',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.error,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '¥',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: theme.colorScheme.error,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: product.price.toStringAsFixed(2),
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: theme.colorScheme.error,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (product.hasDiscount)
+                              Text(
+                                '¥${product.originalPrice!.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color: theme.hintColor,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
-                      if (product.hasDiscount) ...[
-                        SizedBox(width: 4.w),
-                        Text(
-                          '¥${product.originalPrice!.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: theme.hintColor,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                      ],
-                      const Spacer(),
-                      _buildAddButton(context, ref, theme),
+                      _buildActionButtons(
+                        context,
+                        ref,
+                        theme,
+                        quantity,
+                        cartItem,
+                      ),
                     ],
                   ),
                 ],
@@ -399,12 +566,71 @@ class _ProductItem extends ConsumerWidget {
     );
   }
 
-  Widget _buildAddButton(BuildContext context, WidgetRef ref, ThemeData theme) {
+  Widget _buildActionButtons(
+    BuildContext context,
+    WidgetRef ref,
+    ThemeData theme,
+    int quantity,
+    CartItemModel? cartItem,
+  ) {
     if (!product.hasStock) {
       return Icon(
         Symbols.remove_shopping_cart,
-        size: 24.sp,
+        size: 20.sp,
         color: theme.disabledColor,
+      );
+    }
+
+    if (quantity > 0 && cartItem != null) {
+      return Container(
+        height: 32.h,
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surfaceContainerHighest.withValues(
+            alpha: 0.5,
+          ),
+          borderRadius: BorderRadius.circular(16.h),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            InkWell(
+              onTap: () {
+                ref.read(cartProvider.notifier).decreaseQuantity(cartItem);
+              },
+              borderRadius: BorderRadius.circular(16.h),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Icon(
+                  Symbols.remove,
+                  size: 18.sp,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+            ),
+            Text(
+              quantity.toString(),
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                ref.read(cartProvider.notifier).increaseQuantity(cartItem);
+              },
+              borderRadius: BorderRadius.circular(16.h),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Icon(
+                  Symbols.add,
+                  size: 18.sp,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+            ),
+          ],
+        ),
       );
     }
 
@@ -413,11 +639,18 @@ class _ProductItem extends ConsumerWidget {
         ref.read(cartProvider.notifier).addToCart(product);
       },
       child: Container(
-        width: 28.w,
-        height: 28.w,
+        width: 32.w,
+        height: 32.w,
         decoration: BoxDecoration(
           color: theme.colorScheme.primary,
-          borderRadius: BorderRadius.circular(14.w),
+          borderRadius: BorderRadius.circular(16.w),
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.primary.withValues(alpha: 0.3),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Icon(
           Symbols.add,

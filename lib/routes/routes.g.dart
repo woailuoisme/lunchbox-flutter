@@ -18,11 +18,9 @@ List<RouteBase> get $appRoutes => [
   $couponsRoute,
   $inviteRoute,
   $lotteryRoute,
-  $deviceDetailRoute,
   $productListRoute,
   $productDetailRoute,
   $cartRoute,
-  $orderConfirmRoute,
   $orderDetailRoute,
   $paymentRoute,
   $profileEditRoute,
@@ -354,35 +352,6 @@ mixin $MyPrizesRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $deviceDetailRoute => GoRouteData.$route(
-  path: '/devices/:id',
-  factory: $DeviceDetailRoute._fromState,
-);
-
-mixin $DeviceDetailRoute on GoRouteData {
-  static DeviceDetailRoute _fromState(GoRouterState state) =>
-      DeviceDetailRoute(id: state.pathParameters['id']!);
-
-  DeviceDetailRoute get _self => this as DeviceDetailRoute;
-
-  @override
-  String get location =>
-      GoRouteData.$location('/devices/${Uri.encodeComponent(_self.id)}');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
-
 RouteBase get $productListRoute => GoRouteData.$route(
   path: '/products/:deviceId',
   factory: $ProductListRoute._fromState,
@@ -464,32 +433,6 @@ mixin $CartRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $orderConfirmRoute => GoRouteData.$route(
-  path: '/order-confirm',
-  factory: $OrderConfirmRoute._fromState,
-);
-
-mixin $OrderConfirmRoute on GoRouteData {
-  static OrderConfirmRoute _fromState(GoRouterState state) =>
-      const OrderConfirmRoute();
-
-  @override
-  String get location => GoRouteData.$location('/order-confirm');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
-
 RouteBase get $orderDetailRoute => GoRouteData.$route(
   path: '/order/:id',
   factory: $OrderDetailRoute._fromState,
@@ -524,7 +467,7 @@ RouteBase get $paymentRoute =>
 
 mixin $PaymentRoute on GoRouteData {
   static PaymentRoute _fromState(GoRouterState state) =>
-      PaymentRoute($extra: state.extra as OrderModel);
+      PaymentRoute($extra: state.extra as OrderModel?);
 
   PaymentRoute get _self => this as PaymentRoute;
 

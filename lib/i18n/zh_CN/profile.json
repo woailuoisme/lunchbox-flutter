@@ -42,5 +42,21 @@
   "saveInfo": "保存信息",
   "walletBalance": "钱包余额",
   "coin": "乖乖币",
-  "couponCount": "优惠券"
+  "couponCount": "优惠券",
+  "walletPage": {
+    "title": "钱包",
+    "topUp": "充值",
+    "balance": "钱包余额",
+    "selectAmount": "选择充值金额",
+    "rule": "规则说明",
+    "ruleDesc": "充值部分套餐可获取乖乖币，自选金额充值不获取乖乖币",
+    "customAmount": "自选金额",
+    "customAmountHint": "仅限500元以上充值",
+    "realPay": "实付¥${amount}",
+    "bonus": "送${amount}乖乖币",
+    "noBonus": "无乖乖币",
+    "history": "充值记录",
+    "historyCount": "共${count}笔",
+    "noHistory": "暂无充值记录"
+  }
 }

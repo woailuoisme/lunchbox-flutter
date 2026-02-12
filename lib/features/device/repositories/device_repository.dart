@@ -5,6 +5,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:lunchbox/core/errors/failure.dart';
 import 'package:lunchbox/core/network/rest_client.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
+import 'package:lunchbox/features/device/repositories/simulated_device_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'device_repository.g.dart';
@@ -12,7 +13,8 @@ part 'device_repository.g.dart';
 @Riverpod(keepAlive: true)
 DeviceRepository deviceRepository(Ref ref) {
   final restClient = ref.watch(restClientProvider);
-  return DeviceRepository(restClient);
+  // 使用模拟仓库
+  return SimulatedDeviceRepository(restClient);
 }
 
 /// 设备仓库类

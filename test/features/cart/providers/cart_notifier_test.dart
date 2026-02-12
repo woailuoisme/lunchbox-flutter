@@ -99,6 +99,19 @@ void main() {
       verify(mockRepository.removeFromCart(tCartItem.id));
     });
 
+    test('removeItems should call repository and reload', () async {
+      when(mockRepository.getCartItems()).thenReturn([]);
+
+      final container = createContainer();
+      final notifier = container.read(cartProvider.notifier);
+      final itemIds = ['1', '2'];
+
+      await notifier.removeItems(itemIds);
+
+      verify(mockRepository.removeItems(itemIds));
+      verify(mockRepository.getCartItems()); // Called by loadCart
+    });
+
     test('clearCart should clear repository', () async {
       when(mockRepository.getCartItems()).thenReturn([]);
 

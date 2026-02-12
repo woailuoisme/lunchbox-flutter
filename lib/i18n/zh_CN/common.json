@@ -34,5 +34,7 @@
   "notFound": "未找到：${resource}",
   "unauthorized": "未授权，请重新登录",
   "validationError": "验证错误：${message}",
-  "validationErrorWithDetails": "验证错误：${message} (${errors})"
+  "validationErrorWithDetails": "验证错误：${message} (${errors})",
+  "selectAll": "全选",
+  "deselectAll": "取消全选"
 }

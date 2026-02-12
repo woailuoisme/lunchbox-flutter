@@ -255,6 +255,20 @@ class _TranslationsCartEn extends TranslationsCartZhCn {
   String get checkout => TranslationOverrides.string(_root.$meta, 'cart.checkout', {}) ?? 'Checkout';
   @override
   String get goShopping => TranslationOverrides.string(_root.$meta, 'cart.goShopping', {}) ?? 'Go Shopping';
+  @override
+  String get clearCart => TranslationOverrides.string(_root.$meta, 'cart.clearCart', {}) ?? 'Clear Cart';
+  @override
+  String get clearCartConfirm =>
+      TranslationOverrides.string(_root.$meta, 'cart.clearCartConfirm', {}) ??
+      'Are you sure you want to clear the cart?';
+  @override
+  String get emptyHint => TranslationOverrides.string(_root.$meta, 'cart.emptyHint', {}) ?? 'Go pick some items';
+  @override
+  String deleteConfirm({required Object count}) =>
+      TranslationOverrides.string(_root.$meta, 'cart.deleteConfirm', {'count': count}) ?? 'Delete ${count} items?';
+  @override
+  String selectedCount({required Object count}) =>
+      TranslationOverrides.string(_root.$meta, 'cart.selectedCount', {'count': count}) ?? 'Selected ${count}';
 }
 
 // Path: city
@@ -1396,6 +1410,8 @@ class _TranslationsProfileEn extends TranslationsProfileZhCn {
   String get coin => TranslationOverrides.string(_root.$meta, 'profile.coin', {}) ?? 'Coins';
   @override
   String get couponCount => TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ?? 'Coupons';
+  @override
+  late final _TranslationsProfileWalletPageEn walletPage = _TranslationsProfileWalletPageEn._(_root);
 }
 
 // Path: settings
@@ -1932,6 +1948,53 @@ class _TranslationsProfileAvatarEn extends TranslationsProfileAvatarZhCn {
       'Avatar upload feature is under development';
 }
 
+// Path: profile.walletPage
+class _TranslationsProfileWalletPageEn extends TranslationsProfileWalletPageZhCn {
+  _TranslationsProfileWalletPageEn._(TranslationsEn root) : this._root = root, super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title => TranslationOverrides.string(_root.$meta, 'profile.walletPage.title', {}) ?? 'Wallet';
+  @override
+  String get topUp => TranslationOverrides.string(_root.$meta, 'profile.walletPage.topUp', {}) ?? 'Top Up';
+  @override
+  String get balance => TranslationOverrides.string(_root.$meta, 'profile.walletPage.balance', {}) ?? 'Balance';
+  @override
+  String get selectAmount =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.selectAmount', {}) ?? 'Select Amount';
+  @override
+  String get rule => TranslationOverrides.string(_root.$meta, 'profile.walletPage.rule', {}) ?? 'Rules';
+  @override
+  String get ruleDesc =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.ruleDesc', {}) ??
+      'Top up specific packages to get coins. Custom amount does not get coins.';
+  @override
+  String get customAmount =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.customAmount', {}) ?? 'Custom Amount';
+  @override
+  String get customAmountHint =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.customAmountHint', {}) ??
+      'Only for amounts above ¥500';
+  @override
+  String realPay({required Object amount}) =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.realPay', {'amount': amount}) ?? 'Pay ¥${amount}';
+  @override
+  String bonus({required Object amount}) =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.bonus', {'amount': amount}) ?? 'Get ${amount} coins';
+  @override
+  String get noBonus => TranslationOverrides.string(_root.$meta, 'profile.walletPage.noBonus', {}) ?? 'No coins';
+  @override
+  String get history => TranslationOverrides.string(_root.$meta, 'profile.walletPage.history', {}) ?? 'History';
+  @override
+  String historyCount({required Object count}) =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.historyCount', {'count': count}) ?? 'Total ${count}';
+  @override
+  String get noHistory =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.noHistory', {}) ?? 'No transaction history';
+}
+
 // Path: settings.schemes
 class _TranslationsSettingsSchemesEn extends TranslationsSettingsSchemesZhCn {
   _TranslationsSettingsSchemesEn._(TranslationsEn root) : this._root = root, super.internal(root);
@@ -2216,6 +2279,18 @@ extension on TranslationsEn {
           'cart.total' => TranslationOverrides.string(_root.$meta, 'cart.total', {}) ?? 'Total',
           'cart.checkout' => TranslationOverrides.string(_root.$meta, 'cart.checkout', {}) ?? 'Checkout',
           'cart.goShopping' => TranslationOverrides.string(_root.$meta, 'cart.goShopping', {}) ?? 'Go Shopping',
+          'cart.clearCart' => TranslationOverrides.string(_root.$meta, 'cart.clearCart', {}) ?? 'Clear Cart',
+          'cart.clearCartConfirm' =>
+            TranslationOverrides.string(_root.$meta, 'cart.clearCartConfirm', {}) ??
+                'Are you sure you want to clear the cart?',
+          'cart.emptyHint' => TranslationOverrides.string(_root.$meta, 'cart.emptyHint', {}) ?? 'Go pick some items',
+          'cart.deleteConfirm' =>
+            ({required Object count}) =>
+                TranslationOverrides.string(_root.$meta, 'cart.deleteConfirm', {'count': count}) ??
+                'Delete ${count} items?',
+          'cart.selectedCount' =>
+            ({required Object count}) =>
+                TranslationOverrides.string(_root.$meta, 'cart.selectedCount', {'count': count}) ?? 'Selected ${count}',
           'city.title' => TranslationOverrides.string(_root.$meta, 'city.title', {}) ?? 'Select City',
           'city.search' => TranslationOverrides.string(_root.$meta, 'city.search', {}) ?? 'Search City',
           'city.hot' => TranslationOverrides.string(_root.$meta, 'city.hot', {}) ?? 'Hot Cities',
@@ -3054,6 +3129,9 @@ extension on TranslationsEn {
           'profile.title' => TranslationOverrides.string(_root.$meta, 'profile.title', {}) ?? 'User Center',
           'profile.notLoggedIn' =>
             TranslationOverrides.string(_root.$meta, 'profile.notLoggedIn', {}) ?? 'Not Logged In',
+          _ => null,
+        } ??
+        switch (path) {
           'profile.editProfile' =>
             TranslationOverrides.string(_root.$meta, 'profile.editProfile', {}) ?? 'Edit Profile',
           'profile.logout' => TranslationOverrides.string(_root.$meta, 'profile.logout', {}) ?? 'Logout',
@@ -3063,9 +3141,6 @@ extension on TranslationsEn {
             TranslationOverrides.string(_root.$meta, 'profile.personalInfo', {}) ?? 'Personal Info',
           'profile.confirmLogout' =>
             TranslationOverrides.string(_root.$meta, 'profile.confirmLogout', {}) ?? 'Confirm Logout',
-          _ => null,
-        } ??
-        switch (path) {
           'profile.confirmLogoutContent' =>
             TranslationOverrides.string(_root.$meta, 'profile.confirmLogoutContent', {}) ??
                 'Are you sure you want to logout?',
@@ -3123,6 +3198,42 @@ extension on TranslationsEn {
             TranslationOverrides.string(_root.$meta, 'profile.walletBalance', {}) ?? 'Wallet Balance',
           'profile.coin' => TranslationOverrides.string(_root.$meta, 'profile.coin', {}) ?? 'Coins',
           'profile.couponCount' => TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ?? 'Coupons',
+          'profile.walletPage.title' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.title', {}) ?? 'Wallet',
+          'profile.walletPage.topUp' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.topUp', {}) ?? 'Top Up',
+          'profile.walletPage.balance' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.balance', {}) ?? 'Balance',
+          'profile.walletPage.selectAmount' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.selectAmount', {}) ?? 'Select Amount',
+          'profile.walletPage.rule' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rule', {}) ?? 'Rules',
+          'profile.walletPage.ruleDesc' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.ruleDesc', {}) ??
+                'Top up specific packages to get coins. Custom amount does not get coins.',
+          'profile.walletPage.customAmount' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.customAmount', {}) ?? 'Custom Amount',
+          'profile.walletPage.customAmountHint' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.customAmountHint', {}) ??
+                'Only for amounts above ¥500',
+          'profile.walletPage.realPay' =>
+            ({required Object amount}) =>
+                TranslationOverrides.string(_root.$meta, 'profile.walletPage.realPay', {'amount': amount}) ??
+                'Pay ¥${amount}',
+          'profile.walletPage.bonus' =>
+            ({required Object amount}) =>
+                TranslationOverrides.string(_root.$meta, 'profile.walletPage.bonus', {'amount': amount}) ??
+                'Get ${amount} coins',
+          'profile.walletPage.noBonus' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.noBonus', {}) ?? 'No coins',
+          'profile.walletPage.history' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.history', {}) ?? 'History',
+          'profile.walletPage.historyCount' =>
+            ({required Object count}) =>
+                TranslationOverrides.string(_root.$meta, 'profile.walletPage.historyCount', {'count': count}) ??
+                'Total ${count}',
+          'profile.walletPage.noHistory' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.noHistory', {}) ?? 'No transaction history',
           'settings.title' => TranslationOverrides.string(_root.$meta, 'settings.title', {}) ?? 'Settings',
           'settings.general' => TranslationOverrides.string(_root.$meta, 'settings.general', {}) ?? 'General',
           'settings.theme' => TranslationOverrides.string(_root.$meta, 'settings.theme', {}) ?? 'Theme Mode',

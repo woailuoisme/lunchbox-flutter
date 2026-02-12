@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lunchbox/core/utils/page_transition_page.dart';
 import 'package:lunchbox/core/widgets/gnav_scaffold.dart';
 import 'package:lunchbox/features/auth/auth.dart';
 import 'package:lunchbox/features/cart/cart.dart';
@@ -14,6 +13,7 @@ import 'package:lunchbox/features/profile/profile.dart';
 import 'package:lunchbox/features/settings/settings.dart';
 import 'package:lunchbox/features/splash/splash.dart';
 import 'package:lunchbox/routes/app_routes.dart';
+import 'package:lunchbox/core/utils/page_transition_page.dart';
 import 'package:page_transition/page_transition.dart';
 
 part 'routes.g.dart';
@@ -159,18 +159,6 @@ class MyPrizesRoute extends GoRouteData with $MyPrizesRoute {
       const MyPrizesView();
 }
 
-// 设备详情 (注意：原路由是 /devices/:id，这里使用 /devices/:id)
-@TypedGoRoute<DeviceDetailRoute>(path: '${AppRoutes.deviceList}/:id')
-class DeviceDetailRoute extends GoRouteData with $DeviceDetailRoute {
-  const DeviceDetailRoute({required this.id});
-
-  final String id;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      DeviceDetailView(deviceId: id);
-}
-
 // 产品列表 /products/:deviceId
 @TypedGoRoute<ProductListRoute>(path: '${AppRoutes.productList}/:deviceId')
 class ProductListRoute extends GoRouteData with $ProductListRoute {
@@ -213,20 +201,6 @@ class CartRoute extends GoRouteData with $CartRoute {
       );
 }
 
-// 订单确认
-@TypedGoRoute<OrderConfirmRoute>(path: AppRoutes.orderConfirm)
-class OrderConfirmRoute extends GoRouteData with $OrderConfirmRoute {
-  const OrderConfirmRoute();
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) =>
-      PageTransitionPage(
-        key: state.pageKey,
-        child: const OrderConfirmView(),
-        type: PageTransitionType.rightToLeft,
-      );
-}
-
 // 订单详情 /order/:id
 @TypedGoRoute<OrderDetailRoute>(path: '${AppRoutes.orderDetail}/:id')
 class OrderDetailRoute extends GoRouteData with $OrderDetailRoute {
@@ -242,9 +216,9 @@ class OrderDetailRoute extends GoRouteData with $OrderDetailRoute {
 // 支付
 @TypedGoRoute<PaymentRoute>(path: AppRoutes.payment)
 class PaymentRoute extends GoRouteData with $PaymentRoute {
-  const PaymentRoute({required this.$extra});
+  const PaymentRoute({this.$extra});
 
-  final OrderModel $extra;
+  final OrderModel? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
@@ -323,7 +297,6 @@ class AboutUsRoute extends GoRouteData with $AboutUsRoute {
       const AboutUsView();
 }
 
-// 设置相关路由
 @TypedGoRoute<SettingsRoute>(
   path: AppRoutes.settings,
   routes: [

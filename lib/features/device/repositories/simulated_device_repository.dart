@@ -1,15 +1,22 @@
+import 'package:fpdart/fpdart.dart';
+import 'package:lunchbox/core/errors/errors.dart';
+import 'package:lunchbox/core/network/rest_client.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
 import 'package:lunchbox/features/device/entities/location_model.dart';
+import 'package:lunchbox/features/device/repositories/device_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'simulated_device_repository.g.dart';
 
 @riverpod
 SimulatedDeviceRepository simulatedDeviceRepository(Ref ref) {
-  return SimulatedDeviceRepository();
+  final client = ref.watch(restClientProvider);
+  return SimulatedDeviceRepository(client);
 }
 
-class SimulatedDeviceRepository {
+class SimulatedDeviceRepository extends DeviceRepository {
+  SimulatedDeviceRepository(super.client);
+
   // 模拟数据 - 常去营业点
   final _frequentDevices = [
     const DeviceModel(
@@ -82,6 +89,81 @@ class SimulatedDeviceRepository {
       lastUpdated: '2023-10-01T12:00:00Z',
     ),
   ];
+
+  @override
+  TaskEither<Failure, List<DeviceModel>> getAllDevices() {
+    return TaskEither.right([..._frequentDevices, ..._nearbyDevices]);
+  }
+
+  @override
+  TaskEither<Failure, List<DeviceModel>> getDevicesByCityId(String cityId) {
+    final devices = [
+      ..._frequentDevices,
+      ..._nearbyDevices,
+    ].where((d) => d.cityId == cityId).toList();
+    return TaskEither.right(devices);
+  }
+
+  @override
+  TaskEither<Failure, DeviceModel> getDeviceById(String deviceId) {
+    try {
+      final device = [
+        ..._frequentDevices,
+        ..._nearbyDevices,
+      ].firstWhere((d) => d.id == deviceId);
+      return TaskEither.right(device);
+    } catch (_) {
+      return TaskEither.left(
+        const Failure.server(message: 'Device not found', statusCode: 404),
+      );
+    }
+  }
+
+  @override
+  TaskEither<Failure, List<DeviceModel>> getNearbyDevices(
+    double latitude,
+    double longitude, {
+    double radius = 1.0,
+    int limit = 10,
+  }) {
+    return TaskEither.right(_nearbyDevices.take(limit).toList());
+  }
+
+  @override
+  TaskEither<Failure, List<DeviceModel>> getOnlineDevices() {
+    final devices = [
+      ..._frequentDevices,
+      ..._nearbyDevices,
+    ].where((d) => d.isOnline).toList();
+    return TaskEither.right(devices);
+  }
+
+  @override
+  TaskEither<Failure, List<DeviceModel>> searchDevices(
+    String keyword, {
+    String? cityId,
+  }) {
+    var devices = [..._frequentDevices, ..._nearbyDevices];
+    if (cityId != null) {
+      devices = devices.where((d) => d.cityId == cityId).toList();
+    }
+
+    if (keyword.isEmpty) {
+      return TaskEither.right(devices);
+    }
+
+    final lowercaseKeyword = keyword.toLowerCase();
+    final result = devices
+        .where(
+          (d) =>
+              d.name.toLowerCase().contains(lowercaseKeyword) ||
+              (d.location.address?.toLowerCase().contains(lowercaseKeyword) ??
+                  false),
+        )
+        .toList();
+
+    return TaskEither.right(result);
+  }
 
   Future<List<DeviceModel>> fetchFrequentDevices(
     int pageKey,

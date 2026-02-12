@@ -510,7 +510,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
   Widget _buildDeviceCard(DeviceModel device, ThemeData theme) {
     return GestureDetector(
       onTap: () {
-        context.push('${AppRoutes.deviceList}/${device.id}');
+        context.push('${AppRoutes.productList}/${device.id}');
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 24.h),

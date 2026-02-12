@@ -4,5 +4,10 @@
   "empty": "Cart is empty",
   "total": "Total",
   "checkout": "Checkout",
-  "goShopping": "Go Shopping"
+  "goShopping": "Go Shopping",
+  "clearCart": "Clear Cart",
+  "clearCartConfirm": "Are you sure you want to clear the cart?",
+  "emptyHint": "Go pick some items",
+  "deleteConfirm": "Delete ${count} items?",
+  "selectedCount": "Selected ${count}"
 }

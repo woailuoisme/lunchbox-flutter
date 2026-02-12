@@ -55,4 +55,4 @@ final class SimulatedDeviceRepositoryProvider
 }
 
 String _$simulatedDeviceRepositoryHash() =>
-    r'ca91924d7ae271caaa6f3062262ce92f13d6beea';
+    r'84868df3174ec5f187d298c9ee412b6784579652';

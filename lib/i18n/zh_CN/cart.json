@@ -1,8 +1,13 @@
 {
   "title": "购物车",
   "clear": "清空",
+  "clearCart": "清空购物车",
+  "clearCartConfirm": "确定要清空购物车吗？",
   "empty": "购物车是空的",
+  "emptyHint": "快去选购心仪的商品吧",
   "total": "合计",
   "checkout": "结算",
-  "goShopping": "去逛逛"
+  "goShopping": "去逛逛",
+  "deleteConfirm": "确定要删除这 ${count} 个商品吗？",
+  "selectedCount": "已选择 ${count} 项"
 }

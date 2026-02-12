@@ -79,6 +79,16 @@ class CartNotifier extends _$CartNotifier {
     }
   }
 
+  Future<void> removeItems(List<String> itemIds) async {
+    try {
+      ref.read(cartRepositoryProvider).removeItems(itemIds);
+      await loadCart();
+      LoggerUtils.i('CartNotifier: Removed items $itemIds');
+    } catch (e) {
+      LoggerUtils.e('CartNotifier: Failed to remove items', e);
+    }
+  }
+
   Future<void> clearCart() async {
     try {
       ref.read(cartRepositoryProvider).clearCart();

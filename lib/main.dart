@@ -5,9 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/theme/theme.dart';
-import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:talker_riverpod_logger/talker_riverpod_logger.dart';
+// import 'package:talker_riverpod_logger/talker_riverpod_logger.dart';
 import 'package:lunchbox/routes/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
@@ -16,10 +15,10 @@ void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  final prefs = await SharedPreferences.getInstance();
+  final sharedPreferences = await SharedPreferences.getInstance();
 
   // 初始化语言设置
-  final savedLocale = prefs.getString('selected_locale');
+  final savedLocale = sharedPreferences.getString('selected_locale');
   if (savedLocale != null) {
     await LocaleSettings.setLocaleRaw(savedLocale);
   } else {
@@ -27,23 +26,25 @@ void main() async {
     await LocaleSettings.setLocale(AppLocale.zhCn);
   }
 
-  // 主题设置由 themeProvider 在 build 时自动从 prefs 初始化
+  // 主题设置由 themeProvider 在 build 时自动从 sharedPreferences 初始化
   // 不需要在此显式调用，因为 ProviderScope 已 override 了 sharedPreferencesProvider
 
   runApp(
     ProviderScope(
       observers: [
-        TalkerRiverpodObserver(
-          talker: LoggerUtils.instance,
-          settings: const TalkerRiverpodLoggerSettings(
-            printStateFullData: false,
-            printProviderAdded: true,
-            printProviderDisposed: true,
-            printProviderFailed: true,
-          ),
-        ),
+        // TalkerRiverpodObserver(
+        //   talker: LoggerUtils.instance,
+        //   settings: const TalkerRiverpodLoggerSettings(
+        //     printStateFullData: false,
+        //     printProviderAdded: true,
+        //     printProviderDisposed: true,
+        //     printProviderFailed: true,
+        //   ),
+        // ),
       ],
-      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      ],
       child: TranslationProvider(child: const MyApp()),
     ),
   );
