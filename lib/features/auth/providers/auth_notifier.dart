@@ -40,6 +40,24 @@ class Auth extends _$Auth {
     );
   }
 
+  Future<void> loginWithPhone(String phone, String code) async {
+    final repo = ref.read(authRepositoryProvider);
+    final result = await repo.loginWithPhone(phone: phone, code: code).run();
+    result.fold(
+      (failure) => throw AppException(failure.toUserMessage()),
+      (data) => state = true,
+    );
+  }
+
+  Future<void> loginWithGoogle() async {
+    final repo = ref.read(authRepositoryProvider);
+    final result = await repo.loginWithGoogle().run();
+    result.fold(
+      (failure) => throw AppException(failure.toUserMessage()),
+      (data) => state = true,
+    );
+  }
+
   Future<void> logout() async {
     final repo = ref.read(authRepositoryProvider);
     final result = await repo.logout().run();

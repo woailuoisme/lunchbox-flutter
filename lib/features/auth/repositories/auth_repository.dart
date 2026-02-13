@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lunchbox/core/errors/failure.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
@@ -272,6 +273,65 @@ class AuthRepository {
         );
       }
     }, _handleError);
+  }
+
+  TaskEither<Failure, UserModel> loginWithPhone({
+    required String phone,
+    required String code,
+  }) {
+    return TaskEither.tryCatch(() async {
+      await Future<void>.delayed(const Duration(seconds: 1)); // 模拟网络延迟
+
+      // 模拟验证码校验：默认 '123456' 成功
+      if (code != '123456') {
+        throw const Failure.validation(message: '验证码错误 (测试码: 123456)');
+      }
+
+      // 模拟登录成功返回用户
+      final user = UserModel(
+        id: 'phone_user_$phone',
+        username: phone,
+        nickname:
+            '手机用户_${phone.length > 4 ? phone.substring(phone.length - 4) : phone}',
+        registeredAt: DateTime.now(),
+      );
+
+      await _saveUserSession(user, 'mock_phone_token');
+      return user;
+    }, _handleError);
+  }
+
+  TaskEither<Failure, UserModel> loginWithGoogle() {
+    return TaskEither.tryCatch(() async {
+      final googleSignIn = GoogleSignIn.instance;
+
+      // Google Sign In v7 requires initialization
+      await googleSignIn.initialize();
+
+      final account = await googleSignIn.authenticate();
+
+      // 模拟登录成功，实际项目中应该将 account.serverAuthCode 发送到后端验证
+      // 或者使用 account.authentication 获取 token
+
+      final user = UserModel(
+        id: 'google_user_${account.id}',
+        username: account.email,
+        nickname: account.displayName ?? 'Google User',
+        avatar: account.photoUrl,
+        registeredAt: DateTime.now(),
+      );
+
+      await _saveUserSession(user, 'mock_google_token');
+      return user;
+    }, _handleError);
+  }
+
+  // 辅助方法：保存会话
+  Future<void> _saveUserSession(UserModel user, String token) async {
+    await _storageService.write(AppConstants.keyAuthToken, token);
+    await _storageService.write(AppConstants.keyUserId, user.id);
+    await _storageService.write(AppConstants.keyUserPermissions, ['user']);
+    LoggerUtils.i('AuthRepository: Session saved for ${user.username}');
   }
 
   Failure _handleError(Object error, StackTrace stackTrace) {

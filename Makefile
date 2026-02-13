@@ -28,7 +28,7 @@ help:
 	@echo "  make clean-all     - 深度清理"
 
 deps:
-	flutter pub get
+	flutter pub get --no-example
 
 upgrade:
 	flutter pub upgrade --major-versions
