@@ -117,6 +117,7 @@ class CommunityView extends StatelessWidget {
               child: QrImageView(
                 data: 'https://u.wechat.com/EXAMPLE',
                 size: 180.w,
+                backgroundColor: Colors.white,
                 embeddedImage: const NetworkImage(
                   'https://img.icons8.com/color/96/weixing.png',
                 ),
@@ -151,7 +152,7 @@ class CommunityView extends StatelessWidget {
         'icon': Symbols.card_giftcard,
         'title': t.community.features.coupon,
         'subtitle': t.community.features.couponHint,
-        'color': colorScheme.tertiary,
+        'color': colorScheme.primary,
       },
       {
         'icon': Symbols.group,
@@ -163,7 +164,7 @@ class CommunityView extends StatelessWidget {
         'icon': Symbols.forum,
         'title': t.community.features.topic,
         'subtitle': t.community.features.topicHint,
-        'color': colorScheme.secondary,
+        'color': colorScheme.primary,
       },
     ];
 

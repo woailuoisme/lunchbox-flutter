@@ -85,7 +85,7 @@ class CustomRefreshView extends StatelessWidget {
   Widget _buildIcon(IndicatorController controller, ColorScheme colorScheme) {
     if (controller.isLoading) {
       return SizedBox(
-        width: 24.w,
+        width: 48.w,
         height: 24.w,
         child: SpinKitThreeBounce(color: colorScheme.primary, size: 20.sp),
       );

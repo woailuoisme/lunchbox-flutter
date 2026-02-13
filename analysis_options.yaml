@@ -58,5 +58,8 @@ linter:
     # 建议 for-each 循环变量使用 final
     prefer_final_in_for_each: true
 
-    # 保持开启，确保代码整洁
-    always_put_control_body_on_new_line: true
+    # 强制使用花括号，避免省略花括号带来的隐患（如著名的 goto fail 错误）
+    curly_braces_in_flow_control_structures: true
+
+    # 强制控制流体换行 (由于启用了强制花括号，此规则可作为补充或按需关闭，这里将其关闭以避免冲突或过度限制)
+    always_put_control_body_on_new_line: false

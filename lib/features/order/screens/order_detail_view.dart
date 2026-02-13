@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -135,32 +136,49 @@ class OrderDetailView extends ConsumerWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 订单状态
-                      _buildOrderStatus(context, order),
+                    children:
+                        [
+                              // 订单状态
+                              _buildOrderStatus(context, order),
 
-                      // 取货码/取餐提示（如果已支付）
-                      if (order.status == OrderStatus.paid ||
-                          order.status == OrderStatus.completed)
-                        _buildPickupInfo(context, order),
+                              // 取货码/取餐提示（如果已支付）
+                              if (order.status == OrderStatus.paid ||
+                                  order.status == OrderStatus.completed)
+                                _buildPickupInfo(context, order),
 
-                      // 门店信息
-                      if (order.storeName != null)
-                        _buildStoreInfo(context, order),
+                              // 门店信息
+                              if (order.storeName != null)
+                                _buildStoreInfo(context, order),
 
-                      // 商品列表
-                      _buildProductList(context, order),
+                              // 商品列表
+                              _buildProductList(context, order),
 
-                      // 订单信息
-                      _buildOrderInfo(context, order),
+                              // 订单信息
+                              _buildOrderInfo(context, order),
 
-                      SizedBox(height: 20.h),
-                    ],
+                              SizedBox(height: 20.h),
+                            ]
+                            .animate(interval: 50.ms)
+                            .fadeIn(duration: 300.ms)
+                            .slideY(
+                              begin: 0.1,
+                              end: 0,
+                              duration: 300.ms,
+                              curve: Curves.easeOutQuad,
+                            ),
                   ),
                 ),
               ),
               // 底部操作栏
-              _buildBottomBar(context, ref, order),
+              _buildBottomBar(context, ref, order)
+                  .animate()
+                  .fadeIn(duration: 300.ms, delay: 200.ms)
+                  .slideY(
+                    begin: 1,
+                    end: 0,
+                    duration: 300.ms,
+                    curve: Curves.easeOutQuad,
+                  ),
             ],
           );
         },

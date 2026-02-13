@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lunchbox/core/widgets/custom_refresh_view.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart'
-    as isp;
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:lunchbox/core/services/location_service.dart';
 import 'package:lunchbox/core/widgets/map/lunchbox_map.dart';
@@ -28,8 +29,8 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  late final isp.PagingController<int, DeviceModel> _frequentPagingController;
-  late final isp.PagingController<int, DeviceModel> _nearbyPagingController;
+  late final PagingController<int, DeviceModel> _frequentPagingController;
+  late final PagingController<int, DeviceModel> _nearbyPagingController;
 
   // 地图控制器
   final MapController _mapController = MapController();
@@ -46,7 +47,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
     // 默认选中“附近营业点” (index: 1)
     _tabController = TabController(length: 2, vsync: this, initialIndex: 1);
 
-    _frequentPagingController = isp.PagingController<int, DeviceModel>(
+    _frequentPagingController = PagingController<int, DeviceModel>(
       getNextPageKey: (state) {
         if (state.pages == null || state.pages!.isEmpty) {
           return 0;
@@ -60,7 +61,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
       fetchPage: (pageKey) => _fetchPageData(pageKey, isFrequent: true),
     );
 
-    _nearbyPagingController = isp.PagingController<int, DeviceModel>(
+    _nearbyPagingController = PagingController<int, DeviceModel>(
       getNextPageKey: (state) {
         if (state.pages == null || state.pages!.isEmpty) {
           return 0;
@@ -211,137 +212,125 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
 
   /// 构建“常去营业点”视图
   Widget _buildFrequentTab(ThemeData theme) {
-    return CustomScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      slivers: [
-        // 顶部提示条
-        SliverToBoxAdapter(
-          child: _buildStatusBanner(
-            text: t.device.loadedFrequent(count: 3),
-            icon: Icons.refresh,
-            bgColor: Colors.green.shade50, // 浅绿色背景
-            textColor: Colors.green, // 绿色文字
-          ),
-        ),
-
-        // 设备列表 (使用 PagedSliverList)
-        SliverPadding(
-          padding: EdgeInsets.all(16.w),
-          sliver: isp.PagingListener(
-            controller: _frequentPagingController,
-            builder: (context, state, fetchNextPage) =>
-                isp.PagedSliverList<int, DeviceModel>(
-                  state: state,
-                  fetchNextPage: fetchNextPage,
-                  builderDelegate: isp.PagedChildBuilderDelegate<DeviceModel>(
-                    itemBuilder: (context, item, index) =>
-                        _buildDeviceCard(item, theme),
-                    noItemsFoundIndicatorBuilder: (context) => Center(
-                      child: Text(
-                        t.device.noFrequentDevices,
-                        style: TextStyle(
-                          color: theme.colorScheme.outline,
-                          fontSize: 14.sp,
+    return CustomRefreshView(
+      onRefresh: () async {
+        try {
+          final newItems = await _fetchPageData(0, isFrequent: true);
+          _frequentPagingController.value = PagingState(
+            pages: [newItems],
+            keys: [0],
+            error: null,
+          );
+        } catch (e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(t.device.loadFailed(error: e))),
+            );
+          }
+        }
+      },
+      child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          // 设备列表 (使用 PagedSliverList)
+          SliverPadding(
+            padding: EdgeInsets.all(16.w),
+            sliver: PagingListener(
+              controller: _frequentPagingController,
+              builder: (context, state, fetchNextPage) =>
+                  PagedSliverList<int, DeviceModel>(
+                    state: state,
+                    fetchNextPage: fetchNextPage,
+                    builderDelegate: PagedChildBuilderDelegate<DeviceModel>(
+                      itemBuilder: (context, item, index) =>
+                          _buildDeviceCard(item, theme),
+                      noItemsFoundIndicatorBuilder: (context) => Center(
+                        child: Text(
+                          t.device.noFrequentDevices,
+                          style: TextStyle(
+                            color: theme.colorScheme.outline,
+                            fontSize: 14.sp,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
+            ),
           ),
-        ),
 
-        // 底部提示
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 20.h),
-            child: Center(
-              child: Text(
-                t.common.noMoreData,
-                style: TextStyle(
-                  color: theme.colorScheme.outline,
-                  fontSize: 12.sp,
+          // 底部提示
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 20.h),
+              child: Center(
+                child: Text(
+                  t.common.noMoreData,
+                  style: TextStyle(
+                    color: theme.colorScheme.outline,
+                    fontSize: 12.sp,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   /// 构建“附近营业点”视图
   Widget _buildNearbyTab(ThemeData theme) {
-    return CustomScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      slivers: [
-        // 城市选择
-        SliverToBoxAdapter(child: _buildCitySelector(theme)),
+    return CustomRefreshView(
+      onRefresh: () async {
+        try {
+          final newItems = await _fetchPageData(0, isFrequent: false);
+          _nearbyPagingController.value = PagingState(
+            pages: [newItems],
+            keys: [0],
+            error: null,
+          );
+        } catch (e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(t.device.loadFailed(error: e))),
+            );
+          }
+        }
+      },
+      child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          // 城市选择
+          SliverToBoxAdapter(child: _buildCitySelector(theme)),
 
-        // 顶部提示条
-        SliverToBoxAdapter(
-          child: _buildStatusBanner(
-            text: t.common.refreshing,
-            icon: Icons.refresh,
-            bgColor: Colors.green.shade50,
-            textColor: Colors.green,
-          ),
-        ),
+          // 地图预览区
+          SliverToBoxAdapter(child: _buildMapPreview(theme)),
 
-        // 地图预览区
-        SliverToBoxAdapter(child: _buildMapPreview(theme)),
-
-        // 设备列表 (使用 PagedSliverList)
-        SliverPadding(
-          padding: EdgeInsets.all(16.w),
-          sliver: isp.PagingListener(
-            controller: _nearbyPagingController,
-            builder: (context, state, fetchNextPage) =>
-                isp.PagedSliverList<int, DeviceModel>(
-                  state: state,
-                  fetchNextPage: fetchNextPage,
-                  builderDelegate: isp.PagedChildBuilderDelegate<DeviceModel>(
-                    itemBuilder: (context, item, index) =>
-                        _buildDeviceCard(item, theme),
-                    noItemsFoundIndicatorBuilder: (context) => Center(
-                      child: Text(
-                        t.device.noNearbyDevices,
-                        style: TextStyle(
-                          color: theme.colorScheme.outline,
-                          fontSize: 14.sp,
+          // 设备列表 (使用 PagedSliverList)
+          SliverPadding(
+            padding: EdgeInsets.all(16.w),
+            sliver: PagingListener(
+              controller: _nearbyPagingController,
+              builder: (context, state, fetchNextPage) =>
+                  PagedSliverList<int, DeviceModel>(
+                    state: state,
+                    fetchNextPage: fetchNextPage,
+                    builderDelegate: PagedChildBuilderDelegate<DeviceModel>(
+                      itemBuilder: (context, item, index) =>
+                          _buildDeviceCard(item, theme),
+                      noItemsFoundIndicatorBuilder: (context) => Center(
+                        child: Text(
+                          t.device.noNearbyDevices,
+                          style: TextStyle(
+                            color: theme.colorScheme.outline,
+                            fontSize: 14.sp,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// 构建状态提示条
-  Widget _buildStatusBanner({
-    required String text,
-    required Color bgColor,
-    required Color textColor,
-    IconData? icon,
-  }) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(4.r),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(color: textColor, fontSize: 13.sp),
             ),
           ),
-          if (icon != null) Icon(icon, color: textColor, size: 18.sp),
         ],
       ),
     );
@@ -508,99 +497,152 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
   ///
   /// 展示机器名称、地址、营业时间、距离及在线状态
   Widget _buildDeviceCard(DeviceModel device, ThemeData theme) {
-    return GestureDetector(
-      onTap: () {
-        context.push('${AppRoutes.productList}/${device.id}');
-      },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 24.h),
-        color: Colors.transparent, // 确保点击区域覆盖整个卡片
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+    return Container(
+      margin: EdgeInsets.only(bottom: 16.h),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: theme.shadowColor.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16.r),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16.r),
+          onTap: () {
+            context.push('${AppRoutes.productList}/${device.id}');
+          },
+          child: Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
+                // 顶部：名称和状态
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
                         device.name,
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                           color: theme.colorScheme.onSurface,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        t.device.businessHoursDefault, // 暂无营业时间字段，使用默认
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: theme.colorScheme.outline,
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Text(
+                    ),
+                    SizedBox(width: 8.w),
+                    _buildStatusTag(
+                      device.isOnline ? t.device.online : t.device.offline,
+                      device.isOnline
+                          ? Colors.green
+                          : theme.colorScheme.outline,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 12.h),
+                // 地址和距离
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.location_on_outlined,
+                      size: 16.sp,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                    SizedBox(width: 4.w),
+                    Expanded(
+                      child: Text(
                         device.location.address ?? '',
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.2,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 4.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primaryContainer.withValues(
+                          alpha: 0.3,
+                        ),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Text(
+                        '500m', // 暂无距离字段，使用模拟
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 12.w),
-                Icon(
-                  Icons.navigation_outlined,
-                  size: 24.sp,
-                  color: theme.colorScheme.onSurface,
+                SizedBox(height: 12.h),
+                // 底部：营业时间和操作指引
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time,
+                      size: 14.sp,
+                      color: theme.colorScheme.outline,
+                    ),
+                    SizedBox(width: 4.w),
+                    Text(
+                      t.device.businessHoursDefault,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: theme.colorScheme.outline,
+                      ),
+                    ),
+                    const Spacer(),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 12.sp,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ],
                 ),
               ],
             ),
-            SizedBox(height: 12.h),
-            Row(
-              children: [
-                if (device.isOnline)
-                  _buildStatusTag(t.device.online, Colors.lightGreen)
-                else
-                  _buildStatusTag(t.device.offline, theme.colorScheme.outline),
-                SizedBox(width: 8.w),
-                _buildStatusTag(t.device.enabled, Colors.blue),
-                const Spacer(),
-                Text(
-                  '500m', // 暂无距离字段，使用模拟
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    color: theme.colorScheme.outline,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.h),
-            Divider(height: 1, color: theme.dividerColor),
-          ],
+          ),
         ),
       ),
-    );
+    ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0);
   }
 
   /// 构建状态标签
   Widget _buildStatusTag(String label, Color color) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(6.r),
+        borderRadius: BorderRadius.circular(4.r),
         border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Text(
         label,
         style: TextStyle(
           color: color,
-          fontSize: 11.sp,
+          fontSize: 10.sp,
           fontWeight: FontWeight.bold,
         ),
       ),

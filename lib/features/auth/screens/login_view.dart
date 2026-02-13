@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:formz/formz.dart';
-import 'package:lunchbox/features/auth/entities/password.dart';
-import 'package:lunchbox/features/auth/entities/username.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lunchbox/features/auth/providers/login_notifier.dart';
+import 'package:lunchbox/features/auth/providers/login_state.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/routes.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -18,10 +18,13 @@ class LoginView extends ConsumerStatefulWidget {
 }
 
 class _LoginViewState extends ConsumerState<LoginView> {
+  final _formKey = GlobalKey<FormBuilderState>();
   bool _obscurePassword = true;
 
   void _handleLogin() {
-    ref.read(loginProvider.notifier).login();
+    if (_formKey.currentState?.saveAndValidate() ?? false) {
+      ref.read(loginProvider.notifier).login();
+    }
   }
 
   void _togglePasswordVisibility() {
@@ -57,20 +60,23 @@ class _LoginViewState extends ConsumerState<LoginView> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: IntrinsicHeight(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(height: 24.h),
-                      _buildHeader(colorScheme),
-                      SizedBox(height: 60.h),
-                      _buildLoginForm(colorScheme),
-                      SizedBox(height: 24.h),
-                      _buildLoginButton(colorScheme),
-                      SizedBox(height: 16.h),
-                      _buildFooterLinks(colorScheme),
-                      SizedBox(height: 24.h),
-                    ],
+                  child: FormBuilder(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 24.h),
+                        _buildHeader(colorScheme),
+                        SizedBox(height: 60.h),
+                        _buildLoginForm(colorScheme),
+                        SizedBox(height: 24.h),
+                        _buildLoginButton(colorScheme),
+                        SizedBox(height: 16.h),
+                        _buildFooterLinks(colorScheme),
+                        SizedBox(height: 24.h),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -119,10 +125,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
     return Column(
       children: [
-        TextFormField(
-          initialValue: state.username.value,
+        FormBuilderTextField(
+          name: 'username',
+          initialValue: state.username,
           onChanged: (value) =>
-              ref.read(loginProvider.notifier).usernameChanged(value),
+              ref.read(loginProvider.notifier).usernameChanged(value ?? ''),
           style: TextStyle(
             fontSize: 16.sp,
             color: colorScheme.onSurface,
@@ -133,10 +140,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
             labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
             hintText: t.auth.enterUsernameHint,
             hintStyle: TextStyle(color: colorScheme.outline),
-            errorText:
-                state.username.displayError == UsernameValidationError.empty
-                ? t.auth.enterUsername
-                : null,
             prefixIcon: Icon(Symbols.person, color: colorScheme.primary),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
@@ -154,14 +157,18 @@ class _LoginViewState extends ConsumerState<LoginView> {
               borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
           ),
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(errorText: t.auth.required),
+          ]),
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
         ),
         SizedBox(height: 16.h),
-        TextFormField(
-          initialValue: state.password.value,
+        FormBuilderTextField(
+          name: 'password',
+          initialValue: state.password,
           onChanged: (value) =>
-              ref.read(loginProvider.notifier).passwordChanged(value),
+              ref.read(loginProvider.notifier).passwordChanged(value ?? ''),
           obscureText: _obscurePassword,
           style: TextStyle(
             fontSize: 16.sp,
@@ -173,10 +180,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
             labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
             hintText: t.auth.enterPassword,
             hintStyle: TextStyle(color: colorScheme.outline),
-            errorText:
-                state.password.displayError == PasswordValidationError.empty
-                ? t.auth.enterPassword
-                : null,
             prefixIcon: Icon(Symbols.lock, color: colorScheme.primary),
             suffixIcon: IconButton(
               icon: Icon(
@@ -201,8 +204,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
               borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
           ),
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(errorText: t.auth.required),
+          ]),
           textInputAction: TextInputAction.done,
-          onFieldSubmitted: (_) => _handleLogin(),
+          onSubmitted: (_) => _handleLogin(),
         ),
       ],
     );
@@ -213,7 +219,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     final isLoading = state.status.isInProgress;
 
     return ElevatedButton(
-      onPressed: state.isValid ? _handleLogin : null,
+      onPressed: isLoading ? null : _handleLogin,
       style: ElevatedButton.styleFrom(
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,

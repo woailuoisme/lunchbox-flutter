@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/features/home/entities/lottery_prize.dart';
@@ -49,8 +50,13 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
       ),
       body: Column(
         children: [
-          _buildStatsHeader(lotteryState.prizes.length, colorScheme),
-          _buildTabBar(colorScheme),
+          _buildStatsHeader(lotteryState.prizes.length, colorScheme)
+              .animate()
+              .fadeIn(duration: 600.ms, curve: Curves.easeOut)
+              .slideY(begin: -0.2, end: 0, duration: 600.ms),
+          _buildTabBar(
+            colorScheme,
+          ).animate(delay: 200.ms).fadeIn(duration: 600.ms),
           Expanded(
             child: TabBarView(
               controller: _tabController,
@@ -95,15 +101,23 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.network(
-                'https://img.icons8.com/emoji/96/wrapped-gift.png',
-                width: 32.w,
-                height: 32.w,
+              Icon(
+                Symbols.card_giftcard,
+                size: 32.w,
+                color: colorScheme.primary,
+                fill: 1.0,
               ),
               SizedBox(width: 8.w),
-              Text(
-                t.home.lottery.prizes,
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              Flexible(
+                child: Text(
+                  t.home.lottery.prizes,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -186,7 +200,10 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
       itemCount: prizes.length,
       itemBuilder: (context, index) {
         final prize = prizes[index];
-        return _buildPrizeCard(prize, colorScheme);
+        return _buildPrizeCard(prize, colorScheme)
+            .animate(delay: (index * 50).ms)
+            .fadeIn(duration: 400.ms)
+            .slideX(begin: 0.1, end: 0, curve: Curves.easeOut);
       },
     );
   }

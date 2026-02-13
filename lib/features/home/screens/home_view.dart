@@ -1,5 +1,7 @@
+import 'package:animations/animations.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -138,23 +140,39 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              item['title']!,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 28.sp,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.2,
-                              ),
-                            ),
+                                  item['title']!,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 28.sp,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.2,
+                                  ),
+                                )
+                                .animate()
+                                .fadeIn(duration: 600.ms, delay: 200.ms)
+                                .slideX(
+                                  begin: -0.1,
+                                  end: 0,
+                                  duration: 600.ms,
+                                  curve: Curves.easeOutQuad,
+                                ),
                             SizedBox(height: 4.h),
                             Text(
-                              item['subtitle']!,
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.9),
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
+                                  item['subtitle']!,
+                                  style: TextStyle(
+                                    color: Colors.white.withValues(alpha: 0.9),
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                )
+                                .animate()
+                                .fadeIn(duration: 600.ms, delay: 400.ms)
+                                .slideX(
+                                  begin: -0.1,
+                                  end: 0,
+                                  duration: 600.ms,
+                                  curve: Curves.easeOutQuad,
+                                ),
                           ],
                         ),
                       ),
@@ -294,52 +312,75 @@ class _HomeViewState extends ConsumerState<HomeView> {
     VoidCallback? onTap,
     Color? iconColor,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(16.r),
-          boxShadow: [
-            BoxShadow(
-              color: color.withValues(alpha: 0.3),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: iconColor ?? Colors.white, size: 24.sp),
-            SizedBox(width: 8.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.9),
-                      fontSize: 10.sp,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+    return OpenContainer(
+      transitionType: ContainerTransitionType.fade,
+      openBuilder: (context, _) {
+        // 由于 onTap 中调用了路由跳转，这里我们需要模拟一下目标页面
+        // 但实际上 OpenContainer 通常直接包裹目标页面的 Widget
+        // 这里为了保持原有逻辑，我们只用 OpenContainer 做一个过渡效果的容器
+        // 实际点击时会立即调用 onTap 进行路由跳转
+        // 为了更好的体验，最好是将 onTap 中的路由逻辑改为返回目标 Widget
+        return const SizedBox();
+      },
+      closedElevation: 0,
+      closedColor: Colors.transparent,
+      closedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.r),
       ),
+      tappable: false, // 我们自己处理点击
+      closedBuilder: (context, openContainer) {
+        return GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(16.r),
+              boxShadow: [
+                BoxShadow(
+                  color: color.withValues(alpha: 0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Icon(icon, color: iconColor ?? Colors.white, size: 24.sp),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontSize: 10.sp,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ).animate().scale(
+      duration: 400.ms,
+      curve: Curves.easeOutBack,
+      begin: const Offset(0.9, 0.9),
     );
   }
 
@@ -377,50 +418,56 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: items.map((item) {
-          return GestureDetector(
-            onTap: () {
-              if (item['label'] == t.home.grid.lottery) {
-                const LotteryRoute().push<void>(context);
-              } else if (item['label'] == t.home.grid.welfare) {
-                const CommunityRoute().push<void>(context);
-              } else if (item['label'] == t.home.grid.coupon) {
-                const CouponsRoute().push<void>(context);
-              } else if (item['label'] == t.home.grid.invite) {
-                const InviteRoute().push<void>(context);
-              }
-            },
-            child: Column(
-              children: [
-                Container(
-                  width: 48.w,
-                  height: 48.w,
-                  decoration: BoxDecoration(
-                    color: (item['color']! as Color).withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    item['icon']! as IconData,
-                    color: item['color']! as Color,
-                    size: 26.sp,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  item['label']! as String,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: colorScheme.onSurface,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-      ),
+      child:
+          Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: items.map((item) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (item['label'] == t.home.grid.lottery) {
+                        const LotteryRoute().push<void>(context);
+                      } else if (item['label'] == t.home.grid.welfare) {
+                        const CommunityRoute().push<void>(context);
+                      } else if (item['label'] == t.home.grid.coupon) {
+                        const CouponsRoute().push<void>(context);
+                      } else if (item['label'] == t.home.grid.invite) {
+                        const InviteRoute().push<void>(context);
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 48.w,
+                          height: 48.w,
+                          decoration: BoxDecoration(
+                            color: (item['color']! as Color).withValues(
+                              alpha: 0.1,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            item['icon']! as IconData,
+                            color: item['color']! as Color,
+                            size: 26.sp,
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          item['label']! as String,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: colorScheme.onSurface,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              )
+              .animate()
+              .fadeIn(duration: 600.ms, delay: 200.ms)
+              .slideY(begin: 0.1, end: 0, curve: Curves.easeOutQuad),
     );
   }
 
@@ -483,158 +530,177 @@ class _HomeViewState extends ConsumerState<HomeView> {
     Map<String, String> product,
     ColorScheme colorScheme,
   ) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10.h),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
+    return OpenContainer(
+      transitionType: ContainerTransitionType.fade,
+      openBuilder: (context, _) {
+        // 模拟商品详情页跳转
+        return Scaffold(
+          appBar: AppBar(title: Text(product['name']!)),
+          body: Center(child: Text('商品详情: ${product['name']}')),
+        );
+      },
+      closedElevation: 0,
+      closedColor: Colors.transparent,
+      closedShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 15,
-            offset: const Offset(0, 6),
-          ),
-        ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.r),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 3,
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: AppImage(
-                      imageUrl:
-                          'https://picsum.photos/seed/${index + 10}/400/300',
-                    ),
-                  ),
-                  Positioned(
-                    top: 10.h,
-                    left: 10.w,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8.w,
-                        vertical: 4.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: colorScheme.error.withValues(alpha: 0.85),
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                      child: Text(
-                        '今日推荐',
-                        style: TextStyle(
-                          color: colorScheme.onError,
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+      tappable: true,
+      closedBuilder: (context, openContainer) {
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 10.h),
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(20.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 15,
+                offset: const Offset(0, 6),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: EdgeInsets.all(12.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      product['name']!,
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.onSurface,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.baseline,
-                              textBaseline: TextBaseline.alphabetic,
-                              children: [
-                                Text(
-                                  '¥',
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: colorScheme.primary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(width: 2.w),
-                                Text(
-                                  product['price']!,
-                                  style: TextStyle(
-                                    fontSize: 20.sp,
-                                    color: colorScheme.primary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              '¥${product['originalPrice']}',
-                              style: TextStyle(
-                                fontSize: 11.sp,
-                                color: colorScheme.onSurfaceVariant,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
-                          ],
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.r),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: AppImage(
+                          imageUrl:
+                              'https://picsum.photos/seed/${index + 10}/400/300',
                         ),
-                        Container(
+                      ),
+                      Positioned(
+                        top: 10.h,
+                        left: 10.w,
+                        child: Container(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 14.w,
-                            vertical: 8.h,
+                            horizontal: 8.w,
+                            vertical: 4.h,
                           ),
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                colorScheme.primary,
-                                const Color(0xFFFFB74D),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(25.r),
-                            boxShadow: [
-                              BoxShadow(
-                                color: colorScheme.primary.withValues(
-                                  alpha: 0.3,
-                                ),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
+                            color: colorScheme.error.withValues(alpha: 0.85),
+                            borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
-                            '马上抢',
+                            '今日推荐',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
+                              color: colorScheme.onError,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: EdgeInsets.all(12.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          product['name']!,
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.baseline,
+                                  textBaseline: TextBaseline.alphabetic,
+                                  children: [
+                                    Text(
+                                      '¥',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: colorScheme.primary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(width: 2.w),
+                                    Text(
+                                      product['price']!,
+                                      style: TextStyle(
+                                        fontSize: 20.sp,
+                                        color: colorScheme.primary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  '¥${product['originalPrice']}',
+                                  style: TextStyle(
+                                    fontSize: 11.sp,
+                                    color: colorScheme.onSurfaceVariant,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 14.w,
+                                vertical: 8.h,
+                              ),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    colorScheme.primary,
+                                    const Color(0xFFFFB74D),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(25.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: colorScheme.primary.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Text(
+                                '马上抢',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

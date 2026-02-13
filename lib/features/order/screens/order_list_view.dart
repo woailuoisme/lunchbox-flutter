@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -289,18 +290,25 @@ class _OrderListViewState extends ConsumerState<OrderListView>
   Widget _buildEmptyState() {
     final theme = Theme.of(context);
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.receipt_long, size: 64.sp, color: theme.disabledColor),
-          SizedBox(height: 16.h),
-          Text(
-            t.order.noOrders,
-            style: TextStyle(color: theme.hintColor, fontSize: 14.sp),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.receipt_long, size: 64.sp, color: theme.disabledColor),
+              SizedBox(height: 16.h),
+              Text(
+                t.order.noOrders,
+                style: TextStyle(color: theme.hintColor, fontSize: 14.sp),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        )
+        .animate()
+        .fadeIn(duration: 400.ms)
+        .scale(
+          begin: const Offset(0.9, 0.9),
+          curve: Curves.easeOutBack,
+          duration: 400.ms,
+        );
   }
 
   Widget _buildOrderCard(OrderModel order) {
@@ -314,205 +322,225 @@ class _OrderListViewState extends ConsumerState<OrderListView>
     final statusColor = order.status.color;
 
     return GestureDetector(
-      onTap: () {
-        context.push(
-          '${AppRoutes.orderDetail}/${order.id}',
-          extra: {'order': order},
-        );
-      },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 16.h),
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: theme.cardColor,
-          borderRadius: BorderRadius.circular(16.r),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      if (order.storeName != null) ...[
-                        Icon(Icons.store, size: 16.sp, color: theme.hintColor),
-                        SizedBox(width: 4.w),
-                        Expanded(
-                          child: Text(
-                            order.storeName!,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                              color: theme.textTheme.bodyLarge?.color,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        SizedBox(width: 8.w),
-                      ],
-                      if (order.storeName == null)
-                        Text(
-                          '${t.order.orderIdLabel}${order.id.substring(order.id.length > 8 ? order.id.length - 8 : 0)}',
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            color: theme.hintColor,
-                          ),
-                        ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 12.sp,
-                        color: theme.hintColor,
-                      ),
-                    ],
-                  ),
-                ),
-                Text(
-                  statusText,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: statusColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+          onTap: () {
+            context.push(
+              '${AppRoutes.orderDetail}/${order.id}',
+              extra: {'order': order},
+            );
+          },
+          child: Container(
+            margin: EdgeInsets.only(bottom: 16.h),
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: BorderRadius.circular(16.r),
             ),
-            Divider(height: 24.h, color: theme.dividerColor),
-
-            // Content
-            Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8.r),
-                  child: Image.network(
-                    item.product.imageUrl,
-                    width: 80.w,
-                    height: 80.w,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      width: 80.w,
-                      height: 80.w,
-                      color: theme.disabledColor,
-                      child: const Icon(Icons.image_not_supported),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // Header
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Row(
                         children: [
-                          Expanded(
-                            child: Text(
-                              item.product.name,
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.bold,
-                                color: theme.textTheme.bodyLarge?.color,
+                          if (order.storeName != null) ...[
+                            Icon(
+                              Icons.store,
+                              size: 16.sp,
+                              color: theme.hintColor,
+                            ),
+                            SizedBox(width: 4.w),
+                            Expanded(
+                              child: Text(
+                                order.storeName!,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.textTheme.bodyLarge?.color,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                          Text(
-                            '¥${item.product.price}',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                              color: theme.textTheme.bodyLarge?.color,
+                            SizedBox(width: 8.w),
+                          ],
+                          if (order.storeName == null)
+                            Text(
+                              '${t.order.orderIdLabel}${order.id.substring(order.id.length > 8 ? order.id.length - 8 : 0)}',
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                color: theme.hintColor,
+                              ),
                             ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 12.sp,
+                            color: theme.hintColor,
                           ),
                         ],
                       ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        t.order.specs(specs: item.product.specifications ?? ''),
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: theme.hintColor,
+                    ),
+                    Text(
+                      statusText,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: statusColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(height: 24.h, color: theme.dividerColor),
+
+                // Content
+                Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: Image.network(
+                        item.product.imageUrl,
+                        width: 80.w,
+                        height: 80.w,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          width: 80.w,
+                          height: 80.w,
+                          color: theme.disabledColor,
+                          child: const Icon(Icons.image_not_supported),
                         ),
                       ),
-                      SizedBox(height: 20.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  item.product.name,
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.textTheme.bodyLarge?.color,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Text(
+                                '¥${item.product.price}',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.textTheme.bodyLarge?.color,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 4.h),
                           Text(
-                            t.order.summary(count: order.items.length),
+                            t.order.specs(
+                              specs: item.product.specifications ?? '',
+                            ),
                             style: TextStyle(
                               fontSize: 12.sp,
                               color: theme.hintColor,
                             ),
                           ),
-                          Text(
-                            '¥${order.totalAmount}',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
-                              color: theme.textTheme.bodyLarge?.color,
-                            ),
+                          SizedBox(height: 20.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                t.order.summary(count: order.items.length),
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: theme.hintColor,
+                                ),
+                              ),
+                              Text(
+                                '¥${order.totalAmount}',
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.textTheme.bodyLarge?.color,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+
+                // Pickup Hint / Remark
+                if (order.pickupHint != null) ...[
+                  SizedBox(height: 12.h),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 8.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(4.r),
+                    ),
+                    child: Text(
+                      order.pickupHint!,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
                   ),
+                ],
+                if (order.remark != null && order.remark!.isNotEmpty) ...[
+                  SizedBox(height: 12.h),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 8.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.errorContainer,
+                      borderRadius: BorderRadius.circular(4.r),
+                    ),
+                    child: Text(
+                      order.remark!,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: theme.colorScheme.error,
+                      ),
+                    ),
+                  ),
+                ],
+
+                // Action Buttons
+                SizedBox(height: 16.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: _buildActionButtons(context, order),
                 ),
               ],
             ),
-
-            // Pickup Hint / Remark
-            if (order.pickupHint != null) ...[
-              SizedBox(height: 12.h),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(4.r),
-                ),
-                child: Text(
-                  order.pickupHint!,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
-              ),
-            ],
-            if (order.remark != null && order.remark!.isNotEmpty) ...[
-              SizedBox(height: 12.h),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.errorContainer,
-                  borderRadius: BorderRadius.circular(4.r),
-                ),
-                child: Text(
-                  order.remark!,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: theme.colorScheme.error,
-                  ),
-                ),
-              ),
-            ],
-
-            // Action Buttons
-            SizedBox(height: 16.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: _buildActionButtons(context, order),
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        )
+        .animate()
+        .fadeIn(duration: 300.ms)
+        .slideY(
+          begin: 0.1,
+          end: 0,
+          curve: Curves.easeOutQuad,
+          duration: 300.ms,
+        );
   }
 
   List<Widget> _buildActionButtons(BuildContext context, OrderModel order) {

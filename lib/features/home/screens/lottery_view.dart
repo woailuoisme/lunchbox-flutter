@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -137,10 +138,11 @@ class _LotteryViewState extends ConsumerState<LotteryView>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.network(
-                'https://img.icons8.com/emoji/96/party-popper.png',
-                width: 80.w,
-                height: 80.w,
+              Icon(
+                Symbols.celebration,
+                size: 80.w,
+                color: Colors.amber,
+                fill: 1.0,
               ),
               SizedBox(height: 16.h),
               Text(
@@ -197,19 +199,35 @@ class _LotteryViewState extends ConsumerState<LotteryView>
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHeader(lotteryState.remainingSpins, colorScheme),
+            _buildHeader(lotteryState.remainingSpins, colorScheme)
+                .animate()
+                .fadeIn(duration: 600.ms, curve: Curves.easeOut)
+                .slideY(begin: -0.2, end: 0, duration: 600.ms),
             SizedBox(height: 20.h),
             _buildWheelSection(
               lotteryState.isSpinning,
               lotteryNotifier.wheelItems,
               colorScheme,
+            ).animate().scale(
+              duration: 800.ms,
+              curve: Curves.elasticOut,
+              begin: const Offset(0.8, 0.8),
             ),
             SizedBox(height: 30.h),
-            _buildPrizeInfo(lotteryNotifier.wheelItems, colorScheme),
+            _buildPrizeInfo(lotteryNotifier.wheelItems, colorScheme)
+                .animate(delay: 200.ms)
+                .fadeIn(duration: 600.ms)
+                .slideY(begin: 0.1, end: 0),
             SizedBox(height: 20.h),
-            _buildRules(colorScheme),
+            _buildRules(colorScheme)
+                .animate(delay: 400.ms)
+                .fadeIn(duration: 600.ms)
+                .slideY(begin: 0.1, end: 0),
             SizedBox(height: 30.h),
-            _buildBottomButtons(colorScheme),
+            _buildBottomButtons(colorScheme)
+                .animate(delay: 600.ms)
+                .fadeIn(duration: 600.ms)
+                .slideY(begin: 0.2, end: 0),
             SizedBox(height: 40.h),
           ],
         ),
@@ -235,10 +253,11 @@ class _LotteryViewState extends ConsumerState<LotteryView>
       ),
       child: Row(
         children: [
-          Image.network(
-            'https://img.icons8.com/emoji/96/wrapped-gift.png',
-            width: 48.w,
-            height: 48.w,
+          Icon(
+            Symbols.card_giftcard,
+            size: 48.w,
+            color: colorScheme.primary,
+            fill: 1.0,
           ),
           SizedBox(width: 12.w),
           Expanded(
@@ -260,18 +279,24 @@ class _LotteryViewState extends ConsumerState<LotteryView>
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-            decoration: BoxDecoration(
-              color: colorScheme.primary,
-              borderRadius: BorderRadius.circular(20.r),
-            ),
-            child: Text(
-              '剩余次数: $remainingSpins',
-              style: TextStyle(
-                color: colorScheme.onPrimary,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
+          SizedBox(width: 8.w),
+          Flexible(
+            flex: 0,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+              decoration: BoxDecoration(
+                color: colorScheme.primary,
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              child: Text(
+                '剩余次数: $remainingSpins',
+                style: TextStyle(
+                  color: colorScheme.onPrimary,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
@@ -375,41 +400,85 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   Widget _buildPrizeInfo(List<String> prizes, ColorScheme colorScheme) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '奖品说明',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 12.h),
-          ...prizes.map(
-            (prize) => Padding(
-              padding: EdgeInsets.only(bottom: 8.h),
-              child: Row(
-                children: [
-                  Icon(
-                    Symbols.star,
-                    color: Colors.amber,
-                    size: 20.w,
-                    fill: 1.0,
-                  ),
-                  SizedBox(width: 8.w),
-                  Text(
-                    prize,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: colorScheme.onSurface,
-                    ),
-                  ),
-                ],
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8.w),
+                decoration: BoxDecoration(
+                  color: Colors.amber.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Symbols.trophy,
+                  color: Colors.amber,
+                  size: 24.w,
+                  fill: 1.0,
+                ),
               ),
-            ),
+              SizedBox(width: 12.w),
+              Text(
+                '奖品一览',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          Wrap(
+            spacing: 12.w,
+            runSpacing: 12.h,
+            children: prizes.map((prize) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                decoration: BoxDecoration(
+                  color: colorScheme.surfaceContainerHighest.withValues(
+                    alpha: 0.5,
+                  ),
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color: colorScheme.outline.withValues(alpha: 0.1),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Symbols.star,
+                      size: 16.w,
+                      color: Colors.orange,
+                      fill: 1.0,
+                    ),
+                    SizedBox(width: 8.w),
+                    Text(
+                      prize,
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w500,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
           ),
         ],
       ),
@@ -420,55 +489,86 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   Widget _buildRules(ColorScheme colorScheme) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '抽奖规则',
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              Container(
+                padding: EdgeInsets.all(8.w),
+                decoration: BoxDecoration(
+                  color: colorScheme.primary.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Symbols.description,
+                  color: colorScheme.primary,
+                  size: 24.w,
+                  fill: 1.0,
+                ),
               ),
+              SizedBox(width: 12.w),
               Text(
-                '收起',
-                style: TextStyle(fontSize: 12.sp, color: colorScheme.primary),
+                '活动规则',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
+                ),
               ),
             ],
           ),
-          SizedBox(height: 12.h),
-          _buildRuleItem('每日有免费抽奖次数，次数用完后可领取任务获得', colorScheme),
-          _buildRuleItem('优惠券48小时内有效，乖乖币自动到账', colorScheme),
-          _buildRuleItem('活动最终解释权归平台所有', colorScheme),
+          SizedBox(height: 16.h),
+          _buildRuleItem(1, '每日有免费抽奖次数，次数用完后可领取任务获得', colorScheme),
+          _buildRuleItem(2, '优惠券48小时内有效，乖乖币自动到账', colorScheme),
+          _buildRuleItem(3, '活动最终解释权归平台所有', colorScheme),
         ],
       ),
     );
   }
 
-  Widget _buildRuleItem(String text, ColorScheme colorScheme) {
+  Widget _buildRuleItem(int index, String text, ColorScheme colorScheme) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 6.h),
+      padding: EdgeInsets.only(bottom: 12.h),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '• ',
-            style: TextStyle(
-              color: colorScheme.onSurfaceVariant,
-              fontSize: 14.sp,
+          Container(
+            width: 20.w,
+            height: 20.w,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: colorScheme.primary.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Text(
+              '$index',
+              style: TextStyle(
+                color: colorScheme.primary,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
+          SizedBox(width: 12.w),
           Expanded(
             child: Text(
               text,
               style: TextStyle(
                 color: colorScheme.onSurfaceVariant,
-                fontSize: 12.sp,
+                fontSize: 13.sp,
                 height: 1.5,
               ),
             ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
@@ -12,21 +14,18 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
-  final _emailController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormBuilderState>();
   bool _isLoading = false;
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    super.dispose();
-  }
 
   /// 处理发送重置链接逻辑
   Future<void> _handleResetPassword() async {
-    if (!_formKey.currentState!.validate()) {
+    if (!(_formKey.currentState?.saveAndValidate() ?? false)) {
       return;
     }
+
+    // 获取输入值
+    final email = _formKey.currentState?.value['email'];
+    debugPrint('Reset password for: $email');
 
     setState(() => _isLoading = true);
 
@@ -85,7 +84,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: IntrinsicHeight(
-                  child: Form(
+                  child: FormBuilder(
                     key: _formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -136,8 +135,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   }
 
   Widget _buildForm(ColorScheme colorScheme) {
-    return TextFormField(
-      controller: _emailController,
+    return FormBuilderTextField(
+      name: 'email',
       style: TextStyle(
         fontSize: 16.sp,
         color: colorScheme.onSurface,
@@ -162,9 +161,12 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
       ),
-      validator: (v) => v?.isNotEmpty ?? false ? null : t.auth.required,
+      validator: FormBuilderValidators.compose([
+        FormBuilderValidators.required(errorText: t.auth.required),
+      ]),
+      keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.done,
-      onFieldSubmitted: (_) => _handleResetPassword(),
+      onSubmitted: (_) => _handleResetPassword(),
     );
   }
 

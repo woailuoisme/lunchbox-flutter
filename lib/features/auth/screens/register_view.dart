@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lunchbox/features/auth/providers/auth_notifier.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -14,37 +16,31 @@ class RegisterView extends ConsumerStatefulWidget {
 }
 
 class _RegisterViewState extends ConsumerState<RegisterView> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _nicknameController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
+  final _formKey = GlobalKey<FormBuilderState>();
   bool _isLoading = false;
+  bool _obscurePassword = true;
 
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    _nicknameController.dispose();
-    super.dispose();
+  void _togglePasswordVisibility() {
+    setState(() => _obscurePassword = !_obscurePassword);
   }
 
   /// 处理注册逻辑
   Future<void> _handleRegister() async {
-    if (!_formKey.currentState!.validate()) {
+    if (!(_formKey.currentState?.saveAndValidate() ?? false)) {
       return;
     }
+
+    final values = _formKey.currentState!.value;
+    final username = values['username'] as String;
+    final password = values['password'] as String;
+    final nickname = values['nickname'] as String;
 
     setState(() => _isLoading = true);
 
     try {
       await ref
           .read(authProvider.notifier)
-          .register(
-            _usernameController.text.trim(),
-            _passwordController.text,
-            _nicknameController.text.trim(),
-          );
+          .register(username.trim(), password, nickname.trim());
       if (mounted) {
         toastification.show(
           context: context,
@@ -97,7 +93,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: IntrinsicHeight(
-                  child: Form(
+                  child: FormBuilder(
                     key: _formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -148,8 +144,8 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   Widget _buildForm(ColorScheme colorScheme) {
     return Column(
       children: [
-        TextFormField(
-          controller: _usernameController,
+        FormBuilderTextField(
+          name: 'username',
           style: TextStyle(
             fontSize: 16.sp,
             color: colorScheme.onSurface,
@@ -177,12 +173,14 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
           ),
-          validator: (v) => v?.isNotEmpty ?? false ? null : t.auth.required,
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(errorText: t.auth.required),
+          ]),
           textInputAction: TextInputAction.next,
         ),
         SizedBox(height: 16.h),
-        TextFormField(
-          controller: _nicknameController,
+        FormBuilderTextField(
+          name: 'nickname',
           style: TextStyle(
             fontSize: 16.sp,
             color: colorScheme.onSurface,
@@ -210,13 +208,15 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
           ),
-          validator: (v) => v?.isNotEmpty ?? false ? null : t.auth.required,
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(errorText: t.auth.required),
+          ]),
           textInputAction: TextInputAction.next,
         ),
         SizedBox(height: 16.h),
-        TextFormField(
-          controller: _passwordController,
-          obscureText: true,
+        FormBuilderTextField(
+          name: 'password',
+          obscureText: _obscurePassword,
           style: TextStyle(
             fontSize: 16.sp,
             color: colorScheme.onSurface,
@@ -228,6 +228,13 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
             hintText: t.auth.enterPassword,
             hintStyle: TextStyle(color: colorScheme.outline),
             prefixIcon: Icon(Symbols.lock, color: colorScheme.primary),
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscurePassword ? Symbols.visibility : Symbols.visibility_off,
+                color: colorScheme.onSurfaceVariant,
+              ),
+              onPressed: _togglePasswordVisibility,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide(color: colorScheme.outlineVariant),
@@ -244,9 +251,12 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
           ),
-          validator: (v) => v?.isNotEmpty ?? false ? null : t.auth.required,
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(errorText: t.auth.required),
+            FormBuilderValidators.minLength(6, errorText: '密码长度不能少于6位'),
+          ]),
           textInputAction: TextInputAction.done,
-          onFieldSubmitted: (_) => _handleRegister(),
+          onSubmitted: (_) => _handleRegister(),
         ),
       ],
     );

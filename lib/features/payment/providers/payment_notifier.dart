@@ -43,7 +43,9 @@ class PaymentNotifier extends _$PaymentNotifier {
   /// 初始化支付面板
   Future<void> initializePaymentSheet() async {
     // 如果已经 dispose，则不再执行
-    if (!ref.exists(paymentProvider(order))) return;
+    if (!ref.exists(paymentProvider(order))) {
+      return;
+    }
 
     try {
       state = state.copyWith(isLoading: true, errorMessage: null);
@@ -59,11 +61,15 @@ class PaymentNotifier extends _$PaymentNotifier {
           .run();
 
       // 再次检查是否 dispose
-      if (!ref.exists(paymentProvider(order))) return;
+      if (!ref.exists(paymentProvider(order))) {
+        return;
+      }
 
       await result.fold(
         (failure) async {
-          if (!ref.exists(paymentProvider(order))) return;
+          if (!ref.exists(paymentProvider(order))) {
+            return;
+          }
           LoggerUtils.e(
             'PaymentNotifier: Failed to initialize payment sheet',
             failure,
@@ -74,7 +80,9 @@ class PaymentNotifier extends _$PaymentNotifier {
           );
         },
         (data) async {
-          if (!ref.exists(paymentProvider(order))) return;
+          if (!ref.exists(paymentProvider(order))) {
+            return;
+          }
 
           // 设置 Stripe publishableKey
           if (data['publishableKey'] != null) {
@@ -92,14 +100,18 @@ class PaymentNotifier extends _$PaymentNotifier {
             ),
           );
 
-          if (!ref.exists(paymentProvider(order))) return;
+          if (!ref.exists(paymentProvider(order))) {
+            return;
+          }
 
           state = state.copyWith(isPaymentSheetReady: true, isLoading: false);
           LoggerUtils.i('PaymentNotifier: Payment sheet initialized');
         },
       );
     } catch (e) {
-      if (!ref.exists(paymentProvider(order))) return;
+      if (!ref.exists(paymentProvider(order))) {
+        return;
+      }
       LoggerUtils.e('PaymentNotifier: Failed to initialize payment sheet', e);
       state = state.copyWith(isLoading: false, errorMessage: '支付初始化失败: $e');
     }
