@@ -44,6 +44,17 @@ class $CartItemsTable extends CartItems
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _productDataMeta = const VerificationMeta(
+    'productData',
+  );
+  @override
+  late final GeneratedColumn<String> productData = GeneratedColumn<String>(
+    'product_data',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _quantityMeta = const VerificationMeta(
     'quantity',
   );
@@ -66,6 +77,21 @@ class $CartItemsTable extends CartItems
     true,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isSelectedMeta = const VerificationMeta(
+    'isSelected',
+  );
+  @override
+  late final GeneratedColumn<bool> isSelected = GeneratedColumn<bool>(
+    'is_selected',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_selected" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -96,8 +122,10 @@ class $CartItemsTable extends CartItems
     id,
     deviceId,
     productId,
+    productData,
     quantity,
     attributes,
+    isSelected,
     createdAt,
     updatedAt,
   ];
@@ -132,6 +160,17 @@ class $CartItemsTable extends CartItems
     } else if (isInserting) {
       context.missing(_productIdMeta);
     }
+    if (data.containsKey('product_data')) {
+      context.handle(
+        _productDataMeta,
+        productData.isAcceptableOrUnknown(
+          data['product_data']!,
+          _productDataMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_productDataMeta);
+    }
     if (data.containsKey('quantity')) {
       context.handle(
         _quantityMeta,
@@ -142,6 +181,12 @@ class $CartItemsTable extends CartItems
       context.handle(
         _attributesMeta,
         attributes.isAcceptableOrUnknown(data['attributes']!, _attributesMeta),
+      );
+    }
+    if (data.containsKey('is_selected')) {
+      context.handle(
+        _isSelectedMeta,
+        isSelected.isAcceptableOrUnknown(data['is_selected']!, _isSelectedMeta),
       );
     }
     if (data.containsKey('created_at')) {
@@ -177,6 +222,10 @@ class $CartItemsTable extends CartItems
         DriftSqlType.string,
         data['${effectivePrefix}product_id'],
       )!,
+      productData: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_data'],
+      )!,
       quantity: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}quantity'],
@@ -185,6 +234,10 @@ class $CartItemsTable extends CartItems
         DriftSqlType.string,
         data['${effectivePrefix}attributes'],
       ),
+      isSelected: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_selected'],
+      )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -206,16 +259,20 @@ class CartItem extends DataClass implements Insertable<CartItem> {
   final int id;
   final String deviceId;
   final String productId;
+  final String productData;
   final int quantity;
   final String? attributes;
+  final bool isSelected;
   final DateTime createdAt;
   final DateTime updatedAt;
   const CartItem({
     required this.id,
     required this.deviceId,
     required this.productId,
+    required this.productData,
     required this.quantity,
     this.attributes,
+    required this.isSelected,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -225,10 +282,12 @@ class CartItem extends DataClass implements Insertable<CartItem> {
     map['id'] = Variable<int>(id);
     map['device_id'] = Variable<String>(deviceId);
     map['product_id'] = Variable<String>(productId);
+    map['product_data'] = Variable<String>(productData);
     map['quantity'] = Variable<int>(quantity);
     if (!nullToAbsent || attributes != null) {
       map['attributes'] = Variable<String>(attributes);
     }
+    map['is_selected'] = Variable<bool>(isSelected);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
@@ -239,10 +298,12 @@ class CartItem extends DataClass implements Insertable<CartItem> {
       id: Value(id),
       deviceId: Value(deviceId),
       productId: Value(productId),
+      productData: Value(productData),
       quantity: Value(quantity),
       attributes: attributes == null && nullToAbsent
           ? const Value.absent()
           : Value(attributes),
+      isSelected: Value(isSelected),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -257,8 +318,10 @@ class CartItem extends DataClass implements Insertable<CartItem> {
       id: serializer.fromJson<int>(json['id']),
       deviceId: serializer.fromJson<String>(json['deviceId']),
       productId: serializer.fromJson<String>(json['productId']),
+      productData: serializer.fromJson<String>(json['productData']),
       quantity: serializer.fromJson<int>(json['quantity']),
       attributes: serializer.fromJson<String?>(json['attributes']),
+      isSelected: serializer.fromJson<bool>(json['isSelected']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -270,8 +333,10 @@ class CartItem extends DataClass implements Insertable<CartItem> {
       'id': serializer.toJson<int>(id),
       'deviceId': serializer.toJson<String>(deviceId),
       'productId': serializer.toJson<String>(productId),
+      'productData': serializer.toJson<String>(productData),
       'quantity': serializer.toJson<int>(quantity),
       'attributes': serializer.toJson<String?>(attributes),
+      'isSelected': serializer.toJson<bool>(isSelected),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -281,16 +346,20 @@ class CartItem extends DataClass implements Insertable<CartItem> {
     int? id,
     String? deviceId,
     String? productId,
+    String? productData,
     int? quantity,
     Value<String?> attributes = const Value.absent(),
+    bool? isSelected,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => CartItem(
     id: id ?? this.id,
     deviceId: deviceId ?? this.deviceId,
     productId: productId ?? this.productId,
+    productData: productData ?? this.productData,
     quantity: quantity ?? this.quantity,
     attributes: attributes.present ? attributes.value : this.attributes,
+    isSelected: isSelected ?? this.isSelected,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
@@ -299,10 +368,16 @@ class CartItem extends DataClass implements Insertable<CartItem> {
       id: data.id.present ? data.id.value : this.id,
       deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
       productId: data.productId.present ? data.productId.value : this.productId,
+      productData: data.productData.present
+          ? data.productData.value
+          : this.productData,
       quantity: data.quantity.present ? data.quantity.value : this.quantity,
       attributes: data.attributes.present
           ? data.attributes.value
           : this.attributes,
+      isSelected: data.isSelected.present
+          ? data.isSelected.value
+          : this.isSelected,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -314,8 +389,10 @@ class CartItem extends DataClass implements Insertable<CartItem> {
           ..write('id: $id, ')
           ..write('deviceId: $deviceId, ')
           ..write('productId: $productId, ')
+          ..write('productData: $productData, ')
           ..write('quantity: $quantity, ')
           ..write('attributes: $attributes, ')
+          ..write('isSelected: $isSelected, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -327,8 +404,10 @@ class CartItem extends DataClass implements Insertable<CartItem> {
     id,
     deviceId,
     productId,
+    productData,
     quantity,
     attributes,
+    isSelected,
     createdAt,
     updatedAt,
   );
@@ -339,8 +418,10 @@ class CartItem extends DataClass implements Insertable<CartItem> {
           other.id == this.id &&
           other.deviceId == this.deviceId &&
           other.productId == this.productId &&
+          other.productData == this.productData &&
           other.quantity == this.quantity &&
           other.attributes == this.attributes &&
+          other.isSelected == this.isSelected &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -349,16 +430,20 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
   final Value<int> id;
   final Value<String> deviceId;
   final Value<String> productId;
+  final Value<String> productData;
   final Value<int> quantity;
   final Value<String?> attributes;
+  final Value<bool> isSelected;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const CartItemsCompanion({
     this.id = const Value.absent(),
     this.deviceId = const Value.absent(),
     this.productId = const Value.absent(),
+    this.productData = const Value.absent(),
     this.quantity = const Value.absent(),
     this.attributes = const Value.absent(),
+    this.isSelected = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
@@ -366,18 +451,23 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
     this.id = const Value.absent(),
     required String deviceId,
     required String productId,
+    required String productData,
     this.quantity = const Value.absent(),
     this.attributes = const Value.absent(),
+    this.isSelected = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   }) : deviceId = Value(deviceId),
-       productId = Value(productId);
+       productId = Value(productId),
+       productData = Value(productData);
   static Insertable<CartItem> custom({
     Expression<int>? id,
     Expression<String>? deviceId,
     Expression<String>? productId,
+    Expression<String>? productData,
     Expression<int>? quantity,
     Expression<String>? attributes,
+    Expression<bool>? isSelected,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
   }) {
@@ -385,8 +475,10 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
       if (id != null) 'id': id,
       if (deviceId != null) 'device_id': deviceId,
       if (productId != null) 'product_id': productId,
+      if (productData != null) 'product_data': productData,
       if (quantity != null) 'quantity': quantity,
       if (attributes != null) 'attributes': attributes,
+      if (isSelected != null) 'is_selected': isSelected,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -396,8 +488,10 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
     Value<int>? id,
     Value<String>? deviceId,
     Value<String>? productId,
+    Value<String>? productData,
     Value<int>? quantity,
     Value<String?>? attributes,
+    Value<bool>? isSelected,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
   }) {
@@ -405,8 +499,10 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
       id: id ?? this.id,
       deviceId: deviceId ?? this.deviceId,
       productId: productId ?? this.productId,
+      productData: productData ?? this.productData,
       quantity: quantity ?? this.quantity,
       attributes: attributes ?? this.attributes,
+      isSelected: isSelected ?? this.isSelected,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -424,11 +520,17 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
     if (productId.present) {
       map['product_id'] = Variable<String>(productId.value);
     }
+    if (productData.present) {
+      map['product_data'] = Variable<String>(productData.value);
+    }
     if (quantity.present) {
       map['quantity'] = Variable<int>(quantity.value);
     }
     if (attributes.present) {
       map['attributes'] = Variable<String>(attributes.value);
+    }
+    if (isSelected.present) {
+      map['is_selected'] = Variable<bool>(isSelected.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -445,8 +547,10 @@ class CartItemsCompanion extends UpdateCompanion<CartItem> {
           ..write('id: $id, ')
           ..write('deviceId: $deviceId, ')
           ..write('productId: $productId, ')
+          ..write('productData: $productData, ')
           ..write('quantity: $quantity, ')
           ..write('attributes: $attributes, ')
+          ..write('isSelected: $isSelected, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -473,8 +577,10 @@ typedef $$CartItemsTableCreateCompanionBuilder =
       Value<int> id,
       required String deviceId,
       required String productId,
+      required String productData,
       Value<int> quantity,
       Value<String?> attributes,
+      Value<bool> isSelected,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
@@ -483,8 +589,10 @@ typedef $$CartItemsTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> deviceId,
       Value<String> productId,
+      Value<String> productData,
       Value<int> quantity,
       Value<String?> attributes,
+      Value<bool> isSelected,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
@@ -513,6 +621,11 @@ class $$CartItemsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get productData => $composableBuilder(
+    column: $table.productData,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<int> get quantity => $composableBuilder(
     column: $table.quantity,
     builder: (column) => ColumnFilters(column),
@@ -520,6 +633,11 @@ class $$CartItemsTableFilterComposer
 
   ColumnFilters<String> get attributes => $composableBuilder(
     column: $table.attributes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isSelected => $composableBuilder(
+    column: $table.isSelected,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -558,6 +676,11 @@ class $$CartItemsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get productData => $composableBuilder(
+    column: $table.productData,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get quantity => $composableBuilder(
     column: $table.quantity,
     builder: (column) => ColumnOrderings(column),
@@ -565,6 +688,11 @@ class $$CartItemsTableOrderingComposer
 
   ColumnOrderings<String> get attributes => $composableBuilder(
     column: $table.attributes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isSelected => $composableBuilder(
+    column: $table.isSelected,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -597,11 +725,21 @@ class $$CartItemsTableAnnotationComposer
   GeneratedColumn<String> get productId =>
       $composableBuilder(column: $table.productId, builder: (column) => column);
 
+  GeneratedColumn<String> get productData => $composableBuilder(
+    column: $table.productData,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<int> get quantity =>
       $composableBuilder(column: $table.quantity, builder: (column) => column);
 
   GeneratedColumn<String> get attributes => $composableBuilder(
     column: $table.attributes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isSelected => $composableBuilder(
+    column: $table.isSelected,
     builder: (column) => column,
   );
 
@@ -643,16 +781,20 @@ class $$CartItemsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> deviceId = const Value.absent(),
                 Value<String> productId = const Value.absent(),
+                Value<String> productData = const Value.absent(),
                 Value<int> quantity = const Value.absent(),
                 Value<String?> attributes = const Value.absent(),
+                Value<bool> isSelected = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => CartItemsCompanion(
                 id: id,
                 deviceId: deviceId,
                 productId: productId,
+                productData: productData,
                 quantity: quantity,
                 attributes: attributes,
+                isSelected: isSelected,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -661,16 +803,20 @@ class $$CartItemsTableTableManager
                 Value<int> id = const Value.absent(),
                 required String deviceId,
                 required String productId,
+                required String productData,
                 Value<int> quantity = const Value.absent(),
                 Value<String?> attributes = const Value.absent(),
+                Value<bool> isSelected = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => CartItemsCompanion.insert(
                 id: id,
                 deviceId: deviceId,
                 productId: productId,
+                productData: productData,
                 quantity: quantity,
                 attributes: attributes,
+                isSelected: isSelected,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),

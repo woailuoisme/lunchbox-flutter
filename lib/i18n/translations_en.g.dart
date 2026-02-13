@@ -1183,61 +1183,16 @@ class _TranslationsHomeEn extends TranslationsHomeZhCn {
       TranslationOverrides.string(_root.$meta, 'home.nearbyDevices', {}) ??
       'Nearby Devices';
   @override
-  String get banner1Title =>
-      TranslationOverrides.string(_root.$meta, 'home.banner1Title', {}) ??
-      'Convenient';
+  String get moreDevices =>
+      TranslationOverrides.string(_root.$meta, 'home.moreDevices', {}) ??
+      'More Devices';
   @override
-  String get banner1Subtitle =>
-      TranslationOverrides.string(_root.$meta, 'home.banner1Subtitle', {}) ??
-      'Delicious on the go';
-  @override
-  String get banner2Title =>
-      TranslationOverrides.string(_root.$meta, 'home.banner2Title', {}) ??
-      'Fresh Delivery';
-  @override
-  String get banner2Subtitle =>
-      TranslationOverrides.string(_root.$meta, 'home.banner2Subtitle', {}) ??
-      'Daily Updates';
-  @override
-  String get banner3Title =>
-      TranslationOverrides.string(_root.$meta, 'home.banner3Title', {}) ??
-      'Best Offers';
-  @override
-  String get banner3Subtitle =>
-      TranslationOverrides.string(_root.$meta, 'home.banner3Subtitle', {}) ??
-      'Limited Time Only';
-  @override
-  String get noDevices =>
-      TranslationOverrides.string(_root.$meta, 'home.noDevices', {}) ??
-      'No devices nearby';
-  @override
-  String get welcome =>
-      TranslationOverrides.string(_root.$meta, 'home.welcome', {}) ??
-      'Hello, User';
-  @override
-  String get selfPickup =>
-      TranslationOverrides.string(_root.$meta, 'home.selfPickup', {}) ??
-      'Self Pickup';
-  @override
-  String get selfPickupHint =>
-      TranslationOverrides.string(_root.$meta, 'home.selfPickupHint', {}) ??
-      'Scan code to pick up/Take away';
-  @override
-  String get teamOrder =>
-      TranslationOverrides.string(_root.$meta, 'home.teamOrder', {}) ??
-      'Team Order';
-  @override
-  String get teamOrderHint =>
-      TranslationOverrides.string(_root.$meta, 'home.teamOrderHint', {}) ??
-      'Group ordering/Team meal';
-  @override
-  String get invite =>
-      TranslationOverrides.string(_root.$meta, 'home.invite', {}) ??
-      'Invite & Earn';
-  @override
-  String get inviteHint =>
-      TranslationOverrides.string(_root.$meta, 'home.inviteHint', {}) ??
-      'Invite friends to get cash';
+  String deviceDistance({required Object name, required Object distance}) =>
+      TranslationOverrides.string(_root.$meta, 'home.deviceDistance', {
+        'name': name,
+        'distance': distance,
+      }) ??
+      '${name} is ${distance} away';
   @override
   String get recommendTitle =>
       TranslationOverrides.string(_root.$meta, 'home.recommendTitle', {}) ??
@@ -2723,13 +2678,35 @@ class _TranslationsHomeLotteryEn extends TranslationsHomeLotteryZhCn {
       TranslationOverrides.string(_root.$meta, 'home.lottery.rules', {}) ??
       'Draw Rules';
   @override
-  String get remaining =>
-      TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {}) ??
-      'Remaining: {count}';
+  String get subtitle =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.subtitle', {}) ??
+      'Join the draw, win great prizes';
+  @override
+  String remaining({required Object count}) =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {
+        'count': count,
+      }) ??
+      'Remaining: ${count}';
   @override
   String get spin =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.spin', {}) ??
       'Spin';
+  @override
+  String get spinning =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.spinning', {}) ??
+      '...';
+  @override
+  String get congratulations =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'home.lottery.congratulations',
+        {},
+      ) ??
+      'Congratulations';
+  @override
+  String get accept =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.accept', {}) ??
+      'Accept';
   @override
   String get rule1 =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.rule1', {}) ??
@@ -3688,21 +3665,21 @@ class _TranslationsHomeLotteryPrizeCardEn
       ) ??
       'Coin rewards, can be used in Coin Mall';
   @override
-  String get getTime =>
+  String getTime({required Object time}) =>
       TranslationOverrides.string(
         _root.$meta,
         'home.lottery.prizeCard.getTime',
-        {},
+        {'time': time},
       ) ??
-      'Got at: {time}';
+      'Got at: ${time}';
   @override
-  String get expiryTime =>
+  String expiryTime({required Object time}) =>
       TranslationOverrides.string(
         _root.$meta,
         'home.lottery.prizeCard.expiryTime',
-        {},
+        {'time': time},
       ) ??
-      'Expiry: {time}';
+      'Expiry: ${time}';
   @override
   String get statusExpired =>
       TranslationOverrides.string(
@@ -4916,68 +4893,17 @@ extension on TranslationsEn {
                   {},
                 ) ??
                 'Nearby Devices',
-          'home.banner1Title' =>
-            TranslationOverrides.string(_root.$meta, 'home.banner1Title', {}) ??
-                'Convenient',
-          'home.banner1Subtitle' =>
-            TranslationOverrides.string(
+          'home.moreDevices' =>
+            TranslationOverrides.string(_root.$meta, 'home.moreDevices', {}) ??
+                'More Devices',
+          'home.deviceDistance' =>
+            ({required Object name, required Object distance}) =>
+                TranslationOverrides.string(
                   _root.$meta,
-                  'home.banner1Subtitle',
-                  {},
+                  'home.deviceDistance',
+                  {'name': name, 'distance': distance},
                 ) ??
-                'Delicious on the go',
-          'home.banner2Title' =>
-            TranslationOverrides.string(_root.$meta, 'home.banner2Title', {}) ??
-                'Fresh Delivery',
-          'home.banner2Subtitle' =>
-            TranslationOverrides.string(
-                  _root.$meta,
-                  'home.banner2Subtitle',
-                  {},
-                ) ??
-                'Daily Updates',
-          'home.banner3Title' =>
-            TranslationOverrides.string(_root.$meta, 'home.banner3Title', {}) ??
-                'Best Offers',
-          'home.banner3Subtitle' =>
-            TranslationOverrides.string(
-                  _root.$meta,
-                  'home.banner3Subtitle',
-                  {},
-                ) ??
-                'Limited Time Only',
-          'home.noDevices' =>
-            TranslationOverrides.string(_root.$meta, 'home.noDevices', {}) ??
-                'No devices nearby',
-          'home.welcome' =>
-            TranslationOverrides.string(_root.$meta, 'home.welcome', {}) ??
-                'Hello, User',
-          'home.selfPickup' =>
-            TranslationOverrides.string(_root.$meta, 'home.selfPickup', {}) ??
-                'Self Pickup',
-          'home.selfPickupHint' =>
-            TranslationOverrides.string(
-                  _root.$meta,
-                  'home.selfPickupHint',
-                  {},
-                ) ??
-                'Scan code to pick up/Take away',
-          'home.teamOrder' =>
-            TranslationOverrides.string(_root.$meta, 'home.teamOrder', {}) ??
-                'Team Order',
-          'home.teamOrderHint' =>
-            TranslationOverrides.string(
-                  _root.$meta,
-                  'home.teamOrderHint',
-                  {},
-                ) ??
-                'Group ordering/Team meal',
-          'home.invite' =>
-            TranslationOverrides.string(_root.$meta, 'home.invite', {}) ??
-                'Invite & Earn',
-          'home.inviteHint' =>
-            TranslationOverrides.string(_root.$meta, 'home.inviteHint', {}) ??
-                'Invite friends to get cash',
+                '${name} is ${distance} away',
           'home.recommendTitle' =>
             TranslationOverrides.string(
                   _root.$meta,
@@ -5021,16 +4947,45 @@ extension on TranslationsEn {
                   {},
                 ) ??
                 'Draw Rules',
-          'home.lottery.remaining' =>
+          'home.lottery.subtitle' =>
             TranslationOverrides.string(
                   _root.$meta,
-                  'home.lottery.remaining',
+                  'home.lottery.subtitle',
                   {},
                 ) ??
-                'Remaining: {count}',
+                'Join the draw, win great prizes',
+          'home.lottery.remaining' =>
+            ({required Object count}) =>
+                TranslationOverrides.string(
+                  _root.$meta,
+                  'home.lottery.remaining',
+                  {'count': count},
+                ) ??
+                'Remaining: ${count}',
           'home.lottery.spin' =>
             TranslationOverrides.string(_root.$meta, 'home.lottery.spin', {}) ??
                 'Spin',
+          'home.lottery.spinning' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'home.lottery.spinning',
+                  {},
+                ) ??
+                '...',
+          'home.lottery.congratulations' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'home.lottery.congratulations',
+                  {},
+                ) ??
+                'Congratulations',
+          'home.lottery.accept' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'home.lottery.accept',
+                  {},
+                ) ??
+                'Accept',
           'home.lottery.rule1' =>
             TranslationOverrides.string(
                   _root.$meta,
@@ -5126,19 +5081,21 @@ extension on TranslationsEn {
                 ) ??
                 'Coin rewards, can be used in Coin Mall',
           'home.lottery.prizeCard.getTime' =>
-            TranslationOverrides.string(
+            ({required Object time}) =>
+                TranslationOverrides.string(
                   _root.$meta,
                   'home.lottery.prizeCard.getTime',
-                  {},
+                  {'time': time},
                 ) ??
-                'Got at: {time}',
+                'Got at: ${time}',
           'home.lottery.prizeCard.expiryTime' =>
-            TranslationOverrides.string(
+            ({required Object time}) =>
+                TranslationOverrides.string(
                   _root.$meta,
                   'home.lottery.prizeCard.expiryTime',
-                  {},
+                  {'time': time},
                 ) ??
-                'Expiry: {time}',
+                'Expiry: ${time}',
           'home.lottery.prizeCard.statusExpired' =>
             TranslationOverrides.string(
                   _root.$meta,
@@ -6485,9 +6442,6 @@ extension on TranslationsEn {
                   {},
                 ) ??
                 'Not Logged In',
-          _ => null,
-        } ??
-        switch (path) {
           'profile.editProfile' =>
             TranslationOverrides.string(
                   _root.$meta,
@@ -6540,6 +6494,9 @@ extension on TranslationsEn {
                   {},
                 ) ??
                 'No favorite devices',
+          _ => null,
+        } ??
+        switch (path) {
           'profile.removeFavorite' =>
             TranslationOverrides.string(
                   _root.$meta,

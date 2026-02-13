@@ -5,6 +5,8 @@ import 'package:lunchbox/features/auth/auth.dart';
 import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/features/home/home.dart';
+import 'package:lunchbox/features/invite/invite.dart';
+import 'package:lunchbox/features/lottery/lottery.dart';
 import 'package:lunchbox/features/onboarding/onboarding.dart';
 import 'package:lunchbox/features/order/order.dart';
 import 'package:lunchbox/features/payment/payment.dart';
@@ -333,8 +335,8 @@ class DeviceInfoRoute extends GoRouteData with $DeviceInfoRoute {
     TypedStatefulShellBranch<HomeBranch>(
       routes: [TypedGoRoute<HomeRoute>(path: AppRoutes.home)],
     ),
-    TypedStatefulShellBranch<EatBranch>(
-      routes: [TypedGoRoute<EatRoute>(path: AppRoutes.eat)],
+    TypedStatefulShellBranch<DeviceBranch>(
+      routes: [TypedGoRoute<DeviceRoute>(path: AppRoutes.device)],
     ),
     TypedStatefulShellBranch<OrderListBranch>(
       routes: [TypedGoRoute<OrderListRoute>(path: AppRoutes.orderList)],
@@ -361,8 +363,8 @@ class HomeBranch extends StatefulShellBranchData {
   const HomeBranch();
 }
 
-class EatBranch extends StatefulShellBranchData {
-  const EatBranch();
+class DeviceBranch extends StatefulShellBranchData {
+  const DeviceBranch();
 }
 
 class OrderListBranch extends StatefulShellBranchData {
@@ -380,8 +382,8 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   Widget build(BuildContext context, GoRouterState state) => const HomeView();
 }
 
-class EatRoute extends GoRouteData with $EatRoute {
-  const EatRoute();
+class DeviceRoute extends GoRouteData with $DeviceRoute {
+  const DeviceRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>

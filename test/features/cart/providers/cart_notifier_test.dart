@@ -42,8 +42,10 @@ void main() {
   });
 
   group('CartNotifier', () {
-    test('initial state should be empty', () {
-      when(mockRepository.getCartItems()).thenReturn([]);
+    test('initial state should be empty', () async {
+      when(
+        mockRepository.getCartItems(),
+      ).thenAnswer((_) async => <CartItemModel>[]);
 
       final container = createContainer();
       final state = container.read(cartProvider);
@@ -53,7 +55,9 @@ void main() {
     });
 
     test('loadCart should update state with items', () async {
-      when(mockRepository.getCartItems()).thenReturn([tCartItem]);
+      when(
+        mockRepository.getCartItems(),
+      ).thenAnswer((_) async => <CartItemModel>[tCartItem]);
 
       final container = createContainer();
 
@@ -66,19 +70,29 @@ void main() {
     });
 
     test('addToCart should call repository and reload', () async {
-      when(mockRepository.getCartItems()).thenReturn([tCartItem]);
+      when(
+        mockRepository.getCartItems(),
+      ).thenAnswer((_) async => <CartItemModel>[tCartItem]);
+      when(
+        mockRepository.addToCart(any, quantity: anyNamed('quantity')),
+      ).thenAnswer((_) async {});
 
       final container = createContainer();
       final notifier = container.read(cartProvider.notifier);
 
       await notifier.addToCart(tProduct);
 
-      verify(mockRepository.addToCart(tProduct));
+      verify(mockRepository.addToCart(tProduct, quantity: 1));
       verify(mockRepository.getCartItems()); // Called by loadCart
     });
 
     test('increaseQuantity should update quantity', () async {
-      when(mockRepository.getCartItems()).thenReturn([tCartItem]);
+      when(
+        mockRepository.getCartItems(),
+      ).thenAnswer((_) async => <CartItemModel>[tCartItem]);
+      when(
+        mockRepository.updateCartItemQuantity(any, any),
+      ).thenAnswer((_) async {});
 
       final container = createContainer();
       final notifier = container.read(cartProvider.notifier);
@@ -89,7 +103,10 @@ void main() {
     });
 
     test('decreaseQuantity should remove item if quantity is 1', () async {
-      when(mockRepository.getCartItems()).thenReturn([]);
+      when(
+        mockRepository.getCartItems(),
+      ).thenAnswer((_) async => <CartItemModel>[]);
+      when(mockRepository.removeFromCart(any)).thenAnswer((_) async {});
 
       final container = createContainer();
       final notifier = container.read(cartProvider.notifier);
@@ -100,7 +117,10 @@ void main() {
     });
 
     test('clearCart should clear repository', () async {
-      when(mockRepository.getCartItems()).thenReturn([]);
+      when(
+        mockRepository.getCartItems(),
+      ).thenAnswer((_) async => <CartItemModel>[]);
+      when(mockRepository.clearCart()).thenAnswer((_) async {});
 
       final container = createContainer();
       final notifier = container.read(cartProvider.notifier);

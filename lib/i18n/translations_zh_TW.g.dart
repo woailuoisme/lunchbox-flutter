@@ -1072,29 +1072,16 @@ class _TranslationsHomeZhTw extends TranslationsHomeZhCn {
       TranslationOverrides.string(_root.$meta, 'home.nearbyDevices', {}) ??
       '附近設備';
   @override
-  String get banner1Title =>
-      TranslationOverrides.string(_root.$meta, 'home.banner1Title', {}) ??
-      '便捷購買';
+  String get moreDevices =>
+      TranslationOverrides.string(_root.$meta, 'home.moreDevices', {}) ??
+      '更多設備';
   @override
-  String get banner1Subtitle =>
-      TranslationOverrides.string(_root.$meta, 'home.banner1Subtitle', {}) ??
-      '美味隨行';
-  @override
-  String get banner2Title =>
-      TranslationOverrides.string(_root.$meta, 'home.banner2Title', {}) ??
-      '新鮮速遞';
-  @override
-  String get banner2Subtitle =>
-      TranslationOverrides.string(_root.$meta, 'home.banner2Subtitle', {}) ??
-      '每日更新';
-  @override
-  String get banner3Title =>
-      TranslationOverrides.string(_root.$meta, 'home.banner3Title', {}) ??
-      '超值優惠';
-  @override
-  String get banner3Subtitle =>
-      TranslationOverrides.string(_root.$meta, 'home.banner3Subtitle', {}) ??
-      '限時特價';
+  String deviceDistance({required Object name, required Object distance}) =>
+      TranslationOverrides.string(_root.$meta, 'home.deviceDistance', {
+        'name': name,
+        'distance': distance,
+      }) ??
+      '${name} 距你${distance}';
   @override
   String get noDevices =>
       TranslationOverrides.string(_root.$meta, 'home.noDevices', {}) ??
@@ -2272,12 +2259,34 @@ class _TranslationsHomeLotteryZhTw extends TranslationsHomeLotteryZhCn {
       TranslationOverrides.string(_root.$meta, 'home.lottery.rules', {}) ??
       '抽獎規則';
   @override
-  String get remaining =>
-      TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {}) ??
-      '剩餘次數: {count}';
+  String get subtitle =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.subtitle', {}) ??
+      '參與抽獎，贏取好禮';
+  @override
+  String remaining({required Object count}) =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {
+        'count': count,
+      }) ??
+      '剩餘次數: ${count}';
   @override
   String get spin =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.spin', {}) ?? '抽獎';
+  @override
+  String get spinning =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.spinning', {}) ??
+      '...';
+  @override
+  String get congratulations =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'home.lottery.congratulations',
+        {},
+      ) ??
+      '恭喜獲得';
+  @override
+  String get accept =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.accept', {}) ??
+      '開心收下';
   @override
   String get rule1 =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.rule1', {}) ??
@@ -2594,21 +2603,21 @@ class _TranslationsHomeLotteryPrizeCardZhTw
       ) ??
       '乖乖幣獎勵，可在乖乖幣商城使用';
   @override
-  String get getTime =>
+  String getTime({required Object time}) =>
       TranslationOverrides.string(
         _root.$meta,
         'home.lottery.prizeCard.getTime',
-        {},
+        {'time': time},
       ) ??
-      '獲得時間: {time}';
+      '獲得時間: ${time}';
   @override
-  String get expiryTime =>
+  String expiryTime({required Object time}) =>
       TranslationOverrides.string(
         _root.$meta,
         'home.lottery.prizeCard.expiryTime',
-        {},
+        {'time': time},
       ) ??
-      '有效期至: {time}';
+      '有效期至: ${time}';
   @override
   String get statusExpired =>
       TranslationOverrides.string(
@@ -3417,24 +3426,16 @@ extension on TranslationsZhTw {
       'home.nearbyDevices' =>
         TranslationOverrides.string(_root.$meta, 'home.nearbyDevices', {}) ??
             '附近設備',
-      'home.banner1Title' =>
-        TranslationOverrides.string(_root.$meta, 'home.banner1Title', {}) ??
-            '便捷購買',
-      'home.banner1Subtitle' =>
-        TranslationOverrides.string(_root.$meta, 'home.banner1Subtitle', {}) ??
-            '美味隨行',
-      'home.banner2Title' =>
-        TranslationOverrides.string(_root.$meta, 'home.banner2Title', {}) ??
-            '新鮮速遞',
-      'home.banner2Subtitle' =>
-        TranslationOverrides.string(_root.$meta, 'home.banner2Subtitle', {}) ??
-            '每日更新',
-      'home.banner3Title' =>
-        TranslationOverrides.string(_root.$meta, 'home.banner3Title', {}) ??
-            '超值優惠',
-      'home.banner3Subtitle' =>
-        TranslationOverrides.string(_root.$meta, 'home.banner3Subtitle', {}) ??
-            '限時特價',
+      'home.moreDevices' =>
+        TranslationOverrides.string(_root.$meta, 'home.moreDevices', {}) ??
+            '更多設備',
+      'home.deviceDistance' =>
+        ({required Object name, required Object distance}) =>
+            TranslationOverrides.string(_root.$meta, 'home.deviceDistance', {
+              'name': name,
+              'distance': distance,
+            }) ??
+            '${name} 距你${distance}',
       'home.noDevices' =>
         TranslationOverrides.string(_root.$meta, 'home.noDevices', {}) ??
             '附近暫無設備',
@@ -3485,16 +3486,31 @@ extension on TranslationsZhTw {
       'home.lottery.rules' =>
         TranslationOverrides.string(_root.$meta, 'home.lottery.rules', {}) ??
             '抽獎規則',
+      'home.lottery.subtitle' =>
+        TranslationOverrides.string(_root.$meta, 'home.lottery.subtitle', {}) ??
+            '參與抽獎，贏取好禮',
       'home.lottery.remaining' =>
-        TranslationOverrides.string(
-              _root.$meta,
-              'home.lottery.remaining',
-              {},
-            ) ??
-            '剩餘次數: {count}',
+        ({required Object count}) =>
+            TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {
+              'count': count,
+            }) ??
+            '剩餘次數: ${count}',
       'home.lottery.spin' =>
         TranslationOverrides.string(_root.$meta, 'home.lottery.spin', {}) ??
             '抽獎',
+      'home.lottery.spinning' =>
+        TranslationOverrides.string(_root.$meta, 'home.lottery.spinning', {}) ??
+            '...',
+      'home.lottery.congratulations' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'home.lottery.congratulations',
+              {},
+            ) ??
+            '恭喜獲得',
+      'home.lottery.accept' =>
+        TranslationOverrides.string(_root.$meta, 'home.lottery.accept', {}) ??
+            '開心收下',
       'home.lottery.rule1' =>
         TranslationOverrides.string(_root.$meta, 'home.lottery.rule1', {}) ??
             '每日有免費抽獎次數，次數用完後可領取任務獲得',
@@ -3574,19 +3590,21 @@ extension on TranslationsZhTw {
             ) ??
             '乖乖幣獎勵，可在乖乖幣商城使用',
       'home.lottery.prizeCard.getTime' =>
-        TranslationOverrides.string(
+        ({required Object time}) =>
+            TranslationOverrides.string(
               _root.$meta,
               'home.lottery.prizeCard.getTime',
-              {},
+              {'time': time},
             ) ??
-            '獲得時間: {time}',
+            '獲得時間: ${time}',
       'home.lottery.prizeCard.expiryTime' =>
-        TranslationOverrides.string(
+        ({required Object time}) =>
+            TranslationOverrides.string(
               _root.$meta,
               'home.lottery.prizeCard.expiryTime',
-              {},
+              {'time': time},
             ) ??
-            '有效期至: {time}',
+            '有效期至: ${time}',
       'home.lottery.prizeCard.statusExpired' =>
         TranslationOverrides.string(
               _root.$meta,

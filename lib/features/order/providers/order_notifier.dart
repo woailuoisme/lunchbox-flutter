@@ -184,22 +184,4 @@ class OrderNotifier extends _$OrderNotifier {
   void updateOrderTotal(double total) {
     state = state.copyWith(orderTotal: total);
   }
-
-  // Helpers for UI
-  String getStatusText(OrderStatus status) {
-    switch (status) {
-      case OrderStatus.pending:
-        return '待支付';
-      case OrderStatus.paid:
-        return '已支付';
-      case OrderStatus.completed:
-        return '已完成';
-      case OrderStatus.cancelled:
-        return '已取消';
-      case OrderStatus.refunded:
-        return '已退款';
-      case OrderStatus.failed:
-        return '支付失败';
-    }
-  }
 }

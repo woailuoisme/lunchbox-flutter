@@ -1,5 +1,5 @@
-import 'package:lunchbox/features/home/entities/lottery_prize.dart';
-import 'package:lunchbox/features/home/entities/lottery_state.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_prize.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'lottery_provider.g.dart';

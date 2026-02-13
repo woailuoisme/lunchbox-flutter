@@ -3,14 +3,16 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fpdart/fpdart.dart' as _i5;
-import 'package:lunchbox/core/errors/failure.dart' as _i6;
-import 'package:lunchbox/features/cart/entities/cart_item_model.dart' as _i3;
+import 'dart:async' as _i3;
+
+import 'package:fpdart/fpdart.dart' as _i6;
+import 'package:lunchbox/core/errors/failure.dart' as _i7;
+import 'package:lunchbox/features/cart/entities/cart_item_model.dart' as _i4;
 import 'package:lunchbox/features/cart/repositories/cart_repository.dart'
     as _i2;
-import 'package:lunchbox/features/product/entities/product_model.dart' as _i4;
+import 'package:lunchbox/features/product/entities/product_model.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i7;
+import 'package:mockito/src/dummies.dart' as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -36,12 +38,14 @@ class MockCartRepository extends _i1.Mock implements _i2.CartRepository {
   }
 
   @override
-  List<_i3.CartItemModel> getCartItems() =>
+  _i3.Future<List<_i4.CartItemModel>> getCartItems() =>
       (super.noSuchMethod(
             Invocation.method(#getCartItems, []),
-            returnValue: <_i3.CartItemModel>[],
+            returnValue: _i3.Future<List<_i4.CartItemModel>>.value(
+              <_i4.CartItemModel>[],
+            ),
           )
-          as List<_i3.CartItemModel>);
+          as _i3.Future<List<_i4.CartItemModel>>);
 
   @override
   void setCurrentDeviceId(String? deviceId) => super.noSuchMethod(
@@ -50,92 +54,118 @@ class MockCartRepository extends _i1.Mock implements _i2.CartRepository {
   );
 
   @override
-  void addToCart(_i4.ProductModel? product, {int? quantity = 1}) =>
-      super.noSuchMethod(
-        Invocation.method(#addToCart, [product], {#quantity: quantity}),
-        returnValueForMissingStub: null,
-      );
+  _i3.Future<void> addToCart(_i5.ProductModel? product, {int? quantity = 1}) =>
+      (super.noSuchMethod(
+            Invocation.method(#addToCart, [product], {#quantity: quantity}),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
+          )
+          as _i3.Future<void>);
 
   @override
-  void removeFromCart(String? itemId) => super.noSuchMethod(
-    Invocation.method(#removeFromCart, [itemId]),
-    returnValueForMissingStub: null,
-  );
+  _i3.Future<void> removeFromCart(String? itemId) =>
+      (super.noSuchMethod(
+            Invocation.method(#removeFromCart, [itemId]),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
+          )
+          as _i3.Future<void>);
 
   @override
-  void updateCartItemQuantity(String? itemId, int? quantity) =>
-      super.noSuchMethod(
-        Invocation.method(#updateCartItemQuantity, [itemId, quantity]),
-        returnValueForMissingStub: null,
-      );
+  _i3.Future<void> updateCartItemQuantity(String? itemId, int? quantity) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateCartItemQuantity, [itemId, quantity]),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
+          )
+          as _i3.Future<void>);
 
   @override
-  void removeItems(List<String>? itemIds) => super.noSuchMethod(
-    Invocation.method(#removeItems, [itemIds]),
-    returnValueForMissingStub: null,
-  );
+  _i3.Future<void> toggleItemSelected(String? itemId, bool? isSelected) =>
+      (super.noSuchMethod(
+            Invocation.method(#toggleItemSelected, [itemId, isSelected]),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
+          )
+          as _i3.Future<void>);
 
   @override
-  void clearCart() => super.noSuchMethod(
-    Invocation.method(#clearCart, []),
-    returnValueForMissingStub: null,
-  );
+  _i3.Future<void> removeItems(List<String>? itemIds) =>
+      (super.noSuchMethod(
+            Invocation.method(#removeItems, [itemIds]),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
+          )
+          as _i3.Future<void>);
 
   @override
-  double getCartTotal() =>
+  _i3.Future<void> clearCart() =>
+      (super.noSuchMethod(
+            Invocation.method(#clearCart, []),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
+          )
+          as _i3.Future<void>);
+
+  @override
+  _i3.Future<double> getCartTotal() =>
       (super.noSuchMethod(
             Invocation.method(#getCartTotal, []),
-            returnValue: 0.0,
+            returnValue: _i3.Future<double>.value(0.0),
           )
-          as double);
+          as _i3.Future<double>);
 
   @override
-  int getCartItemCount() =>
+  _i3.Future<int> getCartItemCount() =>
       (super.noSuchMethod(
             Invocation.method(#getCartItemCount, []),
-            returnValue: 0,
+            returnValue: _i3.Future<int>.value(0),
           )
-          as int);
+          as _i3.Future<int>);
 
   @override
-  bool isCartEmpty() =>
+  _i3.Future<bool> isCartEmpty() =>
       (super.noSuchMethod(
             Invocation.method(#isCartEmpty, []),
-            returnValue: false,
+            returnValue: _i3.Future<bool>.value(false),
           )
-          as bool);
+          as _i3.Future<bool>);
 
   @override
-  bool isInCart(String? productId) =>
+  _i3.Future<bool> isInCart(String? productId) =>
       (super.noSuchMethod(
             Invocation.method(#isInCart, [productId]),
-            returnValue: false,
+            returnValue: _i3.Future<bool>.value(false),
           )
-          as bool);
+          as _i3.Future<bool>);
 
   @override
-  int getProductQuantityInCart(String? productId) =>
+  _i3.Future<int> getProductQuantityInCart(String? productId) =>
       (super.noSuchMethod(
             Invocation.method(#getProductQuantityInCart, [productId]),
-            returnValue: 0,
+            returnValue: _i3.Future<int>.value(0),
           )
-          as int);
+          as _i3.Future<int>);
 
   @override
-  _i5.TaskEither<_i6.Failure, bool> syncCart() =>
+  _i6.TaskEither<_i7.Failure, bool> syncCart() =>
       (super.noSuchMethod(
             Invocation.method(#syncCart, []),
-            returnValue: _i7.dummyValue<_i5.TaskEither<_i6.Failure, bool>>(
+            returnValue: _i8.dummyValue<_i6.TaskEither<_i7.Failure, bool>>(
               this,
               Invocation.method(#syncCart, []),
             ),
           )
-          as _i5.TaskEither<_i6.Failure, bool>);
+          as _i6.TaskEither<_i7.Failure, bool>);
 
   @override
-  void addMultipleToCart(Map<_i4.ProductModel, int>? productsWithQuantity) =>
-      super.noSuchMethod(
-        Invocation.method(#addMultipleToCart, [productsWithQuantity]),
-        returnValueForMissingStub: null,
-      );
+  _i3.Future<void> addMultipleToCart(
+    Map<_i5.ProductModel, int>? productsWithQuantity,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#addMultipleToCart, [productsWithQuantity]),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
+          )
+          as _i3.Future<void>);
 }

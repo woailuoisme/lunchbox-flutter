@@ -77,12 +77,6 @@ class AboutView extends ConsumerWidget {
               _buildInfoItem(context, t.settings.buildNumber, info.buildNumber),
             ]),
             const Spacer(),
-            Text(
-              t.settings.copyright,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: colorScheme.outline,
-              ),
-            ),
             SizedBox(height: 24.h),
           ],
         ),

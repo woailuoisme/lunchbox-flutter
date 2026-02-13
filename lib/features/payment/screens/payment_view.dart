@@ -247,6 +247,26 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
                 selectedMethod,
                 notifier,
               ),
+              SizedBox(height: 12.h),
+              _buildPaymentOption(
+                context,
+                'wechatPay',
+                t.order.paymentWechat,
+                Symbols.chat,
+                const Color(0xFF09BB07),
+                selectedMethod,
+                notifier,
+              ),
+              SizedBox(height: 12.h),
+              _buildPaymentOption(
+                context,
+                'alipay',
+                t.order.paymentAlipay,
+                Symbols.account_balance_wallet,
+                const Color(0xFF1677FF),
+                selectedMethod,
+                notifier,
+              ),
             ],
           ),
         ],
@@ -450,6 +470,12 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
   // MARK: - Payment UI
 
   Widget _buildPayment(BuildContext context, OrderModel order) {
+    // 处理非 Stripe 支付方式（微信支付、支付宝）
+    if (order.paymentMethod == PaymentMethod.wechatPay ||
+        order.paymentMethod == PaymentMethod.alipay) {
+      return _buildQrPayment(context, order);
+    }
+
     final state = ref.watch(paymentProvider(order));
     final notifier = ref.read(paymentProvider(order).notifier);
     final theme = Theme.of(context);
@@ -571,6 +597,141 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
                   ],
                 ),
               ),
+      ),
+    );
+  }
+
+  Widget _buildQrPayment(BuildContext context, OrderModel order) {
+    final theme = Theme.of(context);
+    final isWechat = order.paymentMethod == PaymentMethod.wechatPay;
+    final color = isWechat ? const Color(0xFF09BB07) : const Color(0xFF1677FF);
+    final icon = isWechat ? Symbols.chat : Symbols.account_balance_wallet;
+    final title = isWechat ? t.order.paymentWechat : t.order.paymentAlipay;
+
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: Text(t.order.payNow),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Symbols.close),
+          onPressed: () => context.pop(),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(24.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 48.h),
+              Container(
+                width: 80.w,
+                height: 80.w,
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, size: 40.sp, color: color),
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: theme.textTheme.bodyLarge?.color,
+                ),
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                '¥${order.totalAmount.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 32.sp,
+                  fontWeight: FontWeight.bold,
+                  color: theme.textTheme.bodyLarge?.color,
+                ),
+              ),
+              SizedBox(height: 48.h),
+              Container(
+                width: 240.w,
+                height: 240.w,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16.r),
+                  border: Border.all(color: theme.dividerColor),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.shadowColor.withValues(alpha: 0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Symbols.qr_code_2, size: 160.sp, color: Colors.black),
+                    SizedBox(height: 8.h),
+                    Text(
+                      t.order.scanQrHint,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 48.h),
+              SizedBox(
+                width: double.infinity,
+                height: 50.h,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      // 模拟支付成功
+                      await ref
+                          .read(orderProvider.notifier)
+                          .payOrder(
+                            order.id,
+                            order.paymentMethod?.name ?? 'unknown',
+                          );
+
+                      if (context.mounted) {
+                        context.go('/orders');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(t.order.paySuccess)),
+                        );
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text(e.toString())));
+                      }
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: color,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  child: Text(
+                    t.order.payNow,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

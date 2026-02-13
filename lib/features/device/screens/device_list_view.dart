@@ -430,15 +430,6 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                   ),
                   SizedBox(height: 8.h),
                   _buildMapTool(
-                    Icons.refresh,
-                    theme: theme,
-                    onTap: () {
-                      // 刷新地图/设备
-                      _nearbyPagingController.refresh();
-                    },
-                  ),
-                  SizedBox(height: 8.h),
-                  _buildMapTool(
                     _isLocating ? Icons.gps_not_fixed : Icons.my_location,
                     theme: theme,
                     color: theme.colorScheme.primary,

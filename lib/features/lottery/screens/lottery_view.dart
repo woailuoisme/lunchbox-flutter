@@ -1,15 +1,17 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lunchbox/features/home/providers/lottery_provider.dart';
+import 'package:lunchbox/features/lottery/providers/lottery_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:timelines_plus/timelines_plus.dart';
 
 /// 抽奖页面
 ///
@@ -146,7 +148,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
               ),
               SizedBox(height: 16.h),
               Text(
-                '恭喜获得',
+                t.home.lottery.congratulations,
                 style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8.h),
@@ -171,7 +173,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
                       borderRadius: BorderRadius.circular(20.r),
                     ),
                   ),
-                  child: const Text('开心收下'),
+                  child: Text(t.home.lottery.accept),
                 ),
               ),
             ],
@@ -273,7 +275,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
                   ),
                 ),
                 Text(
-                  '参与抽奖，赢取好礼',
+                  t.home.lottery.subtitle,
                   style: TextStyle(fontSize: 12.sp, color: colorScheme.outline),
                 ),
               ],
@@ -289,7 +291,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Text(
-                '剩余次数: $remainingSpins',
+                t.home.lottery.remaining(count: remainingSpins),
                 style: TextStyle(
                   color: colorScheme.onPrimary,
                   fontSize: 12.sp,
@@ -400,7 +402,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   Widget _buildPrizeInfo(List<String> prizes, ColorScheme colorScheme) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.w),
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20.r),
@@ -412,84 +414,105 @@ class _LotteryViewState extends ConsumerState<LotteryView>
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(
-                  color: Colors.amber.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
+      child: ExpandableNotifier(
+        initialExpanded: true,
+        child: ExpandablePanel(
+          header: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.h),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(8.w),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Symbols.trophy,
+                    color: Colors.amber,
+                    size: 24.w,
+                    fill: 1.0,
+                  ),
                 ),
-                child: Icon(
-                  Symbols.trophy,
-                  color: Colors.amber,
-                  size: 24.w,
-                  fill: 1.0,
+                SizedBox(width: 12.w),
+                Text(
+                  '奖品一览',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                  ),
                 ),
-              ),
-              SizedBox(width: 12.w),
-              Text(
-                '奖品一览',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onSurface,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-          SizedBox(height: 16.h),
-          Wrap(
-            spacing: 12.w,
-            runSpacing: 12.h,
-            children: prizes.map((prize) {
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                decoration: BoxDecoration(
-                  color: colorScheme.surfaceContainerHighest.withValues(
-                    alpha: 0.5,
+          collapsed: const SizedBox.shrink(),
+          expanded: Padding(
+            padding: EdgeInsets.only(bottom: 10.h),
+            child: Wrap(
+              spacing: 12.w,
+              runSpacing: 12.h,
+              children: prizes.map((prize) {
+                return Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 10.h,
                   ),
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(
-                    color: colorScheme.outline.withValues(alpha: 0.1),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Symbols.star,
-                      size: 16.w,
-                      color: Colors.orange,
-                      fill: 1.0,
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest.withValues(
+                      alpha: 0.5,
                     ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      prize,
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w500,
-                        color: colorScheme.onSurfaceVariant,
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(
+                      color: colorScheme.outline.withValues(alpha: 0.1),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Symbols.star,
+                        size: 16.w,
+                        color: Colors.orange,
+                        fill: 1.0,
                       ),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
+                      SizedBox(width: 8.w),
+                      Text(
+                        prize,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w500,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
           ),
-        ],
+          theme: ExpandableThemeData(
+            headerAlignment: ExpandablePanelHeaderAlignment.center,
+            tapBodyToCollapse: true,
+            hasIcon: true,
+            iconColor: colorScheme.onSurfaceVariant,
+          ),
+        ),
       ),
     );
   }
 
   /// 抽奖规则
   Widget _buildRules(ColorScheme colorScheme) {
+    final rules = [
+      '每日有免费抽奖次数，次数用完后可领取任务获得',
+      '优惠券48小时内有效，乖乖币自动到账',
+      '活动最终解释权归平台所有',
+    ];
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.w),
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20.r),
@@ -501,79 +524,96 @@ class _LotteryViewState extends ConsumerState<LotteryView>
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(
-                  color: colorScheme.primary.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
+      child: ExpandableNotifier(
+        initialExpanded: true,
+        child: ExpandablePanel(
+          header: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.h),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(8.w),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Symbols.description,
+                    color: colorScheme.primary,
+                    size: 24.w,
+                    fill: 1.0,
+                  ),
                 ),
-                child: Icon(
-                  Symbols.description,
-                  color: colorScheme.primary,
-                  size: 24.w,
-                  fill: 1.0,
+                SizedBox(width: 12.w),
+                Text(
+                  '活动规则',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                  ),
                 ),
-              ),
-              SizedBox(width: 12.w),
-              Text(
-                '活动规则',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onSurface,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          _buildRuleItem(1, '每日有免费抽奖次数，次数用完后可领取任务获得', colorScheme),
-          _buildRuleItem(2, '优惠券48小时内有效，乖乖币自动到账', colorScheme),
-          _buildRuleItem(3, '活动最终解释权归平台所有', colorScheme),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRuleItem(int index, String text, ColorScheme colorScheme) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 12.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 20.w,
-            height: 20.w,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: colorScheme.primary.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
+              ],
             ),
-            child: Text(
-              '$index',
-              style: TextStyle(
+          ),
+          collapsed: const SizedBox.shrink(),
+          expanded: Padding(
+            padding: EdgeInsets.only(bottom: 10.h, left: 10.w),
+            child: FixedTimeline.tileBuilder(
+              theme: TimelineThemeData(
+                nodePosition: 0,
                 color: colorScheme.primary,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
+                indicatorTheme: IndicatorThemeData(position: 0, size: 20.w),
+                connectorTheme: ConnectorThemeData(
+                  thickness: 2.w,
+                  color: colorScheme.outlineVariant,
+                ),
+              ),
+              builder: TimelineTileBuilder.connected(
+                connectionDirection: ConnectionDirection.after,
+                itemCount: rules.length,
+                contentsBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(left: 12.w, bottom: 24.h),
+                    child: Text(
+                      rules[index],
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: colorScheme.onSurfaceVariant,
+                        height: 1.5,
+                      ),
+                    ),
+                  );
+                },
+                indicatorBuilder: (_, index) {
+                  return DotIndicator(
+                    color: colorScheme.primary,
+                    size: 10.w,
+                    child: Center(
+                      child: Container(
+                        width: 4.w,
+                        height: 4.w,
+                        decoration: BoxDecoration(
+                          color: colorScheme.onPrimary,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                connectorBuilder: (_, index, type) => SolidLineConnector(
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                ),
               ),
             ),
           ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                color: colorScheme.onSurfaceVariant,
-                fontSize: 13.sp,
-                height: 1.5,
-              ),
-            ),
+          theme: ExpandableThemeData(
+            headerAlignment: ExpandablePanelHeaderAlignment.center,
+            tapBodyToCollapse: true,
+            hasIcon: true,
+            iconColor: colorScheme.onSurfaceVariant,
           ),
-        ],
+        ),
       ),
     );
   }
@@ -582,45 +622,24 @@ class _LotteryViewState extends ConsumerState<LotteryView>
   Widget _buildBottomButtons(ColorScheme colorScheme) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Row(
-        children: [
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: colorScheme.primaryContainer,
-                foregroundColor: colorScheme.primary,
-                elevation: 0,
-                padding: EdgeInsets.symmetric(vertical: 14.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-              ),
-              child: const Text('返回'),
+      child: SizedBox(
+        width: double.infinity,
+        child: FilledButton.icon(
+          onPressed: () {
+            context.push('${AppRoutes.lottery}/${AppRoutes.myPrizes}');
+          },
+          style: FilledButton.styleFrom(
+            backgroundColor: colorScheme.primary,
+            foregroundColor: colorScheme.onPrimary,
+            padding: EdgeInsets.symmetric(vertical: 14.h),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.r),
             ),
+            elevation: 2,
           ),
-          SizedBox(width: 16.w),
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () {
-                context.push('${AppRoutes.lottery}/${AppRoutes.myPrizes}');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: colorScheme.surface,
-                foregroundColor: colorScheme.onSurface,
-                elevation: 0,
-                padding: EdgeInsets.symmetric(vertical: 14.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  side: BorderSide(
-                    color: colorScheme.outline.withValues(alpha: 0.2),
-                  ),
-                ),
-              ),
-              child: const Text('我的奖品'),
-            ),
-          ),
-        ],
+          icon: const Icon(Symbols.card_giftcard, size: 20),
+          label: const Text('我的奖品'),
+        ),
       ),
     );
   }

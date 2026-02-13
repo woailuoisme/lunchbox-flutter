@@ -20,7 +20,7 @@ class CartNotifier extends _$CartNotifier {
     state = state.copyWith(isLoading: true);
     try {
       final repository = ref.read(cartRepositoryProvider);
-      final items = repository.getCartItems();
+      final items = await repository.getCartItems();
       state = state.copyWith(cartItems: items, isLoading: false);
     } catch (e) {
       LoggerUtils.e('CartNotifier: Failed to load cart', e);
@@ -30,7 +30,9 @@ class CartNotifier extends _$CartNotifier {
 
   Future<void> addToCart(ProductModel product, {int quantity = 1}) async {
     try {
-      ref.read(cartRepositoryProvider).addToCart(product, quantity: quantity);
+      await ref
+          .read(cartRepositoryProvider)
+          .addToCart(product, quantity: quantity);
       await loadCart();
       LoggerUtils.i('CartNotifier: Added ${product.name} to cart');
     } catch (e) {
@@ -40,7 +42,7 @@ class CartNotifier extends _$CartNotifier {
 
   Future<void> updateQuantity(CartItemModel item, int quantity) async {
     try {
-      ref
+      await ref
           .read(cartRepositoryProvider)
           .updateCartItemQuantity(item.id, quantity);
       await loadCart();
@@ -49,6 +51,18 @@ class CartNotifier extends _$CartNotifier {
       );
     } catch (e) {
       LoggerUtils.e('CartNotifier: Failed to update quantity', e);
+    }
+  }
+
+  /// 切换商品选中状态
+  Future<void> toggleSelection(String itemId, bool isSelected) async {
+    try {
+      await ref
+          .read(cartRepositoryProvider)
+          .toggleItemSelected(itemId, isSelected);
+      await loadCart();
+    } catch (e) {
+      LoggerUtils.e('CartNotifier: Failed to toggle selection', e);
     }
   }
 
@@ -71,7 +85,7 @@ class CartNotifier extends _$CartNotifier {
 
   Future<void> removeItem(String itemId) async {
     try {
-      ref.read(cartRepositoryProvider).removeFromCart(itemId);
+      await ref.read(cartRepositoryProvider).removeFromCart(itemId);
       await loadCart();
       LoggerUtils.i('CartNotifier: Removed item $itemId');
     } catch (e) {
@@ -81,7 +95,7 @@ class CartNotifier extends _$CartNotifier {
 
   Future<void> removeItems(List<String> itemIds) async {
     try {
-      ref.read(cartRepositoryProvider).removeItems(itemIds);
+      await ref.read(cartRepositoryProvider).removeItems(itemIds);
       await loadCart();
       LoggerUtils.i('CartNotifier: Removed items $itemIds');
     } catch (e) {
@@ -91,7 +105,7 @@ class CartNotifier extends _$CartNotifier {
 
   Future<void> clearCart() async {
     try {
-      ref.read(cartRepositoryProvider).clearCart();
+      await ref.read(cartRepositoryProvider).clearCart();
       await loadCart();
       LoggerUtils.i('CartNotifier: Cleared cart');
     } catch (e) {

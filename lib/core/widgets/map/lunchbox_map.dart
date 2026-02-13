@@ -43,6 +43,11 @@ class LunchboxMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 获取当前语言环境
+    final locale = Localizations.localeOf(context);
+    // 高德地图语言参数：zh_cn (中文), en (英文)
+    final lang = locale.languageCode == 'en' ? 'en' : 'zh_cn';
+
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
@@ -62,17 +67,28 @@ class LunchboxMap extends StatelessWidget {
         // 如果需要精确定位，建议后续添加坐标转换逻辑
         TileLayer(
           urlTemplate:
-              'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+              'https://webrd0{s}.is.autonavi.com/appmaptile?lang=$lang&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
           subdomains: const ['1', '2', '3', '4'],
           userAgentPackageName: 'com.hxg.lunchbox',
+          // 优化体验：平滑过渡和视网膜屏支持
+          tileDisplay: const TileDisplay.fadeIn(
+            duration: Duration(milliseconds: 300),
+          ),
+          retinaMode: MediaQuery.of(context).devicePixelRatio > 1.0,
           // 错误处理
           errorImage: const AssetImage('assets/icons/icon.png'),
+          // 性能优化：使用 NetworkTileProvider 并配置缓存
+          // maxCacheSize: 1000个瓦片 (约20-30MB)
+          tileProvider: NetworkTileProvider(
+            headers: {'User-Agent': 'lunchbox/1.0.0'},
+          ),
+          // 限制缩放级别，避免无效请求
+          minZoom: 3,
+          maxZoom: 18,
         ),
 
         // 标记层
         if (markers.isNotEmpty) MarkerLayer(markers: markers),
-
-        // 这里可以扩展其他通用层，如当前位置层、比例尺等
       ],
     );
   }

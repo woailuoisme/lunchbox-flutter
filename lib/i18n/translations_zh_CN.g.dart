@@ -1326,35 +1326,18 @@ class TranslationsHomeZhCn {
       TranslationOverrides.string(_root.$meta, 'home.nearbyDevices', {}) ??
       '附近设备';
 
-  /// zh-CN: '便捷购买'
-  String get banner1Title =>
-      TranslationOverrides.string(_root.$meta, 'home.banner1Title', {}) ??
-      '便捷购买';
+  /// zh-CN: '更多设备'
+  String get moreDevices =>
+      TranslationOverrides.string(_root.$meta, 'home.moreDevices', {}) ??
+      '更多设备';
 
-  /// zh-CN: '美味随行'
-  String get banner1Subtitle =>
-      TranslationOverrides.string(_root.$meta, 'home.banner1Subtitle', {}) ??
-      '美味随行';
-
-  /// zh-CN: '新鲜速递'
-  String get banner2Title =>
-      TranslationOverrides.string(_root.$meta, 'home.banner2Title', {}) ??
-      '新鲜速递';
-
-  /// zh-CN: '每日更新'
-  String get banner2Subtitle =>
-      TranslationOverrides.string(_root.$meta, 'home.banner2Subtitle', {}) ??
-      '每日更新';
-
-  /// zh-CN: '超值优惠'
-  String get banner3Title =>
-      TranslationOverrides.string(_root.$meta, 'home.banner3Title', {}) ??
-      '超值优惠';
-
-  /// zh-CN: '限时特价'
-  String get banner3Subtitle =>
-      TranslationOverrides.string(_root.$meta, 'home.banner3Subtitle', {}) ??
-      '限时特价';
+  /// zh-CN: '${name} 距你${distance}'
+  String deviceDistance({required Object name, required Object distance}) =>
+      TranslationOverrides.string(_root.$meta, 'home.deviceDistance', {
+        'name': name,
+        'distance': distance,
+      }) ??
+      '${name} 距你${distance}';
 
   /// zh-CN: '附近暂无设备'
   String get noDevices =>
@@ -3068,14 +3051,40 @@ class TranslationsHomeLotteryZhCn {
       TranslationOverrides.string(_root.$meta, 'home.lottery.rules', {}) ??
       '抽奖规则';
 
-  /// zh-CN: '剩余次数: {count}'
-  String get remaining =>
-      TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {}) ??
-      '剩余次数: {count}';
+  /// zh-CN: '参与抽奖，赢取好礼'
+  String get subtitle =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.subtitle', {}) ??
+      '参与抽奖，赢取好礼';
+
+  /// zh-CN: '剩余次数: ${count}'
+  String remaining({required Object count}) =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {
+        'count': count,
+      }) ??
+      '剩余次数: ${count}';
 
   /// zh-CN: '抽奖'
   String get spin =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.spin', {}) ?? '抽奖';
+
+  /// zh-CN: '...'
+  String get spinning =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.spinning', {}) ??
+      '...';
+
+  /// zh-CN: '恭喜获得'
+  String get congratulations =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'home.lottery.congratulations',
+        {},
+      ) ??
+      '恭喜获得';
+
+  /// zh-CN: '开心收下'
+  String get accept =>
+      TranslationOverrides.string(_root.$meta, 'home.lottery.accept', {}) ??
+      '开心收下';
 
   /// zh-CN: '每日有免费抽奖次数，次数用完后可领取任务获得'
   String get rule1 =>
@@ -4128,23 +4137,23 @@ class TranslationsHomeLotteryPrizeCardZhCn {
       ) ??
       '乖乖币奖励，可在乖乖币商城使用';
 
-  /// zh-CN: '获得时间: {time}'
-  String get getTime =>
+  /// zh-CN: '获得时间: ${time}'
+  String getTime({required Object time}) =>
       TranslationOverrides.string(
         _root.$meta,
         'home.lottery.prizeCard.getTime',
-        {},
+        {'time': time},
       ) ??
-      '获得时间: {time}';
+      '获得时间: ${time}';
 
-  /// zh-CN: '有效期至: {time}'
-  String get expiryTime =>
+  /// zh-CN: '有效期至: ${time}'
+  String expiryTime({required Object time}) =>
       TranslationOverrides.string(
         _root.$meta,
         'home.lottery.prizeCard.expiryTime',
-        {},
+        {'time': time},
       ) ??
-      '有效期至: {time}';
+      '有效期至: ${time}';
 
   /// zh-CN: '已过期'
   String get statusExpired =>
@@ -5360,36 +5369,17 @@ extension on Translations {
                   {},
                 ) ??
                 '附近设备',
-          'home.banner1Title' =>
-            TranslationOverrides.string(_root.$meta, 'home.banner1Title', {}) ??
-                '便捷购买',
-          'home.banner1Subtitle' =>
-            TranslationOverrides.string(
+          'home.moreDevices' =>
+            TranslationOverrides.string(_root.$meta, 'home.moreDevices', {}) ??
+                '更多设备',
+          'home.deviceDistance' =>
+            ({required Object name, required Object distance}) =>
+                TranslationOverrides.string(
                   _root.$meta,
-                  'home.banner1Subtitle',
-                  {},
+                  'home.deviceDistance',
+                  {'name': name, 'distance': distance},
                 ) ??
-                '美味随行',
-          'home.banner2Title' =>
-            TranslationOverrides.string(_root.$meta, 'home.banner2Title', {}) ??
-                '新鲜速递',
-          'home.banner2Subtitle' =>
-            TranslationOverrides.string(
-                  _root.$meta,
-                  'home.banner2Subtitle',
-                  {},
-                ) ??
-                '每日更新',
-          'home.banner3Title' =>
-            TranslationOverrides.string(_root.$meta, 'home.banner3Title', {}) ??
-                '超值优惠',
-          'home.banner3Subtitle' =>
-            TranslationOverrides.string(
-                  _root.$meta,
-                  'home.banner3Subtitle',
-                  {},
-                ) ??
-                '限时特价',
+                '${name} 距你${distance}',
           'home.noDevices' =>
             TranslationOverrides.string(_root.$meta, 'home.noDevices', {}) ??
                 '附近暂无设备',
@@ -5472,16 +5462,45 @@ extension on Translations {
                   {},
                 ) ??
                 '抽奖规则',
-          'home.lottery.remaining' =>
+          'home.lottery.subtitle' =>
             TranslationOverrides.string(
                   _root.$meta,
-                  'home.lottery.remaining',
+                  'home.lottery.subtitle',
                   {},
                 ) ??
-                '剩余次数: {count}',
+                '参与抽奖，赢取好礼',
+          'home.lottery.remaining' =>
+            ({required Object count}) =>
+                TranslationOverrides.string(
+                  _root.$meta,
+                  'home.lottery.remaining',
+                  {'count': count},
+                ) ??
+                '剩余次数: ${count}',
           'home.lottery.spin' =>
             TranslationOverrides.string(_root.$meta, 'home.lottery.spin', {}) ??
                 '抽奖',
+          'home.lottery.spinning' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'home.lottery.spinning',
+                  {},
+                ) ??
+                '...',
+          'home.lottery.congratulations' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'home.lottery.congratulations',
+                  {},
+                ) ??
+                '恭喜获得',
+          'home.lottery.accept' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'home.lottery.accept',
+                  {},
+                ) ??
+                '开心收下',
           'home.lottery.rule1' =>
             TranslationOverrides.string(
                   _root.$meta,
@@ -5577,19 +5596,21 @@ extension on Translations {
                 ) ??
                 '乖乖币奖励，可在乖乖币商城使用',
           'home.lottery.prizeCard.getTime' =>
-            TranslationOverrides.string(
+            ({required Object time}) =>
+                TranslationOverrides.string(
                   _root.$meta,
                   'home.lottery.prizeCard.getTime',
-                  {},
+                  {'time': time},
                 ) ??
-                '获得时间: {time}',
+                '获得时间: ${time}',
           'home.lottery.prizeCard.expiryTime' =>
-            TranslationOverrides.string(
+            ({required Object time}) =>
+                TranslationOverrides.string(
                   _root.$meta,
                   'home.lottery.prizeCard.expiryTime',
-                  {},
+                  {'time': time},
                 ) ??
-                '有效期至: {time}',
+                '有效期至: ${time}',
           'home.lottery.prizeCard.statusExpired' =>
             TranslationOverrides.string(
                   _root.$meta,

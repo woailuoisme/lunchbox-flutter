@@ -248,21 +248,55 @@ class _HomeViewState extends ConsumerState<HomeView> {
               ),
               SizedBox(width: 4.w),
               Text(
-                '20号机  距你8.9km',
+                t.home.deviceDistance(name: '20号机', distance: '8.9km'),
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
               const Spacer(),
-              Text(
-                '更多门店',
-                style: TextStyle(fontSize: 12.sp, color: colorScheme.tertiary),
-              ),
-              Icon(
-                Symbols.keyboard_arrow_down,
-                size: 14.sp,
-                color: colorScheme.tertiary,
+              GestureDetector(
+                onTap: () {
+                  const DeviceRoute().go(context);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.w,
+                    vertical: 6.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primaryContainer.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(20.r),
+                    border: Border.all(
+                      color: colorScheme.primary.withValues(alpha: 0.1),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Symbols.store,
+                        size: 14.sp,
+                        color: colorScheme.primary,
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(
+                        t.home.moreDevices,
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          color: colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(width: 2.w),
+                      Icon(
+                        Symbols.chevron_right,
+                        size: 14.sp,
+                        color: colorScheme.primary,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -276,7 +310,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   icon: Symbols.storefront,
                   color: colorScheme.primary,
                   onTap: () {
-                    const EatRoute().go(context);
+                    const DeviceRoute().go(context);
                   },
                   iconColor: colorScheme.onPrimary,
                 ),

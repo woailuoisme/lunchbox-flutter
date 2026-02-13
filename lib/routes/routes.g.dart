@@ -765,7 +765,9 @@ RouteBase get $mainShellRoute => StatefulShellRouteData.$route(
       ],
     ),
     StatefulShellBranchData.$branch(
-      routes: [GoRouteData.$route(path: '/eat', factory: $EatRoute._fromState)],
+      routes: [
+        GoRouteData.$route(path: '/device', factory: $DeviceRoute._fromState),
+      ],
     ),
     StatefulShellBranchData.$branch(
       routes: [
@@ -808,11 +810,11 @@ mixin $HomeRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin $EatRoute on GoRouteData {
-  static EatRoute _fromState(GoRouterState state) => const EatRoute();
+mixin $DeviceRoute on GoRouteData {
+  static DeviceRoute _fromState(GoRouterState state) => const DeviceRoute();
 
   @override
-  String get location => GoRouteData.$location('/eat');
+  String get location => GoRouteData.$location('/device');
 
   @override
   void go(BuildContext context) => context.go(location);

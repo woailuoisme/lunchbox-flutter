@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,17 +66,25 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SizedBox(height: 24.h),
-                        _buildHeader(colorScheme),
-                        SizedBox(height: 60.h),
-                        _buildLoginForm(colorScheme),
-                        SizedBox(height: 24.h),
-                        _buildLoginButton(colorScheme),
-                        SizedBox(height: 16.h),
-                        _buildFooterLinks(colorScheme),
-                        SizedBox(height: 24.h),
-                      ],
+                      children:
+                          [
+                                SizedBox(height: 24.h),
+                                _buildHeader(colorScheme),
+                                SizedBox(height: 48.h),
+                                _buildLoginForm(colorScheme),
+                                SizedBox(height: 24.h),
+                                _buildLoginButton(colorScheme),
+                                SizedBox(height: 16.h),
+                                _buildFooterLinks(colorScheme),
+                                SizedBox(height: 24.h),
+                              ]
+                              .animate(interval: 50.ms)
+                              .fadeIn(duration: 400.ms)
+                              .slideY(
+                                begin: 0.1,
+                                end: 0,
+                                curve: Curves.easeOutQuad,
+                              ),
                     ),
                   ),
                 ),
@@ -100,6 +109,20 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget _buildHeader(ColorScheme colorScheme) {
     return Column(
       children: [
+        Container(
+          width: 80.w,
+          height: 80.w,
+          decoration: BoxDecoration(
+            color: colorScheme.primaryContainer,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Symbols.lunch_dining,
+            size: 40.sp,
+            color: colorScheme.onPrimaryContainer,
+          ),
+        ),
+        SizedBox(height: 24.h),
         Text(
           t.auth.loginTitle,
           style: TextStyle(
@@ -141,20 +164,25 @@ class _LoginViewState extends ConsumerState<LoginView> {
             hintText: t.auth.enterUsernameHint,
             hintStyle: TextStyle(color: colorScheme.outline),
             prefixIcon: Icon(Symbols.person, color: colorScheme.primary),
+            filled: true,
+            fillColor: colorScheme.surfaceContainerHighest.withValues(
+              alpha: 0.3,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: colorScheme.outlineVariant),
+              borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(
-                color: colorScheme.outlineVariant,
-                width: 1.5,
-              ),
+              borderSide: BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide(color: colorScheme.primary, width: 2),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(color: colorScheme.error, width: 1.5),
             ),
           ),
           validator: FormBuilderValidators.compose([
@@ -188,20 +216,25 @@ class _LoginViewState extends ConsumerState<LoginView> {
               ),
               onPressed: _togglePasswordVisibility,
             ),
+            filled: true,
+            fillColor: colorScheme.surfaceContainerHighest.withValues(
+              alpha: 0.3,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: colorScheme.outlineVariant),
+              borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(
-                color: colorScheme.outlineVariant,
-                width: 1.5,
-              ),
+              borderSide: BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide(color: colorScheme.primary, width: 2),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(color: colorScheme.error, width: 1.5),
             ),
           ),
           validator: FormBuilderValidators.compose([

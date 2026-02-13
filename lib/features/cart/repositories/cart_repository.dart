@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:drift/drift.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:lunchbox/core/errors/failure.dart';
 import 'package:lunchbox/core/network/rest_client.dart';
+import 'package:lunchbox/core/services/database_service.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
@@ -16,33 +18,40 @@ part 'cart_repository.g.dart';
 CartRepository cartRepository(Ref ref) {
   final storageService = ref.watch(storageServiceProvider);
   final client = ref.watch(restClientProvider);
-  return CartRepository(storageService, client);
+  final database = ref.watch(databaseServiceProvider);
+  return CartRepository(storageService, client, database);
 }
 
 /// 购物车仓库类
 /// 负责处理购物车相关的数据访问和业务逻辑
 class CartRepository {
-  CartRepository(this._storage, this._client);
-  static const String cartStorageKey = 'cart_items';
+  CartRepository(this._storage, this._client, this._db);
   static const String currentDeviceKey = 'current_device_id';
 
   final StorageService _storage;
   final RestClient _client;
+  final AppDatabase _db;
 
   /// 获取当前购物车中的所有商品
-  List<CartItemModel> getCartItems() {
-    final cartJson = _storage.read<String>(cartStorageKey);
-    if (cartJson == null) {
-      return [];
-    }
-
+  Future<List<CartItemModel>> getCartItems() async {
     try {
-      final List<dynamic> decoded = jsonDecode(cartJson) as List<dynamic>;
-      return decoded
-          .map((item) => CartItemModel.fromJson(item as Map<String, dynamic>))
-          .toList();
+      final items = await _db.select(_db.cartItems).get();
+      return items.map((item) {
+        final product = ProductModel.fromJson(
+          jsonDecode(item.productData) as Map<String, dynamic>,
+        );
+        return CartItemModel(
+          id: item.id.toString(),
+          productId: item.productId,
+          product: product,
+          deviceId: item.deviceId,
+          quantity: item.quantity,
+          addedTime: item.createdAt,
+          isSelected: item.isSelected,
+        );
+      }).toList();
     } catch (e) {
-      LoggerUtils.e('Failed to parse cart items', e);
+      LoggerUtils.e('Failed to fetch cart items from database', e);
       return [];
     }
   }
@@ -58,185 +67,147 @@ class CartRepository {
   }
 
   /// 添加商品到购物车
-  void addToCart(ProductModel product, {int quantity = 1}) {
-    final cartItems = getCartItems();
-    final existingItemIndex = cartItems.indexWhere(
-      (item) => item.product.id == product.id,
-    );
+  Future<void> addToCart(ProductModel product, {int quantity = 1}) async {
+    final existingItem = await (_db.select(
+      _db.cartItems,
+    )..where((t) => t.productId.equals(product.id))).getSingleOrNull();
 
-    if (existingItemIndex >= 0) {
+    if (existingItem != null) {
       // 如果商品已存在，更新数量
-      final existingItem = cartItems[existingItemIndex];
       final newQuantity = existingItem.quantity + quantity;
+      final finalQuantity = newQuantity <= product.stock
+          ? newQuantity
+          : product.stock;
 
-      // 检查是否超过库存
-      if (newQuantity <= product.stock) {
-        // 更新数量 - 使用 copyWith 因为 Freezed 类是不可变的
-        cartItems[existingItemIndex] = existingItem.copyWith(
-          quantity: newQuantity,
-        );
-      } else {
-        // 如果超过库存，设置为最大库存
-        cartItems[existingItemIndex] = existingItem.copyWith(
-          quantity: product.stock,
-        );
-      }
+      await (_db.update(
+        _db.cartItems,
+      )..where((t) => t.id.equals(existingItem.id))).write(
+        CartItemsCompanion(
+          quantity: Value(finalQuantity),
+          updatedAt: Value(DateTime.now()),
+        ),
+      );
     } else {
       // 如果商品不存在，添加新商品
-      final newItem = CartItemModel(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        productId: product.id,
-        product: product,
-        deviceId: getCurrentDeviceId() ?? '',
-        quantity: quantity,
-        addedTime: DateTime.now(),
-      );
-      cartItems.add(newItem);
+      await _db
+          .into(_db.cartItems)
+          .insert(
+            CartItemsCompanion.insert(
+              deviceId: getCurrentDeviceId() ?? '',
+              productId: product.id,
+              productData: jsonEncode(product.toJson()),
+              quantity: Value(quantity),
+              isSelected: const Value(true),
+              createdAt: Value(DateTime.now()),
+              updatedAt: Value(DateTime.now()),
+            ),
+          );
     }
-
-    // 保存到本地存储
-    _saveCartItems(cartItems);
   }
 
   /// 从购物车移除商品
-  void removeFromCart(String itemId) {
-    final cartItems = getCartItems()..removeWhere((item) => item.id == itemId);
-    _saveCartItems(cartItems);
+  Future<void> removeFromCart(String itemId) async {
+    final id = int.tryParse(itemId);
+    if (id == null) return;
+
+    await (_db.delete(_db.cartItems)..where((t) => t.id.equals(id))).go();
   }
 
   /// 更新购物车中商品的数量
-  void updateCartItemQuantity(String itemId, int quantity) {
+  Future<void> updateCartItemQuantity(String itemId, int quantity) async {
     if (quantity <= 0) {
-      removeFromCart(itemId);
+      await removeFromCart(itemId);
       return;
     }
 
-    final cartItems = getCartItems();
-    final itemIndex = cartItems.indexWhere((item) => item.id == itemId);
+    final id = int.tryParse(itemId);
+    if (id == null) return;
 
-    if (itemIndex >= 0) {
-      final item = cartItems[itemIndex];
+    await (_db.update(_db.cartItems)..where((t) => t.id.equals(id))).write(
+      CartItemsCompanion(
+        quantity: Value(quantity),
+        updatedAt: Value(DateTime.now()),
+      ),
+    );
+  }
 
-      // 检查是否超过库存
-      if (quantity <= item.product.stock) {
-        cartItems[itemIndex] = item.copyWith(quantity: quantity);
-        _saveCartItems(cartItems);
-      }
-    }
+  /// 切换选中状态
+  Future<void> toggleItemSelected(String itemId, bool isSelected) async {
+    final id = int.tryParse(itemId);
+    if (id == null) return;
+
+    await (_db.update(_db.cartItems)..where((t) => t.id.equals(id))).write(
+      CartItemsCompanion(
+        isSelected: Value(isSelected),
+        updatedAt: Value(DateTime.now()),
+      ),
+    );
   }
 
   /// 从购物车移除多个商品
-  void removeItems(List<String> itemIds) {
-    final cartItems = getCartItems();
-    cartItems.removeWhere((item) => itemIds.contains(item.id));
-    _saveCartItems(cartItems);
+  Future<void> removeItems(List<String> itemIds) async {
+    final ids = itemIds.map(int.tryParse).whereType<int>().toList();
+    if (ids.isEmpty) return;
+
+    await (_db.delete(_db.cartItems)..where((t) => t.id.isIn(ids))).go();
   }
 
   /// 清空购物车
-  void clearCart() {
-    _storage.remove(cartStorageKey);
+  Future<void> clearCart() async {
+    await _db.delete(_db.cartItems).go();
   }
 
   /// 获取购物车总金额
-  double getCartTotal() {
-    final cartItems = getCartItems();
-    return cartItems.fold(0, (total, item) => total + item.totalPrice);
+  Future<double> getCartTotal() async {
+    final List<CartItemModel> items = await getCartItems();
+    return items.fold<double>(
+      0.0,
+      (double total, item) => total + item.totalPrice,
+    );
   }
 
   /// 获取购物车商品总数
-  int getCartItemCount() {
-    final cartItems = getCartItems();
-    return cartItems.fold(0, (count, item) => count + item.quantity);
+  Future<int> getCartItemCount() async {
+    final List<CartItemModel> items = await getCartItems();
+    return items.fold<int>(0, (int count, item) => count + item.quantity);
   }
 
   /// 检查购物车是否为空
-  bool isCartEmpty() {
-    return getCartItemCount() == 0;
+  Future<bool> isCartEmpty() async {
+    final count = await getCartItemCount();
+    return count == 0;
   }
 
   /// 检查商品是否在购物车中
-  bool isInCart(String productId) {
-    final cartItems = getCartItems();
-    return cartItems.any((item) => item.product.id == productId);
+  Future<bool> isInCart(String productId) async {
+    final item = await (_db.select(
+      _db.cartItems,
+    )..where((t) => t.productId.equals(productId))).getSingleOrNull();
+    return item != null;
   }
 
   /// 获取购物车中指定商品的数量
-  int getProductQuantityInCart(String productId) {
-    final cartItems = getCartItems();
-    final item = cartItems.firstWhere(
-      (item) => item.product.id == productId,
-      orElse: () => CartItemModel(
-        id: '',
-        productId: '',
-        product: ProductModel(
-          id: '',
-          name: '',
-          description: '',
-          price: 0,
-          imageUrl: '',
-          updateTime: DateTime.now(),
-        ),
-        deviceId: '',
-        quantity: 0,
-        addedTime: DateTime.now(),
-      ),
-    );
-    return item.quantity;
+  Future<int> getProductQuantityInCart(String productId) async {
+    final item = await (_db.select(
+      _db.cartItems,
+    )..where((t) => t.productId.equals(productId))).getSingleOrNull();
+    return item?.quantity ?? 0;
   }
 
   /// 同步购物车数据（与服务器同步）
   TaskEither<Failure, bool> syncCart() {
     return TaskEither.tryCatch(() async {
       // 在实际项目中，这里应该与服务器同步购物车数据
-      // TODO: Implement actual sync logic with _client when endpoints are available
       return true;
     }, _handleError);
   }
 
   /// 批量添加商品到购物车
-  void addMultipleToCart(Map<ProductModel, int> productsWithQuantity) {
-    final cartItems = getCartItems();
-
-    productsWithQuantity.forEach((product, quantity) {
-      final existingItemIndex = cartItems.indexWhere(
-        (item) => item.product.id == product.id,
-      );
-
-      if (existingItemIndex >= 0) {
-        // 如果商品已存在，更新数量
-        final existingItem = cartItems[existingItemIndex];
-        final newQuantity = existingItem.quantity + quantity;
-
-        if (newQuantity <= product.stock) {
-          cartItems[existingItemIndex] = existingItem.copyWith(
-            quantity: newQuantity,
-          );
-        }
-      } else {
-        // 如果商品不存在，添加新商品
-        final newItem = CartItemModel(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          productId: product.id,
-          product: product,
-          deviceId: getCurrentDeviceId() ?? '',
-          quantity: quantity,
-          addedTime: DateTime.now(),
-        );
-        cartItems.add(newItem);
-      }
-    });
-
-    _saveCartItems(cartItems);
-  }
-
-  /// 保存购物车数据到本地存储
-  void _saveCartItems(List<CartItemModel> cartItems) {
-    try {
-      final jsonList = cartItems.map((item) => item.toJson()).toList();
-      final jsonString = jsonEncode(jsonList);
-      _storage.write(cartStorageKey, jsonString);
-    } catch (e) {
-      LoggerUtils.e('Failed to save cart items', e);
+  Future<void> addMultipleToCart(
+    Map<ProductModel, int> productsWithQuantity,
+  ) async {
+    for (final entry in productsWithQuantity.entries) {
+      await addToCart(entry.key, quantity: entry.value);
     }
   }
 

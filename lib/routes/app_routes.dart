@@ -16,7 +16,7 @@ class AppRoutes {
 
   // 主页面
   static const String home = '/home';
-  static const String eat = '/eat';
+  static const String device = '/device';
 
   // 首页功能入口
   static const String teamOrdering = '/team-ordering';

@@ -1,4 +1,4 @@
-import 'package:lunchbox/features/home/entities/lottery_prize.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_prize.dart';
 
 class LotteryState {
   const LotteryState({
