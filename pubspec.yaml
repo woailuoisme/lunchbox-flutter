@@ -26,14 +26,13 @@ dependencies:
   dio_http2_adapter: ^2.6.0
   retrofit: ^4.9.2
   connectivity_plus: ^7.0.0
-  web_socket_channel: ^3.0.3
-  mqtt_client: ^10.11.9
 
   # 存储
   shared_preferences: ^2.5.4
   flutter_secure_storage: ^10.0.0
   drift: ^2.31.0
-  sqlite3_flutter_libs: ^0.5.41
+  drift_flutter: ^0.2.8
+  sqlite3_flutter_libs: any
 
   # 基础 UI
   flutter_screenutil: ^5.9.3
@@ -42,7 +41,6 @@ dependencies:
   animations: ^2.1.1
   cupertino_icons: ^1.0.8
   material_symbols_icons: ^4.2906.0
-  font_awesome_flutter: ^10.12.0
   flutter_svg: ^2.2.3
 
   # 扩展 UI 组件
@@ -50,14 +48,14 @@ dependencies:
   cached_network_image: ^3.4.1
   infinite_scroll_pagination: ^5.1.1
   custom_refresh_indicator: ^4.0.1
-  introduction_screen: ^4.0.0
   flutter_spinkit: ^5.2.2
+  introduction_screen: ^4.0.0
   flutter_slidable: ^4.0.3
   flutter_staggered_grid_view: ^0.7.0
-  dotted_border: ^3.1.0
+  toggle_switch: ^2.3.0
   expandable: ^5.0.1
   carousel_slider: ^5.1.2
-  skeletonizer: ^2.1.2
+  skeletonizer: ^2.1.3
   flutter_html: ^3.0.0
   qr_flutter: ^4.1.0
   convex_bottom_bar: ^3.2.0
@@ -67,6 +65,7 @@ dependencies:
   timelines_plus: ^1.0.8
   page_transition: ^2.2.1
   showcaseview: ^5.0.1
+  awesome_dialog: ^3.3.0
   upgrader: ^12.5.0
 
   # 地图与定位
@@ -77,38 +76,31 @@ dependencies:
 
   # 系统与设备功能
   device_info_plus: ^12.3.0
+  package_info_plus: ^9.0.0
+  share_plus: ^12.0.1
   permission_handler: ^12.0.1
-  camera: ^0.11.3+1
-  image_picker: ^1.2.1
   local_auth: ^3.0.0
-  flutter_local_notifications: ^20.0.0
+  flutter_local_notifications: any
   path_provider: ^2.1.5
   url_launcher: ^6.3.2
-  share_plus: ^12.0.1
-  package_info_plus: ^9.0.0
-  app_settings: ^7.0.0
-  open_filex: ^4.7.0
   mobile_scanner: ^7.1.4
 
   # 业务功能
-  flutter_form_builder: ^10.3.0+1
+  flutter_form_builder: ^10.3.0+2
   form_builder_validators: ^11.3.0
   mask_text_input_formatter: ^2.9.0
   phone_form_field: ^10.0.17
   pinput: ^6.0.2
-  currency_text_input_formatter: ^2.3.0
   google_sign_in: ^7.2.0
-  sign_in_with_apple: ^7.0.1
-  characters: ^1.4.0
   flutter_stripe: ^12.2.0
   slang_flutter: ^4.12.1
   sentry_flutter: ^9.13.0
+  firebase_analytics: ^12.1.2
 
   # 逻辑工具与日志
   intl: ^0.20.2
   talker_flutter: ^5.1.13
   talker_dio_logger: ^5.1.13
-  talker_riverpod_logger: ^5.1.13
   fpdart: ^1.2.0
   rxdart: ^0.28.0
   path: any
@@ -120,6 +112,7 @@ dependencies:
   envied: ^1.3.3
 
   flutter_native_splash: any
+
 
 dev_dependencies:
   # 测试
@@ -146,8 +139,6 @@ dev_dependencies:
 
   # 开发工具
   flutter_launcher_icons: ^0.14.4
-  melos: ^7.4.0
-
 # 版本覆盖
 dependency_overrides:
   test_api: 0.7.9

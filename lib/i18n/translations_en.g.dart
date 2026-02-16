@@ -219,8 +219,34 @@ class _TranslationsAuthEn extends TranslationsAuthZhCn {
   String get enterUsernameHint =>
       TranslationOverrides.string(_root.$meta, 'auth.enterUsernameHint', {}) ?? 'Enter username or phone';
   @override
+  String get passwordLoginTab =>
+      TranslationOverrides.string(_root.$meta, 'auth.passwordLoginTab', {}) ?? 'Password Login';
+  @override
+  String get codeLoginTab => TranslationOverrides.string(_root.$meta, 'auth.codeLoginTab', {}) ?? 'Code Login';
+  @override
+  String get phoneNumber => TranslationOverrides.string(_root.$meta, 'auth.phoneNumber', {}) ?? 'Phone Number';
+  @override
+  String get enterPhoneNumber =>
+      TranslationOverrides.string(_root.$meta, 'auth.enterPhoneNumber', {}) ?? 'Enter phone number';
+  @override
+  String get phoneInvalid =>
+      TranslationOverrides.string(_root.$meta, 'auth.phoneInvalid', {}) ?? 'Invalid phone number';
+  @override
+  String get getVerificationCode =>
+      TranslationOverrides.string(_root.$meta, 'auth.getVerificationCode', {}) ?? 'Get Code';
+  @override
+  String retryInSeconds({required Object seconds}) =>
+      TranslationOverrides.string(_root.$meta, 'auth.retryInSeconds', {'seconds': seconds}) ?? 'Retry in ${seconds}s';
+  @override
+  String get otherLoginMethods =>
+      TranslationOverrides.string(_root.$meta, 'auth.otherLoginMethods', {}) ?? 'Other login methods';
+  @override
   String get enterNickname =>
       TranslationOverrides.string(_root.$meta, 'auth.enterNickname', {}) ?? 'Please enter nickname';
+  @override
+  String passwordMinLength({required Object length}) =>
+      TranslationOverrides.string(_root.$meta, 'auth.passwordMinLength', {'length': length}) ??
+      'Password must be at least ${length} characters';
   @override
   String get dontHaveAccount =>
       TranslationOverrides.string(_root.$meta, 'auth.dontHaveAccount', {}) ?? 'Don\'t have an account?';
@@ -349,6 +375,8 @@ class _TranslationsCommonEn extends TranslationsCommonZhCn {
   @override
   String get unknownError => TranslationOverrides.string(_root.$meta, 'common.unknownError', {}) ?? 'Unknown Error';
   @override
+  String get info => TranslationOverrides.string(_root.$meta, 'common.info', {}) ?? 'Info';
+  @override
   String get developing =>
       TranslationOverrides.string(_root.$meta, 'common.developing', {}) ?? 'Page is under development';
   @override
@@ -402,6 +430,8 @@ class _TranslationsCommonEn extends TranslationsCommonZhCn {
         'errors': errors,
       }) ??
       'Validation Error: ${message} (${errors})';
+  @override
+  String get warning => TranslationOverrides.string(_root.$meta, 'common.warning', {}) ?? 'Warning';
 }
 
 // Path: community
@@ -1976,6 +2006,8 @@ class _TranslationsProfileWalletPageEn extends TranslationsProfileWalletPageZhCn
   @override
   String get noHistory =>
       TranslationOverrides.string(_root.$meta, 'profile.walletPage.noHistory', {}) ?? 'No transaction history';
+  @override
+  late final _TranslationsProfileWalletPageRulesEn rules = _TranslationsProfileWalletPageRulesEn._(_root);
 }
 
 // Path: settings.schemes
@@ -2167,6 +2199,77 @@ class _TranslationsHomeLotteryPrizeCardEn extends TranslationsHomeLotteryPrizeCa
       TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.statusExpired', {}) ?? 'Expired';
 }
 
+// Path: profile.walletPage.rules
+class _TranslationsProfileWalletPageRulesEn extends TranslationsProfileWalletPageRulesZhCn {
+  _TranslationsProfileWalletPageRulesEn._(TranslationsEn root) : this._root = root, super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title => TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.title', {}) ?? 'Wallet Rules';
+  @override
+  String get headerTitle =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerTitle', {}) ?? 'Top Up Instructions';
+  @override
+  String get headerDesc =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerDesc', {}) ??
+      'Please read the rules carefully before topping up';
+  @override
+  late final _TranslationsProfileWalletPageRulesRechargeRulesEn rechargeRules =
+      _TranslationsProfileWalletPageRulesRechargeRulesEn._(_root);
+  @override
+  late final _TranslationsProfileWalletPageRulesUsageInstructionsEn usageInstructions =
+      _TranslationsProfileWalletPageRulesUsageInstructionsEn._(_root);
+}
+
+// Path: profile.walletPage.rules.rechargeRules
+class _TranslationsProfileWalletPageRulesRechargeRulesEn extends TranslationsProfileWalletPageRulesRechargeRulesZhCn {
+  _TranslationsProfileWalletPageRulesRechargeRulesEn._(TranslationsEn root) : this._root = root, super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.title', {}) ?? 'Top Up Rules';
+  @override
+  List<String> get items =>
+      TranslationOverrides.list(_root.$meta, 'profile.walletPage.rules.rechargeRules.items') ??
+      [
+        'Minimum single top up is ¥100',
+        'Maximum single top up is ¥100,000',
+        'Top up is credited immediately',
+        'Balance can be used to purchase items and pay orders',
+        'Specific packages grant coins; custom amounts only grant 400 coins',
+      ];
+}
+
+// Path: profile.walletPage.rules.usageInstructions
+class _TranslationsProfileWalletPageRulesUsageInstructionsEn
+    extends TranslationsProfileWalletPageRulesUsageInstructionsZhCn {
+  _TranslationsProfileWalletPageRulesUsageInstructionsEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.title', {}) ??
+      'Usage Instructions';
+  @override
+  List<String> get items =>
+      TranslationOverrides.list(_root.$meta, 'profile.walletPage.rules.usageInstructions.items') ??
+      [
+        'Wallet balance can be used to pay for orders',
+        'You can top up or use other payment methods if balance is insufficient',
+        'Top up history is saved permanently and can be viewed anytime',
+        'Please contact customer service for any issues',
+      ];
+}
+
 /// The flat map containing all translations for locale <en>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -2246,8 +2349,28 @@ extension on TranslationsEn {
             TranslationOverrides.string(_root.$meta, 'auth.enterPassword', {}) ?? 'Please enter password',
           'auth.enterUsernameHint' =>
             TranslationOverrides.string(_root.$meta, 'auth.enterUsernameHint', {}) ?? 'Enter username or phone',
+          'auth.passwordLoginTab' =>
+            TranslationOverrides.string(_root.$meta, 'auth.passwordLoginTab', {}) ?? 'Password Login',
+          'auth.codeLoginTab' => TranslationOverrides.string(_root.$meta, 'auth.codeLoginTab', {}) ?? 'Code Login',
+          'auth.phoneNumber' => TranslationOverrides.string(_root.$meta, 'auth.phoneNumber', {}) ?? 'Phone Number',
+          'auth.enterPhoneNumber' =>
+            TranslationOverrides.string(_root.$meta, 'auth.enterPhoneNumber', {}) ?? 'Enter phone number',
+          'auth.phoneInvalid' =>
+            TranslationOverrides.string(_root.$meta, 'auth.phoneInvalid', {}) ?? 'Invalid phone number',
+          'auth.getVerificationCode' =>
+            TranslationOverrides.string(_root.$meta, 'auth.getVerificationCode', {}) ?? 'Get Code',
+          'auth.retryInSeconds' =>
+            ({required Object seconds}) =>
+                TranslationOverrides.string(_root.$meta, 'auth.retryInSeconds', {'seconds': seconds}) ??
+                'Retry in ${seconds}s',
+          'auth.otherLoginMethods' =>
+            TranslationOverrides.string(_root.$meta, 'auth.otherLoginMethods', {}) ?? 'Other login methods',
           'auth.enterNickname' =>
             TranslationOverrides.string(_root.$meta, 'auth.enterNickname', {}) ?? 'Please enter nickname',
+          'auth.passwordMinLength' =>
+            ({required Object length}) =>
+                TranslationOverrides.string(_root.$meta, 'auth.passwordMinLength', {'length': length}) ??
+                'Password must be at least ${length} characters',
           'auth.dontHaveAccount' =>
             TranslationOverrides.string(_root.$meta, 'auth.dontHaveAccount', {}) ?? 'Don\'t have an account?',
           'auth.resetPasswordHint' =>
@@ -2309,6 +2432,7 @@ extension on TranslationsEn {
           'common.loadFailed' => TranslationOverrides.string(_root.$meta, 'common.loadFailed', {}) ?? 'Load Failed',
           'common.unknownError' =>
             TranslationOverrides.string(_root.$meta, 'common.unknownError', {}) ?? 'Unknown Error',
+          'common.info' => TranslationOverrides.string(_root.$meta, 'common.info', {}) ?? 'Info',
           'common.developing' =>
             TranslationOverrides.string(_root.$meta, 'common.developing', {}) ?? 'Page is under development',
           'common.appName' => TranslationOverrides.string(_root.$meta, 'common.appName', {}) ?? 'E-Lunchbox',
@@ -2362,6 +2486,7 @@ extension on TranslationsEn {
                   'errors': errors,
                 }) ??
                 'Validation Error: ${message} (${errors})',
+          'common.warning' => TranslationOverrides.string(_root.$meta, 'common.warning', {}) ?? 'Warning',
           'community.title' => TranslationOverrides.string(_root.$meta, 'community.title', {}) ?? 'Community Benefits',
           'community.join' => TranslationOverrides.string(_root.$meta, 'community.join', {}) ?? 'Join Community',
           'community.share' =>
@@ -3106,6 +3231,9 @@ extension on TranslationsEn {
           'product.sortName' => TranslationOverrides.string(_root.$meta, 'product.sortName', {}) ?? 'Name',
           'product.filterOnlyAvailable' =>
             TranslationOverrides.string(_root.$meta, 'product.filterOnlyAvailable', {}) ?? 'Show Available Only',
+          _ => null,
+        } ??
+        switch (path) {
           'product.cart' => TranslationOverrides.string(_root.$meta, 'product.cart', {}) ?? 'Cart',
           'profile.title' => TranslationOverrides.string(_root.$meta, 'profile.title', {}) ?? 'User Center',
           'profile.notLoggedIn' =>
@@ -3127,9 +3255,6 @@ extension on TranslationsEn {
                 'Are you sure you want to clear all cache data?',
           'profile.noFavoriteDevices' =>
             TranslationOverrides.string(_root.$meta, 'profile.noFavoriteDevices', {}) ?? 'No favorite devices',
-          _ => null,
-        } ??
-        switch (path) {
           'profile.removeFavorite' =>
             TranslationOverrides.string(_root.$meta, 'profile.removeFavorite', {}) ?? 'Unfavorite',
           'profile.removeFavoriteConfirm' =>
@@ -3215,6 +3340,47 @@ extension on TranslationsEn {
                 'Total ${count}',
           'profile.walletPage.noHistory' =>
             TranslationOverrides.string(_root.$meta, 'profile.walletPage.noHistory', {}) ?? 'No transaction history',
+          'profile.walletPage.rules.title' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.title', {}) ?? 'Wallet Rules',
+          'profile.walletPage.rules.headerTitle' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerTitle', {}) ??
+                'Top Up Instructions',
+          'profile.walletPage.rules.headerDesc' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerDesc', {}) ??
+                'Please read the rules carefully before topping up',
+          'profile.walletPage.rules.rechargeRules.title' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.title', {}) ??
+                'Top Up Rules',
+          'profile.walletPage.rules.rechargeRules.items.0' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.0', {}) ??
+                'Minimum single top up is ¥100',
+          'profile.walletPage.rules.rechargeRules.items.1' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.1', {}) ??
+                'Maximum single top up is ¥100,000',
+          'profile.walletPage.rules.rechargeRules.items.2' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.2', {}) ??
+                'Top up is credited immediately',
+          'profile.walletPage.rules.rechargeRules.items.3' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.3', {}) ??
+                'Balance can be used to purchase items and pay orders',
+          'profile.walletPage.rules.rechargeRules.items.4' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.4', {}) ??
+                'Specific packages grant coins; custom amounts only grant 400 coins',
+          'profile.walletPage.rules.usageInstructions.title' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.title', {}) ??
+                'Usage Instructions',
+          'profile.walletPage.rules.usageInstructions.items.0' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.0', {}) ??
+                'Wallet balance can be used to pay for orders',
+          'profile.walletPage.rules.usageInstructions.items.1' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.1', {}) ??
+                'You can top up or use other payment methods if balance is insufficient',
+          'profile.walletPage.rules.usageInstructions.items.2' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.2', {}) ??
+                'Top up history is saved permanently and can be viewed anytime',
+          'profile.walletPage.rules.usageInstructions.items.3' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.3', {}) ??
+                'Please contact customer service for any issues',
           'settings.title' => TranslationOverrides.string(_root.$meta, 'settings.title', {}) ?? 'Settings',
           'settings.general' => TranslationOverrides.string(_root.$meta, 'settings.general', {}) ?? 'General',
           'settings.theme' => TranslationOverrides.string(_root.$meta, 'settings.theme', {}) ?? 'Theme Mode',

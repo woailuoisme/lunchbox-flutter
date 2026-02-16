@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 /// 通用错误展示组件
@@ -33,7 +34,7 @@ class ErrorWidget extends StatelessWidget {
             ),
             if (onRetry != null) ...[
               SizedBox(height: 16.h),
-              ElevatedButton(onPressed: onRetry, child: const Text('重试')),
+              ElevatedButton(onPressed: onRetry, child: Text(t.common.retry)),
             ],
           ],
         ),

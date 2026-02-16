@@ -19,6 +19,7 @@
   "refresh": "Refresh",
   "loadFailed": "Load Failed",
   "unknownError": "Unknown Error",
+  "info": "Info",
   "developing": "Page is under development",
   "appName": "E-Lunchbox",
   "logout": "Logout",
@@ -34,5 +35,6 @@
   "notFound": "Not Found: ${resource}",
   "unauthorized": "Unauthorized, please login again",
   "validationError": "Validation Error: ${message}",
-  "validationErrorWithDetails": "Validation Error: ${message} (${errors})"
+  "validationErrorWithDetails": "Validation Error: ${message} (${errors})",
+  "warning": "Warning"
 }

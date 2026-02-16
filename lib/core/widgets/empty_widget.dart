@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 /// 通用空状态展示组件
@@ -20,7 +21,7 @@ class EmptyWidget extends StatelessWidget {
           Icon(Symbols.inbox, size: 48.sp, color: colorScheme.outline),
           SizedBox(height: 16.h),
           Text(
-            message ?? '暂无数据',
+            message ?? t.common.noData,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: colorScheme.onSurfaceVariant,
             ),

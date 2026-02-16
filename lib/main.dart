@@ -3,10 +3,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/theme/theme.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-// import 'package:talker_riverpod_logger/talker_riverpod_logger.dart';
 import 'package:lunchbox/routes/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
@@ -31,17 +31,7 @@ void main() async {
 
   runApp(
     ProviderScope(
-      observers: [
-        // TalkerRiverpodObserver(
-        //   talker: LoggerUtils.instance,
-        //   settings: const TalkerRiverpodLoggerSettings(
-        //     printStateFullData: false,
-        //     printProviderAdded: true,
-        //     printProviderDisposed: true,
-        //     printProviderFailed: true,
-        //   ),
-        // ),
-      ],
+      observers: [],
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
@@ -78,6 +68,7 @@ class MyApp extends ConsumerWidget {
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
+              FormBuilderLocalizations.delegate,
             ],
           ),
         );

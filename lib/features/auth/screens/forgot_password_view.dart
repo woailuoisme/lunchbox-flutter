@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:lunchbox/features/auth/widgets/forgot_password_button.dart';
+import 'package:lunchbox/features/auth/widgets/forgot_password_form.dart';
+import 'package:lunchbox/features/auth/widgets/forgot_password_header.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
 
 class ForgotPasswordView extends StatefulWidget {
@@ -93,11 +94,18 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       children:
                           [
                                 SizedBox(height: 16.h),
-                                _buildHeader(colorScheme),
+                                ForgotPasswordHeader(colorScheme: colorScheme),
                                 SizedBox(height: 40.h),
-                                _buildForm(colorScheme),
+                                ForgotPasswordForm(
+                                  colorScheme: colorScheme,
+                                  onSubmit: _handleResetPassword,
+                                ),
                                 SizedBox(height: 32.h),
-                                _buildSubmitButton(colorScheme),
+                                ForgotPasswordButton(
+                                  colorScheme: colorScheme,
+                                  isLoading: _isLoading,
+                                  onPressed: _handleResetPassword,
+                                ),
                                 SizedBox(height: 24.h),
                               ]
                               .animate(interval: 50.ms)
@@ -115,105 +123,6 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           },
         ),
       ),
-    );
-  }
-
-  Widget _buildHeader(ColorScheme colorScheme) {
-    return Column(
-      children: [
-        Text(
-          t.auth.forgotPassword,
-          style: TextStyle(
-            fontSize: 28.sp,
-            fontWeight: FontWeight.bold,
-            color: colorScheme.onSurface,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: 12.h),
-        Text(
-          t.auth.resetPasswordHint,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: colorScheme.onSurfaceVariant,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildForm(ColorScheme colorScheme) {
-    return FormBuilderTextField(
-      name: 'email',
-      style: TextStyle(
-        fontSize: 16.sp,
-        color: colorScheme.onSurface,
-        fontWeight: FontWeight.w500,
-      ),
-      decoration: InputDecoration(
-        labelText: t.common.username,
-        labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
-        hintText: t.auth.usernameOrEmail,
-        hintStyle: TextStyle(color: colorScheme.outline),
-        prefixIcon: Icon(Symbols.person, color: colorScheme.primary),
-        filled: true,
-        fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: colorScheme.primary, width: 2),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-        ),
-      ),
-      validator: FormBuilderValidators.compose([
-        FormBuilderValidators.required(errorText: t.auth.required),
-      ]),
-      keyboardType: TextInputType.emailAddress,
-      textInputAction: TextInputAction.done,
-      onSubmitted: (_) => _handleResetPassword(),
-    );
-  }
-
-  Widget _buildSubmitButton(ColorScheme colorScheme) {
-    return ElevatedButton(
-      onPressed: _isLoading ? null : _handleResetPassword,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: colorScheme.primary,
-        foregroundColor: colorScheme.onPrimary,
-        disabledBackgroundColor: colorScheme.primary.withValues(alpha: 0.5),
-        disabledForegroundColor: colorScheme.onPrimary.withValues(alpha: 0.8),
-        padding: EdgeInsets.symmetric(vertical: 16.h),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        elevation: 0,
-      ),
-      child: _isLoading
-          ? SizedBox(
-              width: 20.w,
-              height: 20.w,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  colorScheme.onPrimary,
-                ),
-              ),
-            )
-          : Text(
-              t.auth.sendResetLink,
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-            ),
     );
   }
 }

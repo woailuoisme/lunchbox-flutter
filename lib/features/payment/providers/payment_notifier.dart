@@ -93,9 +93,17 @@ class PaymentNotifier extends _$PaymentNotifier {
           await Stripe.instance.initPaymentSheet(
             paymentSheetParameters: SetupPaymentSheetParameters(
               merchantDisplayName: 'Lunchbox App',
+              // paymentIntentClientSecret：后端调用 Stripe 创建 PaymentIntent 后返回的 client_secret
+              // customerEphemeralKeySecret：后端为该 Customer 生成的 Ephemeral Key 的 secret
+              // customerId：后端创建/获取 Stripe Customer 后返回的 customer.id
               paymentIntentClientSecret: data['paymentIntent'] as String?,
               customerEphemeralKeySecret: data['ephemeralKey'] as String?,
               customerId: data['customer'] as String?,
+              googlePay: const PaymentSheetGooglePay(
+                merchantCountryCode: 'CN',
+                currencyCode: 'CNY',
+                testEnv: true,
+              ),
               // 如果有需要，可以配置 applePay, googlePay 等
             ),
           );

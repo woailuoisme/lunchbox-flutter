@@ -12,6 +12,8 @@ import 'package:lunchbox/features/order/order.dart';
 import 'package:lunchbox/features/payment/payment.dart';
 import 'package:lunchbox/features/product/product.dart';
 import 'package:lunchbox/features/profile/profile.dart';
+import 'package:lunchbox/features/wallet/screens/wallet_rules_view.dart';
+import 'package:lunchbox/features/wallet/screens/wallet_view.dart';
 import 'package:lunchbox/features/settings/settings.dart';
 import 'package:lunchbox/features/splash/splash.dart';
 import 'package:lunchbox/routes/app_routes.dart';
@@ -252,6 +254,15 @@ class WalletRoute extends GoRouteData with $WalletRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) => const WalletView();
+}
+
+@TypedGoRoute<WalletRulesRoute>(path: AppRoutes.walletRules)
+class WalletRulesRoute extends GoRouteData with $WalletRulesRoute {
+  const WalletRulesRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const WalletRulesView();
 }
 
 @TypedGoRoute<MyPointsRoute>(path: AppRoutes.myPoints)

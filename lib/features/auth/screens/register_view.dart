@@ -3,10 +3,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lunchbox/features/auth/providers/auth_notifier.dart';
+import 'package:lunchbox/features/auth/widgets/register_button.dart';
+import 'package:lunchbox/features/auth/widgets/register_form.dart';
+import 'package:lunchbox/features/auth/widgets/register_header.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
 
 class RegisterView extends ConsumerStatefulWidget {
@@ -102,11 +103,21 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       children:
                           [
                                 SizedBox(height: 16.h),
-                                _buildHeader(colorScheme),
+                                RegisterHeader(colorScheme: colorScheme),
                                 SizedBox(height: 32.h),
-                                _buildForm(colorScheme),
+                                RegisterForm(
+                                  colorScheme: colorScheme,
+                                  obscurePassword: _obscurePassword,
+                                  onTogglePasswordVisibility:
+                                      _togglePasswordVisibility,
+                                  onSubmit: _handleRegister,
+                                ),
                                 SizedBox(height: 32.h),
-                                _buildRegisterButton(colorScheme),
+                                RegisterButton(
+                                  colorScheme: colorScheme,
+                                  isLoading: _isLoading,
+                                  onPressed: _handleRegister,
+                                ),
                                 SizedBox(height: 24.h),
                               ]
                               .animate(interval: 50.ms)
@@ -124,197 +135,6 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
           },
         ),
       ),
-    );
-  }
-
-  Widget _buildHeader(ColorScheme colorScheme) {
-    return Column(
-      children: [
-        Text(
-          t.auth.registerTitle,
-          style: TextStyle(
-            fontSize: 28.sp,
-            fontWeight: FontWeight.bold,
-            color: colorScheme.onSurface,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Text(
-          t.auth.slogan,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: colorScheme.onSurfaceVariant,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildForm(ColorScheme colorScheme) {
-    return Column(
-      children: [
-        FormBuilderTextField(
-          name: 'username',
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: colorScheme.onSurface,
-            fontWeight: FontWeight.w500,
-          ),
-          decoration: InputDecoration(
-            labelText: t.common.username,
-            labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
-            hintText: t.auth.enterUsernameHint,
-            hintStyle: TextStyle(color: colorScheme.outline),
-            prefixIcon: Icon(Symbols.person, color: colorScheme.primary),
-            filled: true,
-            fillColor: colorScheme.surfaceContainerHighest.withValues(
-              alpha: 0.3,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: colorScheme.primary, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-            ),
-          ),
-          validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(errorText: t.auth.required),
-          ]),
-          textInputAction: TextInputAction.next,
-        ),
-        SizedBox(height: 16.h),
-        FormBuilderTextField(
-          name: 'nickname',
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: colorScheme.onSurface,
-            fontWeight: FontWeight.w500,
-          ),
-          decoration: InputDecoration(
-            labelText: t.auth.nickname,
-            labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
-            hintText: t.auth.enterNickname,
-            hintStyle: TextStyle(color: colorScheme.outline),
-            prefixIcon: Icon(Symbols.face, color: colorScheme.primary),
-            filled: true,
-            fillColor: colorScheme.surfaceContainerHighest.withValues(
-              alpha: 0.3,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: colorScheme.primary, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-            ),
-          ),
-          validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(errorText: t.auth.required),
-          ]),
-          textInputAction: TextInputAction.next,
-        ),
-        SizedBox(height: 16.h),
-        FormBuilderTextField(
-          name: 'password',
-          obscureText: _obscurePassword,
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: colorScheme.onSurface,
-            fontWeight: FontWeight.w500,
-          ),
-          decoration: InputDecoration(
-            labelText: t.common.password,
-            labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
-            hintText: t.auth.enterPassword,
-            hintStyle: TextStyle(color: colorScheme.outline),
-            prefixIcon: Icon(Symbols.lock, color: colorScheme.primary),
-            suffixIcon: IconButton(
-              icon: Icon(
-                _obscurePassword ? Symbols.visibility : Symbols.visibility_off,
-                color: colorScheme.onSurfaceVariant,
-              ),
-              onPressed: _togglePasswordVisibility,
-            ),
-            filled: true,
-            fillColor: colorScheme.surfaceContainerHighest.withValues(
-              alpha: 0.3,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: colorScheme.primary, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-            ),
-          ),
-          validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(errorText: t.auth.required),
-            FormBuilderValidators.minLength(6, errorText: '密码长度不能少于6位'),
-          ]),
-          textInputAction: TextInputAction.done,
-          onSubmitted: (_) => _handleRegister(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRegisterButton(ColorScheme colorScheme) {
-    return ElevatedButton(
-      onPressed: _isLoading ? null : _handleRegister,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: colorScheme.primary,
-        foregroundColor: colorScheme.onPrimary,
-        disabledBackgroundColor: colorScheme.primary.withValues(alpha: 0.5),
-        disabledForegroundColor: colorScheme.onPrimary.withValues(alpha: 0.8),
-        padding: EdgeInsets.symmetric(vertical: 16.h),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        elevation: 0,
-      ),
-      child: _isLoading
-          ? SizedBox(
-              width: 20.w,
-              height: 20.w,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  colorScheme.onPrimary,
-                ),
-              ),
-            )
-          : Text(
-              t.common.register,
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-            ),
     );
   }
 }

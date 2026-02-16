@@ -212,8 +212,37 @@ class TranslationsAuthZhCn {
   String get enterUsernameHint =>
       TranslationOverrides.string(_root.$meta, 'auth.enterUsernameHint', {}) ?? '请输入用户名或手机号';
 
+  /// zh-CN: '密码登录'
+  String get passwordLoginTab => TranslationOverrides.string(_root.$meta, 'auth.passwordLoginTab', {}) ?? '密码登录';
+
+  /// zh-CN: '验证码登录'
+  String get codeLoginTab => TranslationOverrides.string(_root.$meta, 'auth.codeLoginTab', {}) ?? '验证码登录';
+
+  /// zh-CN: '手机号'
+  String get phoneNumber => TranslationOverrides.string(_root.$meta, 'auth.phoneNumber', {}) ?? '手机号';
+
+  /// zh-CN: '请输入手机号'
+  String get enterPhoneNumber => TranslationOverrides.string(_root.$meta, 'auth.enterPhoneNumber', {}) ?? '请输入手机号';
+
+  /// zh-CN: '手机号格式不正确'
+  String get phoneInvalid => TranslationOverrides.string(_root.$meta, 'auth.phoneInvalid', {}) ?? '手机号格式不正确';
+
+  /// zh-CN: '获取验证码'
+  String get getVerificationCode => TranslationOverrides.string(_root.$meta, 'auth.getVerificationCode', {}) ?? '获取验证码';
+
+  /// zh-CN: '${seconds}s 后重试'
+  String retryInSeconds({required Object seconds}) =>
+      TranslationOverrides.string(_root.$meta, 'auth.retryInSeconds', {'seconds': seconds}) ?? '${seconds}s 后重试';
+
+  /// zh-CN: '其他登录方式'
+  String get otherLoginMethods => TranslationOverrides.string(_root.$meta, 'auth.otherLoginMethods', {}) ?? '其他登录方式';
+
   /// zh-CN: '请输入昵称'
   String get enterNickname => TranslationOverrides.string(_root.$meta, 'auth.enterNickname', {}) ?? '请输入昵称';
+
+  /// zh-CN: '密码长度不能少于${length}位'
+  String passwordMinLength({required Object length}) =>
+      TranslationOverrides.string(_root.$meta, 'auth.passwordMinLength', {'length': length}) ?? '密码长度不能少于${length}位';
 
   /// zh-CN: '还没有账号？'
   String get dontHaveAccount => TranslationOverrides.string(_root.$meta, 'auth.dontHaveAccount', {}) ?? '还没有账号？';
@@ -378,6 +407,9 @@ class TranslationsCommonZhCn {
   /// zh-CN: '未知错误'
   String get unknownError => TranslationOverrides.string(_root.$meta, 'common.unknownError', {}) ?? '未知错误';
 
+  /// zh-CN: '提示'
+  String get info => TranslationOverrides.string(_root.$meta, 'common.info', {}) ?? '提示';
+
   /// zh-CN: '页面正在开发中'
   String get developing => TranslationOverrides.string(_root.$meta, 'common.developing', {}) ?? '页面正在开发中';
 
@@ -448,6 +480,9 @@ class TranslationsCommonZhCn {
 
   /// zh-CN: '取消全选'
   String get deselectAll => TranslationOverrides.string(_root.$meta, 'common.deselectAll', {}) ?? '取消全选';
+
+  /// zh-CN: '警告'
+  String get warning => TranslationOverrides.string(_root.$meta, 'common.warning', {}) ?? '警告';
 }
 
 // Path: community
@@ -2346,6 +2381,8 @@ class TranslationsProfileWalletPageZhCn {
 
   /// zh-CN: '暂无充值记录'
   String get noHistory => TranslationOverrides.string(_root.$meta, 'profile.walletPage.noHistory', {}) ?? '暂无充值记录';
+
+  late final TranslationsProfileWalletPageRulesZhCn rules = TranslationsProfileWalletPageRulesZhCn.internal(_root);
 }
 
 // Path: settings.schemes
@@ -2550,6 +2587,65 @@ class TranslationsHomeLotteryPrizeCardZhCn {
       TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.statusExpired', {}) ?? '已过期';
 }
 
+// Path: profile.walletPage.rules
+class TranslationsProfileWalletPageRulesZhCn {
+  TranslationsProfileWalletPageRulesZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '钱包规则'
+  String get title => TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.title', {}) ?? '钱包规则';
+
+  /// zh-CN: '钱包充值说明'
+  String get headerTitle =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerTitle', {}) ?? '钱包充值说明';
+
+  /// zh-CN: '请仔细阅读规则后进行充值'
+  String get headerDesc =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerDesc', {}) ?? '请仔细阅读规则后进行充值';
+
+  late final TranslationsProfileWalletPageRulesRechargeRulesZhCn rechargeRules =
+      TranslationsProfileWalletPageRulesRechargeRulesZhCn.internal(_root);
+  late final TranslationsProfileWalletPageRulesUsageInstructionsZhCn usageInstructions =
+      TranslationsProfileWalletPageRulesUsageInstructionsZhCn.internal(_root);
+}
+
+// Path: profile.walletPage.rules.rechargeRules
+class TranslationsProfileWalletPageRulesRechargeRulesZhCn {
+  TranslationsProfileWalletPageRulesRechargeRulesZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '充值规则'
+  String get title =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.title', {}) ?? '充值规则';
+
+  List<String> get items =>
+      TranslationOverrides.list(_root.$meta, 'profile.walletPage.rules.rechargeRules.items') ??
+      ['单次充值最低100元', '充值金额单次有100000元上限', '充值成功后立即到账', '充值金额可用于购买商品和支付订单', '充值部分套餐可获取乖乖币，自选金额充值只可获取400乖乖币'];
+}
+
+// Path: profile.walletPage.rules.usageInstructions
+class TranslationsProfileWalletPageRulesUsageInstructionsZhCn {
+  TranslationsProfileWalletPageRulesUsageInstructionsZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '使用说明'
+  String get title =>
+      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.title', {}) ?? '使用说明';
+
+  List<String> get items =>
+      TranslationOverrides.list(_root.$meta, 'profile.walletPage.rules.usageInstructions.items') ??
+      ['钱包余额可用于支付订单', '余额不足时可选择充值或使用其他支付方式', '充值记录永久保存，可随时查看', '如有问题请联系客服处理'];
+}
+
 /// The flat map containing all translations for locale <zh-CN>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -2603,7 +2699,24 @@ extension on Translations {
           'auth.enterPassword' => TranslationOverrides.string(_root.$meta, 'auth.enterPassword', {}) ?? '请输入密码',
           'auth.enterUsernameHint' =>
             TranslationOverrides.string(_root.$meta, 'auth.enterUsernameHint', {}) ?? '请输入用户名或手机号',
+          'auth.passwordLoginTab' => TranslationOverrides.string(_root.$meta, 'auth.passwordLoginTab', {}) ?? '密码登录',
+          'auth.codeLoginTab' => TranslationOverrides.string(_root.$meta, 'auth.codeLoginTab', {}) ?? '验证码登录',
+          'auth.phoneNumber' => TranslationOverrides.string(_root.$meta, 'auth.phoneNumber', {}) ?? '手机号',
+          'auth.enterPhoneNumber' => TranslationOverrides.string(_root.$meta, 'auth.enterPhoneNumber', {}) ?? '请输入手机号',
+          'auth.phoneInvalid' => TranslationOverrides.string(_root.$meta, 'auth.phoneInvalid', {}) ?? '手机号格式不正确',
+          'auth.getVerificationCode' =>
+            TranslationOverrides.string(_root.$meta, 'auth.getVerificationCode', {}) ?? '获取验证码',
+          'auth.retryInSeconds' =>
+            ({required Object seconds}) =>
+                TranslationOverrides.string(_root.$meta, 'auth.retryInSeconds', {'seconds': seconds}) ??
+                '${seconds}s 后重试',
+          'auth.otherLoginMethods' =>
+            TranslationOverrides.string(_root.$meta, 'auth.otherLoginMethods', {}) ?? '其他登录方式',
           'auth.enterNickname' => TranslationOverrides.string(_root.$meta, 'auth.enterNickname', {}) ?? '请输入昵称',
+          'auth.passwordMinLength' =>
+            ({required Object length}) =>
+                TranslationOverrides.string(_root.$meta, 'auth.passwordMinLength', {'length': length}) ??
+                '密码长度不能少于${length}位',
           'auth.dontHaveAccount' => TranslationOverrides.string(_root.$meta, 'auth.dontHaveAccount', {}) ?? '还没有账号？',
           'auth.resetPasswordHint' =>
             TranslationOverrides.string(_root.$meta, 'auth.resetPasswordHint', {}) ?? '请输入您的用户名或邮箱来重置密码',
@@ -2657,6 +2770,7 @@ extension on Translations {
           'common.refresh' => TranslationOverrides.string(_root.$meta, 'common.refresh', {}) ?? '刷新',
           'common.loadFailed' => TranslationOverrides.string(_root.$meta, 'common.loadFailed', {}) ?? '加载失败',
           'common.unknownError' => TranslationOverrides.string(_root.$meta, 'common.unknownError', {}) ?? '未知错误',
+          'common.info' => TranslationOverrides.string(_root.$meta, 'common.info', {}) ?? '提示',
           'common.developing' => TranslationOverrides.string(_root.$meta, 'common.developing', {}) ?? '页面正在开发中',
           'common.appName' => TranslationOverrides.string(_root.$meta, 'common.appName', {}) ?? '好小乖',
           'common.logout' => TranslationOverrides.string(_root.$meta, 'common.logout', {}) ?? '退出',
@@ -2708,6 +2822,7 @@ extension on Translations {
                 '验证错误：${message} (${errors})',
           'common.selectAll' => TranslationOverrides.string(_root.$meta, 'common.selectAll', {}) ?? '全选',
           'common.deselectAll' => TranslationOverrides.string(_root.$meta, 'common.deselectAll', {}) ?? '取消全选',
+          'common.warning' => TranslationOverrides.string(_root.$meta, 'common.warning', {}) ?? '警告',
           'community.title' => TranslationOverrides.string(_root.$meta, 'community.title', {}) ?? '社群福利',
           'community.join' => TranslationOverrides.string(_root.$meta, 'community.join', {}) ?? '加入社群',
           'community.share' => TranslationOverrides.string(_root.$meta, 'community.share', {}) ?? '与美食爱好者一起分享美味',
@@ -3287,6 +3402,9 @@ extension on Translations {
                 TranslationOverrides.string(_root.$meta, 'product.discountOff', {'percent': percent}) ??
                 '${percent}% OFF',
           'product.monthlySales' => TranslationOverrides.string(_root.$meta, 'product.monthlySales', {}) ?? '月售',
+          _ => null,
+        } ??
+        switch (path) {
           'product.stock' => TranslationOverrides.string(_root.$meta, 'product.stock', {}) ?? '库存',
           'product.stockFull' => TranslationOverrides.string(_root.$meta, 'product.stockFull', {}) ?? '库存充足',
           'product.stockEmpty' => TranslationOverrides.string(_root.$meta, 'product.stockEmpty', {}) ?? '暂时缺货',
@@ -3298,9 +3416,6 @@ extension on Translations {
           'product.categoryDrink' => TranslationOverrides.string(_root.$meta, 'product.categoryDrink', {}) ?? '饮料',
           'product.categorySnack' => TranslationOverrides.string(_root.$meta, 'product.categorySnack', {}) ?? '零食',
           'product.sortDefault' => TranslationOverrides.string(_root.$meta, 'product.sortDefault', {}) ?? '默认排序',
-          _ => null,
-        } ??
-        switch (path) {
           'product.sortPriceAsc' => TranslationOverrides.string(_root.$meta, 'product.sortPriceAsc', {}) ?? '价格从低到高',
           'product.sortPriceDesc' => TranslationOverrides.string(_root.$meta, 'product.sortPriceDesc', {}) ?? '价格从高到低',
           'product.sortName' => TranslationOverrides.string(_root.$meta, 'product.sortName', {}) ?? '按名称排序',
@@ -3393,6 +3508,43 @@ extension on Translations {
                 '共${count}笔',
           'profile.walletPage.noHistory' =>
             TranslationOverrides.string(_root.$meta, 'profile.walletPage.noHistory', {}) ?? '暂无充值记录',
+          'profile.walletPage.rules.title' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.title', {}) ?? '钱包规则',
+          'profile.walletPage.rules.headerTitle' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerTitle', {}) ?? '钱包充值说明',
+          'profile.walletPage.rules.headerDesc' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerDesc', {}) ?? '请仔细阅读规则后进行充值',
+          'profile.walletPage.rules.rechargeRules.title' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.title', {}) ?? '充值规则',
+          'profile.walletPage.rules.rechargeRules.items.0' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.0', {}) ??
+                '单次充值最低100元',
+          'profile.walletPage.rules.rechargeRules.items.1' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.1', {}) ??
+                '充值金额单次有100000元上限',
+          'profile.walletPage.rules.rechargeRules.items.2' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.2', {}) ??
+                '充值成功后立即到账',
+          'profile.walletPage.rules.rechargeRules.items.3' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.3', {}) ??
+                '充值金额可用于购买商品和支付订单',
+          'profile.walletPage.rules.rechargeRules.items.4' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.4', {}) ??
+                '充值部分套餐可获取乖乖币，自选金额充值只可获取400乖乖币',
+          'profile.walletPage.rules.usageInstructions.title' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.title', {}) ?? '使用说明',
+          'profile.walletPage.rules.usageInstructions.items.0' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.0', {}) ??
+                '钱包余额可用于支付订单',
+          'profile.walletPage.rules.usageInstructions.items.1' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.1', {}) ??
+                '余额不足时可选择充值或使用其他支付方式',
+          'profile.walletPage.rules.usageInstructions.items.2' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.2', {}) ??
+                '充值记录永久保存，可随时查看',
+          'profile.walletPage.rules.usageInstructions.items.3' =>
+            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.3', {}) ??
+                '如有问题请联系客服处理',
           'settings.title' => TranslationOverrides.string(_root.$meta, 'settings.title', {}) ?? '设置',
           'settings.general' => TranslationOverrides.string(_root.$meta, 'settings.general', {}) ?? '通用',
           'settings.theme' => TranslationOverrides.string(_root.$meta, 'settings.theme', {}) ?? '主题模式',

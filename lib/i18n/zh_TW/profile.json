@@ -42,5 +42,45 @@
   "saveInfo": "保存信息",
   "walletBalance": "錢包餘額",
   "coin": "乖乖幣",
-  "couponCount": "優惠券"
+  "couponCount": "優惠券",
+  "walletPage": {
+    "title": "錢包",
+    "topUp": "充值",
+    "balance": "錢包餘額",
+    "selectAmount": "選擇充值金額",
+    "rule": "規則說明",
+    "ruleDesc": "充值部分套餐可獲取乖乖幣，自選金額充值不獲取乖乖幣",
+    "customAmount": "自選金額",
+    "customAmountHint": "僅限500元以上充值",
+    "realPay": "實付¥${amount}",
+    "bonus": "送${amount}乖乖幣",
+    "noBonus": "無乖乖幣",
+    "history": "充值記錄",
+    "historyCount": "共${count}筆",
+    "noHistory": "暫無充值記錄",
+    "rules": {
+      "title": "錢包規則",
+      "headerTitle": "錢包充值說明",
+      "headerDesc": "請仔細閱讀規則後進行充值",
+      "rechargeRules": {
+        "title": "充值規則",
+        "items": [
+          "單次充值最低100元",
+          "充值金額單次有100000元上限",
+          "充值成功後立即到賬",
+          "充值金額可用於購買商品和支付訂單",
+          "充值部分套餐可獲取乖乖幣，自選金額充值只可獲取400乖乖幣"
+        ]
+      },
+      "usageInstructions": {
+        "title": "使用說明",
+        "items": [
+          "錢包餘額可用於支付訂單",
+          "餘額不足時可選擇充值或使用其他支付方式",
+          "充值記錄永久保存，可隨時查看",
+          "如有問題請聯繫客服處理"
+        ]
+      }
+    }
+  }
 }

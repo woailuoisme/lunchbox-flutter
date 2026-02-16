@@ -271,13 +271,7 @@ class TeamOrderingView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (!isLast)
-                    Container(
-                      margin: EdgeInsets.only(left: 11.w),
-                      height: 20.h,
-                      width: 1.w,
-                      color: colorScheme.primary.withValues(alpha: 0.3),
-                    ),
+                  if (!isLast) SizedBox(height: 20.h),
                 ],
               );
             }).toList(),

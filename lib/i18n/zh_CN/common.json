@@ -19,6 +19,7 @@
   "refresh": "刷新",
   "loadFailed": "加载失败",
   "unknownError": "未知错误",
+  "info": "提示",
   "developing": "页面正在开发中",
   "appName": "好小乖",
   "logout": "退出",
@@ -36,5 +37,6 @@
   "validationError": "验证错误：${message}",
   "validationErrorWithDetails": "验证错误：${message} (${errors})",
   "selectAll": "全选",
-  "deselectAll": "取消全选"
+  "deselectAll": "取消全选",
+  "warning": "警告"
 }

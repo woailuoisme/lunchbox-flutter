@@ -563,10 +563,10 @@ class _LotteryViewState extends ConsumerState<LotteryView>
               theme: TimelineThemeData(
                 nodePosition: 0,
                 color: colorScheme.primary,
-                indicatorTheme: IndicatorThemeData(position: 0, size: 20.w),
+                indicatorTheme: IndicatorThemeData(position: 0.5, size: 10.w),
                 connectorTheme: ConnectorThemeData(
-                  thickness: 2.w,
-                  color: colorScheme.outlineVariant,
+                  thickness: 1.5.w,
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.5),
                 ),
               ),
               builder: TimelineTileBuilder.connected(
@@ -574,7 +574,11 @@ class _LotteryViewState extends ConsumerState<LotteryView>
                 itemCount: rules.length,
                 contentsBuilder: (context, index) {
                   return Padding(
-                    padding: EdgeInsets.only(left: 12.w, bottom: 24.h),
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                      top: 12.h,
+                      bottom: 12.h,
+                    ),
                     child: Text(
                       rules[index],
                       style: TextStyle(
@@ -585,24 +589,18 @@ class _LotteryViewState extends ConsumerState<LotteryView>
                     ),
                   );
                 },
-                indicatorBuilder: (_, index) {
+                indicatorBuilder: (context, index) {
                   return DotIndicator(
-                    color: colorScheme.primary,
-                    size: 10.w,
-                    child: Center(
-                      child: Container(
-                        width: 4.w,
-                        height: 4.w,
-                        decoration: BoxDecoration(
-                          color: colorScheme.onPrimary,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
+                    size: 8.w,
+                    color: colorScheme.primary.withValues(alpha: 0.8),
+                    border: Border.all(
+                      color: colorScheme.primary.withValues(alpha: 0.2),
+                      width: 2.w,
                     ),
                   );
                 },
-                connectorBuilder: (_, index, type) => SolidLineConnector(
-                  color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                connectorBuilder: (_, index, __) => SolidLineConnector(
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.3),
                 ),
               ),
             ),

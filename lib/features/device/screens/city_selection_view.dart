@@ -75,7 +75,11 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      appBar: AppBar(title: Text(t.city.title), elevation: 0),
+      appBar: AppBar(
+        title: Text(t.city.title),
+        elevation: 0,
+        centerTitle: true,
+      ),
       body: Column(
         children: [
           // 搜索框

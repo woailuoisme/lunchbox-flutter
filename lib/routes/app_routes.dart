@@ -52,6 +52,7 @@ class AppRoutes {
   static const String profileEdit = '/profile-edit';
   static const String favoriteDevices = '/favorite-devices';
   static const String wallet = '/wallet';
+  static const String walletRules = '/wallet-rules';
   static const String myPoints = '/my-points';
   static const String pointsMall = '/points-mall';
   static const String feedback = '/feedback';

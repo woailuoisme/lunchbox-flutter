@@ -1,9 +1,5 @@
-import 'dart:io';
-
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
+import 'package:drift_flutter/drift_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'database_service.g.dart';
@@ -52,9 +48,10 @@ class AppDatabase extends _$AppDatabase {
 /// 打开数据库连接
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return NativeDatabase.createInBackground(file);
+    return driftDatabase(
+      name: 'db',
+      native: const DriftNativeOptions(shareAcrossIsolates: true),
+    );
   });
 }
 

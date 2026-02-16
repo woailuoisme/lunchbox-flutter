@@ -2,14 +2,56 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:lunchbox/features/profile/repositories/wallet_repository.dart';
+import 'package:lunchbox/features/wallet/repositories/wallet_repository.dart';
+import 'package:lunchbox/routes/routes.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:toggle_switch/toggle_switch.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:lunchbox/features/wallet/entities/wallet_transaction_model.dart';
 
-class WalletView extends ConsumerWidget {
+class WalletView extends ConsumerStatefulWidget {
   const WalletView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<WalletView> createState() => _WalletViewState();
+}
+
+class _WalletViewState extends ConsumerState<WalletView> {
+  int _selectedTopUpIndex = 1;
+  late final PagingController<int, WalletTransactionModel> _pagingController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pagingController = PagingController<int, WalletTransactionModel>(
+      getNextPageKey: (state) {
+        if (state.pages == null || state.pages!.isEmpty) {
+          return 1;
+        }
+        final lastPageItemCount = state.pages!.last.length;
+        if (lastPageItemCount < 10) {
+          return null;
+        }
+        return (state.keys?.last ?? 0) + 1;
+      },
+      fetchPage: (pageKey) => _fetchPage(pageKey),
+    );
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
+  Future<List<WalletTransactionModel>> _fetchPage(int pageKey) async {
+    return await ref
+        .read(walletRepositoryProvider.notifier)
+        .getTransactionsPaginated(page: pageKey, pageSize: 10);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -26,8 +68,34 @@ class WalletView extends ConsumerWidget {
           SliverToBoxAdapter(child: SizedBox(height: 16.h)),
           SliverToBoxAdapter(child: _buildTopUpSection(context)),
           SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-          SliverToBoxAdapter(child: _buildTransactionHistory(context, ref)),
-          SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+          SliverToBoxAdapter(child: _buildHistoryHeader(context)),
+          SliverPadding(
+            padding: EdgeInsets.only(bottom: 32.h),
+            sliver: PagingListener(
+              controller: _pagingController,
+              builder: (context, state, fetchNextPage) =>
+                  PagedSliverList<int, WalletTransactionModel>(
+                    state: state,
+                    fetchNextPage: fetchNextPage,
+                    builderDelegate:
+                        PagedChildBuilderDelegate<WalletTransactionModel>(
+                          itemBuilder: (context, item, index) =>
+                              _buildTransactionItem(context, item),
+                          noItemsFoundIndicatorBuilder: (context) =>
+                              _buildNoHistory(context),
+                          firstPageProgressIndicatorBuilder: (context) =>
+                              const Center(child: CircularProgressIndicator()),
+                          newPageProgressIndicatorBuilder: (context) =>
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              ),
+                        ),
+                  ),
+            ),
+          ),
         ],
       ),
     );
@@ -184,7 +252,7 @@ class WalletView extends ConsumerWidget {
               ),
               InkWell(
                 onTap: () {
-                  // TODO: Show rules dialog
+                  const WalletRulesRoute().push<void>(context);
                 },
                 borderRadius: BorderRadius.circular(12.r),
                 child: Padding(
@@ -251,32 +319,84 @@ class WalletView extends ConsumerWidget {
             crossAxisSpacing: 12.w,
             childAspectRatio: 2.2,
             children: [
-              _buildTopUpOption(
+              _buildTopUpSwitchItem(
                 context,
-                '100元',
-                t.profile.walletPage.realPay(amount: 95),
-                t.profile.walletPage.noBonus,
-                false,
+                index: 0,
+                child: _buildTopUpOption(
+                  context,
+                  '100元',
+                  t.profile.walletPage.realPay(amount: 95),
+                  t.profile.walletPage.noBonus,
+                  _selectedTopUpIndex == 0,
+                  false,
+                ),
               ),
-              _buildTopUpOption(
+              _buildTopUpSwitchItem(
                 context,
-                '300元',
-                t.profile.walletPage.realPay(amount: 285),
-                t.profile.walletPage.bonus(amount: 300),
-                true, // Highlight recommended option
+                index: 1,
+                child: _buildTopUpOption(
+                  context,
+                  '300元',
+                  t.profile.walletPage.realPay(amount: 285),
+                  t.profile.walletPage.bonus(amount: 300),
+                  _selectedTopUpIndex == 1,
+                  true,
+                ),
               ),
-              _buildTopUpOption(
+              _buildTopUpSwitchItem(
                 context,
-                '500元',
-                t.profile.walletPage.realPay(amount: 475),
-                t.profile.walletPage.bonus(amount: 400),
-                false,
+                index: 2,
+                child: _buildTopUpOption(
+                  context,
+                  '500元',
+                  t.profile.walletPage.realPay(amount: 475),
+                  t.profile.walletPage.bonus(amount: 400),
+                  _selectedTopUpIndex == 2,
+                  false,
+                ),
               ),
-              _buildCustomAmountOption(context),
+              _buildTopUpSwitchItem(
+                context,
+                index: 3,
+                child: _buildCustomAmountOption(
+                  context,
+                  _selectedTopUpIndex == 3,
+                ),
+              ),
             ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTopUpSwitchItem(
+    BuildContext context, {
+    required int index,
+    required Widget child,
+  }) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return ToggleSwitch(
+          minWidth: constraints.maxWidth,
+          minHeight: constraints.maxHeight,
+          totalSwitches: 1,
+          initialLabelIndex: _selectedTopUpIndex == index ? 0 : null,
+          activeBgColor: const [Colors.transparent],
+          inactiveBgColor: Colors.transparent,
+          dividerColor: Colors.transparent,
+          borderWidth: 0,
+          cornerRadius: 12.r,
+          customWidgets: [SizedBox.expand(child: child)],
+          onToggle: (_) {
+            if (_selectedTopUpIndex != index) {
+              setState(() {
+                _selectedTopUpIndex = index;
+              });
+            }
+          },
+        );
+      },
     );
   }
 
@@ -285,6 +405,7 @@ class WalletView extends ConsumerWidget {
     String amount,
     String realPay,
     String bonus,
+    bool isSelected,
     bool isRecommended,
   ) {
     final theme = Theme.of(context);
@@ -295,14 +416,14 @@ class WalletView extends ConsumerWidget {
           width: double.infinity,
           height: double.infinity,
           decoration: BoxDecoration(
-            color: isRecommended
+            color: isSelected
                 ? theme.colorScheme.primary.withValues(alpha: 0.05)
                 : theme.cardColor,
             border: Border.all(
-              color: isRecommended
+              color: isSelected
                   ? theme.colorScheme.primary
                   : theme.dividerColor,
-              width: isRecommended ? 1.5 : 1,
+              width: isSelected ? 1.5 : 1,
             ),
             borderRadius: BorderRadius.circular(12.r),
           ),
@@ -314,7 +435,7 @@ class WalletView extends ConsumerWidget {
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
-                  color: isRecommended
+                  color: isSelected
                       ? theme.colorScheme.primary
                       : theme.textTheme.bodyLarge?.color,
                 ),
@@ -324,12 +445,10 @@ class WalletView extends ConsumerWidget {
                 bonus,
                 style: TextStyle(
                   fontSize: 10.sp,
-                  color: isRecommended
+                  color: isSelected
                       ? theme.colorScheme.primary
                       : theme.hintColor,
-                  fontWeight: isRecommended
-                      ? FontWeight.w600
-                      : FontWeight.normal,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
               ),
             ],
@@ -362,11 +481,17 @@ class WalletView extends ConsumerWidget {
     );
   }
 
-  Widget _buildCustomAmountOption(BuildContext context) {
+  Widget _buildCustomAmountOption(BuildContext context, bool isSelected) {
     final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: theme.dividerColor),
+        color: isSelected
+            ? theme.colorScheme.primary.withValues(alpha: 0.05)
+            : theme.cardColor,
+        border: Border.all(
+          color: isSelected ? theme.colorScheme.primary : theme.dividerColor,
+          width: isSelected ? 1.5 : 1,
+        ),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -387,176 +512,132 @@ class WalletView extends ConsumerWidget {
     );
   }
 
-  Widget _buildTransactionHistory(BuildContext context, WidgetRef ref) {
+  Widget _buildHistoryHeader(BuildContext context) {
     final theme = Theme.of(context);
-    final transactionsAsync = ref.watch(walletTransactionsProvider);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      child: Row(
+        children: [
+          Container(
+            width: 4.w,
+            height: 16.h,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary,
+              borderRadius: BorderRadius.circular(2.r),
+            ),
+          ),
+          SizedBox(width: 8.w),
+          Text(
+            t.profile.walletPage.history,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: theme.textTheme.titleMedium?.color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTransactionItem(
+    BuildContext context,
+    WalletTransactionModel transaction,
+  ) {
+    final theme = Theme.of(context);
+    final isRecharge = transaction.type == 'recharge';
+
+    final iconColor = isRecharge
+        ? const Color(0xFF4CAF50)
+        : const Color(0xFFF44336);
+    final backgroundColor = isRecharge
+        ? const Color(0xFFE8F5E9)
+        : const Color(0xFFFFEBEE);
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
-      padding: EdgeInsets.all(20.w),
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+      padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
             color: theme.shadowColor.withValues(alpha: 0.05),
-            blurRadius: 10,
+            blurRadius: 4,
             offset: const Offset(0, 2),
           ),
         ],
       ),
-      constraints: BoxConstraints(minHeight: 200.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 4.w,
-                    height: 16.h,
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primary,
-                      borderRadius: BorderRadius.circular(2.r),
-                    ),
+          Container(
+            width: 40.w,
+            height: 40.w,
+            decoration: BoxDecoration(
+              color: theme.brightness == Brightness.dark
+                  ? iconColor.withValues(alpha: 0.2)
+                  : backgroundColor,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              isRecharge ? Symbols.add : Symbols.remove,
+              size: 20.sp,
+              color: iconColor,
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  transaction.title,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: theme.textTheme.bodyLarge?.color,
                   ),
-                  SizedBox(width: 8.w),
-                  Text(
-                    t.profile.walletPage.history,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              transactionsAsync.when(
-                data: (transactions) => Text(
-                  t.profile.walletPage.historyCount(count: transactions.length),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  transaction.date,
                   style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
                 ),
-                loading: () => const SizedBox.shrink(),
-                error: (_, _) => const SizedBox.shrink(),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          transactionsAsync.when(
-            data: (transactions) {
-              if (transactions.isEmpty) {
-                return Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 32.h),
-                    child: Column(
-                      children: [
-                        Icon(
-                          Symbols.receipt_long,
-                          size: 48.sp,
-                          color: theme.disabledColor.withValues(alpha: 0.3),
-                        ),
-                        SizedBox(height: 12.h),
-                        Text(
-                          t.profile.walletPage.noHistory,
-                          style: TextStyle(
-                            color: theme.hintColor,
-                            fontSize: 14.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }
-              return ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: transactions.length,
-                separatorBuilder: (context, index) => Divider(
-                  height: 1,
-                  color: theme.dividerColor.withValues(alpha: 0.5),
-                  indent: 56.w,
-                ),
-                itemBuilder: (context, index) {
-                  final transaction = transactions[index];
-                  final isRecharge = transaction.type == 'recharge';
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12.h),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 40.w,
-                          height: 40.w,
-                          decoration: BoxDecoration(
-                            color: isRecharge
-                                ? theme.colorScheme.primaryContainer
-                                : theme.colorScheme.secondaryContainer,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            isRecharge
-                                ? Symbols.account_balance_wallet
-                                : Symbols.shopping_bag,
-                            size: 20.sp,
-                            color: isRecharge
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.secondary,
-                          ),
-                        ),
-                        SizedBox(width: 12.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                transaction.title,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                transaction.date,
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: theme.hintColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text(
-                          '${isRecharge ? '+' : '-'} ${transaction.amount.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: isRecharge
-                                ? theme.colorScheme.primary
-                                : theme.textTheme.bodyLarge?.color,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-            loading: () => const Center(
-              child: Padding(
-                padding: EdgeInsets.all(24.0),
-                child: CircularProgressIndicator(),
-              ),
+              ],
             ),
-            error: (error, _) => Center(
-              child: Padding(
-                padding: EdgeInsets.all(24.0),
-                child: Text('${t.common.loadFailed}: $error'),
-              ),
+          ),
+          Text(
+            '${isRecharge ? '+' : '-'} ${transaction.amount.toStringAsFixed(2)}',
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: iconColor,
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildNoHistory(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 32.h),
+        child: Column(
+          children: [
+            Icon(
+              Symbols.receipt_long,
+              size: 48.sp,
+              color: theme.disabledColor.withValues(alpha: 0.3),
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              t.profile.walletPage.noHistory,
+              style: TextStyle(color: theme.hintColor, fontSize: 14.sp),
+            ),
+          ],
+        ),
       ),
     );
   }
