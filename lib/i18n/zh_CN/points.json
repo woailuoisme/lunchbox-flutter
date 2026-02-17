@@ -20,5 +20,9 @@
   "noProducts": "暂无商品",
   "cost": "${points} 乖乖币",
   "exchangeNow": "立即兑换",
-  "insufficientPoints": "余额不足"
+  "insufficientPoints": "余额不足",
+  "exchangeConfirmTitle": "兑换确认",
+  "exchangeConfirmMessage": "确定消耗 ${points} 乖乖币兑换 ${product} 吗？",
+  "exchangeSuccess": "兑换成功",
+  "exchangeFailed": "兑换失败"
 }

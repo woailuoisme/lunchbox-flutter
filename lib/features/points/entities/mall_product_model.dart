@@ -4,6 +4,7 @@ class MallProductModel {
     required this.title,
     required this.amountValue,
     required this.pointsCost,
+    this.type = 'coupon',
     this.isHot = false,
   });
 
@@ -11,5 +12,6 @@ class MallProductModel {
   final String title;
   final int amountValue;
   final int pointsCost;
+  final String type;
   final bool isHot;
 }

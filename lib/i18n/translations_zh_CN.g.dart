@@ -1529,6 +1529,24 @@ class TranslationsPointsZhCn {
 
   /// zh-CN: '余额不足'
   String get insufficientPoints => TranslationOverrides.string(_root.$meta, 'points.insufficientPoints', {}) ?? '余额不足';
+
+  /// zh-CN: '兑换确认'
+  String get exchangeConfirmTitle =>
+      TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmTitle', {}) ?? '兑换确认';
+
+  /// zh-CN: '确定消耗 ${points} 乖乖币兑换 ${product} 吗？'
+  String exchangeConfirmMessage({required Object points, required Object product}) =>
+      TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmMessage', {
+        'points': points,
+        'product': product,
+      }) ??
+      '确定消耗 ${points} 乖乖币兑换 ${product} 吗？';
+
+  /// zh-CN: '兑换成功'
+  String get exchangeSuccess => TranslationOverrides.string(_root.$meta, 'points.exchangeSuccess', {}) ?? '兑换成功';
+
+  /// zh-CN: '兑换失败'
+  String get exchangeFailed => TranslationOverrides.string(_root.$meta, 'points.exchangeFailed', {}) ?? '兑换失败';
 }
 
 // Path: product
@@ -3393,8 +3411,22 @@ extension on Translations {
           'points.exchangeNow' => TranslationOverrides.string(_root.$meta, 'points.exchangeNow', {}) ?? '立即兑换',
           'points.insufficientPoints' =>
             TranslationOverrides.string(_root.$meta, 'points.insufficientPoints', {}) ?? '余额不足',
+          'points.exchangeConfirmTitle' =>
+            TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmTitle', {}) ?? '兑换确认',
+          'points.exchangeConfirmMessage' =>
+            ({required Object points, required Object product}) =>
+                TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmMessage', {
+                  'points': points,
+                  'product': product,
+                }) ??
+                '确定消耗 ${points} 乖乖币兑换 ${product} 吗？',
+          'points.exchangeSuccess' => TranslationOverrides.string(_root.$meta, 'points.exchangeSuccess', {}) ?? '兑换成功',
+          'points.exchangeFailed' => TranslationOverrides.string(_root.$meta, 'points.exchangeFailed', {}) ?? '兑换失败',
           'product.title' => TranslationOverrides.string(_root.$meta, 'product.title', {}) ?? '商品列表',
           'product.detail' => TranslationOverrides.string(_root.$meta, 'product.detail', {}) ?? '商品详情',
+          _ => null,
+        } ??
+        switch (path) {
           'product.hot' => TranslationOverrides.string(_root.$meta, 'product.hot', {}) ?? '热销',
           'product.promotion' => TranslationOverrides.string(_root.$meta, 'product.promotion', {}) ?? '促销',
           'product.discountOff' =>
@@ -3402,9 +3434,6 @@ extension on Translations {
                 TranslationOverrides.string(_root.$meta, 'product.discountOff', {'percent': percent}) ??
                 '${percent}% OFF',
           'product.monthlySales' => TranslationOverrides.string(_root.$meta, 'product.monthlySales', {}) ?? '月售',
-          _ => null,
-        } ??
-        switch (path) {
           'product.stock' => TranslationOverrides.string(_root.$meta, 'product.stock', {}) ?? '库存',
           'product.stockFull' => TranslationOverrides.string(_root.$meta, 'product.stockFull', {}) ?? '库存充足',
           'product.stockEmpty' => TranslationOverrides.string(_root.$meta, 'product.stockEmpty', {}) ?? '暂时缺货',

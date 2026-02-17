@@ -12,6 +12,8 @@ import 'package:lunchbox/features/order/order.dart';
 import 'package:lunchbox/features/payment/payment.dart';
 import 'package:lunchbox/features/product/product.dart';
 import 'package:lunchbox/features/profile/profile.dart';
+import 'package:lunchbox/features/points/screens/my_points_view.dart';
+import 'package:lunchbox/features/points/screens/points_mall_view.dart';
 import 'package:lunchbox/features/wallet/screens/wallet_rules_view.dart';
 import 'package:lunchbox/features/wallet/screens/wallet_view.dart';
 import 'package:lunchbox/features/settings/settings.dart';
