@@ -2,7 +2,7 @@
 
 # ==================== 路径锚定 ====================
 # 确保脚本在项目根目录下运行
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$PROJECT_ROOT" || exit 1
 
@@ -27,5 +27,13 @@ log_success() { printf "${C_C}[$(date '+%Y-%m-%d %H:%M:%S %z')]${C_0} ${C_G}[SUC
 log_warning() { printf "${C_C}[$(date '+%Y-%m-%d %H:%M:%S %z')]${C_0} ${C_Y}[WARNING]${C_0} %s\n" "$1"; _log_to_file "WARNING" "$1"; }
 log_error()   { printf "${C_C}[$(date '+%Y-%m-%d %H:%M:%S %z')]${C_0} ${C_R}[ERROR]${C_0} %s\n" "$1"; _log_to_file "ERROR" "$1"; }
 
+ensure_dir() {
+    mkdir -p "$1"
+}
+
+require_cmd() {
+    command -v "$1" &>/dev/null || { log_error "未找到命令: $1"; exit 1; }
+}
+
 # 导出函数供子进程使用（如果需要）
-export -f log_info log_success log_warning log_error
+export -f log_info log_success log_warning log_error ensure_dir require_cmd

@@ -1,10 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/core/widgets/app_dialog.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,6 +27,150 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
   void initState() {
     super.initState();
     _initPackageInfo();
+  }
+
+  void _showPolicyDialog() {
+    AppDialog.showContent(
+      context,
+      title: t.about.userAgreementAndPrivacy,
+      width: 0.9.sw,
+      padding: EdgeInsets.zero,
+      content: SizedBox(
+        height: 0.75.sh,
+        child: FutureBuilder<String>(
+          future: Future.delayed(
+            const Duration(milliseconds: 300),
+            () => rootBundle.loadString('assets/html/xieyi.html'),
+          ),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Skeletonizer(
+                enabled: true,
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 16.h,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 200.w,
+                          height: 24.h,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 24.h),
+                      Container(
+                        width: double.infinity,
+                        height: 16.h,
+                        color: Colors.black,
+                      ),
+                      SizedBox(height: 8.h),
+                      Container(
+                        width: double.infinity,
+                        height: 16.h,
+                        color: Colors.black,
+                      ),
+                      SizedBox(height: 8.h),
+                      Container(
+                        width: 200.w,
+                        height: 16.h,
+                        color: Colors.black,
+                      ),
+                      SizedBox(height: 16.h),
+                      Container(
+                        width: double.infinity,
+                        height: 16.h,
+                        color: Colors.black,
+                      ),
+                      SizedBox(height: 8.h),
+                      Container(
+                        width: double.infinity,
+                        height: 16.h,
+                        color: Colors.black,
+                      ),
+                      SizedBox(height: 8.h),
+                      Container(
+                        width: 300.w,
+                        height: 16.h,
+                        color: Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+            if (snapshot.hasError) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Symbols.error,
+                      size: 48.sp,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(t.common.error),
+                  ],
+                ),
+              );
+            }
+            return Scrollbar(
+              thumbVisibility: true,
+              radius: Radius.circular(4.r),
+              thickness: 4.w,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                child: Html(
+                  data: snapshot.data ?? '',
+                  style: {
+                    "body": Style(
+                      fontSize: FontSize(14.sp),
+                      lineHeight: LineHeight(1.6),
+                      padding: HtmlPaddings.zero,
+                      margin: Margins.zero,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                      fontFamily: 'Roboto',
+                    ),
+                    "h1": Style(
+                      fontSize: FontSize(20.sp),
+                      fontWeight: FontWeight.bold,
+                      textAlign: TextAlign.center,
+                      margin: Margins.only(bottom: 24.h),
+                      color: Theme.of(context).textTheme.titleLarge?.color,
+                    ),
+                    "h2": Style(
+                      fontSize: FontSize(16.sp),
+                      fontWeight: FontWeight.bold,
+                      margin: Margins.only(top: 20.h, bottom: 12.h),
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    "h3": Style(
+                      fontSize: FontSize(15.sp),
+                      fontWeight: FontWeight.w600,
+                      margin: Margins.only(top: 16.h, bottom: 8.h),
+                      color: Theme.of(context).textTheme.titleMedium?.color,
+                    ),
+                    "p": Style(
+                      margin: Margins.only(bottom: 12.h),
+                      textAlign: TextAlign.justify,
+                    ),
+                    "li": Style(margin: Margins.only(bottom: 8.h)),
+                    "a": Style(
+                      color: Theme.of(context).colorScheme.primary,
+                      textDecoration: TextDecoration.none,
+                    ),
+                  },
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   Future<void> _initPackageInfo() async {
@@ -217,7 +365,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
@@ -233,20 +381,23 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
             title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.bold,
               color: theme.textTheme.titleMedium?.color,
             ),
           ),
-          SizedBox(height: 4.h),
+          const Spacer(),
           Text(
             desc,
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 11.sp,
               color: theme.textTheme.bodySmall?.color,
+              height: 1.4,
             ),
           ),
         ],
@@ -305,7 +456,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
                 size: 20.sp,
                 color: theme.hintColor,
               ),
-              onTap: () {},
+              onTap: _showPolicyDialog,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.r),
               ),

@@ -152,6 +152,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/animations/
+    - assets/html/
 
 flutter_native_splash:
   color: "#16A34A"
@@ -164,67 +165,3 @@ flutter_launcher_icons:
   remove_alpha_ios: true
   image_path: "assets/icons/icon.png"
   min_sdk_android: 21
-
-melos:
-  packages:
-    - .
-  scripts:
-    analyze:
-      run: ./scripts/melos.sh analyze
-      description: 运行静态代码分析
-
-    analyze-strict:
-      run: ./scripts/melos.sh analyze-strict
-      description: 严格模式代码分析 (警告/提示均视为失败)
-
-    format:
-      run: ./scripts/melos.sh format
-      description: 格式化代码
-
-    fix:
-      run: ./scripts/melos.sh fix
-      description: 自动修复代码问题
-
-    ready:
-      run: ./scripts/melos.sh ready
-      description: 执行代码准备 (format + fix)
-
-    test:
-      run: ./scripts/melos.sh test
-      description: 运行测试
-
-    build:runner:
-      run: ./scripts/melos.sh build
-      description: 运行 build_runner 生成代码
-
-    watch:
-      run: ./scripts/melos.sh watch
-      description: 运行 build_runner 监听模式
-
-    gen:i18n:
-      run: ./scripts/melos.sh gen:i18n
-      description: 生成国际化代码
-
-    gen:icons:
-      run: ./scripts/melos.sh gen:icons
-      description: 生成应用图标
-
-    build:apk:
-      run: ./scripts/melos.sh build:apk
-      description: 构建 Android APK
-
-    build:ios:
-      run: ./scripts/melos.sh build:ios
-      description: 构建 iOS IPA
-
-    run:offline:
-      run: ./scripts/melos.sh run:offline
-      description: 离线运行 (指定设备)
-
-    clean:
-      run: ./scripts/melos.sh clean
-      description: 清理构建文件
-
-    prepare:
-      run: ./scripts/melos.sh prepare
-      description: 准备开发环境 (bootstrap + build + i18n)

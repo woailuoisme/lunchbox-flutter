@@ -4,7 +4,7 @@ class MallProductModel {
     required this.title,
     required this.amountValue,
     required this.pointsCost,
-    this.type = 'coupon',
+    required this.type,
     this.isHot = false,
   });
 

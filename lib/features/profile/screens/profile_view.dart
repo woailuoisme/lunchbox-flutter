@@ -210,6 +210,7 @@ class ProfileView extends ConsumerWidget {
       color: theme.cardColor,
       child: Column(
         children: [
+          // 资产与权益
           _buildMenuTile(
             context: context,
             icon: Symbols.account_balance_wallet,
@@ -224,24 +225,30 @@ class ProfileView extends ConsumerWidget {
             title: t.profile.coupon,
             onTap: () => const CouponsRoute().push<void>(context),
           ),
-          _buildMenuTile(
-            context: context,
-            icon: Symbols.help,
-            title: t.profile.feedback,
-            onTap: () => const FeedbackRoute().push<void>(context),
-          ),
+
+          // 个人相关
           _buildMenuTile(
             context: context,
             icon: Symbols.person,
             title: t.profile.personalInfo,
             onTap: () => const ProfileEditRoute().push<void>(context),
           ),
+
+          // 服务与合作
           _buildMenuTile(
             context: context,
             icon: Symbols.handshake,
             title: t.profile.cooperation,
             onTap: () => const PartnerRoute().push<void>(context),
           ),
+          _buildMenuTile(
+            context: context,
+            icon: Symbols.help,
+            title: t.profile.feedback,
+            onTap: () => const FeedbackRoute().push<void>(context),
+          ),
+
+          // 关于与设置
           _buildMenuTile(
             context: context,
             icon: Symbols.info,

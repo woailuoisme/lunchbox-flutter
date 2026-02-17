@@ -117,6 +117,33 @@ class AppDialog {
     return completer.future;
   }
 
+  static Future<void> showContent(
+    BuildContext context, {
+    String? title,
+    required Widget content,
+    String? okText,
+    VoidCallback? onOk,
+    bool dismissOnTouchOutside = true,
+    DialogType dialogType = DialogType.noHeader,
+    double? width,
+    EdgeInsetsGeometry? padding,
+  }) {
+    final theme = Theme.of(context);
+    return AwesomeDialog(
+      context: context,
+      dialogType: dialogType,
+      animType: AnimType.scale,
+      title: title,
+      body: content,
+      btnOkText: okText ?? t.common.ok,
+      btnOkColor: theme.colorScheme.primary,
+      btnOkOnPress: onOk ?? () {},
+      dismissOnTouchOutside: dismissOnTouchOutside,
+      width: width,
+      padding: padding,
+    ).show();
+  }
+
   static Future<void> _show(
     BuildContext context, {
     required DialogType dialogType,

@@ -10,6 +10,22 @@ import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:lunchbox/features/product/providers/product_providers.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
+final _dummyProduct = ProductModel(
+  id: 'dummy',
+  name: '美味的便当名称',
+  description: '这是一份美味的便当描述信息，用于展示骨架屏效果。',
+  price: 29.90,
+  originalPrice: 39.90,
+  imageUrl: 'https://via.placeholder.com/300',
+  updateTime: DateTime.now(),
+  stock: 100,
+  monthlySales: 500,
+  isHot: true,
+  isPromotion: true,
+  category: 'food',
+);
 
 /// 产品列表视图
 class ProductListView extends ConsumerWidget {
@@ -210,8 +226,16 @@ class _ProductContent extends ConsumerWidget {
                           .slideX(begin: -0.2, end: 0);
                     },
                   ),
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => Skeletonizer(
+                    enabled: true,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: 8,
+                      itemBuilder: (context, index) {
+                        return _CategoryItem(category: 'Category $index');
+                      },
+                    ),
+                  ),
                   error: (e, s) => Center(
                     child: Icon(
                       Symbols.error,
@@ -270,8 +294,23 @@ class _ProductContent extends ConsumerWidget {
                       },
                     );
                   },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => Skeletonizer(
+                    enabled: true,
+                    child: ListView.separated(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
+                        top: 16.h,
+                        bottom: 100.h,
+                      ),
+                      itemCount: 6,
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 16.h),
+                      itemBuilder: (context, index) {
+                        return _ProductItem(product: _dummyProduct);
+                      },
+                    ),
+                  ),
                   error: (e, _) => Center(child: Text(e.toString())),
                 ),
               ),
@@ -388,23 +427,13 @@ class _ProductContent extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  child: Row(
-                    children: [
-                      Text(
-                        t.cart.checkout,
-                        style: TextStyle(
-                          color: theme.colorScheme.onPrimary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.sp,
-                        ),
-                      ),
-                      SizedBox(width: 4.w),
-                      Icon(
-                        Symbols.arrow_forward,
-                        size: 16.sp,
-                        color: theme.colorScheme.onPrimary,
-                      ),
-                    ],
+                  child: Text(
+                    t.cart.checkout,
+                    style: TextStyle(
+                      color: theme.colorScheme.onPrimary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.sp,
+                    ),
                   ),
                 ),
               ],
@@ -700,15 +729,22 @@ class _ProductItem extends ConsumerWidget {
     }
 
     if (quantity > 0 && cartItem != null) {
+      final isDark = theme.brightness == Brightness.dark;
+      final foregroundColor = isDark
+          ? theme.colorScheme.onSurface
+          : theme.colorScheme.primary;
+
       return Container(
         height: 36.h,
         decoration: BoxDecoration(
-          color: theme.colorScheme.surfaceContainerHighest.withValues(
-            alpha: 0.5,
-          ),
+          color: isDark
+              ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3)
+              : theme.colorScheme.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(18.h),
           border: Border.all(
-            color: theme.colorScheme.outline.withValues(alpha: 0.1),
+            color: isDark
+                ? theme.colorScheme.outline.withValues(alpha: 0.1)
+                : theme.colorScheme.primary.withValues(alpha: 0.1),
           ),
         ),
         child: Row(
@@ -724,7 +760,7 @@ class _ProductItem extends ConsumerWidget {
                 child: Icon(
                   Symbols.remove,
                   size: 20.sp,
-                  color: theme.colorScheme.onSurface,
+                  color: foregroundColor,
                 ),
               ),
             ),
@@ -733,7 +769,7 @@ class _ProductItem extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onSurface,
+                color: foregroundColor,
               ),
             ),
             InkWell(
@@ -743,11 +779,7 @@ class _ProductItem extends ConsumerWidget {
               borderRadius: BorderRadius.circular(18.h),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
-                child: Icon(
-                  Symbols.add,
-                  size: 20.sp,
-                  color: theme.colorScheme.onSurface,
-                ),
+                child: Icon(Symbols.add, size: 20.sp, color: foregroundColor),
               ),
             ),
           ],

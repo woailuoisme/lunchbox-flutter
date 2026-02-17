@@ -2006,8 +2006,6 @@ class _TranslationsProfileWalletPageEn extends TranslationsProfileWalletPageZhCn
   @override
   String get noHistory =>
       TranslationOverrides.string(_root.$meta, 'profile.walletPage.noHistory', {}) ?? 'No transaction history';
-  @override
-  late final _TranslationsProfileWalletPageRulesEn rules = _TranslationsProfileWalletPageRulesEn._(_root);
 }
 
 // Path: settings.schemes
@@ -2197,77 +2195,6 @@ class _TranslationsHomeLotteryPrizeCardEn extends TranslationsHomeLotteryPrizeCa
   @override
   String get statusExpired =>
       TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.statusExpired', {}) ?? 'Expired';
-}
-
-// Path: profile.walletPage.rules
-class _TranslationsProfileWalletPageRulesEn extends TranslationsProfileWalletPageRulesZhCn {
-  _TranslationsProfileWalletPageRulesEn._(TranslationsEn root) : this._root = root, super.internal(root);
-
-  final TranslationsEn _root; // ignore: unused_field
-
-  // Translations
-  @override
-  String get title => TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.title', {}) ?? 'Wallet Rules';
-  @override
-  String get headerTitle =>
-      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerTitle', {}) ?? 'Top Up Instructions';
-  @override
-  String get headerDesc =>
-      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerDesc', {}) ??
-      'Please read the rules carefully before topping up';
-  @override
-  late final _TranslationsProfileWalletPageRulesRechargeRulesEn rechargeRules =
-      _TranslationsProfileWalletPageRulesRechargeRulesEn._(_root);
-  @override
-  late final _TranslationsProfileWalletPageRulesUsageInstructionsEn usageInstructions =
-      _TranslationsProfileWalletPageRulesUsageInstructionsEn._(_root);
-}
-
-// Path: profile.walletPage.rules.rechargeRules
-class _TranslationsProfileWalletPageRulesRechargeRulesEn extends TranslationsProfileWalletPageRulesRechargeRulesZhCn {
-  _TranslationsProfileWalletPageRulesRechargeRulesEn._(TranslationsEn root) : this._root = root, super.internal(root);
-
-  final TranslationsEn _root; // ignore: unused_field
-
-  // Translations
-  @override
-  String get title =>
-      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.title', {}) ?? 'Top Up Rules';
-  @override
-  List<String> get items =>
-      TranslationOverrides.list(_root.$meta, 'profile.walletPage.rules.rechargeRules.items') ??
-      [
-        'Minimum single top up is ¥100',
-        'Maximum single top up is ¥100,000',
-        'Top up is credited immediately',
-        'Balance can be used to purchase items and pay orders',
-        'Specific packages grant coins; custom amounts only grant 400 coins',
-      ];
-}
-
-// Path: profile.walletPage.rules.usageInstructions
-class _TranslationsProfileWalletPageRulesUsageInstructionsEn
-    extends TranslationsProfileWalletPageRulesUsageInstructionsZhCn {
-  _TranslationsProfileWalletPageRulesUsageInstructionsEn._(TranslationsEn root)
-    : this._root = root,
-      super.internal(root);
-
-  final TranslationsEn _root; // ignore: unused_field
-
-  // Translations
-  @override
-  String get title =>
-      TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.title', {}) ??
-      'Usage Instructions';
-  @override
-  List<String> get items =>
-      TranslationOverrides.list(_root.$meta, 'profile.walletPage.rules.usageInstructions.items') ??
-      [
-        'Wallet balance can be used to pay for orders',
-        'You can top up or use other payment methods if balance is insufficient',
-        'Top up history is saved permanently and can be viewed anytime',
-        'Please contact customer service for any issues',
-      ];
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -3340,47 +3267,6 @@ extension on TranslationsEn {
                 'Total ${count}',
           'profile.walletPage.noHistory' =>
             TranslationOverrides.string(_root.$meta, 'profile.walletPage.noHistory', {}) ?? 'No transaction history',
-          'profile.walletPage.rules.title' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.title', {}) ?? 'Wallet Rules',
-          'profile.walletPage.rules.headerTitle' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerTitle', {}) ??
-                'Top Up Instructions',
-          'profile.walletPage.rules.headerDesc' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.headerDesc', {}) ??
-                'Please read the rules carefully before topping up',
-          'profile.walletPage.rules.rechargeRules.title' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.title', {}) ??
-                'Top Up Rules',
-          'profile.walletPage.rules.rechargeRules.items.0' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.0', {}) ??
-                'Minimum single top up is ¥100',
-          'profile.walletPage.rules.rechargeRules.items.1' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.1', {}) ??
-                'Maximum single top up is ¥100,000',
-          'profile.walletPage.rules.rechargeRules.items.2' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.2', {}) ??
-                'Top up is credited immediately',
-          'profile.walletPage.rules.rechargeRules.items.3' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.3', {}) ??
-                'Balance can be used to purchase items and pay orders',
-          'profile.walletPage.rules.rechargeRules.items.4' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.rechargeRules.items.4', {}) ??
-                'Specific packages grant coins; custom amounts only grant 400 coins',
-          'profile.walletPage.rules.usageInstructions.title' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.title', {}) ??
-                'Usage Instructions',
-          'profile.walletPage.rules.usageInstructions.items.0' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.0', {}) ??
-                'Wallet balance can be used to pay for orders',
-          'profile.walletPage.rules.usageInstructions.items.1' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.1', {}) ??
-                'You can top up or use other payment methods if balance is insufficient',
-          'profile.walletPage.rules.usageInstructions.items.2' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.2', {}) ??
-                'Top up history is saved permanently and can be viewed anytime',
-          'profile.walletPage.rules.usageInstructions.items.3' =>
-            TranslationOverrides.string(_root.$meta, 'profile.walletPage.rules.usageInstructions.items.3', {}) ??
-                'Please contact customer service for any issues',
           'settings.title' => TranslationOverrides.string(_root.$meta, 'settings.title', {}) ?? 'Settings',
           'settings.general' => TranslationOverrides.string(_root.$meta, 'settings.general', {}) ?? 'General',
           'settings.theme' => TranslationOverrides.string(_root.$meta, 'settings.theme', {}) ?? 'Theme Mode',

@@ -210,7 +210,7 @@ class WalletRulesView extends StatelessWidget {
                   ),
                 );
               },
-              connectorBuilder: (_, index, __) => SolidLineConnector(
+              connectorBuilder: (context, index, type) => SolidLineConnector(
                 color: colorScheme.outlineVariant.withValues(alpha: 0.3),
               ),
             ),
