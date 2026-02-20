@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -126,16 +127,20 @@ class _OrderListViewState extends ConsumerState<OrderListView>
             ).showSnackBar(SnackBar(content: Text(t.order.reorderSuccess)));
             _refreshCurrentTab();
             // Navigate to detail of new order
-            context.push(
-              '${AppRoutes.orderDetail}/${newOrder.id}',
-              extra: {'order': newOrder},
+            unawaited(
+              context.push(
+                '${AppRoutes.orderDetail}/${newOrder.id}',
+                extra: {'order': newOrder},
+              ),
             );
           }
           break;
         case 'view_code':
-          context.push(
-            '${AppRoutes.orderDetail}/${order.id}',
-            extra: {'order': order},
+          unawaited(
+            context.push(
+              '${AppRoutes.orderDetail}/${order.id}',
+              extra: {'order': order},
+            ),
           );
           break;
         case 'refund':

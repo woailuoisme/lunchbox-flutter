@@ -1,5 +1,7 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/core/providers/providers.dart';
+import 'package:lunchbox/core/services/services.dart';
 import 'package:lunchbox/features/auth/auth.dart';
 import 'package:lunchbox/routes/routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -21,11 +23,13 @@ GoRouter goRouter(Ref ref) {
 
   // 监听认证状态变化以触发路由重定向
   final isAuthenticated = ref.watch(authProvider);
+  final analytics = ref.watch(firebaseAnalyticsProvider);
 
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: const SplashRoute().location,
     debugLogDiagnostics: true,
+    observers: [FirebaseAnalyticsObserver(analytics: analytics)],
 
     // 认证守卫：实现 redirect 逻辑
     // 验证需求：2.4

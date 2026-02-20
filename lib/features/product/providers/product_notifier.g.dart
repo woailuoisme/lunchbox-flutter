@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'product_providers.dart';
+part of 'product_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -301,7 +301,7 @@ final class ProductCategoriesProvider
   }
 }
 
-String _$productCategoriesHash() => r'eb063c6f6dc89a2d8d970f055542310a4643358d';
+String _$productCategoriesHash() => r'7b8a005848245dfa60fb44c93bac496d26207dc2';
 
 /// 获取指定设备的产品分类列表
 
@@ -327,21 +327,12 @@ final class ProductCategoriesFamily extends $Family
 
 /// 获取指定设备的产品列表（原始列表）
 
-@ProviderFor(rawProducts)
+@ProviderFor(RawProducts)
 final rawProductsProvider = RawProductsFamily._();
 
 /// 获取指定设备的产品列表（原始列表）
-
 final class RawProductsProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<ProductModel>>,
-          List<ProductModel>,
-          FutureOr<List<ProductModel>>
-        >
-    with
-        $FutureModifier<List<ProductModel>>,
-        $FutureProvider<List<ProductModel>> {
+    extends $AsyncNotifierProvider<RawProducts, List<ProductModel>> {
   /// 获取指定设备的产品列表（原始列表）
   RawProductsProvider._({
     required RawProductsFamily super.from,
@@ -366,15 +357,7 @@ final class RawProductsProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<ProductModel>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<List<ProductModel>> create(Ref ref) {
-    final argument = this.argument as String;
-    return rawProducts(ref, argument);
-  }
+  RawProducts create() => RawProducts();
 
   @override
   bool operator ==(Object other) {
@@ -387,12 +370,19 @@ final class RawProductsProvider
   }
 }
 
-String _$rawProductsHash() => r'656038f4b120f6d4cc693bda074c83b4cd83be86';
+String _$rawProductsHash() => r'5d891403dd1180243057ee33bcc2935ae00cf4fd';
 
 /// 获取指定设备的产品列表（原始列表）
 
 final class RawProductsFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<List<ProductModel>>, String> {
+    with
+        $ClassFamilyOverride<
+          RawProducts,
+          AsyncValue<List<ProductModel>>,
+          List<ProductModel>,
+          FutureOr<List<ProductModel>>,
+          String
+        > {
   RawProductsFamily._()
     : super(
         retry: null,
@@ -409,6 +399,30 @@ final class RawProductsFamily extends $Family
 
   @override
   String toString() => r'rawProductsProvider';
+}
+
+/// 获取指定设备的产品列表（原始列表）
+
+abstract class _$RawProducts extends $AsyncNotifier<List<ProductModel>> {
+  late final _$args = ref.$arg as String;
+  String get deviceId => _$args;
+
+  FutureOr<List<ProductModel>> build(String deviceId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref =
+        this.ref as $Ref<AsyncValue<List<ProductModel>>, List<ProductModel>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<ProductModel>>, List<ProductModel>>,
+              AsyncValue<List<ProductModel>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, () => build(_$args));
+  }
 }
 
 /// 过滤和排序后的产品列表
@@ -557,7 +571,7 @@ final class ProductDetailProvider
   }
 }
 
-String _$productDetailHash() => r'951e4249c40a9cb97a53d5a4dd48c7dfc23ec412';
+String _$productDetailHash() => r'0f665e63ac27dc3396b3e54f395e62ea51977f41';
 
 /// 根据ID获取产品详情
 

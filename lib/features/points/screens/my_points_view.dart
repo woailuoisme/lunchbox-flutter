@@ -52,7 +52,7 @@ class _MyPointsViewState extends ConsumerState<MyPointsView>
       ),
       body: widgets.CustomRefreshView(
         onRefresh: () async {
-          _listKeys[_tabController.index].currentState?.refresh();
+          await _listKeys[_tabController.index].currentState?.refresh();
           // Wait a bit to show the refresh animation, as paging refresh is sync/fast
           await Future<void>.delayed(const Duration(milliseconds: 500));
         },

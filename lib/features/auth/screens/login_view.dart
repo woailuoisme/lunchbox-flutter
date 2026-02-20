@@ -19,6 +19,7 @@ class _LoginViewState extends ConsumerState<LoginView>
     with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormBuilderState>();
   late final TabController _tabController;
+  ProviderSubscription<LoginState>? _loginSubscription;
   bool _obscurePassword = true;
 
   @override
@@ -26,10 +27,30 @@ class _LoginViewState extends ConsumerState<LoginView>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabSelection);
+    _loginSubscription = ref.listenManual<LoginState>(loginProvider, (
+      previous,
+      next,
+    ) {
+      if (previous?.status == next.status) {
+        return;
+      }
+      if (next.status.isFailure) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.error,
+          style: ToastificationStyle.fillColored,
+          title: Text(t.auth.loginFailed),
+          description: Text(next.errorMessage ?? t.common.error),
+          alignment: Alignment.topCenter,
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+      }
+    });
   }
 
   @override
   void dispose() {
+    _loginSubscription?.close();
     _tabController.removeListener(_handleTabSelection);
     _tabController.dispose();
     super.dispose();
@@ -55,20 +76,6 @@ class _LoginViewState extends ConsumerState<LoginView>
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(loginProvider, (previous, next) {
-      if (next.status.isFailure) {
-        toastification.show(
-          context: context,
-          type: ToastificationType.error,
-          style: ToastificationStyle.fillColored,
-          title: Text(t.auth.loginFailed),
-          description: Text(next.errorMessage ?? t.common.error),
-          alignment: Alignment.topCenter,
-          autoCloseDuration: const Duration(seconds: 3),
-        );
-      }
-    });
-
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final state = ref.watch(loginProvider);
@@ -83,6 +90,8 @@ class _LoginViewState extends ConsumerState<LoginView>
         obscurePassword: _obscurePassword,
         onTogglePasswordVisibility: _togglePasswordVisibility,
         onLogin: _handleLogin,
+        canSendCode: state.canSendCode,
+        canSubmit: state.canSubmit,
         onTabTap: (index) {
           final type = index == 0 ? LoginType.password : LoginType.phone;
           ref.read(loginProvider.notifier).setLoginType(type);

@@ -4,7 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lunchbox/core/errors/failure.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
-import 'package:lunchbox/core/values/app_constants.dart';
+import 'package:lunchbox/core/constants/app_constants.dart';
 import 'package:lunchbox/features/auth/datasources/auth_remote_data_source.dart';
 import 'package:lunchbox/features/auth/entities/user_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -39,15 +39,11 @@ class AuthRepository {
           registeredAt: DateTime(2024),
         );
 
-        await _storageService.write(
-          AppConstants.keyAuthToken,
-          'bypass_token_admin',
+        await _writeSession(
+          token: 'bypass_token_admin',
+          userId: testUser.id,
+          permissions: ['admin', 'user'],
         );
-        await _storageService.write(AppConstants.keyUserId, testUser.id);
-        await _storageService.write(AppConstants.keyUserPermissions, [
-          'admin',
-          'user',
-        ]);
 
         return testUser;
       }
@@ -58,34 +54,15 @@ class AuthRepository {
       });
 
       if (response.success && response.data != null) {
-        final data = response.data! as Map<String, dynamic>;
-        final token = data['token'] as String;
-        final userId = data['userId'] as String;
-
-        await _storageService.write(AppConstants.keyAuthToken, token);
-        await _storageService.write(AppConstants.keyUserId, userId);
-
-        if (data.containsKey('permissions')) {
-          final permissions =
-              (data['permissions'] as List<dynamic>?)?.cast<String>() ?? [];
-          await _storageService.write(
-            AppConstants.keyUserPermissions,
-            permissions,
-          );
-        }
-
-        final user = UserModel.fromJson(data['user'] as Map<String, dynamic>);
-
-        LoggerUtils.i(
-          'AuthRepository: Login successful for user: ${user.username}',
-        );
-        return user;
-      } else {
-        throw Failure.server(
-          message: response.message,
-          statusCode: response.code,
+        return _handleAuthData(
+          response.data! as Map<String, dynamic>,
+          'Login successful',
         );
       }
+      throw Failure.server(
+        message: response.message,
+        statusCode: response.code,
+      );
     }, _handleError);
   }
 
@@ -102,34 +79,15 @@ class AuthRepository {
       });
 
       if (response.success && response.data != null) {
-        final data = response.data! as Map<String, dynamic>;
-        final token = data['token'] as String;
-        final userId = data['userId'] as String;
-
-        await _storageService.write(AppConstants.keyAuthToken, token);
-        await _storageService.write(AppConstants.keyUserId, userId);
-
-        if (data.containsKey('permissions')) {
-          final permissions =
-              (data['permissions'] as List<dynamic>?)?.cast<String>() ?? [];
-          await _storageService.write(
-            AppConstants.keyUserPermissions,
-            permissions,
-          );
-        }
-
-        final user = UserModel.fromJson(data['user'] as Map<String, dynamic>);
-
-        LoggerUtils.i(
-          'AuthRepository: Registration successful for user: ${user.username}',
-        );
-        return user;
-      } else {
-        throw Failure.server(
-          message: response.message,
-          statusCode: response.code,
+        return _handleAuthData(
+          response.data! as Map<String, dynamic>,
+          'Registration successful',
         );
       }
+      throw Failure.server(
+        message: response.message,
+        statusCode: response.code,
+      );
     }, _handleError);
   }
 
@@ -326,12 +284,36 @@ class AuthRepository {
     }, _handleError);
   }
 
-  // 辅助方法：保存会话
   Future<void> _saveUserSession(UserModel user, String token) async {
-    await _storageService.write(AppConstants.keyAuthToken, token);
-    await _storageService.write(AppConstants.keyUserId, user.id);
-    await _storageService.write(AppConstants.keyUserPermissions, ['user']);
+    await _writeSession(token: token, userId: user.id, permissions: ['user']);
     LoggerUtils.i('AuthRepository: Session saved for ${user.username}');
+  }
+
+  Future<UserModel> _handleAuthData(
+    Map<String, dynamic> data,
+    String logPrefix,
+  ) async {
+    final token = data['token'] as String;
+    final user = UserModel.fromJson(data['user'] as Map<String, dynamic>);
+    final userId = (data['userId'] as String?) ?? user.id;
+    final permissions = (data['permissions'] as List<dynamic>?)?.cast<String>();
+
+    await _writeSession(token: token, userId: userId, permissions: permissions);
+
+    LoggerUtils.i('AuthRepository: $logPrefix for user: ${user.username}');
+    return user;
+  }
+
+  Future<void> _writeSession({
+    required String token,
+    required String userId,
+    List<String>? permissions,
+  }) async {
+    await _storageService.write(AppConstants.keyAuthToken, token);
+    await _storageService.write(AppConstants.keyUserId, userId);
+    if (permissions != null) {
+      await _storageService.write(AppConstants.keyUserPermissions, permissions);
+    }
   }
 
   Failure _handleError(Object error, StackTrace stackTrace) {

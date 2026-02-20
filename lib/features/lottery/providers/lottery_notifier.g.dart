@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'lottery_provider.dart';
+part of 'lottery_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator

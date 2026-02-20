@@ -3,7 +3,7 @@ import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/features/product/product.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'device_providers.g.dart';
+part 'device_notifier.g.dart';
 
 /// 设备排序方式
 @riverpod
@@ -36,20 +36,23 @@ class DeviceSearchQuery extends _$DeviceSearchQuery {
 
 /// 原始设备列表（基于选中的城市）
 @riverpod
-Future<List<DeviceModel>> rawDevices(Ref ref) async {
-  final repository = ref.watch(deviceRepositoryProvider);
-  final selectedCityAsync = ref.watch(selectedCityProvider);
+class RawDevices extends _$RawDevices {
+  @override
+  Future<List<DeviceModel>> build() async {
+    final repository = ref.watch(deviceRepositoryProvider);
+    final selectedCityAsync = ref.watch(selectedCityProvider);
 
-  // 等待城市加载完成
-  final selectedCity = selectedCityAsync.value;
+    // 等待城市加载完成
+    final selectedCity = selectedCityAsync.value;
 
-  if (selectedCity != null) {
-    final result = await repository.getDevicesByCityId(selectedCity.id).run();
-    return result.getOrThrow();
-  } else {
-    // 如果没有选择城市，加载所有设备（或附近设备，这里暂用所有）
-    final result = await repository.getAllDevices().run();
-    return result.getOrThrow();
+    if (selectedCity != null) {
+      final result = await repository.getDevicesByCityId(selectedCity.id).run();
+      return result.getOrThrow();
+    } else {
+      // 如果没有选择城市，加载所有设备（或附近设备，这里暂用所有）
+      final result = await repository.getAllDevices().run();
+      return result.getOrThrow();
+    }
   }
 }
 
@@ -107,6 +110,7 @@ class SelectedDevice extends _$SelectedDevice {
 /// 根据ID获取设备详情
 @riverpod
 Future<DeviceModel> deviceDetail(Ref ref, String deviceId) async {
+  ref.keepAlive();
   final repository = ref.watch(deviceRepositoryProvider);
   final result = await repository.getDeviceById(deviceId).run();
   return result.getOrThrow();
@@ -115,6 +119,7 @@ Future<DeviceModel> deviceDetail(Ref ref, String deviceId) async {
 /// 获取指定设备的产品列表
 @riverpod
 Future<List<ProductModel>> deviceProducts(Ref ref, String deviceId) async {
+  ref.keepAlive();
   final repository = ref.watch(productRepositoryProvider);
   final result = await repository.getProductsByDeviceId(deviceId).run();
   return result.getOrThrow();

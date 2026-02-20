@@ -25,7 +25,11 @@ final _buildConfig = BuildModelConfig(
   keyCase: null,
   keyMapCase: null,
   paramCase: null,
-  sanitization: SanitizationConfig(enabled: true, prefix: 'k', caseStyle: CaseStyle.camel),
+  sanitization: SanitizationConfig(
+    enabled: true,
+    prefix: 'k',
+    caseStyle: CaseStyle.camel,
+  ),
   stringInterpolation: StringInterpolation.dart,
   maps: [],
   pluralAuto: PluralAuto.cardinal,
@@ -120,7 +124,8 @@ enum AppLocale with BaseAppLocale<AppLocale, Translations> {
   }
 
   /// Gets current instance managed by [LocaleSettings].
-  Translations get translations => LocaleSettings.instance.getTranslations(this);
+  Translations get translations =>
+      LocaleSettings.instance.getTranslations(this);
 }
 
 /// Method A: Simple
@@ -149,11 +154,14 @@ Translations get t => LocaleSettings.instance.currentTranslations;
 /// final t = Translations.of(context); // Get t variable.
 /// String a = t.someKey.anotherKey; // Use t variable.
 /// String b = t['someKey.anotherKey']; // Only for edge cases!
-class TranslationProvider extends BaseTranslationProvider<AppLocale, Translations> {
-  TranslationProvider({required super.child}) : super(settings: LocaleSettings.instance);
+class TranslationProvider
+    extends BaseTranslationProvider<AppLocale, Translations> {
+  TranslationProvider({required super.child})
+    : super(settings: LocaleSettings.instance);
 
-  static InheritedLocaleData<AppLocale, Translations> of(BuildContext context) =>
-      InheritedLocaleData.of<AppLocale, Translations>(context);
+  static InheritedLocaleData<AppLocale, Translations> of(
+    BuildContext context,
+  ) => InheritedLocaleData.of<AppLocale, Translations>(context);
 }
 
 /// Method B shorthand via [BuildContext] extension method.
@@ -166,7 +174,8 @@ extension BuildContextTranslationsExtension on BuildContext {
 }
 
 /// Manages all translation instances and the current locale
-class LocaleSettings extends BaseFlutterLocaleSettings<AppLocale, Translations> {
+class LocaleSettings
+    extends BaseFlutterLocaleSettings<AppLocale, Translations> {
   LocaleSettings._() : super(utils: AppLocaleUtils.instance, lazy: true);
 
   static final instance = LocaleSettings._();
@@ -174,10 +183,17 @@ class LocaleSettings extends BaseFlutterLocaleSettings<AppLocale, Translations> 
   // static aliases (checkout base methods for documentation)
   static AppLocale get currentLocale => instance.currentLocale;
   static Stream<AppLocale> getLocaleStream() => instance.getLocaleStream();
-  static Future<AppLocale> setLocale(AppLocale locale, {bool? listenToDeviceLocale = false}) =>
-      instance.setLocale(locale, listenToDeviceLocale: listenToDeviceLocale);
-  static Future<AppLocale> setLocaleRaw(String rawLocale, {bool? listenToDeviceLocale = false}) =>
-      instance.setLocaleRaw(rawLocale, listenToDeviceLocale: listenToDeviceLocale);
+  static Future<AppLocale> setLocale(
+    AppLocale locale, {
+    bool? listenToDeviceLocale = false,
+  }) => instance.setLocale(locale, listenToDeviceLocale: listenToDeviceLocale);
+  static Future<AppLocale> setLocaleRaw(
+    String rawLocale, {
+    bool? listenToDeviceLocale = false,
+  }) => instance.setLocaleRaw(
+    rawLocale,
+    listenToDeviceLocale: listenToDeviceLocale,
+  );
   static Future<AppLocale> useDeviceLocale() => instance.useDeviceLocale();
   static Future<void> setPluralResolver({
     String? language,
@@ -194,18 +210,36 @@ class LocaleSettings extends BaseFlutterLocaleSettings<AppLocale, Translations> 
     required AppLocale locale,
     required FileType fileType,
     required String content,
-  }) => instance.overrideTranslations(locale: locale, fileType: fileType, content: content);
+  }) => instance.overrideTranslations(
+    locale: locale,
+    fileType: fileType,
+    content: content,
+  );
   static Future<void> overrideTranslationsFromMap({
     required AppLocale locale,
     required bool isFlatMap,
     required Map map,
-  }) => instance.overrideTranslationsFromMap(locale: locale, isFlatMap: isFlatMap, map: map);
+  }) => instance.overrideTranslationsFromMap(
+    locale: locale,
+    isFlatMap: isFlatMap,
+    map: map,
+  );
 
   // synchronous versions
-  static AppLocale setLocaleSync(AppLocale locale, {bool? listenToDeviceLocale = false}) =>
-      instance.setLocaleSync(locale, listenToDeviceLocale: listenToDeviceLocale);
-  static AppLocale setLocaleRawSync(String rawLocale, {bool? listenToDeviceLocale = false}) =>
-      instance.setLocaleRawSync(rawLocale, listenToDeviceLocale: listenToDeviceLocale);
+  static AppLocale setLocaleSync(
+    AppLocale locale, {
+    bool? listenToDeviceLocale = false,
+  }) => instance.setLocaleSync(
+    locale,
+    listenToDeviceLocale: listenToDeviceLocale,
+  );
+  static AppLocale setLocaleRawSync(
+    String rawLocale, {
+    bool? listenToDeviceLocale = false,
+  }) => instance.setLocaleRawSync(
+    rawLocale,
+    listenToDeviceLocale: listenToDeviceLocale,
+  );
   static AppLocale useDeviceLocaleSync() => instance.useDeviceLocaleSync();
   static void setPluralResolverSync({
     String? language,
@@ -222,21 +256,44 @@ class LocaleSettings extends BaseFlutterLocaleSettings<AppLocale, Translations> 
     required AppLocale locale,
     required FileType fileType,
     required String content,
-  }) => instance.overrideTranslationsSync(locale: locale, fileType: fileType, content: content);
-  static void overrideTranslationsFromMapSync({required AppLocale locale, required bool isFlatMap, required Map map}) =>
-      instance.overrideTranslationsFromMapSync(locale: locale, isFlatMap: isFlatMap, map: map);
+  }) => instance.overrideTranslationsSync(
+    locale: locale,
+    fileType: fileType,
+    content: content,
+  );
+  static void overrideTranslationsFromMapSync({
+    required AppLocale locale,
+    required bool isFlatMap,
+    required Map map,
+  }) => instance.overrideTranslationsFromMapSync(
+    locale: locale,
+    isFlatMap: isFlatMap,
+    map: map,
+  );
 }
 
 /// Provides utility functions without any side effects.
 class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
-  AppLocaleUtils._() : super(baseLocale: AppLocale.zhCn, locales: AppLocale.values, buildConfig: _buildConfig);
+  AppLocaleUtils._()
+    : super(
+        baseLocale: AppLocale.zhCn,
+        locales: AppLocale.values,
+        buildConfig: _buildConfig,
+      );
 
   static final instance = AppLocaleUtils._();
 
   // static aliases (checkout base methods for documentation)
   static AppLocale parse(String rawLocale) => instance.parse(rawLocale);
-  static AppLocale parseLocaleParts({required String languageCode, String? scriptCode, String? countryCode}) =>
-      instance.parseLocaleParts(languageCode: languageCode, scriptCode: scriptCode, countryCode: countryCode);
+  static AppLocale parseLocaleParts({
+    required String languageCode,
+    String? scriptCode,
+    String? countryCode,
+  }) => instance.parseLocaleParts(
+    languageCode: languageCode,
+    scriptCode: scriptCode,
+    countryCode: countryCode,
+  );
   static AppLocale findDeviceLocale() => instance.findDeviceLocale();
   static List<Locale> get supportedLocales => instance.supportedLocales;
   static List<String> get supportedLocalesRaw => instance.supportedLocalesRaw;

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'settings_providers.dart';
+part of 'settings_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -46,7 +46,7 @@ final class FetchPackageInfoProvider
   }
 }
 
-String _$fetchPackageInfoHash() => r'7e1463b716bf3ef62fe04fcb0326761cda044d7c';
+String _$fetchPackageInfoHash() => r'eeff8784ca60230d839dd06822c3906d9b9dbfb4';
 
 @ProviderFor(deviceInfoPlugin)
 final deviceInfoPluginProvider = DeviceInfoPluginProvider._();
@@ -131,4 +131,4 @@ final class FetchDeviceInfoProvider
   }
 }
 
-String _$fetchDeviceInfoHash() => r'0d85772e19fc73e9ba25edb8af03239f4060a8a7';
+String _$fetchDeviceInfoHash() => r'b206cca464cb618b1242287b1569341f44bf366c';

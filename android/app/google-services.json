@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "000000000000",
-    "project_id": "mock-project-id",
-    "storage_bucket": "mock-project-id.appspot.com"
+    "project_number": "1076275289198",
+    "project_id": "hxg-vm",
+    "storage_bucket": "hxg-vm.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
+        "mobilesdk_app_id": "1:1076275289198:android:b88fcae98ec61680629a7f",
         "android_client_info": {
           "package_name": "com.hxg.lunchbox"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "000000000000-dummyclientid.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDummyKeyForBuildPurposesOnly"
+          "current_key": "AIzaSyB5Zp-C2cLyKrY8lN-po2DfSXh_b-JQypc"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "000000000000-dummyclientid.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

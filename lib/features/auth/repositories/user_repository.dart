@@ -42,11 +42,7 @@ class UserRepository {
 
       if (response.success && response.data != null) {
         final data = response.data! as Map<String, dynamic>;
-        final user = UserModel.fromJson(data['user'] as Map<String, dynamic>);
-        final token = data['token'] as String;
-        _saveUserInfo(user);
-        _saveToken(token);
-        return user;
+        return _handleAuthResponse(data);
       }
       throw Failure.server(
         message: response.message,
@@ -75,16 +71,8 @@ class UserRepository {
       final response = await _client.register(registerData);
 
       if (response.success && response.data != null) {
-        // Assuming register returns user data similar to login or just user
-        // The original code mapped data['data'] to UserModel
-        // RestClient.register returns ApiResponseModel<Map<String, dynamic>>
         final data = response.data! as Map<String, dynamic>;
-        // Adjust based on actual API response structure
-        if (data.containsKey('user')) {
-          return UserModel.fromJson(data['user'] as Map<String, dynamic>);
-        }
-        // Fallback if structure is different or flat
-        return UserModel.fromJson(data);
+        return _handleAuthResponse(data);
       }
       throw Failure.server(
         message: response.message,
@@ -198,22 +186,6 @@ class UserRepository {
   /// 移除常用设备
   TaskEither<Failure, bool> removeFavoriteDevice(String deviceId) {
     return TaskEither.tryCatch(() async {
-      // Assuming RestClient has removeFavoriteDevice or similar
-      // Since it wasn't in RestClient snippet, I might need to add it or use generic delete
-      // I will assume I need to add it to RestClient if not present, but I can't edit RestClient right now easily without checking
-      // But I recall seeing RestClient having 30+ endpoints.
-      // Let's assume I can use a generic request if needed or just skip if not in RestClient yet.
-      // But for now, let's assume it is there or I will add it.
-      // Wait, I created RestClient earlier. I should check if I added DELETE for favorite device.
-      // If not, I'll use a placeholder or comment.
-      // Actually, I can check RestClient content again if I want to be sure.
-      // But let's assume I did my job well.
-      // If not, I will fix RestClient later.
-
-      // However, I see `RestClient` snippet in search result:
-      // @POST('/api/users/favorite-devices') addFavoriteDevice
-      // I don't see removeFavoriteDevice in the snippet (cut off?).
-      // I'll check `rest_client.dart` quickly.
       final response = await _client.removeFavoriteDevice(deviceId);
       if (response.success && response.data != null) {
         return response.data!;
@@ -268,6 +240,24 @@ class UserRepository {
   /// 清除本地存储的认证token
   void _clearToken() {
     _storage.remove(tokenStorageKey);
+  }
+
+  UserModel _handleAuthResponse(Map<String, dynamic> data) {
+    final user = _parseUser(data);
+    _saveUserInfo(user);
+    final token = data['token'] as String?;
+    if (token != null && token.isNotEmpty) {
+      _saveToken(token);
+    }
+    return user;
+  }
+
+  UserModel _parseUser(Map<String, dynamic> data) {
+    final rawUser = data['user'];
+    if (rawUser is Map<String, dynamic>) {
+      return UserModel.fromJson(rawUser);
+    }
+    return UserModel.fromJson(data);
   }
 
   Failure _handleError(Object error, StackTrace stackTrace) {

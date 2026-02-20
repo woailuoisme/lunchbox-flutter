@@ -13,6 +13,27 @@ extension LoginStatusX on LoginStatus {
   bool get isFailure => this == LoginStatus.failure;
 }
 
+extension LoginStateX on LoginState {
+  bool get canSendCode =>
+      phoneNumber.isNotEmpty && countdown <= 0 && !status.isInProgress;
+
+  bool get canLoginWithPassword =>
+      loginType == LoginType.password &&
+      username.isNotEmpty &&
+      password.isNotEmpty &&
+      !status.isInProgress;
+
+  bool get canLoginWithPhone =>
+      loginType == LoginType.phone &&
+      phoneNumber.isNotEmpty &&
+      verificationCode.isNotEmpty &&
+      !status.isInProgress;
+
+  bool get canSubmit => canLoginWithPassword || canLoginWithPhone;
+
+  bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;
+}
+
 @freezed
 abstract class LoginState with _$LoginState {
   const factory LoginState({

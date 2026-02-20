@@ -1,18 +1,12 @@
-// ignore_for_file: do_not_use_environment
+import 'package:lunchbox/core/env/app_env.dart';
 
 /// 应用常量配置
 class AppConstants {
   // API 配置
   static const bool dioDebug = true;
   static const bool useTestMode = true; // 是否启用测试模式（跳过服务器验证）
-  static const String baseUrl = String.fromEnvironment(
-    'BASE_URL',
-    defaultValue: 'https://api.elunchbox.com',
-  );
-  static const String appName = String.fromEnvironment(
-    'APP_NAME',
-    defaultValue: 'Lunchbox',
-  );
+  static String get baseUrl => AppEnvConfig.current.baseUrl;
+  static const String appName = 'Lunchbox';
   static const Duration connectTimeout = Duration(seconds: 30);
   static const Duration receiveTimeout = Duration(seconds: 30);
 
@@ -33,10 +27,8 @@ class AppConstants {
 
   // 支付配置
   static const Duration paymentTimeout = Duration(minutes: 15);
-  static const String stripePublishableKey = String.fromEnvironment(
-    'STRIPE_PUBLISHABLE_KEY',
-    defaultValue: 'pk_test_51Mz...',
-  );
+  static String get stripePublishableKey =>
+      AppEnvConfig.current.stripePublishableKey;
 
   // 位置配置
   static const double defaultLatitude = 39.9042; // 北京

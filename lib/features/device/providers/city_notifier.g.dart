@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'city_providers.dart';
+part of 'city_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -36,7 +36,7 @@ final class AllCitiesProvider
   AllCities create() => AllCities();
 }
 
-String _$allCitiesHash() => r'af7810423d5f6a138204fd439e0865be323aab63';
+String _$allCitiesHash() => r'8adfbb3c9413d3ca74ff55e6887cd6c25c27a3b9';
 
 /// 所有城市列表
 
@@ -86,7 +86,7 @@ final class HotCitiesProvider
   HotCities create() => HotCities();
 }
 
-String _$hotCitiesHash() => r'9db714417d0fd5648ec63b28166d6b9a64828673';
+String _$hotCitiesHash() => r'defd6d74902af57234186dc434b2ece58fcdc8b8';
 
 /// 热门城市列表
 

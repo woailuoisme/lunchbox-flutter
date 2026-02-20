@@ -27,6 +27,8 @@ class LoginContent extends StatelessWidget {
     required this.onPhoneChanged,
     required this.onCodeChanged,
     required this.onSendCode,
+    required this.canSendCode,
+    required this.canSubmit,
     required this.onRegister,
     required this.onForgotPassword,
     required this.onGoogleLogin,
@@ -45,6 +47,8 @@ class LoginContent extends StatelessWidget {
   final ValueChanged<String> onPhoneChanged;
   final ValueChanged<String> onCodeChanged;
   final VoidCallback onSendCode;
+  final bool canSendCode;
+  final bool canSubmit;
   final VoidCallback onRegister;
   final VoidCallback onForgotPassword;
   final VoidCallback onGoogleLogin;
@@ -98,6 +102,7 @@ class LoginContent extends StatelessWidget {
                                     LoginPhoneForm(
                                       colorScheme: colorScheme,
                                       countdown: state.countdown,
+                                      canSendCode: canSendCode,
                                       onPhoneChanged: onPhoneChanged,
                                       onCodeChanged: onCodeChanged,
                                       onSendCode: onSendCode,
@@ -110,6 +115,7 @@ class LoginContent extends StatelessWidget {
                             _LoginButton(
                               colorScheme: colorScheme,
                               isLoading: state.status.isInProgress,
+                              isEnabled: canSubmit,
                               onLogin: onLogin,
                             ),
                             SizedBox(height: 16.h),
@@ -146,11 +152,13 @@ class _LoginButton extends StatelessWidget {
   const _LoginButton({
     required this.colorScheme,
     required this.isLoading,
+    required this.isEnabled,
     required this.onLogin,
   });
 
   final ColorScheme colorScheme;
   final bool isLoading;
+  final bool isEnabled;
   final VoidCallback onLogin;
 
   @override
@@ -158,7 +166,7 @@ class _LoginButton extends StatelessWidget {
     return SizedBox(
       height: 56.h,
       child: FilledButton(
-        onPressed: isLoading ? null : onLogin,
+        onPressed: isLoading || !isEnabled ? null : onLogin,
         style: FilledButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.r),

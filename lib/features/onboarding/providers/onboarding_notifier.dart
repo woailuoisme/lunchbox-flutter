@@ -1,6 +1,6 @@
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
-import 'package:lunchbox/core/values/app_constants.dart';
+import 'package:lunchbox/core/constants/app_constants.dart';
 import 'package:lunchbox/features/onboarding/providers/onboarding_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

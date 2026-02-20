@@ -235,7 +235,7 @@ class _CartViewState extends ConsumerState<CartView> {
     );
 
     if (confirmed == true) {
-      notifier.clearCart();
+      await notifier.clearCart();
     }
   }
 

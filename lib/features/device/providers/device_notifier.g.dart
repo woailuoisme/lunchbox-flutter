@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'device_providers.dart';
+part of 'device_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -184,21 +184,12 @@ abstract class _$DeviceSearchQuery extends $Notifier<String> {
 
 /// 原始设备列表（基于选中的城市）
 
-@ProviderFor(rawDevices)
+@ProviderFor(RawDevices)
 final rawDevicesProvider = RawDevicesProvider._();
 
 /// 原始设备列表（基于选中的城市）
-
 final class RawDevicesProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<DeviceModel>>,
-          List<DeviceModel>,
-          FutureOr<List<DeviceModel>>
-        >
-    with
-        $FutureModifier<List<DeviceModel>>,
-        $FutureProvider<List<DeviceModel>> {
+    extends $AsyncNotifierProvider<RawDevices, List<DeviceModel>> {
   /// 原始设备列表（基于选中的城市）
   RawDevicesProvider._()
     : super(
@@ -216,17 +207,31 @@ final class RawDevicesProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<DeviceModel>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<List<DeviceModel>> create(Ref ref) {
-    return rawDevices(ref);
-  }
+  RawDevices create() => RawDevices();
 }
 
-String _$rawDevicesHash() => r'95c34e5b0cf387f312293e7bb6b8193d77680e87';
+String _$rawDevicesHash() => r'c64d3d627f3e31c4efbdfeebec2a2be42d28e811';
+
+/// 原始设备列表（基于选中的城市）
+
+abstract class _$RawDevices extends $AsyncNotifier<List<DeviceModel>> {
+  FutureOr<List<DeviceModel>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref =
+        this.ref as $Ref<AsyncValue<List<DeviceModel>>, List<DeviceModel>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<DeviceModel>>, List<DeviceModel>>,
+              AsyncValue<List<DeviceModel>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
 
 /// 过滤和排序后的设备列表
 
@@ -392,7 +397,7 @@ final class DeviceDetailProvider
   }
 }
 
-String _$deviceDetailHash() => r'0f8e7ddda7bd994d6e115c38df4a50f2290eb6c1';
+String _$deviceDetailHash() => r'328c50230ecfc5caede0c004c24d1d07ce98dba8';
 
 /// 根据ID获取设备详情
 
@@ -478,7 +483,7 @@ final class DeviceProductsProvider
   }
 }
 
-String _$deviceProductsHash() => r'7e364ab02b22943d7ae49ef8a88784b9511290d8';
+String _$deviceProductsHash() => r'faed96ab482ef062df5919e029cb3a5292e0dbe2';
 
 /// 获取指定设备的产品列表
 

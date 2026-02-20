@@ -129,7 +129,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
                   style: {
                     "body": Style(
                       fontSize: FontSize(14.sp),
-                      lineHeight: LineHeight(1.6),
+                      lineHeight: const LineHeight(1.6),
                       padding: HtmlPaddings.zero,
                       margin: Margins.zero,
                       color: Theme.of(context).textTheme.bodyMedium?.color,

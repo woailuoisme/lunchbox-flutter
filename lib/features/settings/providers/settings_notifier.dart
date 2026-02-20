@@ -2,10 +2,11 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'settings_providers.g.dart';
+part 'settings_notifier.g.dart';
 
 @riverpod
 Future<PackageInfo> fetchPackageInfo(Ref ref) async {
+  ref.keepAlive();
   return PackageInfo.fromPlatform();
 }
 
@@ -16,6 +17,7 @@ DeviceInfoPlugin deviceInfoPlugin(Ref ref) {
 
 @riverpod
 Future<BaseDeviceInfo> fetchDeviceInfo(Ref ref) async {
+  ref.keepAlive();
   final plugin = ref.watch(deviceInfoPluginProvider);
   return plugin.deviceInfo;
 }

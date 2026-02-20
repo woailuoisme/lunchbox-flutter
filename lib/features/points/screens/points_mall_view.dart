@@ -321,7 +321,10 @@ class _PointsMallListState extends ConsumerState<_PointsMallList>
                         }
                       } catch (e) {
                         if (context.mounted) {
-                          AppDialog.showError(context, message: e.toString());
+                          await AppDialog.showError(
+                            context,
+                            message: e.toString(),
+                          );
                         }
                       }
                     }

@@ -3,7 +3,7 @@ import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:lunchbox/features/product/repositories/product_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'product_providers.g.dart';
+part 'product_notifier.g.dart';
 
 /// 产品排序方式
 @riverpod
@@ -47,6 +47,7 @@ class ProductCategory extends _$ProductCategory {
 /// 获取指定设备的产品分类列表
 @riverpod
 Future<List<String>> productCategories(Ref ref, String deviceId) async {
+  ref.keepAlive();
   final repository = ref.watch(productRepositoryProvider);
   final result = await repository.getProductCategories(deviceId).run();
   return result.fold(
@@ -57,20 +58,23 @@ Future<List<String>> productCategories(Ref ref, String deviceId) async {
 
 /// 获取指定设备的产品列表（原始列表）
 @riverpod
-Future<List<ProductModel>> rawProducts(Ref ref, String deviceId) async {
-  final repository = ref.watch(productRepositoryProvider);
-  final category = ref.watch(productCategoryProvider);
+class RawProducts extends _$RawProducts {
+  @override
+  Future<List<ProductModel>> build(String deviceId) async {
+    final repository = ref.watch(productRepositoryProvider);
+    final category = ref.watch(productCategoryProvider);
 
-  final result =
-      await (category != 'all'
-              ? repository.getProductsByCategory(deviceId, category)
-              : repository.getProductsByDeviceId(deviceId))
-          .run();
+    final result =
+        await (category != 'all'
+                ? repository.getProductsByCategory(deviceId, category)
+                : repository.getProductsByDeviceId(deviceId))
+            .run();
 
-  return result.fold(
-    (failure) => throw Exception(failure.toUserMessage()),
-    (products) => products,
-  );
+    return result.fold(
+      (failure) => throw Exception(failure.toUserMessage()),
+      (products) => products,
+    );
+  }
 }
 
 /// 过滤和排序后的产品列表
@@ -111,6 +115,7 @@ Future<List<ProductModel>> filteredProducts(Ref ref, String deviceId) async {
 /// 根据ID获取产品详情
 @riverpod
 Future<ProductModel> productDetail(Ref ref, String productId) async {
+  ref.keepAlive();
   final repository = ref.watch(productRepositoryProvider);
   final result = await repository.getProductById(productId).run();
   return result.fold(

@@ -63,3 +63,16 @@ linter:
 
     # 强制控制流体换行 (由于启用了强制花括号，此规则可作为补充或按需关闭，这里将其关闭以避免冲突或过度限制)
     always_put_control_body_on_new_line: false
+
+    # 强制在 override 成员上使用 @override 注解，避免代码重构时漏改
+    annotate_overrides: true
+
+    # 强制将 const 变量放在 final 之前，符合 Dart 风格指南
+    prefer_const_declarations: true
+
+    # 针对 Flutter：建议使用 const 构造函数，提升渲染性能
+    prefer_const_constructors: true
+    prefer_const_constructors_in_immutables: true
+
+    # 确保 async 代码的正确性 (特别是使用 go_router_builder 时)
+    unawaited_futures: true

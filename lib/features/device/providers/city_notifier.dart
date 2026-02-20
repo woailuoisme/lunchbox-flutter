@@ -3,13 +3,14 @@ import 'package:lunchbox/features/device/entities/city_model.dart';
 import 'package:lunchbox/features/device/repositories/city_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'city_providers.g.dart';
+part 'city_notifier.g.dart';
 
 /// 所有城市列表
 @riverpod
 class AllCities extends _$AllCities {
   @override
   Future<List<CityModel>> build() async {
+    ref.keepAlive();
     final repository = ref.watch(cityRepositoryProvider);
     final result = await repository.getAllCities().run();
     return result.getOrThrow();
@@ -21,6 +22,7 @@ class AllCities extends _$AllCities {
 class HotCities extends _$HotCities {
   @override
   Future<List<CityModel>> build() async {
+    ref.keepAlive();
     final repository = ref.watch(cityRepositoryProvider);
     final result = await repository.getHotCities().run();
     return result.getOrThrow();

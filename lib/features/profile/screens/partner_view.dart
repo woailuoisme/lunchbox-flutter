@@ -538,9 +538,11 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
                 color: theme.colorScheme.primary,
               ),
               SizedBox(width: 8.w),
-              Text(
-                '${t.partner.serviceHotline}: 400-114-8818',
-                style: TextStyle(color: theme.textTheme.bodyMedium?.color),
+              Expanded(
+                child: Text(
+                  '${t.partner.serviceHotline}: 400-114-8818',
+                  style: TextStyle(color: theme.textTheme.bodyMedium?.color),
+                ),
               ),
             ],
           ),

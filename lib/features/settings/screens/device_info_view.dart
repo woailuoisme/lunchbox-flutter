@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/features/settings/providers/settings_providers.dart';
+import 'package:lunchbox/features/settings/providers/settings_notifier.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 设备信息页面

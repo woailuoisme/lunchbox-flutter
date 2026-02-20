@@ -11,6 +11,7 @@ class LoginPhoneForm extends StatelessWidget {
     super.key,
     required this.colorScheme,
     required this.countdown,
+    required this.canSendCode,
     required this.onPhoneChanged,
     required this.onCodeChanged,
     required this.onSendCode,
@@ -18,6 +19,7 @@ class LoginPhoneForm extends StatelessWidget {
 
   final ColorScheme colorScheme;
   final int countdown;
+  final bool canSendCode;
   final ValueChanged<String> onPhoneChanged;
   final ValueChanged<String> onCodeChanged;
   final VoidCallback onSendCode;
@@ -95,15 +97,13 @@ class LoginPhoneForm extends StatelessWidget {
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
-            onPressed: countdown > 0 ? null : onSendCode,
+            onPressed: canSendCode ? onSendCode : null,
             child: Text(
               countdown > 0
                   ? t.auth.retryInSeconds(seconds: countdown)
                   : t.auth.getVerificationCode,
               style: TextStyle(
-                color: countdown > 0
-                    ? colorScheme.outline
-                    : colorScheme.primary,
+                color: canSendCode ? colorScheme.outline : colorScheme.primary,
               ),
             ),
           ),

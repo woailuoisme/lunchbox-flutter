@@ -41,8 +41,10 @@ class SimulatedProductRepository extends ProductRepository {
   TaskEither<Failure, ProductModel> getProductById(String productId) {
     final product = _mockProducts.firstWhere(
       (p) => p.id == productId,
-      orElse: () =>
-          throw Failure.server(message: 'Product not found', statusCode: 404),
+      orElse: () => throw const Failure.server(
+        message: 'Product not found',
+        statusCode: 404,
+      ),
     );
     return TaskEither.right(product);
   }

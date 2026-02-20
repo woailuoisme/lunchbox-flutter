@@ -97,7 +97,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: colorScheme.primary,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(10),
                       bottomRight: Radius.circular(10),
                     ),

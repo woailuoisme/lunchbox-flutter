@@ -6,7 +6,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:lunchbox/core/errors/errors.dart';
 import 'package:lunchbox/core/network/network.dart';
 import 'package:lunchbox/core/services/services.dart';
-import 'package:lunchbox/core/values/values.dart';
+import 'package:lunchbox/core/constants/constants.dart';
 import 'package:lunchbox/features/device/entities/city_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

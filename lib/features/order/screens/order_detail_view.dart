@@ -31,7 +31,7 @@ class OrderDetailView extends ConsumerWidget {
               context,
             ).showSnackBar(SnackBar(content: Text(t.order.orderCancelled)));
             // 刷新订单状态
-            ref.read(orderProvider.notifier).loadOrderById(order.id);
+            await ref.read(orderProvider.notifier).loadOrderById(order.id);
           }
           break;
         case 'pay':

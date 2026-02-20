@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
-import 'package:lunchbox/core/values/app_assets.dart';
+import 'package:lunchbox/core/constants/app_assets.dart';
 
 /// 资源工具类
 /// 提供资源加载和处理的辅助方法

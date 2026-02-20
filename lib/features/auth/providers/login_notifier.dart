@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:lunchbox/core/errors/failure_extensions.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/features/auth/providers/auth_notifier.dart';
 import 'package:lunchbox/features/auth/providers/login_state.dart';
@@ -22,22 +23,27 @@ class LoginNotifier extends _$LoginNotifier {
 
   void setLoginType(LoginType type) {
     state = state.copyWith(loginType: type);
+    _clearError();
   }
 
   void usernameChanged(String value) {
     state = state.copyWith(username: value);
+    _clearError();
   }
 
   void passwordChanged(String value) {
     state = state.copyWith(password: value);
+    _clearError();
   }
 
   void phoneNumberChanged(String value) {
     state = state.copyWith(phoneNumber: value);
+    _clearError();
   }
 
   void verificationCodeChanged(String value) {
     state = state.copyWith(verificationCode: value);
+    _clearError();
   }
 
   Future<void> sendVerificationCode() async {
@@ -45,17 +51,21 @@ class LoginNotifier extends _$LoginNotifier {
       return;
     }
 
-    try {
-      await ref
-          .read(authRepositoryProvider)
-          .sendVerificationCode(state.phoneNumber)
-          .run();
-      state = state.copyWith(isCodeSent: true, countdown: 60);
-      _startTimer();
-    } catch (e) {
-      LoggerUtils.e('Send verification code failed', e);
-      state = state.copyWith(errorMessage: e.toString());
-    }
+    final result = await ref
+        .read(authRepositoryProvider)
+        .sendVerificationCode(state.phoneNumber)
+        .run();
+    result.fold(
+      (failure) {
+        final message = failure.toUserMessage();
+        LoggerUtils.e('Send verification code failed', message);
+        state = state.copyWith(errorMessage: message);
+      },
+      (_) {
+        state = state.copyWith(isCodeSent: true, countdown: 60);
+        _startTimer();
+      },
+    );
   }
 
   void _startTimer() {
@@ -67,6 +77,13 @@ class LoginNotifier extends _$LoginNotifier {
         timer.cancel();
       }
     });
+  }
+
+  void _clearError() {
+    if (state.errorMessage == null) {
+      return;
+    }
+    state = state.copyWith(errorMessage: null);
   }
 
   Future<void> login() async {
@@ -86,7 +103,7 @@ class LoginNotifier extends _$LoginNotifier {
             .read(authProvider.notifier)
             .loginWithPhone(state.phoneNumber, state.verificationCode);
       }
-      state = state.copyWith(status: LoginStatus.success);
+      state = state.copyWith(status: LoginStatus.success, errorMessage: null);
     } catch (e) {
       LoggerUtils.e('Login failed', e);
       state = state.copyWith(
@@ -105,7 +122,7 @@ class LoginNotifier extends _$LoginNotifier {
 
     try {
       await ref.read(authProvider.notifier).loginWithGoogle();
-      state = state.copyWith(status: LoginStatus.success);
+      state = state.copyWith(status: LoginStatus.success, errorMessage: null);
     } catch (e) {
       LoggerUtils.e('Google Login failed', e);
       state = state.copyWith(
