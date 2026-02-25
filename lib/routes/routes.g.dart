@@ -10,6 +10,7 @@ List<RouteBase> get $appRoutes => [
   $splashRoute,
   $onboardingRoute,
   $loginRoute,
+  $complexLoginRoute,
   $registerRoute,
   $forgotPasswordRoute,
   $citySelectionRoute,
@@ -93,6 +94,32 @@ mixin $LoginRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/login');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $complexLoginRoute => GoRouteData.$route(
+  path: '/complex-login',
+  factory: $ComplexLoginRoute._fromState,
+);
+
+mixin $ComplexLoginRoute on GoRouteData {
+  static ComplexLoginRoute _fromState(GoRouterState state) =>
+      const ComplexLoginRoute();
+
+  @override
+  String get location => GoRouteData.$location('/complex-login');
 
   @override
   void go(BuildContext context) => context.go(location);

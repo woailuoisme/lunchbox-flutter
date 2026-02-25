@@ -11,6 +11,8 @@ class AppRoutes {
 
   // 认证相关
   static const String login = '/login';
+  static const String simpleLogin = '/simple-login';
+  static const String complexLogin = '/complex-login';
   static const String register = '/register';
   static const String forgotPassword = '/forgot-password';
 

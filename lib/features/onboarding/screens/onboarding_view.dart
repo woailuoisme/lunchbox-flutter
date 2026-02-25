@@ -64,7 +64,7 @@ class OnboardingView extends ConsumerWidget {
           image: _buildAnimatedImage(
             context,
             Symbols.location_on,
-            colorScheme.secondary,
+            colorScheme.primary,
             1,
           ),
           decoration: pageDecoration,
@@ -75,7 +75,7 @@ class OnboardingView extends ConsumerWidget {
           image: _buildAnimatedImage(
             context,
             Symbols.credit_card,
-            colorScheme.tertiary,
+            colorScheme.primary,
             2,
           ),
           decoration: pageDecoration,

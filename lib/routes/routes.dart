@@ -12,6 +12,9 @@ import 'package:lunchbox/features/order/order.dart';
 import 'package:lunchbox/features/payment/payment.dart';
 import 'package:lunchbox/features/product/product.dart';
 import 'package:lunchbox/features/profile/profile.dart';
+import 'package:lunchbox/features/team_ordering/team_ordering.dart';
+import 'package:lunchbox/features/coupons/coupons.dart';
+import 'package:lunchbox/features/community/community.dart';
 import 'package:lunchbox/features/points/screens/my_points_view.dart';
 import 'package:lunchbox/features/points/screens/points_mall_view.dart';
 import 'package:lunchbox/features/wallet/screens/wallet_rules_view.dart';
@@ -47,6 +50,19 @@ class OnboardingRoute extends GoRouteData with $OnboardingRoute {
 @TypedGoRoute<LoginRoute>(path: AppRoutes.login)
 class LoginRoute extends GoRouteData with $LoginRoute {
   const LoginRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      PageTransitionPage(
+        key: state.pageKey,
+        child: const SimpleLoginView(),
+        type: PageTransitionType.rightToLeft,
+      );
+}
+
+@TypedGoRoute<ComplexLoginRoute>(path: AppRoutes.complexLogin)
+class ComplexLoginRoute extends GoRouteData with $ComplexLoginRoute {
+  const ComplexLoginRoute();
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) =>

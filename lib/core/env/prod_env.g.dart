@@ -10,7 +10,7 @@ part of 'prod_env.dart';
 // ignore_for_file: type=lint
 // generated_from: .env.prod
 final class _ProdEnv {
-  static const String _baseUrl = 'https://rest.haoxiaoguai.xyz/api/v1';
+  static const String _baseUrl = 'https://rest.haoxiaoguai.xyz';
 
   static const String _stripePublishableKey = 'pk_live_placeholder';
 }

@@ -1,8 +1,6 @@
 library;
 
+export 'entities/banner_model.dart';
 export 'providers/home_provider.dart';
 export 'providers/home_state.dart';
-export 'screens/community_view.dart';
-export 'screens/coupons_view.dart';
 export 'screens/home_view.dart';
-export 'screens/team_ordering_view.dart';

@@ -8,4 +8,5 @@ export 'repositories/auth_repository.dart';
 export 'repositories/user_repository.dart';
 export 'screens/forgot_password_view.dart';
 export 'screens/login_view.dart';
+export 'screens/simple_login_view.dart';
 export 'screens/register_view.dart';

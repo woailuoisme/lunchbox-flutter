@@ -166,4 +166,8 @@ abstract class RestClient {
 
   @POST('/api/orders/{id}/payment/cancel')
   Future<ApiResponse<bool>> cancelPayment(@Path('id') String id);
+
+  // ===========================================================================
+  // Home
+  // ===========================================================================
 }
