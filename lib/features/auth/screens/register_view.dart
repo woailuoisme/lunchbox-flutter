@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/features/auth/providers/auth_notifier.dart';
+import 'package:lunchbox/features/auth/providers/auth_provider.dart';
 import 'package:lunchbox/features/auth/widgets/register_button.dart';
 import 'package:lunchbox/features/auth/widgets/register_form.dart';
 import 'package:lunchbox/features/auth/widgets/register_header.dart';

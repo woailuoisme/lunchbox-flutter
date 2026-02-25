@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'order_notifier.dart';
+part of 'lottery_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,51 +9,51 @@ part of 'order_notifier.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(OrderNotifier)
-final orderProvider = OrderNotifierProvider._();
+@ProviderFor(LotteryNotifier)
+final lotteryProvider = LotteryNotifierProvider._();
 
-final class OrderNotifierProvider
-    extends $NotifierProvider<OrderNotifier, OrderState> {
-  OrderNotifierProvider._()
+final class LotteryNotifierProvider
+    extends $NotifierProvider<LotteryNotifier, LotteryState> {
+  LotteryNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'orderProvider',
+        name: r'lotteryProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$orderNotifierHash();
+  String debugGetCreateSourceHash() => _$lotteryNotifierHash();
 
   @$internal
   @override
-  OrderNotifier create() => OrderNotifier();
+  LotteryNotifier create() => LotteryNotifier();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(OrderState value) {
+  Override overrideWithValue(LotteryState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<OrderState>(value),
+      providerOverride: $SyncValueProvider<LotteryState>(value),
     );
   }
 }
 
-String _$orderNotifierHash() => r'cbf364ff680457cc36f7fd41248a7c830b7d74e4';
+String _$lotteryNotifierHash() => r'b422ccde00e7ca38e3716955ffd0a10ed69b0ff5';
 
-abstract class _$OrderNotifier extends $Notifier<OrderState> {
-  OrderState build();
+abstract class _$LotteryNotifier extends $Notifier<LotteryState> {
+  LotteryState build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<OrderState, OrderState>;
+    final ref = this.ref as $Ref<LotteryState, LotteryState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<OrderState, OrderState>,
-              OrderState,
+              AnyNotifier<LotteryState, LotteryState>,
+              LotteryState,
               Object?,
               Object?
             >;

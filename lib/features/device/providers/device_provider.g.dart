@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'device_notifier.dart';
+part of 'device_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator

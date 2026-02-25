@@ -1,6 +1,6 @@
 library;
 
-export 'providers/home_notifier.dart';
+export 'providers/home_provider.dart';
 export 'providers/home_state.dart';
 export 'screens/community_view.dart';
 export 'screens/coupons_view.dart';

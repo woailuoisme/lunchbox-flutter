@@ -4,7 +4,7 @@ import 'package:lunchbox/core/constants/app_constants.dart';
 import 'package:lunchbox/features/onboarding/providers/onboarding_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'onboarding_notifier.g.dart';
+part 'onboarding_provider.g.dart';
 
 @riverpod
 class OnboardingNotifier extends _$OnboardingNotifier {

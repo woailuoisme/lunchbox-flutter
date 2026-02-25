@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/core/providers/locale_provider.dart';
 import 'package:lunchbox/core/theme/theme_provider.dart';
-import 'package:lunchbox/features/settings/providers/settings_notifier.dart';
+import 'package:lunchbox/features/settings/providers/settings_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 import 'package:material_symbols_icons/symbols.dart';

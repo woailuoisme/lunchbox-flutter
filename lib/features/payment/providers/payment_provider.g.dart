@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'payment_notifier.dart';
+part of 'payment_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator

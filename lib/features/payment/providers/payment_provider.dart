@@ -9,7 +9,7 @@ import 'package:lunchbox/features/payment/providers/payment_state.dart';
 import 'package:lunchbox/features/payment/repositories/payment_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'payment_notifier.g.dart';
+part 'payment_provider.g.dart';
 
 @riverpod
 class PaymentNotifier extends _$PaymentNotifier {

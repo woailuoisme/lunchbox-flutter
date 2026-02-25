@@ -6,7 +6,7 @@ import 'package:lunchbox/features/order/providers/order_state.dart';
 import 'package:lunchbox/features/order/repositories/order_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'order_notifier.g.dart';
+part 'order_provider.g.dart';
 
 @riverpod
 class OrderNotifier extends _$OrderNotifier {

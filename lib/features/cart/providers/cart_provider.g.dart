@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'splash_notifier.dart';
+part of 'cart_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,51 +9,51 @@ part of 'splash_notifier.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(SplashNotifier)
-final splashProvider = SplashNotifierProvider._();
+@ProviderFor(CartNotifier)
+final cartProvider = CartNotifierProvider._();
 
-final class SplashNotifierProvider
-    extends $NotifierProvider<SplashNotifier, SplashState> {
-  SplashNotifierProvider._()
+final class CartNotifierProvider
+    extends $NotifierProvider<CartNotifier, CartState> {
+  CartNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'splashProvider',
+        name: r'cartProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$splashNotifierHash();
+  String debugGetCreateSourceHash() => _$cartNotifierHash();
 
   @$internal
   @override
-  SplashNotifier create() => SplashNotifier();
+  CartNotifier create() => CartNotifier();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SplashState value) {
+  Override overrideWithValue(CartState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<SplashState>(value),
+      providerOverride: $SyncValueProvider<CartState>(value),
     );
   }
 }
 
-String _$splashNotifierHash() => r'1e57eabd64b1ae818c801dce6530c3ade3ab54c4';
+String _$cartNotifierHash() => r'a54076012b18fd68fc407b77d6c945032e92239e';
 
-abstract class _$SplashNotifier extends $Notifier<SplashState> {
-  SplashState build();
+abstract class _$CartNotifier extends $Notifier<CartState> {
+  CartState build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<SplashState, SplashState>;
+    final ref = this.ref as $Ref<CartState, CartState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<SplashState, SplashState>,
-              SplashState,
+              AnyNotifier<CartState, CartState>,
+              CartState,
               Object?,
               Object?
             >;

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
-import 'package:lunchbox/features/payment/providers/payment_notifier.dart';
+import 'package:lunchbox/features/payment/providers/payment_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/features/payment/widgets/payment_amount_card.dart';
 import 'package:lunchbox/features/payment/widgets/payment_countdown.dart';

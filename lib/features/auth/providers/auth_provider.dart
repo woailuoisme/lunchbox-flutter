@@ -4,7 +4,7 @@ import 'package:lunchbox/core/errors/failure_extensions.dart';
 import 'package:lunchbox/features/auth/repositories/auth_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'auth_notifier.g.dart';
+part 'auth_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class Auth extends _$Auth {

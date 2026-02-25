@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_notifier.dart';
+part of 'order_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,50 +9,51 @@ part of 'auth_notifier.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(Auth)
-final authProvider = AuthProvider._();
+@ProviderFor(OrderNotifier)
+final orderProvider = OrderNotifierProvider._();
 
-final class AuthProvider extends $NotifierProvider<Auth, bool> {
-  AuthProvider._()
+final class OrderNotifierProvider
+    extends $NotifierProvider<OrderNotifier, OrderState> {
+  OrderNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'authProvider',
-        isAutoDispose: false,
+        name: r'orderProvider',
+        isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$authHash();
+  String debugGetCreateSourceHash() => _$orderNotifierHash();
 
   @$internal
   @override
-  Auth create() => Auth();
+  OrderNotifier create() => OrderNotifier();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(bool value) {
+  Override overrideWithValue(OrderState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<bool>(value),
+      providerOverride: $SyncValueProvider<OrderState>(value),
     );
   }
 }
 
-String _$authHash() => r'460935ac7ed3e0362128bb0841f1490710e89626';
+String _$orderNotifierHash() => r'cbf364ff680457cc36f7fd41248a7c830b7d74e4';
 
-abstract class _$Auth extends $Notifier<bool> {
-  bool build();
+abstract class _$OrderNotifier extends $Notifier<OrderState> {
+  OrderState build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<bool, bool>;
+    final ref = this.ref as $Ref<OrderState, OrderState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<bool, bool>,
-              bool,
+              AnyNotifier<OrderState, OrderState>,
+              OrderState,
               Object?,
               Object?
             >;

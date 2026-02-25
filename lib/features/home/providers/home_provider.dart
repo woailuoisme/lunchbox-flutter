@@ -4,7 +4,7 @@ import 'package:lunchbox/features/device/repositories/device_repository.dart';
 import 'package:lunchbox/features/home/providers/home_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'home_notifier.g.dart';
+part 'home_provider.g.dart';
 
 @riverpod
 class HomeNotifier extends _$HomeNotifier {

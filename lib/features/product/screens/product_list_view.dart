@@ -7,7 +7,7 @@ import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
-import 'package:lunchbox/features/product/providers/product_notifier.dart';
+import 'package:lunchbox/features/product/providers/product_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:skeletonizer/skeletonizer.dart';

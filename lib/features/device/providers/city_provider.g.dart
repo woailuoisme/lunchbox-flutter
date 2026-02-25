@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'city_notifier.dart';
+part of 'city_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator

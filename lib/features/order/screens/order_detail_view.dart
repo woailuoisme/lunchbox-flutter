@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
-import 'package:lunchbox/features/order/providers/order_notifier.dart';
+import 'package:lunchbox/features/order/providers/order_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 import 'package:qr_flutter/qr_flutter.dart';

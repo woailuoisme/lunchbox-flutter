@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lunchbox/core/widgets/error_widget.dart' as app_error; // 防止命名冲突
 import 'package:lunchbox/core/widgets/loading_widget.dart';
 import 'package:lunchbox/features/device/entities/city_model.dart';
-import 'package:lunchbox/features/device/providers/city_notifier.dart';
+import 'package:lunchbox/features/device/providers/city_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:toastification/toastification.dart';
 

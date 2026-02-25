@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
-import 'package:lunchbox/features/order/providers/order_notifier.dart';
+import 'package:lunchbox/features/order/providers/order_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/features/payment/widgets/confirmation_bottom_bar.dart';
 import 'package:lunchbox/features/payment/widgets/order_amount_card.dart';

@@ -6,7 +6,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 @GenerateMocks([CartRepository])
-import 'cart_notifier_test.mocks.dart';
+import 'cart_provider_test.mocks.dart';
 
 void main() {
   late MockCartRepository mockRepository;

@@ -1,4 +1,4 @@
 library;
 
-export 'providers/splash_notifier.dart';
+export 'providers/splash_provider.dart';
 export 'screens/splash_view.dart';

@@ -2,7 +2,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'settings_notifier.g.dart';
+part 'settings_provider.g.dart';
 
 @riverpod
 Future<PackageInfo> fetchPackageInfo(Ref ref) async {

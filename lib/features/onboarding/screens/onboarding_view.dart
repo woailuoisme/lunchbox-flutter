@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:lunchbox/features/onboarding/providers/onboarding_notifier.dart';
+import 'package:lunchbox/features/onboarding/providers/onboarding_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 import 'package:material_symbols_icons/symbols.dart';

@@ -3,7 +3,7 @@ import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:lunchbox/features/product/repositories/product_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'product_notifier.g.dart';
+part 'product_provider.g.dart';
 
 /// 产品排序方式
 @riverpod

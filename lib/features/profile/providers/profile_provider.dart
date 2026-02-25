@@ -6,7 +6,7 @@ import 'package:lunchbox/features/profile/providers/profile_state.dart';
 import 'package:lunchbox/features/profile/repositories/profile_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'profile_notifier.g.dart';
+part 'profile_provider.g.dart';
 
 @riverpod
 class ProfileNotifier extends _$ProfileNotifier {

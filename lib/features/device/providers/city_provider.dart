@@ -3,7 +3,7 @@ import 'package:lunchbox/features/device/entities/city_model.dart';
 import 'package:lunchbox/features/device/repositories/city_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'city_notifier.g.dart';
+part 'city_provider.g.dart';
 
 /// 所有城市列表
 @riverpod

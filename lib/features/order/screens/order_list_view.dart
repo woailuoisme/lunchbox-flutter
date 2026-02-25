@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/core/widgets/widgets.dart';
-import 'package:lunchbox/features/order/providers/order_notifier.dart';
+import 'package:lunchbox/features/order/providers/order_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 

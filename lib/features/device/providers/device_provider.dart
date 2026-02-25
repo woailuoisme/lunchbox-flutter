@@ -3,7 +3,7 @@ import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/features/product/product.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'device_notifier.g.dart';
+part 'device_provider.g.dart';
 
 /// 设备排序方式
 @riverpod

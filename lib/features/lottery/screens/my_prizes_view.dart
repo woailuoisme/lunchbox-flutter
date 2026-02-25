@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/features/lottery/entities/lottery_prize.dart';
-import 'package:lunchbox/features/lottery/providers/lottery_notifier.dart';
+import 'package:lunchbox/features/lottery/providers/lottery_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 

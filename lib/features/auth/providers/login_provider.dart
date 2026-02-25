@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:lunchbox/core/errors/failure_extensions.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
-import 'package:lunchbox/features/auth/providers/auth_notifier.dart';
+import 'package:lunchbox/features/auth/providers/auth_provider.dart';
 import 'package:lunchbox/features/auth/providers/login_state.dart';
 import 'package:lunchbox/features/auth/repositories/auth_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'login_notifier.g.dart';
+part 'login_provider.g.dart';
 
 @riverpod
 class LoginNotifier extends _$LoginNotifier {

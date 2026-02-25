@@ -5,7 +5,7 @@ import 'package:lunchbox/features/cart/repositories/cart_repository.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'cart_notifier.g.dart';
+part 'cart_provider.g.dart';
 
 @riverpod
 class CartNotifier extends _$CartNotifier {

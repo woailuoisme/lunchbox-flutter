@@ -6,7 +6,7 @@ import 'package:lunchbox/features/profile/repositories/profile_repository.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'splash_notifier.g.dart';
+part 'splash_provider.g.dart';
 
 class SplashState {
   const SplashState({
