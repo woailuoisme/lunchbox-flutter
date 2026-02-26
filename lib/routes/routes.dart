@@ -12,9 +12,14 @@ import 'package:lunchbox/features/order/order.dart';
 import 'package:lunchbox/features/payment/payment.dart';
 import 'package:lunchbox/features/product/product.dart';
 import 'package:lunchbox/features/profile/profile.dart';
+import 'package:lunchbox/features/personal_info/personal_info.dart';
+import 'package:lunchbox/features/feedback/feedback.dart';
+import 'package:lunchbox/features/partner/partner.dart';
 import 'package:lunchbox/features/team_ordering/team_ordering.dart';
 import 'package:lunchbox/features/coupons/coupons.dart';
+import 'package:lunchbox/features/my_coupons/my_coupons.dart';
 import 'package:lunchbox/features/community/community.dart';
+import 'package:lunchbox/features/welcome_gift/welcome_gift.dart';
 import 'package:lunchbox/features/points/screens/my_points_view.dart';
 import 'package:lunchbox/features/points/screens/points_mall_view.dart';
 import 'package:lunchbox/features/wallet/screens/wallet_rules_view.dart';
@@ -139,6 +144,24 @@ class CouponsRoute extends GoRouteData with $CouponsRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const CouponsView();
+}
+
+@TypedGoRoute<MyCouponsRoute>(path: AppRoutes.myCoupons)
+class MyCouponsRoute extends GoRouteData with $MyCouponsRoute {
+  const MyCouponsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const MyCouponsView();
+}
+
+@TypedGoRoute<WelcomeGiftRoute>(path: AppRoutes.welcomeGift)
+class WelcomeGiftRoute extends GoRouteData with $WelcomeGiftRoute {
+  const WelcomeGiftRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const WelcomeGiftView();
 }
 
 @TypedGoRoute<InviteRoute>(

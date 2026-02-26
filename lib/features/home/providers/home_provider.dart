@@ -155,8 +155,10 @@ class HomeNotifier extends _$HomeNotifier {
     // 获取当前位置
     // 设置超时时间为 5 秒，精度为 high
     return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-      timeLimit: const Duration(seconds: 5),
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 5),
+      ),
     );
   }
 

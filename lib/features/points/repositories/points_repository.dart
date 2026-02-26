@@ -24,35 +24,35 @@ class PointsRepository extends _$PointsRepository {
     await Future<void>.delayed(const Duration(milliseconds: 500));
 
     final allRecords = [
-      PointsRecordModel(
+      const PointsRecordModel(
         id: '1',
         title: '购买商品获得',
         points: 50,
         date: '2025-02-01',
         type: 'gain',
       ),
-      PointsRecordModel(
+      const PointsRecordModel(
         id: '2',
         title: '签到奖励',
         points: 10,
         date: '2025-02-02',
         type: 'gain',
       ),
-      PointsRecordModel(
+      const PointsRecordModel(
         id: '3',
         title: '兑换优惠券',
         points: -200,
         date: '2025-02-03',
         type: 'use',
       ),
-      PointsRecordModel(
+      const PointsRecordModel(
         id: '4',
         title: '购买商品获得',
         points: 80,
         date: '2025-02-04',
         type: 'gain',
       ),
-      PointsRecordModel(
+      const PointsRecordModel(
         id: '5',
         title: '邀请好友',
         points: 100,
@@ -95,7 +95,7 @@ class PointsRepository extends _$PointsRepository {
     await Future<void>.delayed(const Duration(milliseconds: 600));
 
     final allProducts = [
-      MallProductModel(
+      const MallProductModel(
         id: '1',
         title: '10元无门槛券',
         amountValue: 10,
@@ -103,7 +103,7 @@ class PointsRepository extends _$PointsRepository {
         isHot: true,
         type: 'coupon',
       ),
-      MallProductModel(
+      const MallProductModel(
         id: '2',
         title: '5元立减券',
         amountValue: 5,
@@ -111,7 +111,7 @@ class PointsRepository extends _$PointsRepository {
         isHot: false,
         type: 'coupon',
       ),
-      MallProductModel(
+      const MallProductModel(
         id: '3',
         title: '20元满减券',
         amountValue: 20,
@@ -119,7 +119,7 @@ class PointsRepository extends _$PointsRepository {
         isHot: true,
         type: 'coupon',
       ),
-      MallProductModel(
+      const MallProductModel(
         id: '4',
         title: '50元余额',
         amountValue: 50,
@@ -127,7 +127,7 @@ class PointsRepository extends _$PointsRepository {
         isHot: false,
         type: 'balance',
       ),
-      MallProductModel(
+      const MallProductModel(
         id: '5',
         title: '免运费券',
         amountValue: 0,

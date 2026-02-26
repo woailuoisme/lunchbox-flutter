@@ -154,7 +154,7 @@ class ProfileView extends ConsumerWidget {
                   context,
                   '9',
                   t.profile.couponCount,
-                  onTap: () => const CouponsRoute().push<void>(context),
+                  onTap: () => const MyCouponsRoute().push<void>(context),
                 ),
               ],
             ),
@@ -223,7 +223,7 @@ class ProfileView extends ConsumerWidget {
             context: context,
             icon: Symbols.airplane_ticket,
             title: t.profile.coupon,
-            onTap: () => const CouponsRoute().push<void>(context),
+            onTap: () => const MyCouponsRoute().push<void>(context),
           ),
 
           // 个人相关

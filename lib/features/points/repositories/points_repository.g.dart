@@ -33,7 +33,7 @@ final class PointsRepositoryProvider
   PointsRepository create() => PointsRepository();
 }
 
-String _$pointsRepositoryHash() => r'7ee61572256c86e3608d2c67155046fb7ce6589f';
+String _$pointsRepositoryHash() => r'4f8ae64148d8b093c07474cbbfb3b68b28c61b14';
 
 abstract class _$PointsRepository extends $AsyncNotifier<void> {
   FutureOr<void> build();

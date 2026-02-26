@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:lunchbox/features/profile/repositories/partner_repository.dart';
+import 'package:lunchbox/features/partner/repositories/partner_repository.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class PartnerView extends ConsumerStatefulWidget {
@@ -47,29 +47,24 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
     });
 
     try {
-      final success = await ref
-          .read(partnerRepositoryProvider.notifier)
-          .submitApplication(
-            name: name,
-            company: company,
-            phone: phone,
-            intention: intention,
-          );
+      // partnerRepositoryProvider provides PartnerRepository, which has applyPartner method.
+      // It does NOT have a notifier or return bool success directly (it returns Future<void>).
+      // We should wrap it in try-catch.
+      await ref.read(partnerRepositoryProvider).applyPartner({
+        'name': name,
+        'company': company,
+        'phone': phone,
+        'intention': intention,
+      });
 
       if (mounted) {
-        if (success) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(t.partner.submitSuccess)));
-          _nameController.clear();
-          _companyController.clear();
-          _phoneController.clear();
-          _intentionController.clear();
-        } else {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(t.partner.submitFailed)));
-        }
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(t.partner.submitSuccess)));
+        _nameController.clear();
+        _companyController.clear();
+        _phoneController.clear();
+        _intentionController.clear();
       }
     } catch (e) {
       if (mounted) {

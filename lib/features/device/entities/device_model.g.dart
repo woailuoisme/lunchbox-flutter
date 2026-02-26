@@ -24,6 +24,8 @@ _DeviceModel _$DeviceModelFromJson(Map<String, dynamic> json) => $checkedCreate(
         (v) => (v as List<dynamic>).map((e) => e as String).toList(),
       ),
       lastUpdated: $checkedConvert('last_updated', (v) => v as String),
+      distance: $checkedConvert('distance', (v) => (v as num?)?.toDouble()),
+      distanceText: $checkedConvert('distance_text', (v) => v as String?),
     );
     return val;
   },
@@ -31,6 +33,7 @@ _DeviceModel _$DeviceModelFromJson(Map<String, dynamic> json) => $checkedCreate(
     'cityId': 'city_id',
     'productIds': 'product_ids',
     'lastUpdated': 'last_updated',
+    'distanceText': 'distance_text',
   },
 );
 
@@ -43,4 +46,6 @@ Map<String, dynamic> _$DeviceModelToJson(_DeviceModel instance) =>
       'location': instance.location.toJson(),
       'product_ids': instance.productIds,
       'last_updated': instance.lastUpdated,
+      'distance': ?instance.distance,
+      'distance_text': ?instance.distanceText,
     };

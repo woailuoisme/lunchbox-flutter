@@ -24,6 +24,8 @@ class AppRoutes {
   static const String teamOrdering = '/team-ordering';
   static const String community = '/community';
   static const String coupons = '/coupons';
+  static const String myCoupons = '/my-coupons';
+  static const String welcomeGift = '/welcome-gift';
   static const String invite = '/invite';
   static const String inviteRules = 'rules'; // 子路由路径，完整为 /invite/rules
   static const String lottery = '/lottery';

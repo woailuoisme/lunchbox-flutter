@@ -30,6 +30,12 @@ abstract class DeviceModel with _$DeviceModel {
 
     /// Timestamp of the last update (as ISO 8601 string)
     @JsonKey(name: 'last_updated') required String lastUpdated,
+
+    /// Distance from user (optional, from API)
+    double? distance,
+
+    /// Formatted distance text (optional, from API)
+    @JsonKey(name: 'distance_text') String? distanceText,
   }) = _DeviceModel;
 
   /// Create DeviceModel from JSON
@@ -44,8 +50,6 @@ abstract class DeviceModel with _$DeviceModel {
   bool get supportCashPayment => true;
 
   String get address => location.address ?? '';
-  double? get distance => null; // TODO: Calculate distance
-  String get distanceText => '';
 
   /// Parse status string to DeviceStatus enum
   DeviceStatus _parseStatus(String status) {

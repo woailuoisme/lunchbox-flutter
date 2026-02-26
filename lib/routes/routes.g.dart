@@ -17,6 +17,8 @@ List<RouteBase> get $appRoutes => [
   $teamOrderingRoute,
   $communityRoute,
   $couponsRoute,
+  $myCouponsRoute,
+  $welcomeGiftRoute,
   $inviteRoute,
   $lotteryRoute,
   $productListRoute,
@@ -268,6 +270,58 @@ mixin $CouponsRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/coupons');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $myCouponsRoute => GoRouteData.$route(
+  path: '/my-coupons',
+  factory: $MyCouponsRoute._fromState,
+);
+
+mixin $MyCouponsRoute on GoRouteData {
+  static MyCouponsRoute _fromState(GoRouterState state) =>
+      const MyCouponsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/my-coupons');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $welcomeGiftRoute => GoRouteData.$route(
+  path: '/welcome-gift',
+  factory: $WelcomeGiftRoute._fromState,
+);
+
+mixin $WelcomeGiftRoute on GoRouteData {
+  static WelcomeGiftRoute _fromState(GoRouterState state) =>
+      const WelcomeGiftRoute();
+
+  @override
+  String get location => GoRouteData.$location('/welcome-gift');
 
   @override
   void go(BuildContext context) => context.go(location);

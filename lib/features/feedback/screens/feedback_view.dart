@@ -4,6 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import 'package:lunchbox/features/feedback/repositories/feedback_repository.dart';
+import 'package:toastification/toastification.dart';
+
 class FeedbackView extends ConsumerStatefulWidget {
   const FeedbackView({super.key});
 
@@ -13,6 +16,77 @@ class FeedbackView extends ConsumerStatefulWidget {
 
 class _FeedbackViewState extends ConsumerState<FeedbackView> {
   int _selectedTypeIndex = 0;
+  final _titleController = TextEditingController();
+  final _contentController = TextEditingController();
+  final _contactController = TextEditingController();
+  bool _isSubmitting = false;
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _contentController.dispose();
+    _contactController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitFeedback() async {
+    final title = _titleController.text.trim();
+    final content = _contentController.text.trim();
+    final contact = _contactController.text.trim();
+
+    if (content.isEmpty) {
+      toastification.show(
+        context: context,
+        type: ToastificationType.warning,
+        title: Text(t.feedback.contentHint),
+        autoCloseDuration: const Duration(seconds: 2),
+      );
+      return;
+    }
+
+    setState(() => _isSubmitting = true);
+
+    try {
+      final typeLabels = [
+        t.feedback.errorReport,
+        t.feedback.suggestion,
+        t.feedback.complaint,
+        t.feedback.other,
+      ];
+      final type = typeLabels[_selectedTypeIndex];
+
+      await ref
+          .read(feedbackRepositoryProvider)
+          .submitFeedback(
+            content: content,
+            contact: contact,
+            title: title,
+            type: type,
+          );
+      if (mounted) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.success,
+          title: Text(t.feedback.submitSuccess),
+          autoCloseDuration: const Duration(seconds: 2),
+        );
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (mounted) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.error,
+          title: Text('${t.feedback.submitFailed}: $e'),
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSubmitting = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,20 +118,29 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
               width: double.infinity,
               height: 48.h,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: _isSubmitting ? null : _submitFeedback,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.colorScheme.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24.r),
                   ),
                 ),
-                child: Text(
-                  t.feedback.submit,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
+                child: _isSubmitting
+                    ? SizedBox(
+                        width: 24.w,
+                        height: 24.w,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: theme.colorScheme.onPrimary,
+                        ),
+                      )
+                    : Text(
+                        t.feedback.submit,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: theme.colorScheme.onPrimary,
+                        ),
+                      ),
               ),
             ),
           ],
@@ -205,6 +288,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
           ),
           SizedBox(height: 16.h),
           TextField(
+            controller: _titleController,
             decoration: InputDecoration(
               hintText: t.feedback.titleHint,
               filled: true,
@@ -223,6 +307,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
           ),
           SizedBox(height: 12.h),
           TextField(
+            controller: _contentController,
             maxLines: 5,
             maxLength: 500,
             decoration: InputDecoration(
@@ -309,6 +394,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
           ),
           SizedBox(height: 16.h),
           TextField(
+            controller: _contactController,
             decoration: InputDecoration(
               hintText: t.feedback.contactInputHint,
               filled: true,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:lunchbox/features/personal_info/repositories/personal_info_repository.dart';
 import 'package:lunchbox/features/profile/providers/profile_provider.dart';
 import 'package:lunchbox/features/profile/providers/profile_state.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
@@ -24,11 +25,19 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
 
   Future<void> _saveProfile() async {
     try {
-      final notifier = ref.read(profileProvider.notifier);
-      await notifier.updateUserInfo(
-        gender: _selectedGender,
-        birthday: _selectedBirthday,
-      );
+      final repository = ref.read(personalInfoRepositoryProvider);
+      final updatedUser = await repository.updateProfile({
+        'gender': _selectedGender,
+        'birthday': _selectedBirthday?.toIso8601String(),
+      });
+
+      // Update profile state
+      // We assume ProfileNotifier can be refreshed or has a way to set user.
+      // Since it doesn't have setUser, we call loadUserInfo which fetches from repo.
+      // But repo in profile module might not have the new data if it's mocked or different.
+      // Ideally, ProfileNotifier should listen to changes or we invalidate it.
+      ref.invalidate(profileProvider);
+
       if (mounted) {
         ScaffoldMessenger.of(
           context,

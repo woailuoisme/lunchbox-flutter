@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:lunchbox/features/profile/entities/coupon_model.dart';
-import 'package:lunchbox/features/profile/repositories/coupon_repository.dart';
+import 'package:lunchbox/features/coupons/entities/coupon_model.dart';
+import 'package:lunchbox/features/my_coupons/repositories/my_coupons_repository.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:intl/intl.dart';
 
-class CouponListView extends ConsumerStatefulWidget {
-  const CouponListView({super.key});
+class MyCouponsView extends ConsumerStatefulWidget {
+  const MyCouponsView({super.key});
 
   @override
-  ConsumerState<CouponListView> createState() => _CouponListViewState();
+  ConsumerState<MyCouponsView> createState() => _MyCouponsViewState();
 }
 
-class _CouponListViewState extends ConsumerState<CouponListView>
+class _MyCouponsViewState extends ConsumerState<MyCouponsView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -60,12 +61,9 @@ class _CouponListViewState extends ConsumerState<CouponListView>
   Widget _buildCouponList(bool isAvailable) {
     // 0: available, 1: used, 2: expired.
     // isAvailable maps to 0, !isAvailable could be 1 or 2.
-    // For simplicity, let's say !isAvailable shows all history (1 and 2) or we just pick one.
-    // Let's assume !isAvailable shows expired (2) for now, or we can filter in UI.
-    // Or we use -1 for all and filter here.
     // Let's use 0 for available, and 2 for expired/unavailable for this demo.
     final status = isAvailable ? 0 : 2;
-    final couponsAsync = ref.watch(couponsByStatusProvider(status));
+    final couponsAsync = ref.watch(userCouponsProvider(status: status));
     final theme = Theme.of(context);
 
     return couponsAsync.when(
@@ -162,7 +160,7 @@ class _CouponListViewState extends ConsumerState<CouponListView>
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  coupon.condition,
+                  '满${coupon.minSpend}元可用',
                   style: TextStyle(
                     color: contentColor.withValues(alpha: 0.8),
                     fontSize: 12.sp,
@@ -180,7 +178,7 @@ class _CouponListViewState extends ConsumerState<CouponListView>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    coupon.title,
+                    coupon.name,
                     style: TextStyle(
                       color: contentColor,
                       fontSize: 16.sp,
@@ -189,7 +187,7 @@ class _CouponListViewState extends ConsumerState<CouponListView>
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    '${t.coupon.expiryPrefix}${coupon.expiryDate}',
+                    '${t.coupon.expiryPrefix}${DateFormat('yyyy-MM-dd').format(coupon.endTime)}',
                     style: TextStyle(
                       color: contentColor.withValues(alpha: 0.8),
                       fontSize: 12.sp,
