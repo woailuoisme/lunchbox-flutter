@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 import 'package:lunchbox/core/network/interceptors/auth_interceptor.dart';
+import 'package:lunchbox/core/network/interceptors/connectivity_interceptor.dart';
 import 'package:lunchbox/core/network/interceptors/error_handling_interceptor.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/core/constants/app_constants.dart';
@@ -13,6 +14,7 @@ part 'dio_provider.g.dart';
 ///
 /// This provider creates a Dio client with:
 /// - Base URL and timeout configurations
+/// - Connectivity interceptor to check for network before requests
 /// - Authentication interceptor for token management
 /// - PrettyDioLogger for debugging (controlled by AppConstants.dioDebug)
 /// - Error handling interceptor for user-friendly error messages
@@ -46,9 +48,11 @@ Dio dio(Ref ref) {
   );
 
   // Add interceptors in order:
-  // 1. Auth interceptor - adds authentication tokens
-  // 2. Logging (if enabled) - logs requests/responses for debugging
-  // 3. Error handling interceptor - transforms errors to user-friendly messages
+  // 1. Connectivity interceptor - checks for network before requests
+  // 2. Auth interceptor - adds authentication tokens
+  // 3. Logging (if enabled) - logs requests/responses for debugging
+  // 4. Error handling interceptor - transforms errors to user-friendly messages
+  dio.interceptors.add(ref.read(connectivityInterceptorProvider));
   dio.interceptors.add(ref.read(authInterceptorProvider));
 
   if (AppConstants.dioDebug) {

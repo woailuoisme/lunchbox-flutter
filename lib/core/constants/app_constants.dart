@@ -10,6 +10,9 @@ class AppConstants {
   static const Duration connectTimeout = Duration(seconds: 30);
   static const Duration receiveTimeout = Duration(seconds: 30);
 
+  // 网络配置
+  static const String dioShowError = 'show_error'; // 是否显示错误提示
+
   // 存储键
   static const String keyAuthToken = 'auth_token';
   static const String keyUserId = 'user_id';

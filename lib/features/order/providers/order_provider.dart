@@ -1,4 +1,5 @@
-import 'package:lunchbox/core/errors/failure_extensions.dart';
+import 'package:lunchbox/core/errors/errors.dart';
+import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
@@ -9,163 +10,100 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'order_provider.g.dart';
 
 @riverpod
-class OrderNotifier extends _$OrderNotifier {
+class OrderNotifier extends _$OrderNotifier with AsyncRunnerMixin<OrderState> {
   @override
   OrderState build() {
-    Future.microtask(loadOrders);
     return const OrderState();
   }
+
+  OrderRepository get _repository => ref.read(orderRepositoryProvider);
 
   Future<List<OrderModel>> fetchOrdersPage({
     required int page,
     int pageSize = 10,
     String? status,
   }) async {
-    final repository = ref.read(orderRepositoryProvider);
-    final result = await repository
-        .getUserOrders(page: page, pageSize: pageSize, status: status)
-        .run();
-
-    return result.match((failure) {
-      LoggerUtils.e('OrderNotifier: Failed to load orders page', failure);
-      throw failure;
-    }, (data) => data);
+    return runAsync(
+      () async {
+        final data = await _repository.getOrders(
+          page: page,
+          perPage: pageSize,
+          status: status,
+        );
+        return data.items;
+      },
+      showLoading: false,
+      errorLabel: 'Failed to load orders page',
+    ).then((value) => value ?? []);
   }
 
   Future<void> loadOrders({String? status}) async {
-    state = state.copyWith(isLoading: true);
-    final repository = ref.read(orderRepositoryProvider);
-    final result = await repository.getUserOrders().run();
-
-    result.fold(
-      (failure) {
-        LoggerUtils.e('OrderNotifier: Failed to load orders', failure);
-        state = state.copyWith(isLoading: false);
-      },
-      (data) {
-        List<OrderModel> filteredOrders;
-        if (status != null && status != 'all') {
-          filteredOrders = data
-              .where((order) => order.status.name == status)
-              .toList();
-        } else {
-          filteredOrders = data;
-        }
-
-        state = state.copyWith(orders: filteredOrders, isLoading: false);
-        LoggerUtils.i('OrderNotifier: Loaded ${filteredOrders.length} orders');
-      },
-    );
+    await runAsync(() async {
+      final data = await _repository.getOrders(status: status);
+      state = state.copyWith(orders: data.items);
+      LoggerUtils.i('OrderNotifier: Loaded ${data.items.length} orders');
+    }, errorLabel: 'Failed to load orders');
   }
 
   Future<void> loadOrderById(String orderId) async {
-    state = state.copyWith(isLoading: true);
-    final repository = ref.read(orderRepositoryProvider);
-    final result = await repository.getOrderById(orderId).run();
-
-    result.fold(
-      (failure) {
-        LoggerUtils.e('OrderNotifier: Failed to load order', failure);
-        state = state.copyWith(isLoading: false);
-      },
-      (order) {
-        state = state.copyWith(selectedOrder: order, isLoading: false);
-        LoggerUtils.i('OrderNotifier: Loaded order: ${order.id}');
-      },
-    );
+    await runAsync(() async {
+      final order = await _repository.getOrderDetail(orderId);
+      state = state.copyWith(selectedOrder: order);
+      LoggerUtils.i('OrderNotifier: Loaded order: ${order.id}');
+    }, errorLabel: 'Failed to load order');
   }
 
   Future<OrderModel?> createOrder(String deviceId) async {
-    state = state.copyWith(isLoading: true);
     final cartState = ref.read(cartProvider);
+    if (cartState.cartItems.isEmpty) return null;
 
-    if (cartState.cartItems.isEmpty) {
-      state = state.copyWith(isLoading: false);
-      return null;
-    }
-
-    final repository = ref.read(orderRepositoryProvider);
-    final result = await repository
-        .createOrder(
-          deviceId: deviceId,
-          cartItems: cartState.cartItems,
-          paymentMethod: state.selectedPaymentMethod,
-        )
-        .run();
-
-    return result.fold(
-      (failure) {
-        LoggerUtils.e('OrderNotifier: Failed to create order', failure);
-        state = state.copyWith(isLoading: false);
-        // Throwing exception to be handled by UI
-        throw Exception(failure.toUserMessage());
-      },
-      (order) async {
-        // Clear cart
-        await ref.read(cartProvider.notifier).clearCart();
-
-        state = state.copyWith(isLoading: false, selectedOrder: order);
-        LoggerUtils.i('OrderNotifier: Order created: ${order.id}');
-        return order;
-      },
-    );
+    throw Exception('Order creation not implemented');
   }
 
   Future<void> cancelOrder(String orderId) async {
-    final repository = ref.read(orderRepositoryProvider);
-    final result = await repository.cancelOrder(orderId).run();
-
-    await result.fold(
-      (failure) async {
-        LoggerUtils.e('OrderNotifier: Failed to cancel order', failure);
-        throw Exception(failure.toUserMessage());
-      },
-      (_) async {
-        await loadOrders(status: state.selectedStatus);
-        LoggerUtils.i('OrderNotifier: Order cancelled: $orderId');
-      },
-    );
+    try {
+      await runAsync(
+        () => _repository.cancelOrder(orderId),
+        showLoading: false,
+      );
+      await loadOrders(status: state.selectedStatus);
+      LoggerUtils.i('OrderNotifier: Order cancelled: $orderId');
+    } catch (e) {
+      if (e is Failure) throw Exception(e.toUserMessage());
+      rethrow;
+    }
   }
 
   Future<void> payOrder(String orderId, String paymentMethod) async {
-    state = state.copyWith(isLoading: true);
-    final repository = ref.read(orderRepositoryProvider);
-    final result = await repository.payOrder(orderId, paymentMethod).run();
-
-    await result.fold(
-      (failure) async {
-        LoggerUtils.e('OrderNotifier: Failed to pay order', failure);
-        state = state.copyWith(isLoading: false);
-        throw Exception(failure.toUserMessage());
-      },
-      (_) async {
-        await loadOrders(status: state.selectedStatus);
-        if (state.selectedOrder?.id == orderId) {
-          await loadOrderById(orderId);
-        }
-        LoggerUtils.i('OrderNotifier: Order paid: $orderId');
-      },
-    );
+    try {
+      await runAsync(() => _repository.payOrder(orderId, paymentMethod));
+      await loadOrders(status: state.selectedStatus);
+      if (state.selectedOrder?.id.toString() == orderId) {
+        await loadOrderById(orderId);
+      }
+      LoggerUtils.i('OrderNotifier: Order paid: $orderId');
+    } catch (e) {
+      if (e is Failure) throw Exception(e.toUserMessage());
+      rethrow;
+    }
   }
 
-  Future<OrderModel?> reorder(String orderId) async {
-    state = state.copyWith(isLoading: true);
-    final repository = ref.read(orderRepositoryProvider);
-    final result = await repository.reorder(orderId).run();
+  Future<void> reorder(String orderId) async {
+    try {
+      await runAsync(() async {
+        final order = await _repository.getOrderDetail(orderId);
+        final cartItems = await _repository.reorder(order);
 
-    return result.fold(
-      (failure) {
-        LoggerUtils.e('OrderNotifier: Failed to reorder', failure);
-        state = state.copyWith(isLoading: false);
-        throw Exception(failure.toUserMessage());
-      },
-      (order) async {
-        state = state.copyWith(isLoading: false, selectedOrder: order);
-        await loadOrders(status: state.selectedStatus);
+        final cartNotifier = ref.read(cartProvider.notifier);
+        for (final item in cartItems) {
+          await cartNotifier.addToCart(item.product, quantity: item.quantity);
+        }
         LoggerUtils.i('OrderNotifier: Reordered: ${order.id}');
-        return order;
-      },
-    );
+      });
+    } catch (e) {
+      if (e is Failure) throw Exception(e.toUserMessage());
+      rethrow;
+    }
   }
 
   void filterByStatus(String status) {
@@ -173,9 +111,7 @@ class OrderNotifier extends _$OrderNotifier {
     loadOrders(status: status);
   }
 
-  void refreshOrders() {
-    loadOrders(status: state.selectedStatus);
-  }
+  void refreshOrders() => loadOrders(status: state.selectedStatus);
 
   void selectPaymentMethod(String method) {
     state = state.copyWith(selectedPaymentMethod: method);

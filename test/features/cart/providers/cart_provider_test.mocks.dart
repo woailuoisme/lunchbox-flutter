@@ -5,14 +5,13 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:fpdart/fpdart.dart' as _i6;
-import 'package:lunchbox/core/errors/failure.dart' as _i7;
+import 'package:lunchbox/core/errors/failure.dart' as _i6;
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart' as _i4;
 import 'package:lunchbox/features/cart/repositories/cart_repository.dart'
     as _i2;
 import 'package:lunchbox/features/product/entities/product_model.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i8;
+import 'package:mockito/src/dummies.dart' as _i7;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -148,15 +147,12 @@ class MockCartRepository extends _i1.Mock implements _i2.CartRepository {
           as _i3.Future<int>);
 
   @override
-  _i6.TaskEither<_i7.Failure, bool> syncCart() =>
+  _i3.Future<bool> syncCart() =>
       (super.noSuchMethod(
             Invocation.method(#syncCart, []),
-            returnValue: _i8.dummyValue<_i6.TaskEither<_i7.Failure, bool>>(
-              this,
-              Invocation.method(#syncCart, []),
-            ),
+            returnValue: _i3.Future<bool>.value(false),
           )
-          as _i6.TaskEither<_i7.Failure, bool>);
+          as _i3.Future<bool>);
 
   @override
   _i3.Future<void> addMultipleToCart(
@@ -168,4 +164,15 @@ class MockCartRepository extends _i1.Mock implements _i2.CartRepository {
             returnValueForMissingStub: _i3.Future<void>.value(),
           )
           as _i3.Future<void>);
+
+  @override
+  _i6.Failure handleError(Object? error, StackTrace? stackTrace) =>
+      (super.noSuchMethod(
+            Invocation.method(#handleError, [error, stackTrace]),
+            returnValue: _i7.dummyValue<_i6.Failure>(
+              this,
+              Invocation.method(#handleError, [error, stackTrace]),
+            ),
+          )
+          as _i6.Failure);
 }

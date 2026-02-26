@@ -10,9 +10,7 @@ import 'package:lunchbox/core/services/location_service.dart';
 import 'package:lunchbox/core/widgets/map/lunchbox_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/routes/app_routes.dart';
-import 'package:lunchbox/features/device/entities/device_model.dart';
-import 'package:lunchbox/features/device/repositories/simulated_device_repository.dart';
-import 'package:lunchbox/features/device/screens/city_selection_view.dart';
+import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 设备列表视图 (取餐机)
@@ -129,15 +127,41 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
     int pageKey, {
     required bool isFrequent,
   }) async {
-    final repository = ref.read(simulatedDeviceRepositoryProvider);
+    final repository = ref.read(deviceRepositoryProvider);
     const pageSize = 10;
-    return isFrequent
-        ? await repository.fetchFrequentDevices(pageKey, pageSize)
-        : await repository.fetchNearbyDevices(pageKey, pageSize);
+    final startIndex = pageKey;
+    final selectedCity = ref.read(selectedCityProvider).asData?.value;
+
+    List<DeviceModel> devices;
+    if (isFrequent) {
+      devices = await repository.getFrequentDevices();
+    } else {
+      final cityCode = selectedCity?.code ?? '440300';
+      devices = await repository.getDevicesWithDistance(
+        cityCode: cityCode,
+        latitude: _currentCenter.latitude,
+        longitude: _currentCenter.longitude,
+      );
+    }
+
+    if (startIndex >= devices.length) {
+      return [];
+    }
+
+    final endIndex = (startIndex + pageSize).clamp(0, devices.length);
+    return devices.sublist(startIndex, endIndex);
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue<CityModel?>>(selectedCityProvider, (previous, next) {
+      final previousCode = previous?.asData?.value?.code;
+      final nextCode = next.asData?.value?.code;
+      if (previousCode != nextCode) {
+        _nearbyPagingController.refresh();
+      }
+    });
+
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -338,18 +362,15 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
 
   /// 构建城市选择器
   Widget _buildCitySelector(ThemeData theme) {
+    final selectedCity = ref.watch(selectedCityProvider).asData?.value;
     return GestureDetector(
       onTap: () async {
-        final result = await Navigator.push(
+        await Navigator.push(
           context,
           MaterialPageRoute<String>(
             builder: (context) => const CitySelectionView(),
           ),
         );
-        if (result != null) {
-          // TODO: 更新城市
-          debugPrint('Selected city: $result');
-        }
       },
       child: Container(
         margin: EdgeInsets.fromLTRB(16.w, 16.w, 16.w, 8.w),
@@ -371,7 +392,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '东莞市',
+              selectedCity?.name ?? '东莞市',
               style: TextStyle(
                 fontSize: 16.sp,
                 color: theme.colorScheme.onSurface,
@@ -510,6 +531,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
         child: InkWell(
           borderRadius: BorderRadius.circular(16.r),
           onTap: () {
+            ref.read(selectedDeviceProvider.notifier).set(device);
             context.push('${AppRoutes.productList}/${device.id}');
           },
           child: Padding(
@@ -534,8 +556,8 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                     ),
                     SizedBox(width: 8.w),
                     _buildStatusTag(
-                      device.isOnline ? t.device.online : t.device.offline,
-                      device.isOnline
+                      device.isEnabled ? t.device.online : t.device.offline,
+                      device.isEnabled
                           ? Colors.green
                           : theme.colorScheme.outline,
                     ),
@@ -554,7 +576,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                     SizedBox(width: 4.w),
                     Expanded(
                       child: Text(
-                        device.location.address ?? '',
+                        device.fullAddress,
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: theme.colorScheme.onSurfaceVariant,
@@ -577,7 +599,7 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Text(
-                        '500m', // 暂无距离字段，使用模拟
+                        device.distanceKm ?? device.distance ?? '500m',
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: theme.colorScheme.primary,
@@ -598,7 +620,9 @@ class _DeviceListViewState extends ConsumerState<DeviceListView>
                     ),
                     SizedBox(width: 4.w),
                     Text(
-                      t.device.businessHoursDefault,
+                      device.businessHours.isNotEmpty
+                          ? device.businessHours
+                          : t.device.businessHoursDefault,
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: theme.colorScheme.outline,

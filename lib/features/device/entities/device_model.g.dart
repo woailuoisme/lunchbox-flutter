@@ -11,41 +11,60 @@ _DeviceModel _$DeviceModelFromJson(Map<String, dynamic> json) => $checkedCreate(
   json,
   ($checkedConvert) {
     final val = _DeviceModel(
-      id: $checkedConvert('id', (v) => v as String),
+      id: $checkedConvert('id', (v) => (v as num).toInt()),
+      no: $checkedConvert('no', (v) => v as String),
       name: $checkedConvert('name', (v) => v as String),
-      cityId: $checkedConvert('city_id', (v) => v as String),
-      status: $checkedConvert('status', (v) => v as String),
-      location: $checkedConvert(
-        'location',
-        (v) => LocationModel.fromJson(v as Map<String, dynamic>),
+      isEnabled: $checkedConvert('is_enabled', (v) => v as bool),
+      distance: $checkedConvert('distance', (v) => v as String?),
+      distanceKm: $checkedConvert('distance_km', (v) => v as String?),
+      longitude: $checkedConvert('longitude', (v) => v as String),
+      latitude: $checkedConvert('latitude', (v) => v as String),
+      streetAddress: $checkedConvert('street_address', (v) => v as String),
+      fullAddress: $checkedConvert('full_address', (v) => v as String),
+      businessHours: $checkedConvert('business_hours', (v) => v as String),
+      imageUrl: $checkedConvert('image_url', (v) => v as String),
+      city: $checkedConvert(
+        'city',
+        (v) => DeviceCityModel.fromJson(v as Map<String, dynamic>),
       ),
-      productIds: $checkedConvert(
-        'product_ids',
-        (v) => (v as List<dynamic>).map((e) => e as String).toList(),
-      ),
-      lastUpdated: $checkedConvert('last_updated', (v) => v as String),
-      distance: $checkedConvert('distance', (v) => (v as num?)?.toDouble()),
-      distanceText: $checkedConvert('distance_text', (v) => v as String?),
     );
     return val;
   },
   fieldKeyMap: const {
-    'cityId': 'city_id',
-    'productIds': 'product_ids',
-    'lastUpdated': 'last_updated',
-    'distanceText': 'distance_text',
+    'isEnabled': 'is_enabled',
+    'distanceKm': 'distance_km',
+    'streetAddress': 'street_address',
+    'fullAddress': 'full_address',
+    'businessHours': 'business_hours',
+    'imageUrl': 'image_url',
   },
 );
 
 Map<String, dynamic> _$DeviceModelToJson(_DeviceModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'no': instance.no,
       'name': instance.name,
-      'city_id': instance.cityId,
-      'status': instance.status,
-      'location': instance.location.toJson(),
-      'product_ids': instance.productIds,
-      'last_updated': instance.lastUpdated,
+      'is_enabled': instance.isEnabled,
       'distance': ?instance.distance,
-      'distance_text': ?instance.distanceText,
+      'distance_km': ?instance.distanceKm,
+      'longitude': instance.longitude,
+      'latitude': instance.latitude,
+      'street_address': instance.streetAddress,
+      'full_address': instance.fullAddress,
+      'business_hours': instance.businessHours,
+      'image_url': instance.imageUrl,
+      'city': instance.city.toJson(),
     };
+
+_DeviceCityModel _$DeviceCityModelFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('_DeviceCityModel', json, ($checkedConvert) {
+      final val = _DeviceCityModel(
+        id: $checkedConvert('id', (v) => v as String),
+        name: $checkedConvert('name', (v) => v as String),
+      );
+      return val;
+    });
+
+Map<String, dynamic> _$DeviceCityModelToJson(_DeviceCityModel instance) =>
+    <String, dynamic>{'id': instance.id, 'name': instance.name};

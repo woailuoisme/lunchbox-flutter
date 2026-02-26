@@ -11,31 +11,43 @@ _CouponModel _$CouponModelFromJson(Map<String, dynamic> json) => $checkedCreate(
   json,
   ($checkedConvert) {
     final val = _CouponModel(
-      id: $checkedConvert('id', (v) => v as String),
+      id: $checkedConvert('id', (v) => (v as num).toInt()),
       name: $checkedConvert('name', (v) => v as String),
-      description: $checkedConvert('description', (v) => v as String),
-      amount: $checkedConvert('amount', (v) => (v as num).toDouble()),
-      minSpend: $checkedConvert(
-        'min_spend',
-        (v) => (v as num?)?.toDouble() ?? 0,
+      description: $checkedConvert('description', (v) => v as String?),
+      type: $checkedConvert('type', (v) => v as String),
+      rule: $checkedConvert(
+        'rule',
+        (v) => CouponRuleModel.fromJson(v as Map<String, dynamic>),
       ),
-      type: $checkedConvert('type', (v) => v as String? ?? 'cash'),
-      startTime: $checkedConvert(
-        'start_time',
-        (v) => DateTime.parse(v as String),
+      totalQuantity: $checkedConvert(
+        'total_quantity',
+        (v) => (v as num).toInt(),
       ),
-      endTime: $checkedConvert('end_time', (v) => DateTime.parse(v as String)),
-      isReceived: $checkedConvert('is_received', (v) => v as bool? ?? false),
-      isUsed: $checkedConvert('is_used', (v) => v as bool? ?? false),
+      usedQuantity: $checkedConvert('used_quantity', (v) => (v as num).toInt()),
+      remainingQuantity: $checkedConvert(
+        'remaining_quantity',
+        (v) => (v as num).toInt(),
+      ),
+      perUserLimit: $checkedConvert(
+        'per_user_limit',
+        (v) => (v as num?)?.toInt(),
+      ),
+      isActivated: $checkedConvert('is_activated', (v) => v as bool? ?? true),
+      startAt: $checkedConvert('start_at', (v) => v as String?),
+      endAt: $checkedConvert('end_at', (v) => v as String?),
+      createdAt: $checkedConvert('created_at', (v) => v as String),
     );
     return val;
   },
   fieldKeyMap: const {
-    'minSpend': 'min_spend',
-    'startTime': 'start_time',
-    'endTime': 'end_time',
-    'isReceived': 'is_received',
-    'isUsed': 'is_used',
+    'totalQuantity': 'total_quantity',
+    'usedQuantity': 'used_quantity',
+    'remainingQuantity': 'remaining_quantity',
+    'perUserLimit': 'per_user_limit',
+    'isActivated': 'is_activated',
+    'startAt': 'start_at',
+    'endAt': 'end_at',
+    'createdAt': 'created_at',
   },
 );
 
@@ -43,12 +55,50 @@ Map<String, dynamic> _$CouponModelToJson(_CouponModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'description': instance.description,
-      'amount': instance.amount,
-      'min_spend': instance.minSpend,
+      'description': ?instance.description,
       'type': instance.type,
-      'start_time': instance.startTime.toIso8601String(),
-      'end_time': instance.endTime.toIso8601String(),
-      'is_received': instance.isReceived,
-      'is_used': instance.isUsed,
+      'rule': instance.rule.toJson(),
+      'total_quantity': instance.totalQuantity,
+      'used_quantity': instance.usedQuantity,
+      'remaining_quantity': instance.remainingQuantity,
+      'per_user_limit': ?instance.perUserLimit,
+      'is_activated': instance.isActivated,
+      'start_at': ?instance.startAt,
+      'end_at': ?instance.endAt,
+      'created_at': instance.createdAt,
+    };
+
+_CouponRuleModel _$CouponRuleModelFromJson(Map<String, dynamic> json) =>
+    $checkedCreate(
+      '_CouponRuleModel',
+      json,
+      ($checkedConvert) {
+        final val = _CouponRuleModel(
+          reduceAmount: $checkedConvert(
+            'reduce_amount',
+            (v) => (v as num?)?.toDouble(),
+          ),
+          discountRate: $checkedConvert(
+            'discount_rate',
+            (v) => (v as num?)?.toDouble(),
+          ),
+          minSpendAmount: $checkedConvert(
+            'min_spend_amount',
+            (v) => (v as num?)?.toDouble(),
+          ),
+        );
+        return val;
+      },
+      fieldKeyMap: const {
+        'reduceAmount': 'reduce_amount',
+        'discountRate': 'discount_rate',
+        'minSpendAmount': 'min_spend_amount',
+      },
+    );
+
+Map<String, dynamic> _$CouponRuleModelToJson(_CouponRuleModel instance) =>
+    <String, dynamic>{
+      'reduce_amount': ?instance.reduceAmount,
+      'discount_rate': ?instance.discountRate,
+      'min_spend_amount': ?instance.minSpendAmount,
     };

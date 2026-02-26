@@ -1,13 +1,12 @@
-import 'package:dio/dio.dart';
-import 'package:fpdart/fpdart.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:lunchbox/core/errors/failure.dart';
+import 'package:lunchbox/core/constants/app_constants.dart';
+import 'package:lunchbox/core/errors/errors.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
-import 'package:lunchbox/core/constants/app_constants.dart';
-import 'package:lunchbox/features/auth/datasources/auth_remote_data_source.dart';
+import 'package:lunchbox/features/auth/datasources/auth_rest_client.dart';
 import 'package:lunchbox/features/auth/entities/user_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'package:lunchbox/core/errors/repository_error_handler_mixin.dart';
 
 part 'auth_repository.g.dart';
 
@@ -18,17 +17,31 @@ AuthRepository authRepository(Ref ref) {
   return AuthRepository(remoteDataSource, storageService);
 }
 
-class AuthRepository {
+class AuthRepository with RepositoryErrorHandlerMixin {
   AuthRepository(this._remoteDataSource, this._storageService);
 
   final AuthRemoteDataSource _remoteDataSource;
   final StorageService _storageService;
 
-  TaskEither<Failure, UserModel> login({
+  Future<void> sendVerificationCode(String phone) async {
+    try {
+      final response = await _remoteDataSource.sendCode(phone);
+      if (!response.success) {
+        throw Failure.server(
+          message: response.message,
+          statusCode: response.code,
+        );
+      }
+    } catch (e, stack) {
+      throw handleError(e, stack);
+    }
+  }
+
+  Future<UserModel> login({
     required String username,
     required String password,
-  }) {
-    return TaskEither.tryCatch(() async {
+  }) async {
+    try {
       // 临时绕过逻辑：admin/admin 直接登录（用于服务端不可用时）
       if (username == 'admin' && password == 'admin') {
         LoggerUtils.i('AuthRepository: Using admin bypass login');
@@ -48,11 +61,46 @@ class AuthRepository {
         return testUser;
       }
 
-      final response = await _remoteDataSource.login({
-        'username': username,
-        'password': password,
-      });
+      final response = await _remoteDataSource.login({'nickname': username});
 
+      if (response.success && response.data != null) {
+        final data = response.data! as Map<String, dynamic>;
+        final token = data['token'] as String;
+        final userId = data['id'].toString();
+        final user = UserModel(
+          id: userId,
+          username: data['telephone'] as String,
+          phone: data['telephone'] as String,
+          nickname: data['telephone'] as String,
+          registeredAt: DateTime.parse(data['created_at'] as String),
+        );
+
+        await _writeSession(
+          token: token,
+          userId: userId,
+          permissions: ['user'],
+        );
+
+        LoggerUtils.i(
+          'AuthRepository: Login successful for user: ${user.username}',
+        );
+        return user;
+      }
+      throw Failure.server(
+        message: response.message,
+        statusCode: response.code,
+      );
+    } catch (e, stack) {
+      throw handleError(e, stack);
+    }
+  }
+
+  Future<UserModel> loginWithPhone({
+    required String phone,
+    required String code,
+  }) async {
+    try {
+      final response = await _remoteDataSource.loginWithPhone(phone, code);
       if (response.success && response.data != null) {
         return _handleAuthData(
           response.data! as Map<String, dynamic>,
@@ -63,15 +111,17 @@ class AuthRepository {
         message: response.message,
         statusCode: response.code,
       );
-    }, _handleError);
+    } catch (e, stack) {
+      throw handleError(e, stack);
+    }
   }
 
-  TaskEither<Failure, UserModel> register({
+  Future<UserModel> register({
     required String username,
     required String password,
     required String nickname,
-  }) {
-    return TaskEither.tryCatch(() async {
+  }) async {
+    try {
       final response = await _remoteDataSource.register({
         'username': username,
         'password': password,
@@ -88,245 +138,74 @@ class AuthRepository {
         message: response.message,
         statusCode: response.code,
       );
-    }, _handleError);
+    } catch (e, stack) {
+      throw handleError(e, stack);
+    }
   }
 
-  TaskEither<Failure, void> logout() {
-    return TaskEither.tryCatch(() async {
+  Future<UserModel> loginWithGoogle() async {
+    try {
+      // Mock Google Login
+      final user = UserModel(
+        id: 'google_user_mock',
+        username: 'mock@google.com',
+        nickname: 'Google User',
+        registeredAt: DateTime.now(),
+      );
+
+      await _writeSession(
+        token: 'mock_google_token',
+        userId: user.id,
+        permissions: ['user'],
+      );
+      return user;
+    } catch (e, stack) {
+      throw handleError(e, stack);
+    }
+  }
+
+  Future<void> logout() async {
+    try {
       try {
         await _remoteDataSource.logout();
-      } catch (e, stackTrace) {
-        LoggerUtils.e('AuthRepository: Logout API failed', e, stackTrace);
-        // Continue to clear local session even if API fails
-      } finally {
-        await _storageService.remove(AppConstants.keyAuthToken);
-        await _storageService.remove(AppConstants.keyUserId);
-        await _storageService.remove(AppConstants.keyUserPermissions);
-        await _storageService.remove(AppConstants.keyCart);
-        LoggerUtils.i('AuthRepository: Local session cleared');
-      }
-    }, _handleError);
-  }
-
-  TaskEither<Failure, UserModel?> getCurrentUser() {
-    return TaskEither.tryCatch(() async {
-      final token = _storageService.read<String>(AppConstants.keyAuthToken);
-      if (token == null || token.isEmpty) {
-        LoggerUtils.w('AuthRepository: No auth token found');
-        return null;
-      }
-
-      final response = await _remoteDataSource.getUserProfile();
-      if (response.success && response.data != null) {
-        LoggerUtils.i('AuthRepository: Current user fetched successfully');
-        return response.data;
-      } else {
-        throw Failure.server(
-          message: response.message,
-          statusCode: response.code,
+      } catch (e) {
+        LoggerUtils.w(
+          'AuthRepository: Logout API failed, continuing local logout',
         );
       }
-    }, _handleError);
-  }
-
-  TaskEither<Failure, UserModel> updateUserInfo(Map<String, dynamic> data) {
-    return TaskEither.tryCatch(() async {
-      final response = await _remoteDataSource.updateUserProfile(data);
-      if (response.success && response.data != null) {
-        LoggerUtils.i('AuthRepository: User info updated successfully');
-        return response.data!;
-      } else {
-        throw Failure.server(
-          message: response.message,
-          statusCode: response.code,
-        );
-      }
-    }, _handleError);
-  }
-
-  TaskEither<Failure, void> changePassword({
-    required String oldPassword,
-    required String newPassword,
-  }) {
-    return TaskEither.tryCatch(() async {
-      final response = await _remoteDataSource.changePassword({
-        'oldPassword': oldPassword,
-        'newPassword': newPassword,
-      });
-
-      if (!response.success) {
-        throw Failure.server(
-          message: response.message,
-          statusCode: response.code,
-        );
-      }
-
-      LoggerUtils.i('AuthRepository: Password changed successfully');
-    }, _handleError);
+      await _storageService.clear();
+      LoggerUtils.i('AuthRepository: User logged out');
+    } catch (e, stack) {
+      throw handleError(e, stack);
+    }
   }
 
   bool isLoggedIn() {
-    final token = _storageService.read<String>(AppConstants.keyAuthToken);
-    return token != null && token.isNotEmpty;
+    return _storageService.read<String>(AppConstants.keyAuthToken) != null;
   }
 
-  String? getAuthToken() {
-    return _storageService.read<String>(AppConstants.keyAuthToken);
-  }
-
-  String? getUserId() {
-    return _storageService.read<String>(AppConstants.keyUserId);
-  }
-
-  TaskEither<Failure, void> refreshToken() {
-    return TaskEither.tryCatch(() async {
-      final token = getAuthToken();
-      if (token == null) {
-        throw const Failure.unauthorized();
-      }
-
-      final response = await _remoteDataSource.refreshToken({'token': token});
-      if (response.success && response.data != null) {
-        final newToken = response.data!['token'] as String;
-        await _storageService.write(AppConstants.keyAuthToken, newToken);
-        LoggerUtils.i('AuthRepository: Token refreshed successfully');
-      } else {
-        throw Failure.server(
-          message: response.message,
-          statusCode: response.code,
-        );
-      }
-    }, _handleError);
-  }
-
-  TaskEither<Failure, void> sendVerificationCode(String phone) {
-    return TaskEither.tryCatch(() async {
-      final response = await _remoteDataSource.sendVerificationCode({
-        'phone': phone,
-      });
-      if (!response.success) {
-        throw Failure.server(
-          message: response.message,
-          statusCode: response.code,
-        );
-      }
-    }, _handleError);
-  }
-
-  TaskEither<Failure, bool> verifyCode({
-    required String phone,
-    required String code,
-  }) {
-    return TaskEither.tryCatch(() async {
-      final response = await _remoteDataSource.verifyCode({
-        'phone': phone,
-        'code': code,
-      });
-      if (response.success && response.data != null) {
-        return response.data!['valid'] as bool;
-      } else {
-        throw Failure.server(
-          message: response.message,
-          statusCode: response.code,
-        );
-      }
-    }, _handleError);
-  }
-
-  TaskEither<Failure, UserModel> loginWithPhone({
-    required String phone,
-    required String code,
-  }) {
-    return TaskEither.tryCatch(() async {
-      await Future<void>.delayed(const Duration(seconds: 1)); // 模拟网络延迟
-
-      // 模拟验证码校验：默认 '123456' 成功
-      if (code != '123456') {
-        throw const Failure.validation(message: '验证码错误 (测试码: 123456)');
-      }
-
-      // 模拟登录成功返回用户
-      final user = UserModel(
-        id: 'phone_user_$phone',
-        username: phone,
-        nickname:
-            '手机用户_${phone.length > 4 ? phone.substring(phone.length - 4) : phone}',
-        registeredAt: DateTime.now(),
-      );
-
-      await _saveUserSession(user, 'mock_phone_token');
-      return user;
-    }, _handleError);
-  }
-
-  TaskEither<Failure, UserModel> loginWithGoogle() {
-    return TaskEither.tryCatch(() async {
-      final googleSignIn = GoogleSignIn.instance;
-
-      // Google Sign In v7 requires initialization
-      await googleSignIn.initialize();
-
-      final account = await googleSignIn.authenticate();
-
-      // 模拟登录成功，实际项目中应该将 account.serverAuthCode 发送到后端验证
-      // 或者使用 account.authentication 获取 token
-
-      final user = UserModel(
-        id: 'google_user_${account.id}',
-        username: account.email,
-        nickname: account.displayName ?? 'Google User',
-        avatar: account.photoUrl,
-        registeredAt: DateTime.now(),
-      );
-
-      await _saveUserSession(user, 'mock_google_token');
-      return user;
-    }, _handleError);
-  }
-
-  Future<void> _saveUserSession(UserModel user, String token) async {
-    await _writeSession(token: token, userId: user.id, permissions: ['user']);
-    LoggerUtils.i('AuthRepository: Session saved for ${user.username}');
-  }
-
-  Future<UserModel> _handleAuthData(
-    Map<String, dynamic> data,
-    String logPrefix,
-  ) async {
+  UserModel _handleAuthData(Map<String, dynamic> data, String logMessage) {
     final token = data['token'] as String;
     final user = UserModel.fromJson(data['user'] as Map<String, dynamic>);
-    final userId = (data['userId'] as String?) ?? user.id;
-    final permissions = (data['permissions'] as List<dynamic>?)?.cast<String>();
 
-    await _writeSession(token: token, userId: userId, permissions: permissions);
+    _writeSession(
+      token: token,
+      userId: user.id,
+      permissions:
+          (data['permissions'] as List<dynamic>?)?.cast<String>() ?? ['user'],
+    );
 
-    LoggerUtils.i('AuthRepository: $logPrefix for user: ${user.username}');
+    LoggerUtils.i('AuthRepository: $logMessage for user: ${user.username}');
     return user;
   }
 
   Future<void> _writeSession({
     required String token,
     required String userId,
-    List<String>? permissions,
+    required List<String> permissions,
   }) async {
     await _storageService.write(AppConstants.keyAuthToken, token);
     await _storageService.write(AppConstants.keyUserId, userId);
-    if (permissions != null) {
-      await _storageService.write(AppConstants.keyUserPermissions, permissions);
-    }
-  }
-
-  Failure _handleError(Object error, StackTrace stackTrace) {
-    LoggerUtils.e('AuthRepository Error', error, stackTrace);
-    if (error is Failure) {
-      return error;
-    }
-    if (error is DioException) {
-      return Failure.network(
-        message: error.message ?? 'Unknown network error',
-        statusCode: error.response?.statusCode,
-      );
-    }
-    return Failure.server(message: error.toString(), statusCode: 500);
+    await _storageService.write(AppConstants.keyUserPermissions, permissions);
   }
 }

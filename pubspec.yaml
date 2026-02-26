@@ -17,7 +17,7 @@ dependencies:
   # 状态管理
   flutter_riverpod: ^3.2.1
   riverpod_annotation: ^4.0.2
-  get_it: ^9.2.0
+  get_it: ^9.2.1
   injectable: ^2.7.1+4
 
   # 路由与网络
@@ -39,7 +39,6 @@ dependencies:
   flex_color_scheme: ^8.4.0
   flutter_animate: ^4.5.2
   animations: ^2.1.1
-  cupertino_icons: ^1.0.8
   material_symbols_icons: ^4.2906.0
   flutter_svg: ^2.2.3
 
@@ -79,9 +78,10 @@ dependencies:
   package_info_plus: ^9.0.0
   share_plus: ^12.0.1
   permission_handler: ^12.0.1
-  local_auth: ^3.0.0
+  local_auth: ^3.0.1
   flutter_local_notifications: any
   path_provider: ^2.1.5
+  image_picker: ^1.2.1
   url_launcher: ^6.3.2
   mobile_scanner: ^7.2.0
 
@@ -99,8 +99,8 @@ dependencies:
 
   # 逻辑工具与日志
   intl: ^0.20.2
-  talker_flutter: ^5.1.13
-  talker_dio_logger: ^5.1.13
+  talker_flutter: ^5.1.14
+  talker_dio_logger: ^5.1.14
   fpdart: ^1.2.0
   rxdart: ^0.28.0
   path: any

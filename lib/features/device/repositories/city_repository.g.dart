@@ -48,4 +48,4 @@ final class CityRepositoryProvider
   }
 }
 
-String _$cityRepositoryHash() => r'8c986899ceb392dcbaa7490e9c1f1c301d6478ad';
+String _$cityRepositoryHash() => r'776af8c053e5dcc7e284699e1ce93099ba2fbd66';

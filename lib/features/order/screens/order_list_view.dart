@@ -79,7 +79,8 @@ class _OrderListViewState extends ConsumerState<OrderListView>
   }
 
   Future<List<OrderModel>> _fetchPage(int pageKey, int filterIndex) async {
-    final status = _filterValues[filterIndex];
+    final filterValue = _filterValues[filterIndex];
+    final status = filterValue == 'all' ? null : filterValue;
     // 这里的 pageSize 可以根据需要调整
     const pageSize = 10;
     return await ref
@@ -101,7 +102,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
     try {
       switch (action) {
         case 'cancel':
-          await notifier.cancelOrder(order.id);
+          await notifier.cancelOrder(order.id.toString());
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
@@ -111,7 +112,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           break;
         case 'pay':
           // 使用 Stripe 支付
-          await notifier.payOrder(order.id, 'stripe');
+          await notifier.payOrder(order.id.toString(), 'stripe');
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
@@ -120,19 +121,15 @@ class _OrderListViewState extends ConsumerState<OrderListView>
           }
           break;
         case 'reorder':
-          final newOrder = await notifier.reorder(order.id);
-          if (context.mounted && newOrder != null) {
+          await notifier.reorder(order.id.toString());
+          if (context.mounted) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(t.order.reorderSuccess)));
-            _refreshCurrentTab();
-            // Navigate to detail of new order
-            unawaited(
-              context.push(
-                '${AppRoutes.orderDetail}/${newOrder.id}',
-                extra: {'order': newOrder},
-              ),
-            );
+            // Navigate to cart
+            if (context.mounted) {
+              await context.push(AppRoutes.cart);
+            }
           }
           break;
         case 'view_code':
@@ -318,11 +315,13 @@ class _OrderListViewState extends ConsumerState<OrderListView>
 
   Widget _buildOrderCard(OrderModel order) {
     final theme = Theme.of(context);
-    if (order.items.isEmpty) {
+    if (order.products.isEmpty) {
       return const SizedBox();
     }
 
-    final item = order.items.first;
+    // Since we don't have storeName in OrderModel, we might skip it or use a default
+    // Or check if user wants to display it. Assuming skip for now as it's not in model.
+    final item = order.products.first;
     final statusText = order.status.label;
     final statusColor = order.status.color;
 
@@ -350,35 +349,13 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                     Expanded(
                       child: Row(
                         children: [
-                          if (order.storeName != null) ...[
-                            Icon(
-                              Icons.store,
-                              size: 16.sp,
+                          Text(
+                            '${t.order.orderIdLabel}${order.id.toString().substring(order.id.toString().length > 8 ? order.id.toString().length - 8 : 0)}',
+                            style: TextStyle(
+                              fontSize: 13.sp,
                               color: theme.hintColor,
                             ),
-                            SizedBox(width: 4.w),
-                            Expanded(
-                              child: Text(
-                                order.storeName!,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: theme.textTheme.bodyLarge?.color,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                          ],
-                          if (order.storeName == null)
-                            Text(
-                              '${t.order.orderIdLabel}${order.id.substring(order.id.length > 8 ? order.id.length - 8 : 0)}',
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                color: theme.hintColor,
-                              ),
-                            ),
+                          ),
                           Icon(
                             Icons.arrow_forward_ios,
                             size: 12.sp,
@@ -405,7 +382,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8.r),
                       child: Image.network(
-                        item.product.imageUrl,
+                        item.thumb,
                         width: 80.w,
                         height: 80.w,
                         fit: BoxFit.cover,
@@ -427,7 +404,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                             children: [
                               Expanded(
                                 child: Text(
-                                  item.product.name,
+                                  item.name,
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.bold,
@@ -438,7 +415,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                                 ),
                               ),
                               Text(
-                                '¥${item.product.price}',
+                                '¥${item.salePrice}',
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold,
@@ -449,9 +426,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                           ),
                           SizedBox(height: 4.h),
                           Text(
-                            t.order.specs(
-                              specs: item.product.specifications ?? '',
-                            ),
+                            item.description,
                             style: TextStyle(
                               fontSize: 12.sp,
                               color: theme.hintColor,
@@ -462,7 +437,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                t.order.summary(count: order.items.length),
+                                t.order.summary(count: order.products.length),
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: theme.hintColor,
@@ -484,49 +459,28 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                   ],
                 ),
 
-                // Pickup Hint / Remark
-                if (order.pickupHint != null) ...[
-                  SizedBox(height: 12.h),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.w,
-                      vertical: 8.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                    child: Text(
-                      order.pickupHint!,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: theme.colorScheme.primary,
+                if (order.status == OrderStatus.refund)
+                  Padding(
+                    padding: EdgeInsets.only(top: 12.h),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 8.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.errorContainer,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                      child: Text(
+                        t.order.refund,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: theme.colorScheme.error,
+                        ),
                       ),
                     ),
                   ),
-                ],
-                if (order.remark != null && order.remark!.isNotEmpty) ...[
-                  SizedBox(height: 12.h),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.w,
-                      vertical: 8.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.errorContainer,
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                    child: Text(
-                      order.remark!,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: theme.colorScheme.error,
-                      ),
-                    ),
-                  ),
-                ],
 
                 // Action Buttons
                 SizedBox(height: 16.h),
@@ -571,7 +525,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
         ),
       );
     } else if (order.status == OrderStatus.completed ||
-        order.status == OrderStatus.refunded) {
+        order.status == OrderStatus.refund) {
       buttons.add(
         _buildButton(
           t.order.deleteOrder,

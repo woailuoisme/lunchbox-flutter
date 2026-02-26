@@ -12,6 +12,7 @@ part of 'dio_provider.dart';
 ///
 /// This provider creates a Dio client with:
 /// - Base URL and timeout configurations
+/// - Connectivity interceptor to check for network before requests
 /// - Authentication interceptor for token management
 /// - PrettyDioLogger for debugging (controlled by AppConstants.dioDebug)
 /// - Error handling interceptor for user-friendly error messages
@@ -28,6 +29,7 @@ final dioProvider = DioProvider._();
 ///
 /// This provider creates a Dio client with:
 /// - Base URL and timeout configurations
+/// - Connectivity interceptor to check for network before requests
 /// - Authentication interceptor for token management
 /// - PrettyDioLogger for debugging (controlled by AppConstants.dioDebug)
 /// - Error handling interceptor for user-friendly error messages
@@ -43,6 +45,7 @@ final class DioProvider extends $FunctionalProvider<Dio, Dio, Dio>
   ///
   /// This provider creates a Dio client with:
   /// - Base URL and timeout configurations
+  /// - Connectivity interceptor to check for network before requests
   /// - Authentication interceptor for token management
   /// - PrettyDioLogger for debugging (controlled by AppConstants.dioDebug)
   /// - Error handling interceptor for user-friendly error messages
@@ -84,4 +87,4 @@ final class DioProvider extends $FunctionalProvider<Dio, Dio, Dio>
   }
 }
 
-String _$dioHash() => r'e0e7a16fa3346ccb4ddae43a0d9bcb4e10953af9';
+String _$dioHash() => r'2c159627b24a6fa0ce0ce2e87dfd69c8c076d8da';

@@ -210,7 +210,7 @@ final class RawDevicesProvider
   RawDevices create() => RawDevices();
 }
 
-String _$rawDevicesHash() => r'c64d3d627f3e31c4efbdfeebec2a2be42d28e811';
+String _$rawDevicesHash() => r'ca39179e8ade3d8aca09c59247c9a262aa5c4988';
 
 /// 原始设备列表（基于选中的城市）
 
@@ -277,7 +277,7 @@ final class FilteredDevicesProvider
   }
 }
 
-String _$filteredDevicesHash() => r'f0b17ba1ae9a4ab057388a97a620ee2af04455f7';
+String _$filteredDevicesHash() => r'd52a4278021366c69a44bb540178623d24b28b14';
 
 /// 当前选中的设备
 
@@ -397,7 +397,7 @@ final class DeviceDetailProvider
   }
 }
 
-String _$deviceDetailHash() => r'328c50230ecfc5caede0c004c24d1d07ce98dba8';
+String _$deviceDetailHash() => r'b250e52e515df81567a64f41635a27efc38dc342';
 
 /// 根据ID获取设备详情
 
@@ -483,7 +483,7 @@ final class DeviceProductsProvider
   }
 }
 
-String _$deviceProductsHash() => r'faed96ab482ef062df5919e029cb3a5292e0dbe2';
+String _$deviceProductsHash() => r'8fedb27ac0bd594a17a161885048d992a4d95de7';
 
 /// 获取指定设备的产品列表
 

@@ -20,12 +20,21 @@ class _CommunityRestClient implements CommunityRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<List<CommunityModel>>> getCommunities() async {
+  Future<ApiResponse<CommunityModel>> getCommunities({
+    required double latitude,
+    required double longitude,
+    double? radius,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'latitude': latitude,
+      r'longitude': longitude,
+      r'radius': radius,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<CommunityModel>>>(
+    final _options = _setStreamType<ApiResponse<CommunityModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,17 +45,11 @@ class _CommunityRestClient implements CommunityRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<CommunityModel>> _value;
+    late ApiResponse<CommunityModel> _value;
     try {
-      _value = ApiResponse<List<CommunityModel>>.fromJson(
+      _value = ApiResponse<CommunityModel>.fromJson(
         _result.data!,
-        (json) => json is List<dynamic>
-            ? json
-                  .map<CommunityModel>(
-                    (i) => CommunityModel.fromJson(i as Map<String, dynamic>),
-                  )
-                  .toList()
-            : List.empty(),
+        (json) => CommunityModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);

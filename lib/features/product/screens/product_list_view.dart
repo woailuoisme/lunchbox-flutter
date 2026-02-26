@@ -88,7 +88,7 @@ class ProductListView extends ConsumerWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                 decoration: BoxDecoration(
-                  color: device.isOnline
+                  color: device.isEnabled
                       ? theme.colorScheme.primaryContainer.withValues(
                           alpha: 0.5,
                         )
@@ -99,21 +99,21 @@ class ProductListView extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      device.isOnline ? Symbols.check_circle : Symbols.error,
+                      device.isEnabled ? Symbols.check_circle : Symbols.error,
                       size: 14.sp,
-                      color: device.isOnline
+                      color: device.isEnabled
                           ? theme.colorScheme.primary
                           : theme.colorScheme.error,
                       fill: 1.0,
                     ),
                     SizedBox(width: 6.w),
                     Text(
-                      device.isOnline
+                      device.isEnabled
                           ? t.device.statusOnline
                           : t.device.statusOffline,
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: device.isOnline
+                        color: device.isEnabled
                             ? theme.colorScheme.onPrimaryContainer
                             : theme.colorScheme.onErrorContainer,
                         fontWeight: FontWeight.bold,
@@ -131,7 +131,7 @@ class ProductListView extends ConsumerWidget {
               ),
               SizedBox(width: 4.w),
               Text(
-                '57.2km', // TODO: Calculate real distance
+                device.distanceKm ?? device.distance ?? '57.2km',
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: theme.colorScheme.primary,
@@ -168,7 +168,7 @@ class ProductListView extends ConsumerWidget {
                         SizedBox(width: 6.w),
                         Expanded(
                           child: Text(
-                            device.location.address ?? '',
+                            device.fullAddress,
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: theme.colorScheme.onSurfaceVariant,

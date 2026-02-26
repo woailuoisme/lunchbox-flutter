@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:lunchbox/features/coupons/entities/coupon_model.dart';
+import 'package:lunchbox/features/my_coupons/entities/user_coupon_model.dart';
 import 'package:lunchbox/features/my_coupons/repositories/my_coupons_repository.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:intl/intl.dart';
@@ -59,11 +59,8 @@ class _MyCouponsViewState extends ConsumerState<MyCouponsView>
   }
 
   Widget _buildCouponList(bool isAvailable) {
-    // 0: available, 1: used, 2: expired.
-    // isAvailable maps to 0, !isAvailable could be 1 or 2.
-    // Let's use 0 for available, and 2 for expired/unavailable for this demo.
-    final status = isAvailable ? 0 : 2;
-    final couponsAsync = ref.watch(userCouponsProvider(status: status));
+    final usedType = isAvailable ? 'active' : 'inactive';
+    final couponsAsync = ref.watch(userCouponsProvider(usedType: usedType));
     final theme = Theme.of(context);
 
     return couponsAsync.when(
@@ -103,7 +100,7 @@ class _MyCouponsViewState extends ConsumerState<MyCouponsView>
     );
   }
 
-  Widget _buildCouponCard(CouponModel coupon, bool isAvailable) {
+  Widget _buildCouponCard(UserCouponModel coupon, bool isAvailable) {
     final theme = Theme.of(context);
     final cardColor = isAvailable
         ? theme.colorScheme.primary
@@ -149,7 +146,9 @@ class _MyCouponsViewState extends ConsumerState<MyCouponsView>
                     ),
                     SizedBox(width: 4.w),
                     Text(
-                      coupon.amount.toString(),
+                      coupon.rule.reduceAmount?.toString() ??
+                          coupon.rule.discountRate?.toString() ??
+                          '0',
                       style: TextStyle(
                         color: contentColor,
                         fontSize: 32.sp,
@@ -160,7 +159,9 @@ class _MyCouponsViewState extends ConsumerState<MyCouponsView>
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  '满${coupon.minSpend}元可用',
+                  coupon.rule.minSpendAmount != null
+                      ? '满${coupon.rule.minSpendAmount}元可用'
+                      : '无门槛',
                   style: TextStyle(
                     color: contentColor.withValues(alpha: 0.8),
                     fontSize: 12.sp,
@@ -187,7 +188,9 @@ class _MyCouponsViewState extends ConsumerState<MyCouponsView>
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    '${t.coupon.expiryPrefix}${DateFormat('yyyy-MM-dd').format(coupon.endTime)}',
+                    coupon.endAt != null
+                        ? '${t.coupon.expiryPrefix}${DateFormat('yyyy-MM-dd').format(DateTime.parse(coupon.endAt!))}'
+                        : '永久有效',
                     style: TextStyle(
                       color: contentColor.withValues(alpha: 0.8),
                       fontSize: 12.sp,

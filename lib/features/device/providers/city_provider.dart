@@ -1,4 +1,3 @@
-import 'package:lunchbox/core/errors/failure_extensions.dart';
 import 'package:lunchbox/features/device/entities/city_model.dart';
 import 'package:lunchbox/features/device/repositories/city_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,8 +11,7 @@ class AllCities extends _$AllCities {
   Future<List<CityModel>> build() async {
     ref.keepAlive();
     final repository = ref.watch(cityRepositoryProvider);
-    final result = await repository.getAllCities().run();
-    return result.getOrThrow();
+    return await repository.getAllCities();
   }
 }
 
@@ -24,8 +22,7 @@ class HotCities extends _$HotCities {
   Future<List<CityModel>> build() async {
     ref.keepAlive();
     final repository = ref.watch(cityRepositoryProvider);
-    final result = await repository.getHotCities().run();
-    return result.getOrThrow();
+    return await repository.getHotCities();
   }
 }
 
@@ -56,8 +53,10 @@ class FilteredCities extends _$FilteredCities {
 
     final lowercaseQuery = query.toLowerCase();
     return cities.where((city) {
-      return city.name.contains(query) ||
-          city.pinyin.toLowerCase().contains(lowercaseQuery);
+      return city.name.toLowerCase().contains(lowercaseQuery) ||
+          city.code.toLowerCase().contains(lowercaseQuery) ||
+          city.province.toLowerCase().contains(lowercaseQuery) ||
+          city.city.toLowerCase().contains(lowercaseQuery);
     }).toList();
   }
 }
@@ -72,7 +71,7 @@ class GroupedCities extends _$GroupedCities {
     final Map<String, List<CityModel>> result = {};
 
     for (final city in cities) {
-      final initial = city.initial.toUpperCase();
+      final initial = city.name.isNotEmpty ? city.name[0].toUpperCase() : '#';
       if (!result.containsKey(initial)) {
         result[initial] = [];
       }

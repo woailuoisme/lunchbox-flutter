@@ -1,3 +1,4 @@
+import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/core/constants/app_constants.dart';
@@ -10,25 +11,26 @@ part 'splash_provider.g.dart';
 
 class SplashState {
   const SplashState({
-    this.isInitializing = true,
-    this.initializationError,
+    this.isLoading = true,
+    this.errorMessage,
     this.initializationProgress = 0.0,
     this.navigationPath,
   });
-  final bool isInitializing;
-  final String? initializationError;
+
+  final bool isLoading;
+  final String? errorMessage;
   final double initializationProgress;
   final String? navigationPath;
 
   SplashState copyWith({
-    bool? isInitializing,
-    String? initializationError,
+    bool? isLoading,
+    String? errorMessage,
     double? initializationProgress,
     String? navigationPath,
   }) {
     return SplashState(
-      isInitializing: isInitializing ?? this.isInitializing,
-      initializationError: initializationError,
+      isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage,
       initializationProgress:
           initializationProgress ?? this.initializationProgress,
       navigationPath: navigationPath,
@@ -37,7 +39,8 @@ class SplashState {
 }
 
 @riverpod
-class SplashNotifier extends _$SplashNotifier {
+class SplashNotifier extends _$SplashNotifier
+    with AsyncRunnerMixin<SplashState> {
   @override
   SplashState build() {
     // Fire and forget initialization
@@ -46,12 +49,11 @@ class SplashNotifier extends _$SplashNotifier {
   }
 
   Future<void> _initializeApp() async {
-    final authRepository = ref.read(authRepositoryProvider);
-    final storageService = ref.read(storageServiceProvider);
+    await runAsync(() async {
+      final authRepository = ref.read(authRepositoryProvider);
+      final storageService = ref.read(storageServiceProvider);
 
-    try {
       LoggerUtils.i('SplashNotifier: Starting app initialization');
-      state = state.copyWith(isInitializing: true);
 
       // Step 1: Check service status
       await _updateProgress(0.2);
@@ -83,14 +85,7 @@ class SplashNotifier extends _$SplashNotifier {
       LoggerUtils.i(
         'SplashNotifier: App initialization completed successfully',
       );
-    } catch (e, stackTrace) {
-      LoggerUtils.e('SplashNotifier: Initialization failed', e, stackTrace);
-      state = SplashState(
-        isInitializing: false,
-        initializationError: '初始化失败: ${e.toString()}',
-        initializationProgress: state.initializationProgress,
-      );
-    }
+    }, errorLabel: '初始化失败');
   }
 
   Future<void> _updateProgress(double progress) async {

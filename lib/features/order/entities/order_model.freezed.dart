@@ -13,30 +13,843 @@ part of 'order_model.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
+mixin _$OrderUserModel {
+
+ int get id; String get nickname; String get telephone;
+/// Create a copy of OrderUserModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OrderUserModelCopyWith<OrderUserModel> get copyWith => _$OrderUserModelCopyWithImpl<OrderUserModel>(this as OrderUserModel, _$identity);
+
+  /// Serializes this OrderUserModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderUserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.telephone, telephone) || other.telephone == telephone));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,nickname,telephone);
+
+@override
+String toString() {
+  return 'OrderUserModel(id: $id, nickname: $nickname, telephone: $telephone)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $OrderUserModelCopyWith<$Res>  {
+  factory $OrderUserModelCopyWith(OrderUserModel value, $Res Function(OrderUserModel) _then) = _$OrderUserModelCopyWithImpl;
+@useResult
+$Res call({
+ int id, String nickname, String telephone
+});
+
+
+
+
+}
+/// @nodoc
+class _$OrderUserModelCopyWithImpl<$Res>
+    implements $OrderUserModelCopyWith<$Res> {
+  _$OrderUserModelCopyWithImpl(this._self, this._then);
+
+  final OrderUserModel _self;
+  final $Res Function(OrderUserModel) _then;
+
+/// Create a copy of OrderUserModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? telephone = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
+as String,telephone: null == telephone ? _self.telephone : telephone // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [OrderUserModel].
+extension OrderUserModelPatterns on OrderUserModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _OrderUserModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _OrderUserModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _OrderUserModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _OrderUserModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _OrderUserModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _OrderUserModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String nickname,  String telephone)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _OrderUserModel() when $default != null:
+return $default(_that.id,_that.nickname,_that.telephone);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String nickname,  String telephone)  $default,) {final _that = this;
+switch (_that) {
+case _OrderUserModel():
+return $default(_that.id,_that.nickname,_that.telephone);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String nickname,  String telephone)?  $default,) {final _that = this;
+switch (_that) {
+case _OrderUserModel() when $default != null:
+return $default(_that.id,_that.nickname,_that.telephone);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _OrderUserModel implements OrderUserModel {
+  const _OrderUserModel({required this.id, required this.nickname, required this.telephone});
+  factory _OrderUserModel.fromJson(Map<String, dynamic> json) => _$OrderUserModelFromJson(json);
+
+@override final  int id;
+@override final  String nickname;
+@override final  String telephone;
+
+/// Create a copy of OrderUserModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$OrderUserModelCopyWith<_OrderUserModel> get copyWith => __$OrderUserModelCopyWithImpl<_OrderUserModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$OrderUserModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderUserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.telephone, telephone) || other.telephone == telephone));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,nickname,telephone);
+
+@override
+String toString() {
+  return 'OrderUserModel(id: $id, nickname: $nickname, telephone: $telephone)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$OrderUserModelCopyWith<$Res> implements $OrderUserModelCopyWith<$Res> {
+  factory _$OrderUserModelCopyWith(_OrderUserModel value, $Res Function(_OrderUserModel) _then) = __$OrderUserModelCopyWithImpl;
+@override @useResult
+$Res call({
+ int id, String nickname, String telephone
+});
+
+
+
+
+}
+/// @nodoc
+class __$OrderUserModelCopyWithImpl<$Res>
+    implements _$OrderUserModelCopyWith<$Res> {
+  __$OrderUserModelCopyWithImpl(this._self, this._then);
+
+  final _OrderUserModel _self;
+  final $Res Function(_OrderUserModel) _then;
+
+/// Create a copy of OrderUserModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? telephone = null,}) {
+  return _then(_OrderUserModel(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
+as String,telephone: null == telephone ? _self.telephone : telephone // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$OrderDeviceModel {
+
+ int get id; String get sn;
+/// Create a copy of OrderDeviceModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OrderDeviceModelCopyWith<OrderDeviceModel> get copyWith => _$OrderDeviceModelCopyWithImpl<OrderDeviceModel>(this as OrderDeviceModel, _$identity);
+
+  /// Serializes this OrderDeviceModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderDeviceModel&&(identical(other.id, id) || other.id == id)&&(identical(other.sn, sn) || other.sn == sn));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,sn);
+
+@override
+String toString() {
+  return 'OrderDeviceModel(id: $id, sn: $sn)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $OrderDeviceModelCopyWith<$Res>  {
+  factory $OrderDeviceModelCopyWith(OrderDeviceModel value, $Res Function(OrderDeviceModel) _then) = _$OrderDeviceModelCopyWithImpl;
+@useResult
+$Res call({
+ int id, String sn
+});
+
+
+
+
+}
+/// @nodoc
+class _$OrderDeviceModelCopyWithImpl<$Res>
+    implements $OrderDeviceModelCopyWith<$Res> {
+  _$OrderDeviceModelCopyWithImpl(this._self, this._then);
+
+  final OrderDeviceModel _self;
+  final $Res Function(OrderDeviceModel) _then;
+
+/// Create a copy of OrderDeviceModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? sn = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,sn: null == sn ? _self.sn : sn // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [OrderDeviceModel].
+extension OrderDeviceModelPatterns on OrderDeviceModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _OrderDeviceModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _OrderDeviceModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _OrderDeviceModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _OrderDeviceModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _OrderDeviceModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _OrderDeviceModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String sn)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _OrderDeviceModel() when $default != null:
+return $default(_that.id,_that.sn);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String sn)  $default,) {final _that = this;
+switch (_that) {
+case _OrderDeviceModel():
+return $default(_that.id,_that.sn);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String sn)?  $default,) {final _that = this;
+switch (_that) {
+case _OrderDeviceModel() when $default != null:
+return $default(_that.id,_that.sn);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _OrderDeviceModel implements OrderDeviceModel {
+  const _OrderDeviceModel({required this.id, required this.sn});
+  factory _OrderDeviceModel.fromJson(Map<String, dynamic> json) => _$OrderDeviceModelFromJson(json);
+
+@override final  int id;
+@override final  String sn;
+
+/// Create a copy of OrderDeviceModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$OrderDeviceModelCopyWith<_OrderDeviceModel> get copyWith => __$OrderDeviceModelCopyWithImpl<_OrderDeviceModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$OrderDeviceModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderDeviceModel&&(identical(other.id, id) || other.id == id)&&(identical(other.sn, sn) || other.sn == sn));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,sn);
+
+@override
+String toString() {
+  return 'OrderDeviceModel(id: $id, sn: $sn)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$OrderDeviceModelCopyWith<$Res> implements $OrderDeviceModelCopyWith<$Res> {
+  factory _$OrderDeviceModelCopyWith(_OrderDeviceModel value, $Res Function(_OrderDeviceModel) _then) = __$OrderDeviceModelCopyWithImpl;
+@override @useResult
+$Res call({
+ int id, String sn
+});
+
+
+
+
+}
+/// @nodoc
+class __$OrderDeviceModelCopyWithImpl<$Res>
+    implements _$OrderDeviceModelCopyWith<$Res> {
+  __$OrderDeviceModelCopyWithImpl(this._self, this._then);
+
+  final _OrderDeviceModel _self;
+  final $Res Function(_OrderDeviceModel) _then;
+
+/// Create a copy of OrderDeviceModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? sn = null,}) {
+  return _then(_OrderDeviceModel(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,sn: null == sn ? _self.sn : sn // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$OrderProductModel {
+
+ int get id; String get name; String get category; String get thumb; String get description;@JsonKey(name: 'sale_price') String get salePrice; int get quantity;
+/// Create a copy of OrderProductModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OrderProductModelCopyWith<OrderProductModel> get copyWith => _$OrderProductModelCopyWithImpl<OrderProductModel>(this as OrderProductModel, _$identity);
+
+  /// Serializes this OrderProductModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.thumb, thumb) || other.thumb == thumb)&&(identical(other.description, description) || other.description == description)&&(identical(other.salePrice, salePrice) || other.salePrice == salePrice)&&(identical(other.quantity, quantity) || other.quantity == quantity));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,category,thumb,description,salePrice,quantity);
+
+@override
+String toString() {
+  return 'OrderProductModel(id: $id, name: $name, category: $category, thumb: $thumb, description: $description, salePrice: $salePrice, quantity: $quantity)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $OrderProductModelCopyWith<$Res>  {
+  factory $OrderProductModelCopyWith(OrderProductModel value, $Res Function(OrderProductModel) _then) = _$OrderProductModelCopyWithImpl;
+@useResult
+$Res call({
+ int id, String name, String category, String thumb, String description,@JsonKey(name: 'sale_price') String salePrice, int quantity
+});
+
+
+
+
+}
+/// @nodoc
+class _$OrderProductModelCopyWithImpl<$Res>
+    implements $OrderProductModelCopyWith<$Res> {
+  _$OrderProductModelCopyWithImpl(this._self, this._then);
+
+  final OrderProductModel _self;
+  final $Res Function(OrderProductModel) _then;
+
+/// Create a copy of OrderProductModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? category = null,Object? thumb = null,Object? description = null,Object? salePrice = null,Object? quantity = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,thumb: null == thumb ? _self.thumb : thumb // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,salePrice: null == salePrice ? _self.salePrice : salePrice // ignore: cast_nullable_to_non_nullable
+as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [OrderProductModel].
+extension OrderProductModelPatterns on OrderProductModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _OrderProductModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _OrderProductModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _OrderProductModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _OrderProductModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _OrderProductModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _OrderProductModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String category,  String thumb,  String description, @JsonKey(name: 'sale_price')  String salePrice,  int quantity)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _OrderProductModel() when $default != null:
+return $default(_that.id,_that.name,_that.category,_that.thumb,_that.description,_that.salePrice,_that.quantity);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String category,  String thumb,  String description, @JsonKey(name: 'sale_price')  String salePrice,  int quantity)  $default,) {final _that = this;
+switch (_that) {
+case _OrderProductModel():
+return $default(_that.id,_that.name,_that.category,_that.thumb,_that.description,_that.salePrice,_that.quantity);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String category,  String thumb,  String description, @JsonKey(name: 'sale_price')  String salePrice,  int quantity)?  $default,) {final _that = this;
+switch (_that) {
+case _OrderProductModel() when $default != null:
+return $default(_that.id,_that.name,_that.category,_that.thumb,_that.description,_that.salePrice,_that.quantity);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _OrderProductModel implements OrderProductModel {
+  const _OrderProductModel({required this.id, required this.name, required this.category, required this.thumb, required this.description, @JsonKey(name: 'sale_price') required this.salePrice, required this.quantity});
+  factory _OrderProductModel.fromJson(Map<String, dynamic> json) => _$OrderProductModelFromJson(json);
+
+@override final  int id;
+@override final  String name;
+@override final  String category;
+@override final  String thumb;
+@override final  String description;
+@override@JsonKey(name: 'sale_price') final  String salePrice;
+@override final  int quantity;
+
+/// Create a copy of OrderProductModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$OrderProductModelCopyWith<_OrderProductModel> get copyWith => __$OrderProductModelCopyWithImpl<_OrderProductModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$OrderProductModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.thumb, thumb) || other.thumb == thumb)&&(identical(other.description, description) || other.description == description)&&(identical(other.salePrice, salePrice) || other.salePrice == salePrice)&&(identical(other.quantity, quantity) || other.quantity == quantity));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,category,thumb,description,salePrice,quantity);
+
+@override
+String toString() {
+  return 'OrderProductModel(id: $id, name: $name, category: $category, thumb: $thumb, description: $description, salePrice: $salePrice, quantity: $quantity)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$OrderProductModelCopyWith<$Res> implements $OrderProductModelCopyWith<$Res> {
+  factory _$OrderProductModelCopyWith(_OrderProductModel value, $Res Function(_OrderProductModel) _then) = __$OrderProductModelCopyWithImpl;
+@override @useResult
+$Res call({
+ int id, String name, String category, String thumb, String description,@JsonKey(name: 'sale_price') String salePrice, int quantity
+});
+
+
+
+
+}
+/// @nodoc
+class __$OrderProductModelCopyWithImpl<$Res>
+    implements _$OrderProductModelCopyWith<$Res> {
+  __$OrderProductModelCopyWithImpl(this._self, this._then);
+
+  final _OrderProductModel _self;
+  final $Res Function(_OrderProductModel) _then;
+
+/// Create a copy of OrderProductModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? category = null,Object? thumb = null,Object? description = null,Object? salePrice = null,Object? quantity = null,}) {
+  return _then(_OrderProductModel(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String,thumb: null == thumb ? _self.thumb : thumb // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,salePrice: null == salePrice ? _self.salePrice : salePrice // ignore: cast_nullable_to_non_nullable
+as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$OrderModel {
 
 /// 订单ID
- String get id;/// 用户ID
- String get userId;/// 设备ID
- String get deviceId;/// 订单包含的商品列表
- List<CartItemModel> get items;/// 订单总金额
- double get totalAmount;/// 订单创建时间
- DateTime get createdAt;/// 设备信息
- DeviceModel? get device;/// 支付金额（可能包含优惠）
- double get paidAmount;/// 订单状态
- OrderStatus get status;/// 支付方式
- PaymentMethod? get paymentMethod;/// 支付时间
- DateTime? get paidAt;/// 订单完成时间
- DateTime? get completedAt;/// 订单取消时间
- DateTime? get cancelledAt;/// 取货码（用于从设备取货）
- String? get pickupCode;/// 取餐提示（如：请前往1号窗口取餐）
- String? get pickupHint;/// 堂食码
- String? get diningCode;/// 门店名称
- String? get storeName;/// 门店地址
- String? get storeAddress;/// 门店电话
- String? get storePhone;/// 二维码数据
- String? get qrCodeData;/// 订单备注
- String? get remark;
+ int get id;/// 用户信息
+ OrderUserModel get user;/// 订单流水号
+ String get sn;/// 设备信息
+ OrderDeviceModel? get device;/// 订单金额状态 (String)
+@JsonKey(name: 'order_status') String get orderStatusAmount;/// 标称金额
+@JsonKey(name: 'nominal_amount') String get nominalAmount;/// 支付金额
+@JsonKey(name: 'pay_amount') String get payAmount;/// 优惠金额
+@JsonKey(name: 'coupon_amount') String get couponAmount;/// 支付流水号
+@JsonKey(name: 'pay_sn') String? get paySn;/// 外部支付流水号
+@JsonKey(name: 'pay_external_sn') String? get payExternalSn;/// 支付方式
+@JsonKey(name: 'pay_type') PaymentMethod? get payType;/// 支付状态
+@JsonKey(name: 'pay_status') PayStatus? get payStatus;/// 用户评论数
+@JsonKey(name: 'user_comments_count') int get userCommentsCount;/// 用户是否已评价
+@JsonKey(name: 'user_has_comments') bool get userHasComments;/// 订单状态
+ OrderStatus get status;/// 取餐二维码图片 (Base64 or URL)
+@JsonKey(name: 'qr_code_image') String? get qrCodeImage;/// 订单创建时间
+@JsonKey(name: 'created_at') String get createdAt;/// 订单包含的商品列表
+ List<OrderProductModel> get products;
 /// Create a copy of OrderModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,16 +862,16 @@ $OrderModelCopyWith<OrderModel> get copyWith => _$OrderModelCopyWithImpl<OrderMo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.device, device) || other.device == device)&&(identical(other.paidAmount, paidAmount) || other.paidAmount == paidAmount)&&(identical(other.status, status) || other.status == status)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.paidAt, paidAt) || other.paidAt == paidAt)&&(identical(other.completedAt, completedAt) || other.completedAt == completedAt)&&(identical(other.cancelledAt, cancelledAt) || other.cancelledAt == cancelledAt)&&(identical(other.pickupCode, pickupCode) || other.pickupCode == pickupCode)&&(identical(other.pickupHint, pickupHint) || other.pickupHint == pickupHint)&&(identical(other.diningCode, diningCode) || other.diningCode == diningCode)&&(identical(other.storeName, storeName) || other.storeName == storeName)&&(identical(other.storeAddress, storeAddress) || other.storeAddress == storeAddress)&&(identical(other.storePhone, storePhone) || other.storePhone == storePhone)&&(identical(other.qrCodeData, qrCodeData) || other.qrCodeData == qrCodeData)&&(identical(other.remark, remark) || other.remark == remark));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderModel&&(identical(other.id, id) || other.id == id)&&(identical(other.user, user) || other.user == user)&&(identical(other.sn, sn) || other.sn == sn)&&(identical(other.device, device) || other.device == device)&&(identical(other.orderStatusAmount, orderStatusAmount) || other.orderStatusAmount == orderStatusAmount)&&(identical(other.nominalAmount, nominalAmount) || other.nominalAmount == nominalAmount)&&(identical(other.payAmount, payAmount) || other.payAmount == payAmount)&&(identical(other.couponAmount, couponAmount) || other.couponAmount == couponAmount)&&(identical(other.paySn, paySn) || other.paySn == paySn)&&(identical(other.payExternalSn, payExternalSn) || other.payExternalSn == payExternalSn)&&(identical(other.payType, payType) || other.payType == payType)&&(identical(other.payStatus, payStatus) || other.payStatus == payStatus)&&(identical(other.userCommentsCount, userCommentsCount) || other.userCommentsCount == userCommentsCount)&&(identical(other.userHasComments, userHasComments) || other.userHasComments == userHasComments)&&(identical(other.status, status) || other.status == status)&&(identical(other.qrCodeImage, qrCodeImage) || other.qrCodeImage == qrCodeImage)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other.products, products));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,userId,deviceId,const DeepCollectionEquality().hash(items),totalAmount,createdAt,device,paidAmount,status,paymentMethod,paidAt,completedAt,cancelledAt,pickupCode,pickupHint,diningCode,storeName,storeAddress,storePhone,qrCodeData,remark]);
+int get hashCode => Object.hash(runtimeType,id,user,sn,device,orderStatusAmount,nominalAmount,payAmount,couponAmount,paySn,payExternalSn,payType,payStatus,userCommentsCount,userHasComments,status,qrCodeImage,createdAt,const DeepCollectionEquality().hash(products));
 
 @override
 String toString() {
-  return 'OrderModel(id: $id, userId: $userId, deviceId: $deviceId, items: $items, totalAmount: $totalAmount, createdAt: $createdAt, device: $device, paidAmount: $paidAmount, status: $status, paymentMethod: $paymentMethod, paidAt: $paidAt, completedAt: $completedAt, cancelledAt: $cancelledAt, pickupCode: $pickupCode, pickupHint: $pickupHint, diningCode: $diningCode, storeName: $storeName, storeAddress: $storeAddress, storePhone: $storePhone, qrCodeData: $qrCodeData, remark: $remark)';
+  return 'OrderModel(id: $id, user: $user, sn: $sn, device: $device, orderStatusAmount: $orderStatusAmount, nominalAmount: $nominalAmount, payAmount: $payAmount, couponAmount: $couponAmount, paySn: $paySn, payExternalSn: $payExternalSn, payType: $payType, payStatus: $payStatus, userCommentsCount: $userCommentsCount, userHasComments: $userHasComments, status: $status, qrCodeImage: $qrCodeImage, createdAt: $createdAt, products: $products)';
 }
 
 
@@ -69,11 +882,11 @@ abstract mixin class $OrderModelCopyWith<$Res>  {
   factory $OrderModelCopyWith(OrderModel value, $Res Function(OrderModel) _then) = _$OrderModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String userId, String deviceId, List<CartItemModel> items, double totalAmount, DateTime createdAt, DeviceModel? device, double paidAmount, OrderStatus status, PaymentMethod? paymentMethod, DateTime? paidAt, DateTime? completedAt, DateTime? cancelledAt, String? pickupCode, String? pickupHint, String? diningCode, String? storeName, String? storeAddress, String? storePhone, String? qrCodeData, String? remark
+ int id, OrderUserModel user, String sn, OrderDeviceModel? device,@JsonKey(name: 'order_status') String orderStatusAmount,@JsonKey(name: 'nominal_amount') String nominalAmount,@JsonKey(name: 'pay_amount') String payAmount,@JsonKey(name: 'coupon_amount') String couponAmount,@JsonKey(name: 'pay_sn') String? paySn,@JsonKey(name: 'pay_external_sn') String? payExternalSn,@JsonKey(name: 'pay_type') PaymentMethod? payType,@JsonKey(name: 'pay_status') PayStatus? payStatus,@JsonKey(name: 'user_comments_count') int userCommentsCount,@JsonKey(name: 'user_has_comments') bool userHasComments, OrderStatus status,@JsonKey(name: 'qr_code_image') String? qrCodeImage,@JsonKey(name: 'created_at') String createdAt, List<OrderProductModel> products
 });
 
 
-$DeviceModelCopyWith<$Res>? get device;
+$OrderUserModelCopyWith<$Res> get user;$OrderDeviceModelCopyWith<$Res>? get device;
 
 }
 /// @nodoc
@@ -86,42 +899,48 @@ class _$OrderModelCopyWithImpl<$Res>
 
 /// Create a copy of OrderModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? deviceId = null,Object? items = null,Object? totalAmount = null,Object? createdAt = null,Object? device = freezed,Object? paidAmount = null,Object? status = null,Object? paymentMethod = freezed,Object? paidAt = freezed,Object? completedAt = freezed,Object? cancelledAt = freezed,Object? pickupCode = freezed,Object? pickupHint = freezed,Object? diningCode = freezed,Object? storeName = freezed,Object? storeAddress = freezed,Object? storePhone = freezed,Object? qrCodeData = freezed,Object? remark = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? user = null,Object? sn = null,Object? device = freezed,Object? orderStatusAmount = null,Object? nominalAmount = null,Object? payAmount = null,Object? couponAmount = null,Object? paySn = freezed,Object? payExternalSn = freezed,Object? payType = freezed,Object? payStatus = freezed,Object? userCommentsCount = null,Object? userHasComments = null,Object? status = null,Object? qrCodeImage = freezed,Object? createdAt = null,Object? products = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,deviceId: null == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
-as String,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
-as List<CartItemModel>,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
-as double,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
-as DeviceModel?,paidAmount: null == paidAmount ? _self.paidAmount : paidAmount // ignore: cast_nullable_to_non_nullable
-as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as OrderStatus,paymentMethod: freezed == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as PaymentMethod?,paidAt: freezed == paidAt ? _self.paidAt : paidAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,completedAt: freezed == completedAt ? _self.completedAt : completedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,cancelledAt: freezed == cancelledAt ? _self.cancelledAt : cancelledAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,pickupCode: freezed == pickupCode ? _self.pickupCode : pickupCode // ignore: cast_nullable_to_non_nullable
-as String?,pickupHint: freezed == pickupHint ? _self.pickupHint : pickupHint // ignore: cast_nullable_to_non_nullable
-as String?,diningCode: freezed == diningCode ? _self.diningCode : diningCode // ignore: cast_nullable_to_non_nullable
-as String?,storeName: freezed == storeName ? _self.storeName : storeName // ignore: cast_nullable_to_non_nullable
-as String?,storeAddress: freezed == storeAddress ? _self.storeAddress : storeAddress // ignore: cast_nullable_to_non_nullable
-as String?,storePhone: freezed == storePhone ? _self.storePhone : storePhone // ignore: cast_nullable_to_non_nullable
-as String?,qrCodeData: freezed == qrCodeData ? _self.qrCodeData : qrCodeData // ignore: cast_nullable_to_non_nullable
-as String?,remark: freezed == remark ? _self.remark : remark // ignore: cast_nullable_to_non_nullable
-as String?,
+as int,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as OrderUserModel,sn: null == sn ? _self.sn : sn // ignore: cast_nullable_to_non_nullable
+as String,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
+as OrderDeviceModel?,orderStatusAmount: null == orderStatusAmount ? _self.orderStatusAmount : orderStatusAmount // ignore: cast_nullable_to_non_nullable
+as String,nominalAmount: null == nominalAmount ? _self.nominalAmount : nominalAmount // ignore: cast_nullable_to_non_nullable
+as String,payAmount: null == payAmount ? _self.payAmount : payAmount // ignore: cast_nullable_to_non_nullable
+as String,couponAmount: null == couponAmount ? _self.couponAmount : couponAmount // ignore: cast_nullable_to_non_nullable
+as String,paySn: freezed == paySn ? _self.paySn : paySn // ignore: cast_nullable_to_non_nullable
+as String?,payExternalSn: freezed == payExternalSn ? _self.payExternalSn : payExternalSn // ignore: cast_nullable_to_non_nullable
+as String?,payType: freezed == payType ? _self.payType : payType // ignore: cast_nullable_to_non_nullable
+as PaymentMethod?,payStatus: freezed == payStatus ? _self.payStatus : payStatus // ignore: cast_nullable_to_non_nullable
+as PayStatus?,userCommentsCount: null == userCommentsCount ? _self.userCommentsCount : userCommentsCount // ignore: cast_nullable_to_non_nullable
+as int,userHasComments: null == userHasComments ? _self.userHasComments : userHasComments // ignore: cast_nullable_to_non_nullable
+as bool,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as OrderStatus,qrCodeImage: freezed == qrCodeImage ? _self.qrCodeImage : qrCodeImage // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String,products: null == products ? _self.products : products // ignore: cast_nullable_to_non_nullable
+as List<OrderProductModel>,
   ));
 }
 /// Create a copy of OrderModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$DeviceModelCopyWith<$Res>? get device {
+$OrderUserModelCopyWith<$Res> get user {
+  
+  return $OrderUserModelCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}/// Create a copy of OrderModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$OrderDeviceModelCopyWith<$Res>? get device {
     if (_self.device == null) {
     return null;
   }
 
-  return $DeviceModelCopyWith<$Res>(_self.device!, (value) {
+  return $OrderDeviceModelCopyWith<$Res>(_self.device!, (value) {
     return _then(_self.copyWith(device: value));
   });
 }
@@ -206,10 +1025,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  String deviceId,  List<CartItemModel> items,  double totalAmount,  DateTime createdAt,  DeviceModel? device,  double paidAmount,  OrderStatus status,  PaymentMethod? paymentMethod,  DateTime? paidAt,  DateTime? completedAt,  DateTime? cancelledAt,  String? pickupCode,  String? pickupHint,  String? diningCode,  String? storeName,  String? storeAddress,  String? storePhone,  String? qrCodeData,  String? remark)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  OrderUserModel user,  String sn,  OrderDeviceModel? device, @JsonKey(name: 'order_status')  String orderStatusAmount, @JsonKey(name: 'nominal_amount')  String nominalAmount, @JsonKey(name: 'pay_amount')  String payAmount, @JsonKey(name: 'coupon_amount')  String couponAmount, @JsonKey(name: 'pay_sn')  String? paySn, @JsonKey(name: 'pay_external_sn')  String? payExternalSn, @JsonKey(name: 'pay_type')  PaymentMethod? payType, @JsonKey(name: 'pay_status')  PayStatus? payStatus, @JsonKey(name: 'user_comments_count')  int userCommentsCount, @JsonKey(name: 'user_has_comments')  bool userHasComments,  OrderStatus status, @JsonKey(name: 'qr_code_image')  String? qrCodeImage, @JsonKey(name: 'created_at')  String createdAt,  List<OrderProductModel> products)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderModel() when $default != null:
-return $default(_that.id,_that.userId,_that.deviceId,_that.items,_that.totalAmount,_that.createdAt,_that.device,_that.paidAmount,_that.status,_that.paymentMethod,_that.paidAt,_that.completedAt,_that.cancelledAt,_that.pickupCode,_that.pickupHint,_that.diningCode,_that.storeName,_that.storeAddress,_that.storePhone,_that.qrCodeData,_that.remark);case _:
+return $default(_that.id,_that.user,_that.sn,_that.device,_that.orderStatusAmount,_that.nominalAmount,_that.payAmount,_that.couponAmount,_that.paySn,_that.payExternalSn,_that.payType,_that.payStatus,_that.userCommentsCount,_that.userHasComments,_that.status,_that.qrCodeImage,_that.createdAt,_that.products);case _:
   return orElse();
 
 }
@@ -227,10 +1046,10 @@ return $default(_that.id,_that.userId,_that.deviceId,_that.items,_that.totalAmou
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  String deviceId,  List<CartItemModel> items,  double totalAmount,  DateTime createdAt,  DeviceModel? device,  double paidAmount,  OrderStatus status,  PaymentMethod? paymentMethod,  DateTime? paidAt,  DateTime? completedAt,  DateTime? cancelledAt,  String? pickupCode,  String? pickupHint,  String? diningCode,  String? storeName,  String? storeAddress,  String? storePhone,  String? qrCodeData,  String? remark)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  OrderUserModel user,  String sn,  OrderDeviceModel? device, @JsonKey(name: 'order_status')  String orderStatusAmount, @JsonKey(name: 'nominal_amount')  String nominalAmount, @JsonKey(name: 'pay_amount')  String payAmount, @JsonKey(name: 'coupon_amount')  String couponAmount, @JsonKey(name: 'pay_sn')  String? paySn, @JsonKey(name: 'pay_external_sn')  String? payExternalSn, @JsonKey(name: 'pay_type')  PaymentMethod? payType, @JsonKey(name: 'pay_status')  PayStatus? payStatus, @JsonKey(name: 'user_comments_count')  int userCommentsCount, @JsonKey(name: 'user_has_comments')  bool userHasComments,  OrderStatus status, @JsonKey(name: 'qr_code_image')  String? qrCodeImage, @JsonKey(name: 'created_at')  String createdAt,  List<OrderProductModel> products)  $default,) {final _that = this;
 switch (_that) {
 case _OrderModel():
-return $default(_that.id,_that.userId,_that.deviceId,_that.items,_that.totalAmount,_that.createdAt,_that.device,_that.paidAmount,_that.status,_that.paymentMethod,_that.paidAt,_that.completedAt,_that.cancelledAt,_that.pickupCode,_that.pickupHint,_that.diningCode,_that.storeName,_that.storeAddress,_that.storePhone,_that.qrCodeData,_that.remark);case _:
+return $default(_that.id,_that.user,_that.sn,_that.device,_that.orderStatusAmount,_that.nominalAmount,_that.payAmount,_that.couponAmount,_that.paySn,_that.payExternalSn,_that.payType,_that.payStatus,_that.userCommentsCount,_that.userHasComments,_that.status,_that.qrCodeImage,_that.createdAt,_that.products);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -247,10 +1066,10 @@ return $default(_that.id,_that.userId,_that.deviceId,_that.items,_that.totalAmou
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  String deviceId,  List<CartItemModel> items,  double totalAmount,  DateTime createdAt,  DeviceModel? device,  double paidAmount,  OrderStatus status,  PaymentMethod? paymentMethod,  DateTime? paidAt,  DateTime? completedAt,  DateTime? cancelledAt,  String? pickupCode,  String? pickupHint,  String? diningCode,  String? storeName,  String? storeAddress,  String? storePhone,  String? qrCodeData,  String? remark)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  OrderUserModel user,  String sn,  OrderDeviceModel? device, @JsonKey(name: 'order_status')  String orderStatusAmount, @JsonKey(name: 'nominal_amount')  String nominalAmount, @JsonKey(name: 'pay_amount')  String payAmount, @JsonKey(name: 'coupon_amount')  String couponAmount, @JsonKey(name: 'pay_sn')  String? paySn, @JsonKey(name: 'pay_external_sn')  String? payExternalSn, @JsonKey(name: 'pay_type')  PaymentMethod? payType, @JsonKey(name: 'pay_status')  PayStatus? payStatus, @JsonKey(name: 'user_comments_count')  int userCommentsCount, @JsonKey(name: 'user_has_comments')  bool userHasComments,  OrderStatus status, @JsonKey(name: 'qr_code_image')  String? qrCodeImage, @JsonKey(name: 'created_at')  String createdAt,  List<OrderProductModel> products)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderModel() when $default != null:
-return $default(_that.id,_that.userId,_that.deviceId,_that.items,_that.totalAmount,_that.createdAt,_that.device,_that.paidAmount,_that.status,_that.paymentMethod,_that.paidAt,_that.completedAt,_that.cancelledAt,_that.pickupCode,_that.pickupHint,_that.diningCode,_that.storeName,_that.storeAddress,_that.storePhone,_that.qrCodeData,_that.remark);case _:
+return $default(_that.id,_that.user,_that.sn,_that.device,_that.orderStatusAmount,_that.nominalAmount,_that.payAmount,_that.couponAmount,_that.paySn,_that.payExternalSn,_that.payType,_that.payStatus,_that.userCommentsCount,_that.userHasComments,_that.status,_that.qrCodeImage,_that.createdAt,_that.products);case _:
   return null;
 
 }
@@ -262,58 +1081,52 @@ return $default(_that.id,_that.userId,_that.deviceId,_that.items,_that.totalAmou
 @JsonSerializable()
 
 class _OrderModel extends OrderModel {
-  const _OrderModel({required this.id, required this.userId, required this.deviceId, required final  List<CartItemModel> items, required this.totalAmount, required this.createdAt, this.device, this.paidAmount = 0.0, this.status = OrderStatus.pending, this.paymentMethod, this.paidAt, this.completedAt, this.cancelledAt, this.pickupCode, this.pickupHint, this.diningCode, this.storeName, this.storeAddress, this.storePhone, this.qrCodeData, this.remark}): _items = items,super._();
+  const _OrderModel({required this.id, required this.user, required this.sn, this.device, @JsonKey(name: 'order_status') required this.orderStatusAmount, @JsonKey(name: 'nominal_amount') required this.nominalAmount, @JsonKey(name: 'pay_amount') required this.payAmount, @JsonKey(name: 'coupon_amount') required this.couponAmount, @JsonKey(name: 'pay_sn') this.paySn, @JsonKey(name: 'pay_external_sn') this.payExternalSn, @JsonKey(name: 'pay_type') this.payType, @JsonKey(name: 'pay_status') this.payStatus, @JsonKey(name: 'user_comments_count') required this.userCommentsCount, @JsonKey(name: 'user_has_comments') required this.userHasComments, required this.status, @JsonKey(name: 'qr_code_image') this.qrCodeImage, @JsonKey(name: 'created_at') required this.createdAt, required final  List<OrderProductModel> products}): _products = products,super._();
   factory _OrderModel.fromJson(Map<String, dynamic> json) => _$OrderModelFromJson(json);
 
 /// 订单ID
-@override final  String id;
-/// 用户ID
-@override final  String userId;
-/// 设备ID
-@override final  String deviceId;
+@override final  int id;
+/// 用户信息
+@override final  OrderUserModel user;
+/// 订单流水号
+@override final  String sn;
+/// 设备信息
+@override final  OrderDeviceModel? device;
+/// 订单金额状态 (String)
+@override@JsonKey(name: 'order_status') final  String orderStatusAmount;
+/// 标称金额
+@override@JsonKey(name: 'nominal_amount') final  String nominalAmount;
+/// 支付金额
+@override@JsonKey(name: 'pay_amount') final  String payAmount;
+/// 优惠金额
+@override@JsonKey(name: 'coupon_amount') final  String couponAmount;
+/// 支付流水号
+@override@JsonKey(name: 'pay_sn') final  String? paySn;
+/// 外部支付流水号
+@override@JsonKey(name: 'pay_external_sn') final  String? payExternalSn;
+/// 支付方式
+@override@JsonKey(name: 'pay_type') final  PaymentMethod? payType;
+/// 支付状态
+@override@JsonKey(name: 'pay_status') final  PayStatus? payStatus;
+/// 用户评论数
+@override@JsonKey(name: 'user_comments_count') final  int userCommentsCount;
+/// 用户是否已评价
+@override@JsonKey(name: 'user_has_comments') final  bool userHasComments;
+/// 订单状态
+@override final  OrderStatus status;
+/// 取餐二维码图片 (Base64 or URL)
+@override@JsonKey(name: 'qr_code_image') final  String? qrCodeImage;
+/// 订单创建时间
+@override@JsonKey(name: 'created_at') final  String createdAt;
 /// 订单包含的商品列表
- final  List<CartItemModel> _items;
+ final  List<OrderProductModel> _products;
 /// 订单包含的商品列表
-@override List<CartItemModel> get items {
-  if (_items is EqualUnmodifiableListView) return _items;
+@override List<OrderProductModel> get products {
+  if (_products is EqualUnmodifiableListView) return _products;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_items);
+  return EqualUnmodifiableListView(_products);
 }
 
-/// 订单总金额
-@override final  double totalAmount;
-/// 订单创建时间
-@override final  DateTime createdAt;
-/// 设备信息
-@override final  DeviceModel? device;
-/// 支付金额（可能包含优惠）
-@override@JsonKey() final  double paidAmount;
-/// 订单状态
-@override@JsonKey() final  OrderStatus status;
-/// 支付方式
-@override final  PaymentMethod? paymentMethod;
-/// 支付时间
-@override final  DateTime? paidAt;
-/// 订单完成时间
-@override final  DateTime? completedAt;
-/// 订单取消时间
-@override final  DateTime? cancelledAt;
-/// 取货码（用于从设备取货）
-@override final  String? pickupCode;
-/// 取餐提示（如：请前往1号窗口取餐）
-@override final  String? pickupHint;
-/// 堂食码
-@override final  String? diningCode;
-/// 门店名称
-@override final  String? storeName;
-/// 门店地址
-@override final  String? storeAddress;
-/// 门店电话
-@override final  String? storePhone;
-/// 二维码数据
-@override final  String? qrCodeData;
-/// 订单备注
-@override final  String? remark;
 
 /// Create a copy of OrderModel
 /// with the given fields replaced by the non-null parameter values.
@@ -328,16 +1141,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.device, device) || other.device == device)&&(identical(other.paidAmount, paidAmount) || other.paidAmount == paidAmount)&&(identical(other.status, status) || other.status == status)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.paidAt, paidAt) || other.paidAt == paidAt)&&(identical(other.completedAt, completedAt) || other.completedAt == completedAt)&&(identical(other.cancelledAt, cancelledAt) || other.cancelledAt == cancelledAt)&&(identical(other.pickupCode, pickupCode) || other.pickupCode == pickupCode)&&(identical(other.pickupHint, pickupHint) || other.pickupHint == pickupHint)&&(identical(other.diningCode, diningCode) || other.diningCode == diningCode)&&(identical(other.storeName, storeName) || other.storeName == storeName)&&(identical(other.storeAddress, storeAddress) || other.storeAddress == storeAddress)&&(identical(other.storePhone, storePhone) || other.storePhone == storePhone)&&(identical(other.qrCodeData, qrCodeData) || other.qrCodeData == qrCodeData)&&(identical(other.remark, remark) || other.remark == remark));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderModel&&(identical(other.id, id) || other.id == id)&&(identical(other.user, user) || other.user == user)&&(identical(other.sn, sn) || other.sn == sn)&&(identical(other.device, device) || other.device == device)&&(identical(other.orderStatusAmount, orderStatusAmount) || other.orderStatusAmount == orderStatusAmount)&&(identical(other.nominalAmount, nominalAmount) || other.nominalAmount == nominalAmount)&&(identical(other.payAmount, payAmount) || other.payAmount == payAmount)&&(identical(other.couponAmount, couponAmount) || other.couponAmount == couponAmount)&&(identical(other.paySn, paySn) || other.paySn == paySn)&&(identical(other.payExternalSn, payExternalSn) || other.payExternalSn == payExternalSn)&&(identical(other.payType, payType) || other.payType == payType)&&(identical(other.payStatus, payStatus) || other.payStatus == payStatus)&&(identical(other.userCommentsCount, userCommentsCount) || other.userCommentsCount == userCommentsCount)&&(identical(other.userHasComments, userHasComments) || other.userHasComments == userHasComments)&&(identical(other.status, status) || other.status == status)&&(identical(other.qrCodeImage, qrCodeImage) || other.qrCodeImage == qrCodeImage)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other._products, _products));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,userId,deviceId,const DeepCollectionEquality().hash(_items),totalAmount,createdAt,device,paidAmount,status,paymentMethod,paidAt,completedAt,cancelledAt,pickupCode,pickupHint,diningCode,storeName,storeAddress,storePhone,qrCodeData,remark]);
+int get hashCode => Object.hash(runtimeType,id,user,sn,device,orderStatusAmount,nominalAmount,payAmount,couponAmount,paySn,payExternalSn,payType,payStatus,userCommentsCount,userHasComments,status,qrCodeImage,createdAt,const DeepCollectionEquality().hash(_products));
 
 @override
 String toString() {
-  return 'OrderModel(id: $id, userId: $userId, deviceId: $deviceId, items: $items, totalAmount: $totalAmount, createdAt: $createdAt, device: $device, paidAmount: $paidAmount, status: $status, paymentMethod: $paymentMethod, paidAt: $paidAt, completedAt: $completedAt, cancelledAt: $cancelledAt, pickupCode: $pickupCode, pickupHint: $pickupHint, diningCode: $diningCode, storeName: $storeName, storeAddress: $storeAddress, storePhone: $storePhone, qrCodeData: $qrCodeData, remark: $remark)';
+  return 'OrderModel(id: $id, user: $user, sn: $sn, device: $device, orderStatusAmount: $orderStatusAmount, nominalAmount: $nominalAmount, payAmount: $payAmount, couponAmount: $couponAmount, paySn: $paySn, payExternalSn: $payExternalSn, payType: $payType, payStatus: $payStatus, userCommentsCount: $userCommentsCount, userHasComments: $userHasComments, status: $status, qrCodeImage: $qrCodeImage, createdAt: $createdAt, products: $products)';
 }
 
 
@@ -348,11 +1161,11 @@ abstract mixin class _$OrderModelCopyWith<$Res> implements $OrderModelCopyWith<$
   factory _$OrderModelCopyWith(_OrderModel value, $Res Function(_OrderModel) _then) = __$OrderModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String userId, String deviceId, List<CartItemModel> items, double totalAmount, DateTime createdAt, DeviceModel? device, double paidAmount, OrderStatus status, PaymentMethod? paymentMethod, DateTime? paidAt, DateTime? completedAt, DateTime? cancelledAt, String? pickupCode, String? pickupHint, String? diningCode, String? storeName, String? storeAddress, String? storePhone, String? qrCodeData, String? remark
+ int id, OrderUserModel user, String sn, OrderDeviceModel? device,@JsonKey(name: 'order_status') String orderStatusAmount,@JsonKey(name: 'nominal_amount') String nominalAmount,@JsonKey(name: 'pay_amount') String payAmount,@JsonKey(name: 'coupon_amount') String couponAmount,@JsonKey(name: 'pay_sn') String? paySn,@JsonKey(name: 'pay_external_sn') String? payExternalSn,@JsonKey(name: 'pay_type') PaymentMethod? payType,@JsonKey(name: 'pay_status') PayStatus? payStatus,@JsonKey(name: 'user_comments_count') int userCommentsCount,@JsonKey(name: 'user_has_comments') bool userHasComments, OrderStatus status,@JsonKey(name: 'qr_code_image') String? qrCodeImage,@JsonKey(name: 'created_at') String createdAt, List<OrderProductModel> products
 });
 
 
-@override $DeviceModelCopyWith<$Res>? get device;
+@override $OrderUserModelCopyWith<$Res> get user;@override $OrderDeviceModelCopyWith<$Res>? get device;
 
 }
 /// @nodoc
@@ -365,30 +1178,27 @@ class __$OrderModelCopyWithImpl<$Res>
 
 /// Create a copy of OrderModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? deviceId = null,Object? items = null,Object? totalAmount = null,Object? createdAt = null,Object? device = freezed,Object? paidAmount = null,Object? status = null,Object? paymentMethod = freezed,Object? paidAt = freezed,Object? completedAt = freezed,Object? cancelledAt = freezed,Object? pickupCode = freezed,Object? pickupHint = freezed,Object? diningCode = freezed,Object? storeName = freezed,Object? storeAddress = freezed,Object? storePhone = freezed,Object? qrCodeData = freezed,Object? remark = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? user = null,Object? sn = null,Object? device = freezed,Object? orderStatusAmount = null,Object? nominalAmount = null,Object? payAmount = null,Object? couponAmount = null,Object? paySn = freezed,Object? payExternalSn = freezed,Object? payType = freezed,Object? payStatus = freezed,Object? userCommentsCount = null,Object? userHasComments = null,Object? status = null,Object? qrCodeImage = freezed,Object? createdAt = null,Object? products = null,}) {
   return _then(_OrderModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,deviceId: null == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
-as String,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
-as List<CartItemModel>,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
-as double,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
-as DeviceModel?,paidAmount: null == paidAmount ? _self.paidAmount : paidAmount // ignore: cast_nullable_to_non_nullable
-as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as OrderStatus,paymentMethod: freezed == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as PaymentMethod?,paidAt: freezed == paidAt ? _self.paidAt : paidAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,completedAt: freezed == completedAt ? _self.completedAt : completedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,cancelledAt: freezed == cancelledAt ? _self.cancelledAt : cancelledAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,pickupCode: freezed == pickupCode ? _self.pickupCode : pickupCode // ignore: cast_nullable_to_non_nullable
-as String?,pickupHint: freezed == pickupHint ? _self.pickupHint : pickupHint // ignore: cast_nullable_to_non_nullable
-as String?,diningCode: freezed == diningCode ? _self.diningCode : diningCode // ignore: cast_nullable_to_non_nullable
-as String?,storeName: freezed == storeName ? _self.storeName : storeName // ignore: cast_nullable_to_non_nullable
-as String?,storeAddress: freezed == storeAddress ? _self.storeAddress : storeAddress // ignore: cast_nullable_to_non_nullable
-as String?,storePhone: freezed == storePhone ? _self.storePhone : storePhone // ignore: cast_nullable_to_non_nullable
-as String?,qrCodeData: freezed == qrCodeData ? _self.qrCodeData : qrCodeData // ignore: cast_nullable_to_non_nullable
-as String?,remark: freezed == remark ? _self.remark : remark // ignore: cast_nullable_to_non_nullable
-as String?,
+as int,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as OrderUserModel,sn: null == sn ? _self.sn : sn // ignore: cast_nullable_to_non_nullable
+as String,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
+as OrderDeviceModel?,orderStatusAmount: null == orderStatusAmount ? _self.orderStatusAmount : orderStatusAmount // ignore: cast_nullable_to_non_nullable
+as String,nominalAmount: null == nominalAmount ? _self.nominalAmount : nominalAmount // ignore: cast_nullable_to_non_nullable
+as String,payAmount: null == payAmount ? _self.payAmount : payAmount // ignore: cast_nullable_to_non_nullable
+as String,couponAmount: null == couponAmount ? _self.couponAmount : couponAmount // ignore: cast_nullable_to_non_nullable
+as String,paySn: freezed == paySn ? _self.paySn : paySn // ignore: cast_nullable_to_non_nullable
+as String?,payExternalSn: freezed == payExternalSn ? _self.payExternalSn : payExternalSn // ignore: cast_nullable_to_non_nullable
+as String?,payType: freezed == payType ? _self.payType : payType // ignore: cast_nullable_to_non_nullable
+as PaymentMethod?,payStatus: freezed == payStatus ? _self.payStatus : payStatus // ignore: cast_nullable_to_non_nullable
+as PayStatus?,userCommentsCount: null == userCommentsCount ? _self.userCommentsCount : userCommentsCount // ignore: cast_nullable_to_non_nullable
+as int,userHasComments: null == userHasComments ? _self.userHasComments : userHasComments // ignore: cast_nullable_to_non_nullable
+as bool,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as OrderStatus,qrCodeImage: freezed == qrCodeImage ? _self.qrCodeImage : qrCodeImage // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String,products: null == products ? _self._products : products // ignore: cast_nullable_to_non_nullable
+as List<OrderProductModel>,
   ));
 }
 
@@ -396,12 +1206,21 @@ as String?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$DeviceModelCopyWith<$Res>? get device {
+$OrderUserModelCopyWith<$Res> get user {
+  
+  return $OrderUserModelCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}/// Create a copy of OrderModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$OrderDeviceModelCopyWith<$Res>? get device {
     if (_self.device == null) {
     return null;
   }
 
-  return $DeviceModelCopyWith<$Res>(_self.device!, (value) {
+  return $OrderDeviceModelCopyWith<$Res>(_self.device!, (value) {
     return _then(_self.copyWith(device: value));
   });
 }

@@ -57,9 +57,9 @@ class _DeviceRestClient implements DeviceRestClient {
 
   @override
   Future<ApiResponse<List<DeviceModel>>> getDevicesWithDistance({
-    String? cityCode,
-    double? latitude,
-    double? longitude,
+    required String cityCode,
+    required double latitude,
+    required double longitude,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -67,7 +67,6 @@ class _DeviceRestClient implements DeviceRestClient {
       r'latitude': latitude,
       r'longitude': longitude,
     };
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<ApiResponse<List<DeviceModel>>>(

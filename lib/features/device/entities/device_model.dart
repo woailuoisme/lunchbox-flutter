@@ -1,61 +1,67 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lunchbox/features/device/entities/device_status.dart';
-import 'package:lunchbox/features/device/entities/location_model.dart';
 
 part 'device_model.freezed.dart';
 part 'device_model.g.dart';
 
-/// Device data model
-/// Used for data transfer and JSON serialization
+/// 设备模型
 @freezed
 abstract class DeviceModel with _$DeviceModel {
   const factory DeviceModel({
-    /// Unique device identifier
-    required String id,
+    /// 设备ID
+    required int id,
 
-    /// Device name
+    /// 设备编号
+    required String no,
+
+    /// 设备名称
     required String name,
 
-    /// ID of the city where the device is located
-    @JsonKey(name: 'city_id') required String cityId,
+    /// 是否启用
+    @JsonKey(name: 'is_enabled') required bool isEnabled,
 
-    /// Current operational status (as string for JSON)
-    required String status,
+    /// 距离 (如: "48880.04m")
+    String? distance,
 
-    /// Geographic location of the device
-    required LocationModel location,
+    /// 距离公里 (如: "48.88km")
+    @JsonKey(name: 'distance_km') String? distanceKm,
 
-    /// List of product IDs available in this device
-    @JsonKey(name: 'product_ids') required List<String> productIds,
+    /// 经度
+    required String longitude,
 
-    /// Timestamp of the last update (as ISO 8601 string)
-    @JsonKey(name: 'last_updated') required String lastUpdated,
+    /// 纬度
+    required String latitude,
 
-    /// Distance from user (optional, from API)
-    double? distance,
+    /// 街道地址
+    @JsonKey(name: 'street_address') required String streetAddress,
 
-    /// Formatted distance text (optional, from API)
-    @JsonKey(name: 'distance_text') String? distanceText,
+    /// 完整地址
+    @JsonKey(name: 'full_address') required String fullAddress,
+
+    /// 营业时间
+    @JsonKey(name: 'business_hours') required String businessHours,
+
+    /// 图片URL
+    @JsonKey(name: 'image_url') required String imageUrl,
+
+    /// 城市信息
+    required DeviceCityModel city,
   }) = _DeviceModel;
 
-  /// Create DeviceModel from JSON
   factory DeviceModel.fromJson(Map<String, dynamic> json) =>
       _$DeviceModelFromJson(json);
+}
 
-  const DeviceModel._();
+/// 设备所属城市简要模型
+@freezed
+abstract class DeviceCityModel with _$DeviceCityModel {
+  const factory DeviceCityModel({
+    /// 城市ID/代码
+    required String id,
 
-  bool get isOnline => status == 'online';
+    /// 城市名称
+    required String name,
+  }) = _DeviceCityModel;
 
-  bool get supportMobilePayment => true;
-  bool get supportCashPayment => true;
-
-  String get address => location.address ?? '';
-
-  /// Parse status string to DeviceStatus enum
-  DeviceStatus _parseStatus(String status) {
-    return DeviceStatus.values.firstWhere(
-      (s) => s.name == status,
-      orElse: () => DeviceStatus.offline,
-    );
-  }
+  factory DeviceCityModel.fromJson(Map<String, dynamic> json) =>
+      _$DeviceCityModelFromJson(json);
 }

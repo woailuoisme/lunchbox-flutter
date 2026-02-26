@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:lunchbox/core/constants/app_constants.dart';
+import 'package:lunchbox/core/services/toast_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -14,10 +16,13 @@ part 'error_handling_interceptor.g.dart';
 /// **Validates: Requirements 23.1, 23.2**
 @Riverpod(keepAlive: true)
 ErrorHandlingInterceptor errorHandlingInterceptor(Ref ref) {
-  return ErrorHandlingInterceptor();
+  return ErrorHandlingInterceptor(ref.read(toastServiceProvider));
 }
 
 class ErrorHandlingInterceptor extends Interceptor {
+  ErrorHandlingInterceptor(this._toastService);
+  final ToastService _toastService;
+
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     // Enhance error with more context
@@ -30,6 +35,14 @@ class ErrorHandlingInterceptor extends Interceptor {
       enhancedError.stackTrace,
     );
 
+    // Show toast message for error (skip if cancelled or explicitly disabled)
+    final bool showError =
+        err.requestOptions.extra[AppConstants.dioShowError] as bool? ?? true;
+
+    if (err.type != DioExceptionType.cancel && showError) {
+      _toastService.showError(enhancedError.message ?? t.network.errors.failed);
+    }
+
     return handler.next(enhancedError);
   }
 
@@ -37,33 +50,43 @@ class ErrorHandlingInterceptor extends Interceptor {
   DioException _enhanceError(DioException err) {
     String message;
 
-    switch (err.type) {
-      case DioExceptionType.connectionTimeout:
-        message = t.network.errors.connectionTimeout;
-        break;
-      case DioExceptionType.sendTimeout:
-        message = t.network.errors.sendTimeout;
-        break;
-      case DioExceptionType.receiveTimeout:
-        message = t.network.errors.receiveTimeout;
-        break;
-      case DioExceptionType.badCertificate:
-        message = t.network.errors.badCertificate;
-        break;
-      case DioExceptionType.badResponse:
+    // Special handling for 401 and other status codes if needed
+    if (err.type == DioExceptionType.badResponse) {
+      final statusCode = err.response?.statusCode;
+      if (statusCode == 401) {
+        // 401 usually handled by AuthInterceptor, but we set a clear message here
+        message = t.network.errors.unauthorized;
+      } else {
         message = _handleBadResponse(err);
-        break;
-      case DioExceptionType.cancel:
-        message = t.network.errors.cancel;
-        break;
-      case DioExceptionType.connectionError:
-        message = t.network.errors.connectionError;
-        break;
-      case DioExceptionType.unknown:
-        message = t.network.errors.unknown(
-          error: err.message ?? t.network.errors.retryLater,
-        );
-        break;
+      }
+    } else {
+      switch (err.type) {
+        case DioExceptionType.connectionTimeout:
+          message = t.network.errors.connectionTimeout;
+          break;
+        case DioExceptionType.sendTimeout:
+          message = t.network.errors.sendTimeout;
+          break;
+        case DioExceptionType.receiveTimeout:
+          message = t.network.errors.receiveTimeout;
+          break;
+        case DioExceptionType.badCertificate:
+          message = t.network.errors.badCertificate;
+          break;
+        case DioExceptionType.cancel:
+          message = t.network.errors.cancel;
+          break;
+        case DioExceptionType.connectionError:
+          message = t.network.errors.connectionError;
+          break;
+        case DioExceptionType.unknown:
+          message = t.network.errors.unknown(
+            error: err.message ?? t.network.errors.retryLater,
+          );
+          break;
+        default:
+          message = t.network.errors.failed;
+      }
     }
 
     return DioException(

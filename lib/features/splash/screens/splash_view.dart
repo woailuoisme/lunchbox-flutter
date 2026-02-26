@@ -43,7 +43,7 @@ class _SplashViewState extends ConsumerState<SplashView> {
       body: SafeArea(
         child: Builder(
           builder: (context) {
-            if (state.initializationError != null) {
+            if (state.errorMessage != null) {
               return _buildErrorView(context, state, controller);
             }
             return _buildSplashView(context, state);
@@ -197,7 +197,7 @@ class _SplashViewState extends ConsumerState<SplashView> {
             ),
             SizedBox(height: 16.h),
             Text(
-              state.initializationError ?? t.common.unknownError,
+              state.errorMessage ?? t.common.unknownError,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontSize: 14.sp,

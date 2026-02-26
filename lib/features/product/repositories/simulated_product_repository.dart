@@ -1,4 +1,3 @@
-import 'package:fpdart/fpdart.dart';
 import 'package:lunchbox/core/errors/errors.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:lunchbox/features/product/repositories/product_repository.dart';
@@ -9,23 +8,21 @@ class SimulatedProductRepository extends ProductRepository {
   SimulatedProductRepository(super.client);
 
   @override
-  TaskEither<Failure, List<ProductModel>> getProductsByDeviceId(
-    String deviceId,
-  ) {
+  Future<List<ProductModel>> getProductsByDeviceId(String deviceId) async {
     // 根据设备ID返回对应的产品列表
     // 保持与 SimulatedDeviceRepository 中的数据一致
     final deviceProductIds = _deviceProductMap[deviceId];
     if (deviceProductIds == null) {
       // 如果设备不存在或没有特定配置，返回所有产品或空列表
       // 这里为了演示方便，默认返回所有产品
-      return TaskEither.right(_mockProducts);
+      return _mockProducts;
     }
 
     final products = _mockProducts
         .where((p) => deviceProductIds.contains(p.id))
         .toList();
 
-    return TaskEither.right(products);
+    return products;
   }
 
   // 设备ID到产品ID列表的映射
@@ -38,7 +35,7 @@ class SimulatedProductRepository extends ProductRepository {
   };
 
   @override
-  TaskEither<Failure, ProductModel> getProductById(String productId) {
+  Future<ProductModel> getProductById(String productId) async {
     final product = _mockProducts.firstWhere(
       (p) => p.id == productId,
       orElse: () => throw const Failure.server(
@@ -46,44 +43,40 @@ class SimulatedProductRepository extends ProductRepository {
         statusCode: 404,
       ),
     );
-    return TaskEither.right(product);
+    return product;
   }
 
   @override
-  TaskEither<Failure, List<ProductModel>> getAvailableProducts(
-    String deviceId,
-  ) {
-    return TaskEither.right(_mockProducts.where((p) => p.hasStock).toList());
+  Future<List<ProductModel>> getAvailableProducts(String deviceId) async {
+    return _mockProducts.where((p) => p.hasStock).toList();
   }
 
   @override
-  TaskEither<Failure, List<ProductModel>> getDiscountProducts(String deviceId) {
-    return TaskEither.right(_mockProducts.where((p) => p.hasDiscount).toList());
+  Future<List<ProductModel>> getDiscountProducts(String deviceId) async {
+    return _mockProducts.where((p) => p.hasDiscount).toList();
   }
 
   @override
-  TaskEither<Failure, List<ProductModel>> getProductsByCategory(
+  Future<List<ProductModel>> getProductsByCategory(
     String deviceId,
     String category,
-  ) {
-    return TaskEither.right(
-      _mockProducts.where((p) => p.category == category).toList(),
-    );
+  ) async {
+    return _mockProducts.where((p) => p.category == category).toList();
   }
 
   @override
-  TaskEither<Failure, List<String>> getProductCategories(String deviceId) {
+  Future<List<String>> getProductCategories(String deviceId) async {
     final categories = _mockProducts.map((p) => p.category).toSet().toList()
       ..sort();
-    return TaskEither.right(categories);
+    return categories;
   }
 
   @override
-  TaskEither<Failure, List<ProductModel>> searchProducts(
+  Future<List<ProductModel>> searchProducts(
     String deviceId,
     String keyword, {
     String? category,
-  }) {
+  }) async {
     var products = _mockProducts;
     if (category != null) {
       products = products.where((p) => p.category == category).toList();
@@ -94,7 +87,7 @@ class SimulatedProductRepository extends ProductRepository {
         .where((p) => p.name.toLowerCase().contains(lowercaseKeyword))
         .toList();
 
-    return TaskEither.right(result);
+    return result;
   }
 
   // 模拟数据

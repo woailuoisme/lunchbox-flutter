@@ -8,36 +8,63 @@ part 'coupon_model.g.dart';
 abstract class CouponModel with _$CouponModel {
   const factory CouponModel({
     /// 优惠券ID
-    required String id,
+    required int id,
 
     /// 优惠券名称
     required String name,
 
     /// 优惠券描述
-    required String description,
+    String? description,
 
-    /// 优惠金额/折扣
-    required double amount,
+    /// 优惠券类型 (full_reduction: 满减券, discount: 折扣券, reduction: 减免)
+    required String type,
 
-    /// 使用门槛（0表示无门槛）
-    @Default(0) double minSpend,
+    /// 优惠规则
+    required CouponRuleModel rule,
 
-    /// 优惠券类型 (discount: 折扣, cash: 现金)
-    @Default('cash') String type,
+    /// 总数量
+    @JsonKey(name: 'total_quantity') required int totalQuantity,
 
-    /// 有效期开始时间
-    required DateTime startTime,
+    /// 已使用数量
+    @JsonKey(name: 'used_quantity') required int usedQuantity,
 
-    /// 有效期结束时间
-    required DateTime endTime,
+    /// 剩余数量
+    @JsonKey(name: 'remaining_quantity') required int remainingQuantity,
 
-    /// 是否已领取
-    @Default(false) bool isReceived,
+    /// 每人限领数量
+    @JsonKey(name: 'per_user_limit') int? perUserLimit,
 
-    /// 是否已使用
-    @Default(false) bool isUsed,
+    /// 是否已激活
+    @JsonKey(name: 'is_activated') @Default(true) bool isActivated,
+
+    /// 开始时间
+    @JsonKey(name: 'start_at') String? startAt,
+
+    /// 结束时间
+    @JsonKey(name: 'end_at') String? endAt,
+
+    /// 创建时间
+    @JsonKey(name: 'created_at') required String createdAt,
   }) = _CouponModel;
 
   factory CouponModel.fromJson(Map<String, dynamic> json) =>
       _$CouponModelFromJson(json);
+}
+
+/// 优惠券规则模型
+@freezed
+abstract class CouponRuleModel with _$CouponRuleModel {
+  const factory CouponRuleModel({
+    /// 减免金额
+    @JsonKey(name: 'reduce_amount') double? reduceAmount,
+
+    /// 折扣比例 (0-1)
+    @JsonKey(name: 'discount_rate') double? discountRate,
+
+    /// 满减门槛金额
+    @JsonKey(name: 'min_spend_amount') double? minSpendAmount,
+  }) = _CouponRuleModel;
+
+  factory CouponRuleModel.fromJson(Map<String, dynamic> json) =>
+      _$CouponRuleModelFromJson(json);
 }

@@ -6,126 +6,169 @@ part of 'order_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+_OrderUserModel _$OrderUserModelFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('_OrderUserModel', json, ($checkedConvert) {
+      final val = _OrderUserModel(
+        id: $checkedConvert('id', (v) => (v as num).toInt()),
+        nickname: $checkedConvert('nickname', (v) => v as String),
+        telephone: $checkedConvert('telephone', (v) => v as String),
+      );
+      return val;
+    });
+
+Map<String, dynamic> _$OrderUserModelToJson(_OrderUserModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'nickname': instance.nickname,
+      'telephone': instance.telephone,
+    };
+
+_OrderDeviceModel _$OrderDeviceModelFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('_OrderDeviceModel', json, ($checkedConvert) {
+      final val = _OrderDeviceModel(
+        id: $checkedConvert('id', (v) => (v as num).toInt()),
+        sn: $checkedConvert('sn', (v) => v as String),
+      );
+      return val;
+    });
+
+Map<String, dynamic> _$OrderDeviceModelToJson(_OrderDeviceModel instance) =>
+    <String, dynamic>{'id': instance.id, 'sn': instance.sn};
+
+_OrderProductModel _$OrderProductModelFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('_OrderProductModel', json, ($checkedConvert) {
+      final val = _OrderProductModel(
+        id: $checkedConvert('id', (v) => (v as num).toInt()),
+        name: $checkedConvert('name', (v) => v as String),
+        category: $checkedConvert('category', (v) => v as String),
+        thumb: $checkedConvert('thumb', (v) => v as String),
+        description: $checkedConvert('description', (v) => v as String),
+        salePrice: $checkedConvert('sale_price', (v) => v as String),
+        quantity: $checkedConvert('quantity', (v) => (v as num).toInt()),
+      );
+      return val;
+    }, fieldKeyMap: const {'salePrice': 'sale_price'});
+
+Map<String, dynamic> _$OrderProductModelToJson(_OrderProductModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'category': instance.category,
+      'thumb': instance.thumb,
+      'description': instance.description,
+      'sale_price': instance.salePrice,
+      'quantity': instance.quantity,
+    };
+
 _OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => $checkedCreate(
   '_OrderModel',
   json,
   ($checkedConvert) {
     final val = _OrderModel(
-      id: $checkedConvert('id', (v) => v as String),
-      userId: $checkedConvert('user_id', (v) => v as String),
-      deviceId: $checkedConvert('device_id', (v) => v as String),
-      items: $checkedConvert(
-        'items',
-        (v) => (v as List<dynamic>)
-            .map((e) => CartItemModel.fromJson(e as Map<String, dynamic>))
-            .toList(),
+      id: $checkedConvert('id', (v) => (v as num).toInt()),
+      user: $checkedConvert(
+        'user',
+        (v) => OrderUserModel.fromJson(v as Map<String, dynamic>),
       ),
-      totalAmount: $checkedConvert(
-        'total_amount',
-        (v) => (v as num).toDouble(),
-      ),
-      createdAt: $checkedConvert(
-        'created_at',
-        (v) => DateTime.parse(v as String),
-      ),
+      sn: $checkedConvert('sn', (v) => v as String),
       device: $checkedConvert(
         'device',
-        (v) =>
-            v == null ? null : DeviceModel.fromJson(v as Map<String, dynamic>),
+        (v) => v == null
+            ? null
+            : OrderDeviceModel.fromJson(v as Map<String, dynamic>),
       ),
-      paidAmount: $checkedConvert(
-        'paid_amount',
-        (v) => (v as num?)?.toDouble() ?? 0.0,
-      ),
-      status: $checkedConvert(
-        'status',
-        (v) =>
-            $enumDecodeNullable(_$OrderStatusEnumMap, v) ?? OrderStatus.pending,
-      ),
-      paymentMethod: $checkedConvert(
-        'payment_method',
+      orderStatusAmount: $checkedConvert('order_status', (v) => v as String),
+      nominalAmount: $checkedConvert('nominal_amount', (v) => v as String),
+      payAmount: $checkedConvert('pay_amount', (v) => v as String),
+      couponAmount: $checkedConvert('coupon_amount', (v) => v as String),
+      paySn: $checkedConvert('pay_sn', (v) => v as String?),
+      payExternalSn: $checkedConvert('pay_external_sn', (v) => v as String?),
+      payType: $checkedConvert(
+        'pay_type',
         (v) => $enumDecodeNullable(_$PaymentMethodEnumMap, v),
       ),
-      paidAt: $checkedConvert(
-        'paid_at',
-        (v) => v == null ? null : DateTime.parse(v as String),
+      payStatus: $checkedConvert(
+        'pay_status',
+        (v) => $enumDecodeNullable(_$PayStatusEnumMap, v),
       ),
-      completedAt: $checkedConvert(
-        'completed_at',
-        (v) => v == null ? null : DateTime.parse(v as String),
+      userCommentsCount: $checkedConvert(
+        'user_comments_count',
+        (v) => (v as num).toInt(),
       ),
-      cancelledAt: $checkedConvert(
-        'cancelled_at',
-        (v) => v == null ? null : DateTime.parse(v as String),
+      userHasComments: $checkedConvert('user_has_comments', (v) => v as bool),
+      status: $checkedConvert(
+        'status',
+        (v) => $enumDecode(_$OrderStatusEnumMap, v),
       ),
-      pickupCode: $checkedConvert('pickup_code', (v) => v as String?),
-      pickupHint: $checkedConvert('pickup_hint', (v) => v as String?),
-      diningCode: $checkedConvert('dining_code', (v) => v as String?),
-      storeName: $checkedConvert('store_name', (v) => v as String?),
-      storeAddress: $checkedConvert('store_address', (v) => v as String?),
-      storePhone: $checkedConvert('store_phone', (v) => v as String?),
-      qrCodeData: $checkedConvert('qr_code_data', (v) => v as String?),
-      remark: $checkedConvert('remark', (v) => v as String?),
+      qrCodeImage: $checkedConvert('qr_code_image', (v) => v as String?),
+      createdAt: $checkedConvert('created_at', (v) => v as String),
+      products: $checkedConvert(
+        'products',
+        (v) => (v as List<dynamic>)
+            .map((e) => OrderProductModel.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      ),
     );
     return val;
   },
   fieldKeyMap: const {
-    'userId': 'user_id',
-    'deviceId': 'device_id',
-    'totalAmount': 'total_amount',
+    'orderStatusAmount': 'order_status',
+    'nominalAmount': 'nominal_amount',
+    'payAmount': 'pay_amount',
+    'couponAmount': 'coupon_amount',
+    'paySn': 'pay_sn',
+    'payExternalSn': 'pay_external_sn',
+    'payType': 'pay_type',
+    'payStatus': 'pay_status',
+    'userCommentsCount': 'user_comments_count',
+    'userHasComments': 'user_has_comments',
+    'qrCodeImage': 'qr_code_image',
     'createdAt': 'created_at',
-    'paidAmount': 'paid_amount',
-    'paymentMethod': 'payment_method',
-    'paidAt': 'paid_at',
-    'completedAt': 'completed_at',
-    'cancelledAt': 'cancelled_at',
-    'pickupCode': 'pickup_code',
-    'pickupHint': 'pickup_hint',
-    'diningCode': 'dining_code',
-    'storeName': 'store_name',
-    'storeAddress': 'store_address',
-    'storePhone': 'store_phone',
-    'qrCodeData': 'qr_code_data',
   },
 );
 
 Map<String, dynamic> _$OrderModelToJson(_OrderModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'user_id': instance.userId,
-      'device_id': instance.deviceId,
-      'items': instance.items.map((e) => e.toJson()).toList(),
-      'total_amount': instance.totalAmount,
-      'created_at': instance.createdAt.toIso8601String(),
+      'user': instance.user.toJson(),
+      'sn': instance.sn,
       'device': ?instance.device?.toJson(),
-      'paid_amount': instance.paidAmount,
+      'order_status': instance.orderStatusAmount,
+      'nominal_amount': instance.nominalAmount,
+      'pay_amount': instance.payAmount,
+      'coupon_amount': instance.couponAmount,
+      'pay_sn': ?instance.paySn,
+      'pay_external_sn': ?instance.payExternalSn,
+      'pay_type': ?_$PaymentMethodEnumMap[instance.payType],
+      'pay_status': ?_$PayStatusEnumMap[instance.payStatus],
+      'user_comments_count': instance.userCommentsCount,
+      'user_has_comments': instance.userHasComments,
       'status': _$OrderStatusEnumMap[instance.status]!,
-      'payment_method': ?_$PaymentMethodEnumMap[instance.paymentMethod],
-      'paid_at': ?instance.paidAt?.toIso8601String(),
-      'completed_at': ?instance.completedAt?.toIso8601String(),
-      'cancelled_at': ?instance.cancelledAt?.toIso8601String(),
-      'pickup_code': ?instance.pickupCode,
-      'pickup_hint': ?instance.pickupHint,
-      'dining_code': ?instance.diningCode,
-      'store_name': ?instance.storeName,
-      'store_address': ?instance.storeAddress,
-      'store_phone': ?instance.storePhone,
-      'qr_code_data': ?instance.qrCodeData,
-      'remark': ?instance.remark,
+      'qr_code_image': ?instance.qrCodeImage,
+      'created_at': instance.createdAt,
+      'products': instance.products.map((e) => e.toJson()).toList(),
     };
+
+const _$PaymentMethodEnumMap = {
+  PaymentMethod.wechat: 'wechat',
+  PaymentMethod.alipay: 'alipay',
+  PaymentMethod.balance: 'balance',
+  PaymentMethod.cash: 'cash',
+  PaymentMethod.stripe: 'stripe',
+};
+
+const _$PayStatusEnumMap = {
+  PayStatus.unpaid: 'unpaid',
+  PayStatus.paid: 'paid',
+  PayStatus.refunded: 'refunded',
+};
 
 const _$OrderStatusEnumMap = {
   OrderStatus.pending: 'pending',
   OrderStatus.paid: 'paid',
-  OrderStatus.completed: 'completed',
+  OrderStatus.used: 'used',
   OrderStatus.cancelled: 'cancelled',
-  OrderStatus.refunded: 'refunded',
+  OrderStatus.refund: 'refund',
+  OrderStatus.completed: 'completed',
   OrderStatus.failed: 'failed',
-};
-
-const _$PaymentMethodEnumMap = {
-  PaymentMethod.wechatPay: 'wechatPay',
-  PaymentMethod.alipay: 'alipay',
-  PaymentMethod.cash: 'cash',
-  PaymentMethod.stripe: 'stripe',
 };

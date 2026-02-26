@@ -20,21 +20,23 @@ class _OrderRestClient implements OrderRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<List<OrderModel>>> getOrders({
-    int? page,
-    int? size,
+  Future<ApiResponse<PaginatedResponse<OrderModel>>> getOrders({
     String? status,
+    String? payStatus,
+    int? perPage,
+    int? page,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'page': page,
-      r'size': size,
       r'status': status,
+      r'pay_status': payStatus,
+      r'per_page': perPage,
+      r'page': page,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<OrderModel>>>(
+    final _options = _setStreamType<ApiResponse<PaginatedResponse<OrderModel>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -45,17 +47,14 @@ class _OrderRestClient implements OrderRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<OrderModel>> _value;
+    late ApiResponse<PaginatedResponse<OrderModel>> _value;
     try {
-      _value = ApiResponse<List<OrderModel>>.fromJson(
+      _value = ApiResponse<PaginatedResponse<OrderModel>>.fromJson(
         _result.data!,
-        (json) => json is List<dynamic>
-            ? json
-                  .map<OrderModel>(
-                    (i) => OrderModel.fromJson(i as Map<String, dynamic>),
-                  )
-                  .toList()
-            : List.empty(),
+        (json) => PaginatedResponse<OrderModel>.fromJson(
+          json as Map<String, dynamic>,
+          (json) => OrderModel.fromJson(json as Map<String, dynamic>),
+        ),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -95,7 +94,7 @@ class _OrderRestClient implements OrderRestClient {
   }
 
   @override
-  Future<ApiResponse<void>> cancelOrder(String id) async {
+  Future<ApiResponse<void>> cancelOrderV1(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

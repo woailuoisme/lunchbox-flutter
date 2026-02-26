@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:lunchbox/core/network/dio_provider.dart';
 import 'package:lunchbox/core/network/response/api_response.dart';
+import 'package:lunchbox/features/welcome_gift/entities/welcome_gift_item_model.dart';
+import 'package:lunchbox/features/welcome_gift/entities/welcome_gift_log_model.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,7 +21,7 @@ abstract class WelcomeGiftRestClient {
 
   /// 获取新人礼包列表
   @GET('/api/v1/welcome_gift/items')
-  Future<ApiResponse<List<dynamic>>> getWelcomeGiftItems();
+  Future<ApiResponse<List<WelcomeGiftItemModel>>> getWelcomeGiftItems();
 
   /// 领取新人礼包
   @POST('/api/v1/welcome_gift/claim')
@@ -27,5 +29,5 @@ abstract class WelcomeGiftRestClient {
 
   /// 获取用户领取记录
   @GET('/api/v1/welcome_gift/logs')
-  Future<ApiResponse<List<dynamic>>> getWelcomeGiftLogs();
+  Future<ApiResponse<List<WelcomeGiftLogModel>>> getWelcomeGiftLogs();
 }

@@ -1,3 +1,4 @@
+import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
 import 'package:lunchbox/features/cart/providers/cart_state.dart';
@@ -8,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'cart_provider.g.dart';
 
 @riverpod
-class CartNotifier extends _$CartNotifier {
+class CartNotifier extends _$CartNotifier with AsyncRunnerMixin<CartState> {
   @override
   CartState build() {
     // Initial load
@@ -17,31 +18,25 @@ class CartNotifier extends _$CartNotifier {
   }
 
   Future<void> loadCart() async {
-    state = state.copyWith(isLoading: true);
-    try {
+    await runAsync(() async {
       final repository = ref.read(cartRepositoryProvider);
       final items = await repository.getCartItems();
-      state = state.copyWith(cartItems: items, isLoading: false);
-    } catch (e) {
-      LoggerUtils.e('CartNotifier: Failed to load cart', e);
-      state = state.copyWith(isLoading: false);
-    }
+      state = state.copyWith(cartItems: items);
+    }, errorLabel: '加载购物车失败');
   }
 
   Future<void> addToCart(ProductModel product, {int quantity = 1}) async {
-    try {
+    await runAsync(() async {
       await ref
           .read(cartRepositoryProvider)
           .addToCart(product, quantity: quantity);
       await loadCart();
       LoggerUtils.i('CartNotifier: Added ${product.name} to cart');
-    } catch (e) {
-      LoggerUtils.e('CartNotifier: Failed to add to cart', e);
-    }
+    }, errorLabel: '添加商品到购物车失败');
   }
 
   Future<void> updateQuantity(CartItemModel item, int quantity) async {
-    try {
+    await runAsync(() async {
       await ref
           .read(cartRepositoryProvider)
           .updateCartItemQuantity(item.id, quantity);
@@ -49,26 +44,25 @@ class CartNotifier extends _$CartNotifier {
       LoggerUtils.i(
         'CartNotifier: Updated quantity for ${item.product.name} to $quantity',
       );
-    } catch (e) {
-      LoggerUtils.e('CartNotifier: Failed to update quantity', e);
-    }
+    }, errorLabel: '更新商品数量失败');
   }
 
   /// 切换商品选中状态
   Future<void> toggleSelection(String itemId, bool isSelected) async {
-    try {
-      await ref
-          .read(cartRepositoryProvider)
-          .toggleItemSelected(itemId, isSelected);
-      await loadCart();
-    } catch (e) {
-      LoggerUtils.e('CartNotifier: Failed to toggle selection', e);
-    }
+    await runAsync(
+      () async {
+        await ref
+            .read(cartRepositoryProvider)
+            .toggleItemSelected(itemId, isSelected);
+        await loadCart();
+      },
+      showLoading: false,
+      errorLabel: '切换选中状态失败',
+    );
   }
 
   Future<void> increaseQuantity(CartItemModel item) async {
     if (item.quantity >= item.product.stock) {
-      // Show toast/snackbar (handled by UI listener usually, or we can use a side effect provider)
       LoggerUtils.w('Stock limit reached for ${item.product.name}');
       return;
     }
@@ -84,32 +78,26 @@ class CartNotifier extends _$CartNotifier {
   }
 
   Future<void> removeItem(String itemId) async {
-    try {
+    await runAsync(() async {
       await ref.read(cartRepositoryProvider).removeFromCart(itemId);
       await loadCart();
       LoggerUtils.i('CartNotifier: Removed item $itemId');
-    } catch (e) {
-      LoggerUtils.e('CartNotifier: Failed to remove item', e);
-    }
+    }, errorLabel: '移除商品失败');
   }
 
   Future<void> removeItems(List<String> itemIds) async {
-    try {
+    await runAsync(() async {
       await ref.read(cartRepositoryProvider).removeItems(itemIds);
       await loadCart();
       LoggerUtils.i('CartNotifier: Removed items $itemIds');
-    } catch (e) {
-      LoggerUtils.e('CartNotifier: Failed to remove items', e);
-    }
+    }, errorLabel: '移除多个商品失败');
   }
 
   Future<void> clearCart() async {
-    try {
+    await runAsync(() async {
       await ref.read(cartRepositoryProvider).clearCart();
       await loadCart();
       LoggerUtils.i('CartNotifier: Cleared cart');
-    } catch (e) {
-      LoggerUtils.e('CartNotifier: Failed to clear cart', e);
-    }
+    }, errorLabel: '清空购物车失败');
   }
 }

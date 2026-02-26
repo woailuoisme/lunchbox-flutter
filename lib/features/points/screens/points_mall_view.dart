@@ -6,7 +6,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:lunchbox/features/points/entities/mall_product_model.dart';
 import 'package:lunchbox/features/points/repositories/points_repository.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:lunchbox/core/widgets/app_dialog.dart';
+import 'package:lunchbox/core/services/dialog_service.dart';
 
 class PointsMallView extends ConsumerStatefulWidget {
   const PointsMallView({super.key});
@@ -290,14 +290,16 @@ class _PointsMallListState extends ConsumerState<_PointsMallList>
           ElevatedButton(
             onPressed: canAfford
                 ? () async {
-                    final confirmed = await AppDialog.showConfirm(
-                      context,
-                      title: t.points.exchangeConfirmTitle,
-                      message: t.points.exchangeConfirmMessage(
-                        points: product.pointsCost,
-                        product: product.title,
-                      ),
-                    );
+                    final confirmed = await ref
+                        .read(dialogServiceProvider)
+                        .showConfirm(
+                          context: context,
+                          title: t.points.exchangeConfirmTitle,
+                          message: t.points.exchangeConfirmMessage(
+                            points: product.pointsCost,
+                            product: product.title,
+                          ),
+                        );
 
                     if (confirmed == true && context.mounted) {
                       try {
@@ -307,24 +309,30 @@ class _PointsMallListState extends ConsumerState<_PointsMallList>
 
                         if (context.mounted) {
                           if (success) {
-                            await AppDialog.showSuccess(
-                              context,
-                              message: t.points.exchangeSuccess,
-                            );
+                            await ref
+                                .read(dialogServiceProvider)
+                                .showSuccess(
+                                  context: context,
+                                  message: t.points.exchangeSuccess,
+                                );
                             ref.invalidate(pointsBalanceProvider);
                           } else {
-                            await AppDialog.showError(
-                              context,
-                              message: t.points.exchangeFailed,
-                            );
+                            await ref
+                                .read(dialogServiceProvider)
+                                .showError(
+                                  context: context,
+                                  message: t.points.exchangeFailed,
+                                );
                           }
                         }
                       } catch (e) {
                         if (context.mounted) {
-                          await AppDialog.showError(
-                            context,
-                            message: e.toString(),
-                          );
+                          await ref
+                              .read(dialogServiceProvider)
+                              .showError(
+                                context: context,
+                                message: e.toString(),
+                              );
                         }
                       }
                     }

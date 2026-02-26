@@ -8,25 +8,31 @@ part 'community_model.g.dart';
 abstract class CommunityModel with _$CommunityModel {
   const factory CommunityModel({
     /// 社群ID
-    required String id,
+    required int id,
 
     /// 社群名称
     required String name,
 
-    /// 社群描述
-    required String description,
-
     /// 社群封面图
-    required String coverUrl,
+    String? thumb,
 
-    /// 社群二维码链接
-    required String qrCodeUrl,
+    /// 社群描述
+    String? description,
 
-    /// 成员数量
-    @Default(0) int memberCount,
+    /// 纬度
+    required String latitude,
 
-    /// 是否推荐
-    @Default(false) bool isRecommended,
+    /// 经度
+    required String longitude,
+
+    /// 距离（单位：m）
+    required String distance,
+
+    /// 距离（单位：km）
+    @JsonKey(name: 'distance_km') required String distanceKm,
+
+    /// 创建时间
+    @JsonKey(name: 'created_at') required String createdAt,
   }) = _CommunityModel;
 
   factory CommunityModel.fromJson(Map<String, dynamic> json) =>

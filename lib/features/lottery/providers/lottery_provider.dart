@@ -1,3 +1,4 @@
+import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/features/lottery/entities/lottery_prize.dart';
 import 'package:lunchbox/features/lottery/entities/lottery_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -5,7 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'lottery_provider.g.dart';
 
 @riverpod
-class LotteryNotifier extends _$LotteryNotifier {
+class LotteryNotifier extends _$LotteryNotifier
+    with AsyncRunnerMixin<LotteryState> {
   @override
   LotteryState build() {
     return LotteryState(remainingSpins: 3, prizes: _mockPrizes());
@@ -28,21 +30,26 @@ class LotteryNotifier extends _$LotteryNotifier {
       return null;
     }
 
-    state = state.copyWith(isSpinning: true);
+    int? winIndex;
 
-    // 模拟网络请求延迟
-    await Future<void>.delayed(const Duration(milliseconds: 500));
+    await runAsync(
+      () async {
+        state = state.copyWith(isSpinning: true);
 
-    // 随机生成中奖索引 (0-5)
-    final winIndex = DateTime.now().millisecondsSinceEpoch % wheelItems.length;
-    final winItem = wheelItems[winIndex];
-    // final amount = double.tryParse(winItem.replaceAll('乖乖币', '')) ?? 0;
+        // 模拟网络请求延迟
+        await Future<void>.delayed(const Duration(milliseconds: 500));
 
-    // 注意：实际状态更新应在动画结束后进行，但为了简化流程，这里先预扣次数
-    // 真正的“获得奖品”逻辑可能需要拆分，但这里我们在spin返回后由UI决定何时弹窗
-    state = state.copyWith(
-      isSpinning: true, // 保持旋转状态，直到UI动画结束调用 completeSpin
-      remainingSpins: state.remainingSpins - 1,
+        // 随机生成中奖索引 (0-5)
+        winIndex = DateTime.now().millisecondsSinceEpoch % wheelItems.length;
+
+        // 注意：实际状态更新应在动画结束后进行，但为了简化流程，这里先预扣次数
+        state = state.copyWith(
+          isSpinning: true, // 保持旋转状态，直到UI动画结束调用 completeSpin
+          remainingSpins: state.remainingSpins - 1,
+        );
+      },
+      showLoading: false,
+      errorLabel: '抽奖失败',
     );
 
     return winIndex;

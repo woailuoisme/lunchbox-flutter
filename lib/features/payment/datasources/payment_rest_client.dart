@@ -23,4 +23,29 @@ abstract class PaymentRestClient {
   Future<ApiResponse<PaymentModel>> pay({
     @Body() required PaymentRequestModel request,
   });
+
+  /// 支付订单
+  @POST('/api/orders/{id}/pay')
+  Future<ApiResponse<dynamic>> payOrder(
+    @Path('id') String id,
+    @Body() Map<String, dynamic> body,
+  );
+
+  /// 查询订单支付状态
+  @GET('/api/orders/{id}/payment/status')
+  Future<ApiResponse<dynamic>> checkPaymentStatus(
+    @Path('id') String id,
+    @Query('paymentId') String? paymentId,
+  );
+
+  /// 创建支付意向
+  @POST('/api/orders/{id}/payment/intent')
+  Future<ApiResponse<dynamic>> createPaymentIntent(
+    @Path('id') String id,
+    @Body() Map<String, dynamic> body,
+  );
+
+  /// 取消支付
+  @POST('/api/orders/{id}/payment/cancel')
+  Future<ApiResponse<bool>> cancelPayment(@Path('id') String id);
 }

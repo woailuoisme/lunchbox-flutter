@@ -25,9 +25,9 @@ abstract class DeviceRestClient {
   /// 获取城市设备列表（带距离）
   @GET('/api/v1/home/devices_with_distance')
   Future<ApiResponse<List<DeviceModel>>> getDevicesWithDistance({
-    @Query('city_code') String? cityCode,
-    @Query('latitude') double? latitude,
-    @Query('longitude') double? longitude,
+    @Query('city_code') required String cityCode,
+    @Query('latitude') required double latitude,
+    @Query('longitude') required double longitude,
   });
 
   /// 获取用户常用设备列表

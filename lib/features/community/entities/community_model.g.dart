@@ -12,27 +12,21 @@ _CommunityModel _$CommunityModelFromJson(Map<String, dynamic> json) =>
       json,
       ($checkedConvert) {
         final val = _CommunityModel(
-          id: $checkedConvert('id', (v) => v as String),
+          id: $checkedConvert('id', (v) => (v as num).toInt()),
           name: $checkedConvert('name', (v) => v as String),
-          description: $checkedConvert('description', (v) => v as String),
-          coverUrl: $checkedConvert('cover_url', (v) => v as String),
-          qrCodeUrl: $checkedConvert('qr_code_url', (v) => v as String),
-          memberCount: $checkedConvert(
-            'member_count',
-            (v) => (v as num?)?.toInt() ?? 0,
-          ),
-          isRecommended: $checkedConvert(
-            'is_recommended',
-            (v) => v as bool? ?? false,
-          ),
+          thumb: $checkedConvert('thumb', (v) => v as String?),
+          description: $checkedConvert('description', (v) => v as String?),
+          latitude: $checkedConvert('latitude', (v) => v as String),
+          longitude: $checkedConvert('longitude', (v) => v as String),
+          distance: $checkedConvert('distance', (v) => v as String),
+          distanceKm: $checkedConvert('distance_km', (v) => v as String),
+          createdAt: $checkedConvert('created_at', (v) => v as String),
         );
         return val;
       },
       fieldKeyMap: const {
-        'coverUrl': 'cover_url',
-        'qrCodeUrl': 'qr_code_url',
-        'memberCount': 'member_count',
-        'isRecommended': 'is_recommended',
+        'distanceKm': 'distance_km',
+        'createdAt': 'created_at',
       },
     );
 
@@ -40,9 +34,11 @@ Map<String, dynamic> _$CommunityModelToJson(_CommunityModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'description': instance.description,
-      'cover_url': instance.coverUrl,
-      'qr_code_url': instance.qrCodeUrl,
-      'member_count': instance.memberCount,
-      'is_recommended': instance.isRecommended,
+      'thumb': ?instance.thumb,
+      'description': ?instance.description,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'distance': instance.distance,
+      'distance_km': instance.distanceKm,
+      'created_at': instance.createdAt,
     };

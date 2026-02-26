@@ -1,31 +1,30 @@
-import 'package:dio/dio.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:lunchbox/core/errors/errors.dart';
-import 'package:lunchbox/core/network/network.dart';
+import 'package:lunchbox/core/errors/repository_error_handler_mixin.dart';
+import 'package:lunchbox/features/payment/datasources/payment_rest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'payment_repository.g.dart';
 
 @Riverpod(keepAlive: true)
 PaymentRepository paymentRepository(Ref ref) {
-  final restClient = ref.watch(restClientProvider);
+  final restClient = ref.watch(paymentRestClientProvider);
   return PaymentRepository(restClient);
 }
 
 /// 支付仓库类
 /// 负责处理支付相关的数据访问和业务逻辑
-class PaymentRepository {
+class PaymentRepository with RepositoryErrorHandlerMixin {
   PaymentRepository(this._client);
 
-  final RestClient _client;
+  final PaymentRestClient _client;
 
   /// 创建支付意向 (Payment Intent)
-  TaskEither<Failure, Map<String, dynamic>> createPaymentIntent(
+  Future<Map<String, dynamic>> createPaymentIntent(
     String orderId,
     double amount,
     String currency,
-  ) {
-    return TaskEither.tryCatch(() async {
+  ) async {
+    try {
       final paymentData = {
         'orderId': orderId,
         'amount': (amount * 100).toInt(), // Stripe uses cents
@@ -40,15 +39,14 @@ class PaymentRepository {
         message: response.message,
         statusCode: response.code,
       );
-    }, _handleError);
+    } catch (e, stack) {
+      throw handleError(e, stack);
+    }
   }
 
   /// 查询支付状态
-  TaskEither<Failure, String> checkPaymentStatus(
-    String orderId,
-    String paymentId,
-  ) {
-    return TaskEither.tryCatch(() async {
+  Future<String> checkPaymentStatus(String orderId, String paymentId) async {
+    try {
       final response = await _client.checkPaymentStatus(orderId, paymentId);
       if (response.success && response.data != null) {
         final data = response.data! as Map<String, dynamic>;
@@ -58,12 +56,14 @@ class PaymentRepository {
         message: response.message,
         statusCode: response.code,
       );
-    }, _handleError);
+    } catch (e, stack) {
+      throw handleError(e, stack);
+    }
   }
 
   /// 取消支付
-  TaskEither<Failure, bool> cancelPayment(String orderId) {
-    return TaskEither.tryCatch(() async {
+  Future<bool> cancelPayment(String orderId) async {
+    try {
       final response = await _client.cancelPayment(orderId);
       if (response.success && response.data != null) {
         return response.data!;
@@ -72,16 +72,8 @@ class PaymentRepository {
         message: response.message,
         statusCode: response.code,
       );
-    }, _handleError);
-  }
-
-  Failure _handleError(Object error, StackTrace stackTrace) {
-    if (error is DioException) {
-      return Failure.network(
-        message: error.message ?? 'Unknown network error',
-        statusCode: error.response?.statusCode,
-      );
+    } catch (e, stack) {
+      throw handleError(e, stack);
     }
-    return Failure.server(message: error.toString(), statusCode: 500);
   }
 }

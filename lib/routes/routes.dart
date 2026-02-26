@@ -280,15 +280,6 @@ class ProfileEditRoute extends GoRouteData with $ProfileEditRoute {
       const ProfileEditView();
 }
 
-@TypedGoRoute<FavoriteDevicesRoute>(path: AppRoutes.favoriteDevices)
-class FavoriteDevicesRoute extends GoRouteData with $FavoriteDevicesRoute {
-  const FavoriteDevicesRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const FavoriteDevicesView();
-}
-
 @TypedGoRoute<WalletRoute>(path: AppRoutes.wallet)
 class WalletRoute extends GoRouteData with $WalletRoute {
   const WalletRoute();

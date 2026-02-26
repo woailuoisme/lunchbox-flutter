@@ -20,13 +20,21 @@ class _MyCouponsRestClient implements MyCouponsRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<List<CouponModel>>> getUserCoupons({int? status}) async {
+  Future<ApiResponse<List<UserCouponModel>>> getUserCoupons({
+    String? category,
+    String? type,
+    String? usedType,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'status': status};
+    final queryParameters = <String, dynamic>{
+      r'category': category,
+      r'type': type,
+      r'used_type': usedType,
+    };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<CouponModel>>>(
+    final _options = _setStreamType<ApiResponse<List<UserCouponModel>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -37,14 +45,14 @@ class _MyCouponsRestClient implements MyCouponsRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<CouponModel>> _value;
+    late ApiResponse<List<UserCouponModel>> _value;
     try {
-      _value = ApiResponse<List<CouponModel>>.fromJson(
+      _value = ApiResponse<List<UserCouponModel>>.fromJson(
         _result.data!,
         (json) => json is List<dynamic>
             ? json
-                  .map<CouponModel>(
-                    (i) => CouponModel.fromJson(i as Map<String, dynamic>),
+                  .map<UserCouponModel>(
+                    (i) => UserCouponModel.fromJson(i as Map<String, dynamic>),
                   )
                   .toList()
             : List.empty(),

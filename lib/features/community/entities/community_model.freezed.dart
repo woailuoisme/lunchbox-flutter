@@ -16,13 +16,15 @@ T _$identity<T>(T value) => value;
 mixin _$CommunityModel {
 
 /// 社群ID
- String get id;/// 社群名称
- String get name;/// 社群描述
- String get description;/// 社群封面图
- String get coverUrl;/// 社群二维码链接
- String get qrCodeUrl;/// 成员数量
- int get memberCount;/// 是否推荐
- bool get isRecommended;
+ int get id;/// 社群名称
+ String get name;/// 社群封面图
+ String? get thumb;/// 社群描述
+ String? get description;/// 纬度
+ String get latitude;/// 经度
+ String get longitude;/// 距离（单位：m）
+ String get distance;/// 距离（单位：km）
+@JsonKey(name: 'distance_km') String get distanceKm;/// 创建时间
+@JsonKey(name: 'created_at') String get createdAt;
 /// Create a copy of CommunityModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -35,16 +37,16 @@ $CommunityModelCopyWith<CommunityModel> get copyWith => _$CommunityModelCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommunityModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.coverUrl, coverUrl) || other.coverUrl == coverUrl)&&(identical(other.qrCodeUrl, qrCodeUrl) || other.qrCodeUrl == qrCodeUrl)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.isRecommended, isRecommended) || other.isRecommended == isRecommended));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommunityModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.thumb, thumb) || other.thumb == thumb)&&(identical(other.description, description) || other.description == description)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.distance, distance) || other.distance == distance)&&(identical(other.distanceKm, distanceKm) || other.distanceKm == distanceKm)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,coverUrl,qrCodeUrl,memberCount,isRecommended);
+int get hashCode => Object.hash(runtimeType,id,name,thumb,description,latitude,longitude,distance,distanceKm,createdAt);
 
 @override
 String toString() {
-  return 'CommunityModel(id: $id, name: $name, description: $description, coverUrl: $coverUrl, qrCodeUrl: $qrCodeUrl, memberCount: $memberCount, isRecommended: $isRecommended)';
+  return 'CommunityModel(id: $id, name: $name, thumb: $thumb, description: $description, latitude: $latitude, longitude: $longitude, distance: $distance, distanceKm: $distanceKm, createdAt: $createdAt)';
 }
 
 
@@ -55,7 +57,7 @@ abstract mixin class $CommunityModelCopyWith<$Res>  {
   factory $CommunityModelCopyWith(CommunityModel value, $Res Function(CommunityModel) _then) = _$CommunityModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String description, String coverUrl, String qrCodeUrl, int memberCount, bool isRecommended
+ int id, String name, String? thumb, String? description, String latitude, String longitude, String distance,@JsonKey(name: 'distance_km') String distanceKm,@JsonKey(name: 'created_at') String createdAt
 });
 
 
@@ -72,16 +74,18 @@ class _$CommunityModelCopyWithImpl<$Res>
 
 /// Create a copy of CommunityModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? description = null,Object? coverUrl = null,Object? qrCodeUrl = null,Object? memberCount = null,Object? isRecommended = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? thumb = freezed,Object? description = freezed,Object? latitude = null,Object? longitude = null,Object? distance = null,Object? distanceKm = null,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,coverUrl: null == coverUrl ? _self.coverUrl : coverUrl // ignore: cast_nullable_to_non_nullable
-as String,qrCodeUrl: null == qrCodeUrl ? _self.qrCodeUrl : qrCodeUrl // ignore: cast_nullable_to_non_nullable
-as String,memberCount: null == memberCount ? _self.memberCount : memberCount // ignore: cast_nullable_to_non_nullable
-as int,isRecommended: null == isRecommended ? _self.isRecommended : isRecommended // ignore: cast_nullable_to_non_nullable
-as bool,
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,thumb: freezed == thumb ? _self.thumb : thumb // ignore: cast_nullable_to_non_nullable
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,latitude: null == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
+as String,longitude: null == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
+as String,distance: null == distance ? _self.distance : distance // ignore: cast_nullable_to_non_nullable
+as String,distanceKm: null == distanceKm ? _self.distanceKm : distanceKm // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -166,10 +170,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String description,  String coverUrl,  String qrCodeUrl,  int memberCount,  bool isRecommended)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String? thumb,  String? description,  String latitude,  String longitude,  String distance, @JsonKey(name: 'distance_km')  String distanceKm, @JsonKey(name: 'created_at')  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CommunityModel() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.coverUrl,_that.qrCodeUrl,_that.memberCount,_that.isRecommended);case _:
+return $default(_that.id,_that.name,_that.thumb,_that.description,_that.latitude,_that.longitude,_that.distance,_that.distanceKm,_that.createdAt);case _:
   return orElse();
 
 }
@@ -187,10 +191,10 @@ return $default(_that.id,_that.name,_that.description,_that.coverUrl,_that.qrCod
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String description,  String coverUrl,  String qrCodeUrl,  int memberCount,  bool isRecommended)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String? thumb,  String? description,  String latitude,  String longitude,  String distance, @JsonKey(name: 'distance_km')  String distanceKm, @JsonKey(name: 'created_at')  String createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _CommunityModel():
-return $default(_that.id,_that.name,_that.description,_that.coverUrl,_that.qrCodeUrl,_that.memberCount,_that.isRecommended);case _:
+return $default(_that.id,_that.name,_that.thumb,_that.description,_that.latitude,_that.longitude,_that.distance,_that.distanceKm,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -207,10 +211,10 @@ return $default(_that.id,_that.name,_that.description,_that.coverUrl,_that.qrCod
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String description,  String coverUrl,  String qrCodeUrl,  int memberCount,  bool isRecommended)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String? thumb,  String? description,  String latitude,  String longitude,  String distance, @JsonKey(name: 'distance_km')  String distanceKm, @JsonKey(name: 'created_at')  String createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _CommunityModel() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.coverUrl,_that.qrCodeUrl,_that.memberCount,_that.isRecommended);case _:
+return $default(_that.id,_that.name,_that.thumb,_that.description,_that.latitude,_that.longitude,_that.distance,_that.distanceKm,_that.createdAt);case _:
   return null;
 
 }
@@ -222,23 +226,27 @@ return $default(_that.id,_that.name,_that.description,_that.coverUrl,_that.qrCod
 @JsonSerializable()
 
 class _CommunityModel implements CommunityModel {
-  const _CommunityModel({required this.id, required this.name, required this.description, required this.coverUrl, required this.qrCodeUrl, this.memberCount = 0, this.isRecommended = false});
+  const _CommunityModel({required this.id, required this.name, this.thumb, this.description, required this.latitude, required this.longitude, required this.distance, @JsonKey(name: 'distance_km') required this.distanceKm, @JsonKey(name: 'created_at') required this.createdAt});
   factory _CommunityModel.fromJson(Map<String, dynamic> json) => _$CommunityModelFromJson(json);
 
 /// 社群ID
-@override final  String id;
+@override final  int id;
 /// 社群名称
 @override final  String name;
-/// 社群描述
-@override final  String description;
 /// 社群封面图
-@override final  String coverUrl;
-/// 社群二维码链接
-@override final  String qrCodeUrl;
-/// 成员数量
-@override@JsonKey() final  int memberCount;
-/// 是否推荐
-@override@JsonKey() final  bool isRecommended;
+@override final  String? thumb;
+/// 社群描述
+@override final  String? description;
+/// 纬度
+@override final  String latitude;
+/// 经度
+@override final  String longitude;
+/// 距离（单位：m）
+@override final  String distance;
+/// 距离（单位：km）
+@override@JsonKey(name: 'distance_km') final  String distanceKm;
+/// 创建时间
+@override@JsonKey(name: 'created_at') final  String createdAt;
 
 /// Create a copy of CommunityModel
 /// with the given fields replaced by the non-null parameter values.
@@ -253,16 +261,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommunityModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.coverUrl, coverUrl) || other.coverUrl == coverUrl)&&(identical(other.qrCodeUrl, qrCodeUrl) || other.qrCodeUrl == qrCodeUrl)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.isRecommended, isRecommended) || other.isRecommended == isRecommended));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommunityModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.thumb, thumb) || other.thumb == thumb)&&(identical(other.description, description) || other.description == description)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.distance, distance) || other.distance == distance)&&(identical(other.distanceKm, distanceKm) || other.distanceKm == distanceKm)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,coverUrl,qrCodeUrl,memberCount,isRecommended);
+int get hashCode => Object.hash(runtimeType,id,name,thumb,description,latitude,longitude,distance,distanceKm,createdAt);
 
 @override
 String toString() {
-  return 'CommunityModel(id: $id, name: $name, description: $description, coverUrl: $coverUrl, qrCodeUrl: $qrCodeUrl, memberCount: $memberCount, isRecommended: $isRecommended)';
+  return 'CommunityModel(id: $id, name: $name, thumb: $thumb, description: $description, latitude: $latitude, longitude: $longitude, distance: $distance, distanceKm: $distanceKm, createdAt: $createdAt)';
 }
 
 
@@ -273,7 +281,7 @@ abstract mixin class _$CommunityModelCopyWith<$Res> implements $CommunityModelCo
   factory _$CommunityModelCopyWith(_CommunityModel value, $Res Function(_CommunityModel) _then) = __$CommunityModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String description, String coverUrl, String qrCodeUrl, int memberCount, bool isRecommended
+ int id, String name, String? thumb, String? description, String latitude, String longitude, String distance,@JsonKey(name: 'distance_km') String distanceKm,@JsonKey(name: 'created_at') String createdAt
 });
 
 
@@ -290,16 +298,18 @@ class __$CommunityModelCopyWithImpl<$Res>
 
 /// Create a copy of CommunityModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? description = null,Object? coverUrl = null,Object? qrCodeUrl = null,Object? memberCount = null,Object? isRecommended = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? thumb = freezed,Object? description = freezed,Object? latitude = null,Object? longitude = null,Object? distance = null,Object? distanceKm = null,Object? createdAt = null,}) {
   return _then(_CommunityModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,coverUrl: null == coverUrl ? _self.coverUrl : coverUrl // ignore: cast_nullable_to_non_nullable
-as String,qrCodeUrl: null == qrCodeUrl ? _self.qrCodeUrl : qrCodeUrl // ignore: cast_nullable_to_non_nullable
-as String,memberCount: null == memberCount ? _self.memberCount : memberCount // ignore: cast_nullable_to_non_nullable
-as int,isRecommended: null == isRecommended ? _self.isRecommended : isRecommended // ignore: cast_nullable_to_non_nullable
-as bool,
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,thumb: freezed == thumb ? _self.thumb : thumb // ignore: cast_nullable_to_non_nullable
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,latitude: null == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
+as String,longitude: null == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
+as String,distance: null == distance ? _self.distance : distance // ignore: cast_nullable_to_non_nullable
+as String,distanceKm: null == distanceKm ? _self.distanceKm : distanceKm // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

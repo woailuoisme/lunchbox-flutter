@@ -11,6 +11,7 @@ abstract class PaymentState with _$PaymentState {
     @Default(false) bool isLoading,
     @Default(300) int countdown,
     @Default(false) bool isPaymentSheetReady,
+    @Default(false) bool isPaymentSuccessful,
     String? errorMessage,
   }) = _PaymentState;
 }

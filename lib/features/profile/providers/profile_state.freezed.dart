@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileState {
 
- UserModel? get currentUser; List<DeviceModel> get favoriteDevices; bool get isLoading;
+ UserModel? get currentUser; bool get isLoading;
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ProfileStateCopyWith<ProfileState> get copyWith => _$ProfileStateCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.currentUser, currentUser) || other.currentUser == currentUser)&&const DeepCollectionEquality().equals(other.favoriteDevices, favoriteDevices)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.currentUser, currentUser) || other.currentUser == currentUser)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentUser,const DeepCollectionEquality().hash(favoriteDevices),isLoading);
+int get hashCode => Object.hash(runtimeType,currentUser,isLoading);
 
 @override
 String toString() {
-  return 'ProfileState(currentUser: $currentUser, favoriteDevices: $favoriteDevices, isLoading: $isLoading)';
+  return 'ProfileState(currentUser: $currentUser, isLoading: $isLoading)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ProfileStateCopyWith<$Res>  {
   factory $ProfileStateCopyWith(ProfileState value, $Res Function(ProfileState) _then) = _$ProfileStateCopyWithImpl;
 @useResult
 $Res call({
- UserModel? currentUser, List<DeviceModel> favoriteDevices, bool isLoading
+ UserModel? currentUser, bool isLoading
 });
 
 
@@ -62,11 +62,10 @@ class _$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? currentUser = freezed,Object? favoriteDevices = null,Object? isLoading = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? currentUser = freezed,Object? isLoading = null,}) {
   return _then(_self.copyWith(
 currentUser: freezed == currentUser ? _self.currentUser : currentUser // ignore: cast_nullable_to_non_nullable
-as UserModel?,favoriteDevices: null == favoriteDevices ? _self.favoriteDevices : favoriteDevices // ignore: cast_nullable_to_non_nullable
-as List<DeviceModel>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as UserModel?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -164,10 +163,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserModel? currentUser,  List<DeviceModel> favoriteDevices,  bool isLoading)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserModel? currentUser,  bool isLoading)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.currentUser,_that.favoriteDevices,_that.isLoading);case _:
+return $default(_that.currentUser,_that.isLoading);case _:
   return orElse();
 
 }
@@ -185,10 +184,10 @@ return $default(_that.currentUser,_that.favoriteDevices,_that.isLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserModel? currentUser,  List<DeviceModel> favoriteDevices,  bool isLoading)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserModel? currentUser,  bool isLoading)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState():
-return $default(_that.currentUser,_that.favoriteDevices,_that.isLoading);case _:
+return $default(_that.currentUser,_that.isLoading);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +204,10 @@ return $default(_that.currentUser,_that.favoriteDevices,_that.isLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserModel? currentUser,  List<DeviceModel> favoriteDevices,  bool isLoading)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserModel? currentUser,  bool isLoading)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.currentUser,_that.favoriteDevices,_that.isLoading);case _:
+return $default(_that.currentUser,_that.isLoading);case _:
   return null;
 
 }
@@ -220,17 +219,10 @@ return $default(_that.currentUser,_that.favoriteDevices,_that.isLoading);case _:
 
 
 class _ProfileState implements ProfileState {
-  const _ProfileState({this.currentUser, final  List<DeviceModel> favoriteDevices = const [], this.isLoading = false}): _favoriteDevices = favoriteDevices;
+  const _ProfileState({this.currentUser, this.isLoading = false});
   
 
 @override final  UserModel? currentUser;
- final  List<DeviceModel> _favoriteDevices;
-@override@JsonKey() List<DeviceModel> get favoriteDevices {
-  if (_favoriteDevices is EqualUnmodifiableListView) return _favoriteDevices;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_favoriteDevices);
-}
-
 @override@JsonKey() final  bool isLoading;
 
 /// Create a copy of ProfileState
@@ -243,16 +235,16 @@ _$ProfileStateCopyWith<_ProfileState> get copyWith => __$ProfileStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.currentUser, currentUser) || other.currentUser == currentUser)&&const DeepCollectionEquality().equals(other._favoriteDevices, _favoriteDevices)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.currentUser, currentUser) || other.currentUser == currentUser)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentUser,const DeepCollectionEquality().hash(_favoriteDevices),isLoading);
+int get hashCode => Object.hash(runtimeType,currentUser,isLoading);
 
 @override
 String toString() {
-  return 'ProfileState(currentUser: $currentUser, favoriteDevices: $favoriteDevices, isLoading: $isLoading)';
+  return 'ProfileState(currentUser: $currentUser, isLoading: $isLoading)';
 }
 
 
@@ -263,7 +255,7 @@ abstract mixin class _$ProfileStateCopyWith<$Res> implements $ProfileStateCopyWi
   factory _$ProfileStateCopyWith(_ProfileState value, $Res Function(_ProfileState) _then) = __$ProfileStateCopyWithImpl;
 @override @useResult
 $Res call({
- UserModel? currentUser, List<DeviceModel> favoriteDevices, bool isLoading
+ UserModel? currentUser, bool isLoading
 });
 
 
@@ -280,11 +272,10 @@ class __$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? currentUser = freezed,Object? favoriteDevices = null,Object? isLoading = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? currentUser = freezed,Object? isLoading = null,}) {
   return _then(_ProfileState(
 currentUser: freezed == currentUser ? _self.currentUser : currentUser // ignore: cast_nullable_to_non_nullable
-as UserModel?,favoriteDevices: null == favoriteDevices ? _self._favoriteDevices : favoriteDevices // ignore: cast_nullable_to_non_nullable
-as List<DeviceModel>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as UserModel?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

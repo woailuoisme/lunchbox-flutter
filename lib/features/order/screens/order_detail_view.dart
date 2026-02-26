@@ -25,18 +25,20 @@ class OrderDetailView extends ConsumerWidget {
     try {
       switch (action) {
         case 'cancel':
-          await notifier.cancelOrder(order.id);
+          await notifier.cancelOrder(order.id.toString());
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(t.order.orderCancelled)));
             // 刷新订单状态
-            await ref.read(orderProvider.notifier).loadOrderById(order.id);
+            await ref
+                .read(orderProvider.notifier)
+                .loadOrderById(order.id.toString());
           }
           break;
         case 'pay':
           // 使用 Stripe 支付
-          await notifier.payOrder(order.id, 'stripe');
+          await notifier.payOrder(order.id.toString(), 'stripe');
           if (context.mounted) {
             ScaffoldMessenger.of(
               context,
@@ -44,16 +46,15 @@ class OrderDetailView extends ConsumerWidget {
           }
           break;
         case 'reorder':
-          final newOrder = await notifier.reorder(order.id);
-          if (context.mounted && newOrder != null) {
+          await notifier.reorder(order.id.toString());
+          if (context.mounted) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(t.order.reorderSuccess)));
-            // 跳转到新订单详情（替换当前页面）
-            context.pushReplacement(
-              '${AppRoutes.orderDetail}/${newOrder.id}',
-              extra: {'order': newOrder},
-            );
+            // Navigate to cart
+            if (context.mounted) {
+              await context.push(AppRoutes.cart);
+            }
           }
           break;
         case 'refund':
@@ -146,10 +147,6 @@ class OrderDetailView extends ConsumerWidget {
                                   order.status == OrderStatus.completed)
                                 _buildPickupInfo(context, order),
 
-                              // 门店信息
-                              if (order.storeName != null)
-                                _buildStoreInfo(context, order),
-
                               // 商品列表
                               _buildProductList(context, order),
 
@@ -221,17 +218,6 @@ class OrderDetailView extends ConsumerWidget {
                   color: theme.colorScheme.onPrimary,
                 ),
               ),
-              if (order.remark != null && order.remark!.isNotEmpty)
-                Padding(
-                  padding: EdgeInsets.only(top: 4.h),
-                  child: Text(
-                    order.remark!,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: theme.colorScheme.onPrimary.withValues(alpha: 0.9),
-                    ),
-                  ),
-                ),
             ],
           ),
         ],
@@ -269,7 +255,7 @@ class OrderDetailView extends ConsumerWidget {
             child: Column(
               children: [
                 QrImageView(
-                  data: order.id,
+                  data: order.id.toString(),
                   version: QrVersions.auto,
                   size: 180.w,
                   gapless: false,
@@ -291,113 +277,19 @@ class OrderDetailView extends ConsumerWidget {
             ),
           ),
           SizedBox(height: 20.h),
-          if (order.pickupHint != null)
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.info_outline_rounded,
-                    size: 16.sp,
-                    color: theme.colorScheme.primary,
-                  ),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: Text(
-                      order.pickupHint!,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          else
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.errorContainer,
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Text(
-                t.order.pickupCodeHint,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: theme.colorScheme.error,
-                ),
-                textAlign: TextAlign.center,
-              ),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.errorContainer,
+              borderRadius: BorderRadius.circular(8.r),
             ),
-        ],
-      ),
-    );
-  }
-
-  /// 构建门店信息
-  Widget _buildStoreInfo(BuildContext context, OrderModel order) {
-    final theme = Theme.of(context);
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w).copyWith(bottom: 16.h),
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            t.order.storeInfo,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: theme.textTheme.bodyLarge?.color,
+            child: Text(
+              t.order.pickupCodeHint,
+              style: TextStyle(fontSize: 14.sp, color: theme.colorScheme.error),
+              textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(height: 12.h),
-          Row(
-            children: [
-              Icon(Icons.store, size: 20.sp, color: theme.hintColor),
-              SizedBox(width: 8.w),
-              Expanded(
-                child: Text(
-                  order.storeName ?? '',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: theme.textTheme.bodyLarge?.color,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          if (order.storeAddress != null) ...[
-            SizedBox(height: 8.h),
-            Row(
-              children: [
-                Icon(Icons.location_on, size: 20.sp, color: theme.hintColor),
-                SizedBox(width: 8.w),
-                Expanded(
-                  child: Text(
-                    order.storeAddress!,
-                    style: TextStyle(fontSize: 13.sp, color: theme.hintColor),
-                  ),
-                ),
-              ],
-            ),
-          ],
         ],
       ),
     );
@@ -427,7 +319,7 @@ class OrderDetailView extends ConsumerWidget {
             ),
           ),
           Divider(height: 1, color: theme.dividerColor),
-          ...order.items.map(
+          ...order.products.map(
             (item) => Container(
               padding: EdgeInsets.all(16.w),
               child: Row(
@@ -436,7 +328,7 @@ class OrderDetailView extends ConsumerWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.r),
                     child: Image.network(
-                      item.product.imageUrl,
+                      item.thumb,
                       width: 70.w,
                       height: 70.w,
                       fit: BoxFit.cover,
@@ -454,7 +346,7 @@ class OrderDetailView extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          item.product.name,
+                          item.name,
                           style: TextStyle(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.bold,
@@ -465,9 +357,7 @@ class OrderDetailView extends ConsumerWidget {
                         ),
                         SizedBox(height: 4.h),
                         Text(
-                          t.order.specs(
-                            specs: item.product.specifications ?? '',
-                          ),
+                          item.description,
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: theme.hintColor,
@@ -478,7 +368,7 @@ class OrderDetailView extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '¥${item.product.price}',
+                              '¥${item.salePrice}',
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.bold,
@@ -508,7 +398,7 @@ class OrderDetailView extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  t.order.summary(count: order.items.length),
+                  t.order.summary(count: order.products.length),
                   style: TextStyle(fontSize: 13.sp, color: theme.hintColor),
                 ),
                 Text(
@@ -551,26 +441,20 @@ class OrderDetailView extends ConsumerWidget {
             ),
           ),
           SizedBox(height: 16.h),
-          _buildInfoRow(context, t.order.id, order.id),
+          _buildInfoRow(context, t.order.id, order.id.toString()),
           _buildInfoRow(
             context,
             t.order.createdAt,
-            dateFormat.format(order.createdAt),
+            dateFormat.format(order.createdAtDateTime),
           ),
-          if (order.paidAt != null)
-            _buildInfoRow(
-              context,
-              t.order.paidAt,
-              dateFormat.format(order.paidAt!),
-            ),
-          if (order.paymentMethod != null)
+          if (order.payType != null)
             _buildInfoRow(
               context,
               t.order.paymentMethod,
-              _getPaymentMethodText(order.paymentMethod!),
+              _getPaymentMethodText(order.payType!),
             ),
           if (order.device != null)
-            _buildInfoRow(context, t.order.device, order.device!.name),
+            _buildInfoRow(context, t.order.device, order.device!.sn),
         ],
       ),
     );
@@ -631,7 +515,7 @@ class OrderDetailView extends ConsumerWidget {
         ),
       ];
     } else if (order.status == OrderStatus.cancelled ||
-        order.status == OrderStatus.refunded) {
+        order.status == OrderStatus.refund) {
       buttons = [
         _buildButton(
           context,
@@ -719,7 +603,7 @@ class OrderDetailView extends ConsumerWidget {
     switch (method) {
       case PaymentMethod.stripe:
         return t.order.paymentStripe;
-      case PaymentMethod.wechatPay:
+      case PaymentMethod.wechat:
         return t.order.paymentWechat;
       case PaymentMethod.alipay:
         return t.order.paymentAlipay;

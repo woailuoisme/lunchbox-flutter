@@ -339,7 +339,7 @@ class _CitySelectionViewState extends ConsumerState<CitySelectionView> {
   Widget _buildCityItem(CityModel city, ThemeData theme) {
     final selectedCityAsync = ref.watch(selectedCityProvider);
     final selectedCity = selectedCityAsync.asData?.value;
-    final isSelected = selectedCity?.id == city.id;
+    final isSelected = selectedCity?.code == city.code;
 
     return ColoredBox(
       color: theme.colorScheme.surface,

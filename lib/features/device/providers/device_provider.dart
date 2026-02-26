@@ -1,4 +1,5 @@
 import 'package:lunchbox/core/errors/errors.dart';
+import 'package:lunchbox/core/services/location_service.dart';
 import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/features/product/product.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -41,17 +42,22 @@ class RawDevices extends _$RawDevices {
   Future<List<DeviceModel>> build() async {
     final repository = ref.watch(deviceRepositoryProvider);
     final selectedCityAsync = ref.watch(selectedCityProvider);
+    final locationService = ref.watch(locationServiceProvider);
 
     // 等待城市加载完成
     final selectedCity = selectedCityAsync.value;
 
     if (selectedCity != null) {
-      final result = await repository.getDevicesByCityId(selectedCity.id).run();
-      return result.getOrThrow();
+      final position = await locationService.getCurrentPosition();
+      final latitude = position?.latitude ?? 22.543099;
+      final longitude = position?.longitude ?? 114.057868;
+      return await repository.getDevicesWithDistance(
+        cityCode: selectedCity.code,
+        latitude: latitude,
+        longitude: longitude,
+      );
     } else {
-      // 如果没有选择城市，加载所有设备（或附近设备，这里暂用所有）
-      final result = await repository.getAllDevices().run();
-      return result.getOrThrow();
+      return await repository.getFrequentDevices();
     }
   }
 }
@@ -68,28 +74,45 @@ Future<List<DeviceModel>> filteredDevices(Ref ref) async {
 
   // 过滤：在线状态
   if (onlineOnly) {
-    // 假设 DeviceModel 有 status 字段，且 'online' 为在线
-    // 需要检查 DeviceModel 定义，这里假设 status == 1 或 'online'
-    // 暂时用 status == 'online'
-    filtered = filtered.where((d) => d.status == 'online').toList();
+    filtered = filtered.where((d) => d.isEnabled).toList();
   }
 
   // 过滤：搜索关键词
   if (searchQuery.isNotEmpty) {
+    final keyword = searchQuery.toLowerCase();
     filtered = filtered
         .where(
           (d) =>
-              d.name.contains(searchQuery) ||
-              (d.location.address?.contains(searchQuery) ?? false),
+              d.name.toLowerCase().contains(keyword) ||
+              d.fullAddress.toLowerCase().contains(keyword) ||
+              d.streetAddress.toLowerCase().contains(keyword),
         )
         .toList();
   }
 
   // 排序
   if (sort == 'distance') {
-    // TODO(User): 实现距离计算和排序。需要引入用户位置 Provider。
-    // 目前 DeviceModel 不包含 distance 字段。
-    // filtered.sort((a, b) => (a.distance ?? 0).compareTo(b.distance ?? 0));
+    double parseDistance(DeviceModel device) {
+      final kmText = device.distanceKm ?? device.distance;
+      if (kmText == null || kmText.isEmpty) {
+        return double.infinity;
+      }
+      final match = RegExp(r'[\d.]+').firstMatch(kmText);
+      if (match == null) {
+        return double.infinity;
+      }
+      final value = double.tryParse(match.group(0) ?? '');
+      if (value == null) {
+        return double.infinity;
+      }
+      if (kmText.toLowerCase().contains('m') &&
+          !kmText.toLowerCase().contains('km')) {
+        return value / 1000;
+      }
+      return value;
+    }
+
+    filtered.sort((a, b) => parseDistance(a).compareTo(parseDistance(b)));
   } else if (sort == 'name') {
     filtered.sort((a, b) => a.name.compareTo(b.name));
   }
@@ -111,9 +134,34 @@ class SelectedDevice extends _$SelectedDevice {
 @riverpod
 Future<DeviceModel> deviceDetail(Ref ref, String deviceId) async {
   ref.keepAlive();
-  final repository = ref.watch(deviceRepositoryProvider);
-  final result = await repository.getDeviceById(deviceId).run();
-  return result.getOrThrow();
+  final selectedDevice = ref.watch(selectedDeviceProvider);
+  if (selectedDevice != null && selectedDevice.id.toString() == deviceId) {
+    return selectedDevice;
+  }
+
+  try {
+    final devices = await ref.watch(rawDevicesProvider.future);
+    final matched = devices.firstWhere(
+      (device) => device.id.toString() == deviceId,
+      orElse: () => throw const Failure.server(
+        message: 'Device not found',
+        statusCode: 404,
+      ),
+    );
+    return matched;
+  } on Failure {
+    rethrow;
+  } catch (_) {
+    final repository = ref.watch(deviceRepositoryProvider);
+    final List<DeviceModel> devices = await repository.getFrequentDevices();
+    return devices.firstWhere(
+      (DeviceModel device) => device.id.toString() == deviceId,
+      orElse: () => throw const Failure.server(
+        message: 'Device not found',
+        statusCode: 404,
+      ),
+    );
+  }
 }
 
 /// 获取指定设备的产品列表
@@ -121,6 +169,5 @@ Future<DeviceModel> deviceDetail(Ref ref, String deviceId) async {
 Future<List<ProductModel>> deviceProducts(Ref ref, String deviceId) async {
   ref.keepAlive();
   final repository = ref.watch(productRepositoryProvider);
-  final result = await repository.getProductsByDeviceId(deviceId).run();
-  return result.getOrThrow();
+  return await repository.getProductsByDeviceId(deviceId);
 }

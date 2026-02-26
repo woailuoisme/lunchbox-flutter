@@ -1,4 +1,4 @@
-import 'package:lunchbox/core/errors/failure_extensions.dart';
+import 'package:lunchbox/core/errors/failure.dart';
 import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:lunchbox/features/product/repositories/product_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -49,11 +49,14 @@ class ProductCategory extends _$ProductCategory {
 Future<List<String>> productCategories(Ref ref, String deviceId) async {
   ref.keepAlive();
   final repository = ref.watch(productRepositoryProvider);
-  final result = await repository.getProductCategories(deviceId).run();
-  return result.fold(
-    (failure) => ['all'],
-    (categories) => ['all', ...categories],
-  );
+  try {
+    final List<String> categories = await repository.getProductCategories(
+      deviceId,
+    );
+    return <String>['all', ...categories];
+  } catch (_) {
+    return <String>['all'];
+  }
 }
 
 /// 获取指定设备的产品列表（原始列表）
@@ -64,16 +67,25 @@ class RawProducts extends _$RawProducts {
     final repository = ref.watch(productRepositoryProvider);
     final category = ref.watch(productCategoryProvider);
 
-    final result =
-        await (category != 'all'
-                ? repository.getProductsByCategory(deviceId, category)
-                : repository.getProductsByDeviceId(deviceId))
-            .run();
-
-    return result.fold(
-      (failure) => throw Exception(failure.toUserMessage()),
-      (products) => products,
-    );
+    try {
+      final List<ProductModel> products = await (category != 'all'
+          ? repository.getProductsByCategory(deviceId, category)
+          : repository.getProductsByDeviceId(deviceId));
+      return products;
+    } catch (e) {
+      if (e is Failure) {
+        final String message = e.when(
+          network: (msg, _) => msg,
+          server: (msg, _) => msg,
+          cache: (msg) => msg,
+          notFound: (res) => 'Resource not found: $res',
+          unauthorized: () => 'Unauthorized access',
+          validation: (msg, _) => msg,
+        );
+        throw Exception(message);
+      }
+      rethrow;
+    }
   }
 }
 
@@ -117,9 +129,21 @@ Future<List<ProductModel>> filteredProducts(Ref ref, String deviceId) async {
 Future<ProductModel> productDetail(Ref ref, String productId) async {
   ref.keepAlive();
   final repository = ref.watch(productRepositoryProvider);
-  final result = await repository.getProductById(productId).run();
-  return result.fold(
-    (failure) => throw Exception(failure.toUserMessage()),
-    (product) => product,
-  );
+  try {
+    final ProductModel product = await repository.getProductById(productId);
+    return product;
+  } catch (e) {
+    if (e is Failure) {
+      final String message = e.when(
+        network: (msg, _) => msg,
+        server: (msg, _) => msg,
+        cache: (msg) => msg,
+        notFound: (res) => 'Resource not found: $res',
+        unauthorized: () => 'Unauthorized access',
+        validation: (msg, _) => msg,
+      );
+      throw Exception(message);
+    }
+    rethrow;
+  }
 }

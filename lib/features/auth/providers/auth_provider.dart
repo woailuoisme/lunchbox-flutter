@@ -1,6 +1,3 @@
-import 'package:lunchbox/core/errors/app_exception.dart';
-import 'package:lunchbox/core/errors/failure.dart';
-import 'package:lunchbox/core/errors/failure_extensions.dart';
 import 'package:lunchbox/features/auth/repositories/auth_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,10 +13,8 @@ class Auth extends _$Auth {
 
   Future<void> login(String username, String password) async {
     final repo = ref.read(authRepositoryProvider);
-    final result = await repo
-        .login(username: username, password: password)
-        .run();
-    result.fold(_handleFailure, (_) => _setAuthenticated(true));
+    await repo.login(username: username, password: password);
+    _setAuthenticated(true);
   }
 
   Future<void> register(
@@ -28,33 +23,30 @@ class Auth extends _$Auth {
     String nickname,
   ) async {
     final repo = ref.read(authRepositoryProvider);
-    final result = await repo
-        .register(username: username, password: password, nickname: nickname)
-        .run();
-
-    result.fold(_handleFailure, (_) => _setAuthenticated(true));
+    await repo.register(
+      username: username,
+      password: password,
+      nickname: nickname,
+    );
+    _setAuthenticated(true);
   }
 
   Future<void> loginWithPhone(String phone, String code) async {
     final repo = ref.read(authRepositoryProvider);
-    final result = await repo.loginWithPhone(phone: phone, code: code).run();
-    result.fold(_handleFailure, (_) => _setAuthenticated(true));
+    await repo.loginWithPhone(phone: phone, code: code);
+    _setAuthenticated(true);
   }
 
   Future<void> loginWithGoogle() async {
     final repo = ref.read(authRepositoryProvider);
-    final result = await repo.loginWithGoogle().run();
-    result.fold(_handleFailure, (_) => _setAuthenticated(true));
+    await repo.loginWithGoogle();
+    _setAuthenticated(true);
   }
 
   Future<void> logout() async {
     final repo = ref.read(authRepositoryProvider);
-    final result = await repo.logout().run();
-    result.fold(_handleFailure, (_) => _setAuthenticated(false));
-  }
-
-  Never _handleFailure(Failure failure) {
-    throw AppException(failure.toUserMessage());
+    await repo.logout();
+    _setAuthenticated(false);
   }
 
   void _setAuthenticated(bool value) {

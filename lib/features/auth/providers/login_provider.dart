@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:lunchbox/core/errors/failure_extensions.dart';
-import 'package:lunchbox/core/utils/logger_utils.dart';
+
+import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/features/auth/providers/auth_provider.dart';
 import 'package:lunchbox/features/auth/providers/login_state.dart';
 import 'package:lunchbox/features/auth/repositories/auth_repository.dart';
@@ -9,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'login_provider.g.dart';
 
 @riverpod
-class LoginNotifier extends _$LoginNotifier {
+class LoginNotifier extends _$LoginNotifier with AsyncRunnerMixin<LoginState> {
   Timer? _timer;
 
   @override
@@ -51,20 +51,19 @@ class LoginNotifier extends _$LoginNotifier {
       return;
     }
 
-    final result = await ref
-        .read(authRepositoryProvider)
-        .sendVerificationCode(state.phoneNumber)
-        .run();
-    result.fold(
-      (failure) {
-        final message = failure.toUserMessage();
-        LoggerUtils.e('Send verification code failed', message);
-        state = state.copyWith(errorMessage: message);
-      },
-      (_) {
+    await runAsync(
+      () async {
+        await ref
+            .read(authRepositoryProvider)
+            .sendVerificationCode(state.phoneNumber);
+
         state = state.copyWith(isCodeSent: true, countdown: 60);
         _startTimer();
       },
+      loadingStateUpdater: (state, isLoading) => state.copyWith(
+        status: isLoading ? LoginStatus.inProgress : LoginStatus.initial,
+      ),
+      errorLabel: 'Send verification code failed',
     );
   }
 
@@ -91,26 +90,23 @@ class LoginNotifier extends _$LoginNotifier {
       return;
     }
 
-    state = state.copyWith(status: LoginStatus.inProgress, errorMessage: null);
-
-    try {
-      if (state.loginType == LoginType.password) {
-        await ref
-            .read(authProvider.notifier)
-            .login(state.username, state.password);
-      } else {
-        await ref
-            .read(authProvider.notifier)
-            .loginWithPhone(state.phoneNumber, state.verificationCode);
-      }
-      state = state.copyWith(status: LoginStatus.success, errorMessage: null);
-    } catch (e) {
-      LoggerUtils.e('Login failed', e);
-      state = state.copyWith(
-        status: LoginStatus.failure,
-        errorMessage: e.toString(),
-      );
-    }
+    await runAsync(
+      () async {
+        if (state.loginType == LoginType.password) {
+          await ref
+              .read(authProvider.notifier)
+              .login(state.username, state.password);
+        } else {
+          await ref
+              .read(authProvider.notifier)
+              .loginWithPhone(state.phoneNumber, state.verificationCode);
+        }
+      },
+      loadingStateUpdater: (state, isLoading) => state.copyWith(
+        status: isLoading ? LoginStatus.inProgress : LoginStatus.initial,
+      ),
+      errorLabel: 'Login failed',
+    );
   }
 
   Future<void> loginWithGoogle() async {
@@ -118,17 +114,14 @@ class LoginNotifier extends _$LoginNotifier {
       return;
     }
 
-    state = state.copyWith(status: LoginStatus.inProgress, errorMessage: null);
-
-    try {
-      await ref.read(authProvider.notifier).loginWithGoogle();
-      state = state.copyWith(status: LoginStatus.success, errorMessage: null);
-    } catch (e) {
-      LoggerUtils.e('Google Login failed', e);
-      state = state.copyWith(
-        status: LoginStatus.failure,
-        errorMessage: e.toString(),
-      );
-    }
+    await runAsync(
+      () async {
+        await ref.read(authProvider.notifier).loginWithGoogle();
+      },
+      loadingStateUpdater: (state, isLoading) => state.copyWith(
+        status: isLoading ? LoginStatus.inProgress : LoginStatus.initial,
+      ),
+      errorLabel: 'Google Login failed',
+    );
   }
 }

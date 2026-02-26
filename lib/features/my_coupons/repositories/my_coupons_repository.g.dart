@@ -63,16 +63,17 @@ final userCouponsProvider = UserCouponsFamily._();
 final class UserCouponsProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<CouponModel>>,
-          List<CouponModel>,
-          FutureOr<List<CouponModel>>
+          AsyncValue<List<UserCouponModel>>,
+          List<UserCouponModel>,
+          FutureOr<List<UserCouponModel>>
         >
     with
-        $FutureModifier<List<CouponModel>>,
-        $FutureProvider<List<CouponModel>> {
+        $FutureModifier<List<UserCouponModel>>,
+        $FutureProvider<List<UserCouponModel>> {
   UserCouponsProvider._({
     required UserCouponsFamily super.from,
-    required int? super.argument,
+    required ({String? category, String? type, String? usedType})
+    super.argument,
   }) : super(
          retry: null,
          name: r'userCouponsProvider',
@@ -88,19 +89,25 @@ final class UserCouponsProvider
   String toString() {
     return r'userCouponsProvider'
         ''
-        '($argument)';
+        '$argument';
   }
 
   @$internal
   @override
-  $FutureProviderElement<List<CouponModel>> $createElement(
+  $FutureProviderElement<List<UserCouponModel>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<CouponModel>> create(Ref ref) {
-    final argument = this.argument as int?;
-    return userCoupons(ref, status: argument);
+  FutureOr<List<UserCouponModel>> create(Ref ref) {
+    final argument =
+        this.argument as ({String? category, String? type, String? usedType});
+    return userCoupons(
+      ref,
+      category: argument.category,
+      type: argument.type,
+      usedType: argument.usedType,
+    );
   }
 
   @override
@@ -114,10 +121,14 @@ final class UserCouponsProvider
   }
 }
 
-String _$userCouponsHash() => r'e44f2d8d783470e2941ecd234e71fe0193d81629';
+String _$userCouponsHash() => r'385ece46c06404c056fedd030dbe849c51b03f12';
 
 final class UserCouponsFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<List<CouponModel>>, int?> {
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<UserCouponModel>>,
+          ({String? category, String? type, String? usedType})
+        > {
   UserCouponsFamily._()
     : super(
         retry: null,
@@ -127,8 +138,14 @@ final class UserCouponsFamily extends $Family
         isAutoDispose: true,
       );
 
-  UserCouponsProvider call({int? status}) =>
-      UserCouponsProvider._(argument: status, from: this);
+  UserCouponsProvider call({
+    String? category,
+    String? type,
+    String? usedType,
+  }) => UserCouponsProvider._(
+    argument: (category: category, type: type, usedType: usedType),
+    from: this,
+  );
 
   @override
   String toString() => r'userCouponsProvider';

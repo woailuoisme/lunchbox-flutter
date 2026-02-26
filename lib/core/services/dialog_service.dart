@@ -2,18 +2,39 @@ import 'dart:async';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:lunchbox/core/providers/navigator_key_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class AppDialog {
-  static Future<void> showInfo(
-    BuildContext context, {
+part 'dialog_service.g.dart';
+
+/// 对话框服务
+///
+/// 提供统一的对话框功能，支持信息、成功、错误、警告和确认五种类型。
+/// 基于 AwesomeDialog 实现。
+@riverpod
+DialogService dialogService(Ref ref) {
+  final navigatorKey = ref.watch(navigatorKeyProvider);
+  return DialogService(navigatorKey: navigatorKey);
+}
+
+class DialogService {
+  const DialogService({required this.navigatorKey});
+
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  BuildContext? get _context => navigatorKey.currentContext;
+
+  /// 显示提示对话框
+  Future<void> showInfo({
     String? title,
     required String message,
     String? okText,
     VoidCallback? onOk,
+    BuildContext? context,
   }) {
     return _show(
-      context,
+      context: context,
       dialogType: DialogType.info,
       title: title ?? t.common.info,
       message: message,
@@ -22,15 +43,16 @@ class AppDialog {
     );
   }
 
-  static Future<void> showSuccess(
-    BuildContext context, {
+  /// 显示成功对话框
+  Future<void> showSuccess({
     String? title,
     required String message,
     String? okText,
     VoidCallback? onOk,
+    BuildContext? context,
   }) {
     return _show(
-      context,
+      context: context,
       dialogType: DialogType.success,
       title: title ?? t.common.success,
       message: message,
@@ -39,15 +61,16 @@ class AppDialog {
     );
   }
 
-  static Future<void> showError(
-    BuildContext context, {
+  /// 显示错误对话框
+  Future<void> showError({
     String? title,
     required String message,
     String? okText,
     VoidCallback? onOk,
+    BuildContext? context,
   }) {
     return _show(
-      context,
+      context: context,
       dialogType: DialogType.error,
       title: title ?? t.common.error,
       message: message,
@@ -56,15 +79,16 @@ class AppDialog {
     );
   }
 
-  static Future<void> showWarning(
-    BuildContext context, {
+  /// 显示警告对话框
+  Future<void> showWarning({
     String? title,
     required String message,
     String? okText,
     VoidCallback? onOk,
+    BuildContext? context,
   }) {
     return _show(
-      context,
+      context: context,
       dialogType: DialogType.warning,
       title: title ?? t.common.warning,
       message: message,
@@ -73,20 +97,24 @@ class AppDialog {
     );
   }
 
-  static Future<bool?> showConfirm(
-    BuildContext context, {
+  /// 显示确认对话框
+  Future<bool?> showConfirm({
     String? title,
     required String message,
     String? confirmText,
     String? cancelText,
     VoidCallback? onConfirm,
     VoidCallback? onCancel,
+    BuildContext? context,
   }) {
+    final targetContext = context ?? _context;
+    if (targetContext == null) return Future.value(null);
+
     final completer = Completer<bool?>();
-    final theme = Theme.of(context);
+    final theme = Theme.of(targetContext);
 
     AwesomeDialog(
-      context: context,
+      context: targetContext,
       dialogType: DialogType.question,
       animType: AnimType.scale,
       title: title ?? t.common.confirm,
@@ -117,8 +145,8 @@ class AppDialog {
     return completer.future;
   }
 
-  static Future<void> showContent(
-    BuildContext context, {
+  /// 显示自定义内容对话框
+  Future<void> showContent({
     String? title,
     required Widget content,
     String? okText,
@@ -127,10 +155,14 @@ class AppDialog {
     DialogType dialogType = DialogType.noHeader,
     double? width,
     EdgeInsetsGeometry? padding,
+    BuildContext? context,
   }) {
-    final theme = Theme.of(context);
+    final targetContext = context ?? _context;
+    if (targetContext == null) return Future.value();
+
+    final theme = Theme.of(targetContext);
     return AwesomeDialog(
-      context: context,
+      context: targetContext,
       dialogType: dialogType,
       animType: AnimType.scale,
       title: title,
@@ -144,17 +176,20 @@ class AppDialog {
     ).show();
   }
 
-  static Future<void> _show(
-    BuildContext context, {
+  Future<void> _show({
     required DialogType dialogType,
     required String title,
     required String message,
     String? okText,
     VoidCallback? onOk,
+    BuildContext? context,
   }) {
-    final theme = Theme.of(context);
+    final targetContext = context ?? _context;
+    if (targetContext == null) return Future.value();
+
+    final theme = Theme.of(targetContext);
     return AwesomeDialog(
-      context: context,
+      context: targetContext,
       dialogType: dialogType,
       animType: AnimType.scale,
       title: title,

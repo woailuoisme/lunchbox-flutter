@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
-import 'package:fpdart/fpdart.dart';
-import 'package:lunchbox/core/errors/failure.dart';
-import 'package:lunchbox/core/network/rest_client.dart';
+import 'package:lunchbox/core/errors/repository_error_handler_mixin.dart';
+import 'package:lunchbox/features/cart/datasources/cart_rest_client.dart';
 import 'package:lunchbox/core/services/database_service.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
@@ -17,19 +15,19 @@ part 'cart_repository.g.dart';
 @Riverpod(keepAlive: true)
 CartRepository cartRepository(Ref ref) {
   final storageService = ref.watch(storageServiceProvider);
-  final client = ref.watch(restClientProvider);
+  final client = ref.watch(cartRestClientProvider);
   final database = ref.watch(databaseServiceProvider);
   return CartRepository(storageService, client, database);
 }
 
 /// 购物车仓库类
 /// 负责处理购物车相关的数据访问和业务逻辑
-class CartRepository {
+class CartRepository with RepositoryErrorHandlerMixin {
   CartRepository(this._storage, this._client, this._db);
   static const String currentDeviceKey = 'current_device_id';
 
   final StorageService _storage;
-  final RestClient _client;
+  final CartRestClient _client;
   final AppDatabase _db;
 
   /// 获取当前购物车中的所有商品
@@ -50,8 +48,8 @@ class CartRepository {
           isSelected: item.isSelected,
         );
       }).toList();
-    } catch (e) {
-      LoggerUtils.e('Failed to fetch cart items from database', e);
+    } catch (e, stack) {
+      LoggerUtils.e('Failed to fetch cart items from database', e, stack);
       return [];
     }
   }
@@ -195,11 +193,16 @@ class CartRepository {
   }
 
   /// 同步购物车数据（与服务器同步）
-  TaskEither<Failure, bool> syncCart() {
-    return TaskEither.tryCatch(() async {
+  Future<bool> syncCart() async {
+    try {
       // 在实际项目中，这里应该与服务器同步购物车数据
+      // 例如：final remoteCart = await _client.getCart();
+      // 然后更新本地数据库
       return true;
-    }, _handleError);
+    } catch (e, stack) {
+      LoggerUtils.e('Failed to sync cart', e, stack);
+      throw handleError(e, stack);
+    }
   }
 
   /// 批量添加商品到购物车
@@ -209,15 +212,5 @@ class CartRepository {
     for (final entry in productsWithQuantity.entries) {
       await addToCart(entry.key, quantity: entry.value);
     }
-  }
-
-  Failure _handleError(Object error, StackTrace stackTrace) {
-    if (error is DioException) {
-      return Failure.network(
-        message: error.message ?? 'Unknown network error',
-        statusCode: error.response?.statusCode,
-      );
-    }
-    return Failure.server(message: error.toString(), statusCode: 500);
   }
 }
