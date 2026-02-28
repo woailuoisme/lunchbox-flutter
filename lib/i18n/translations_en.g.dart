@@ -2152,6 +2152,30 @@ class _TranslationsProductEn extends TranslationsProductZhCn {
   @override
   String get cart =>
       TranslationOverrides.string(_root.$meta, 'product.cart', {}) ?? 'Cart';
+  @override
+  String get noProducts =>
+      TranslationOverrides.string(_root.$meta, 'product.noProducts', {}) ??
+      'No products found';
+  @override
+  String get loadingDetail =>
+      TranslationOverrides.string(_root.$meta, 'product.loadingDetail', {}) ??
+      'Loading product details, please wait...';
+  @override
+  String get noDescription =>
+      TranslationOverrides.string(_root.$meta, 'product.noDescription', {}) ??
+      'No detailed description';
+  @override
+  String get reviews =>
+      TranslationOverrides.string(_root.$meta, 'product.reviews', {}) ??
+      'Product Reviews';
+  @override
+  String get noReviews =>
+      TranslationOverrides.string(_root.$meta, 'product.noReviews', {}) ??
+      'No reviews yet';
+  @override
+  String get viewAllReviews =>
+      TranslationOverrides.string(_root.$meta, 'product.viewAllReviews', {}) ??
+      'View all reviews';
 }
 
 // Path: profile
@@ -6545,6 +6569,40 @@ extension on TranslationsEn {
           'product.cart' =>
             TranslationOverrides.string(_root.$meta, 'product.cart', {}) ??
                 'Cart',
+          'product.noProducts' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'product.noProducts',
+                  {},
+                ) ??
+                'No products found',
+          'product.loadingDetail' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'product.loadingDetail',
+                  {},
+                ) ??
+                'Loading product details, please wait...',
+          'product.noDescription' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'product.noDescription',
+                  {},
+                ) ??
+                'No detailed description',
+          'product.reviews' =>
+            TranslationOverrides.string(_root.$meta, 'product.reviews', {}) ??
+                'Product Reviews',
+          'product.noReviews' =>
+            TranslationOverrides.string(_root.$meta, 'product.noReviews', {}) ??
+                'No reviews yet',
+          'product.viewAllReviews' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'product.viewAllReviews',
+                  {},
+                ) ??
+                'View all reviews',
           'profile.title' =>
             TranslationOverrides.string(_root.$meta, 'profile.title', {}) ??
                 'User Center',

@@ -4,16 +4,16 @@ part 'nearest_device_model.freezed.dart';
 part 'nearest_device_model.g.dart';
 
 @freezed
-abstract class NearestDeviceModel with _$NearestDeviceModel {
+sealed class NearestDeviceModel with _$NearestDeviceModel {
   const factory NearestDeviceModel({
     required int id,
-    required String name,
-    required String distance,
-    @JsonKey(name: 'distance_km') required String distanceKm,
-    required String latitude,
-    required String longitude,
-    required NearestCity city,
-    @JsonKey(name: 'street_address') required String streetAddress,
+    @Default('') String name,
+    @Default('') String distance,
+    @JsonKey(name: 'distance_km') @Default('') String distanceKm,
+    @Default('') String latitude,
+    @Default('') String longitude,
+    @Default(NearestCity(name: '', code: '')) NearestCity city,
+    @JsonKey(name: 'street_address') @Default('') String streetAddress,
   }) = _NearestDeviceModel;
 
   factory NearestDeviceModel.fromJson(Map<String, dynamic> json) =>
@@ -21,9 +21,11 @@ abstract class NearestDeviceModel with _$NearestDeviceModel {
 }
 
 @freezed
-abstract class NearestCity with _$NearestCity {
-  const factory NearestCity({required String name, required String code}) =
-      _NearestCity;
+sealed class NearestCity with _$NearestCity {
+  const factory NearestCity({
+    @Default('') String name,
+    @Default('') String code,
+  }) = _NearestCity;
 
   factory NearestCity.fromJson(Map<String, dynamic> json) =>
       _$NearestCityFromJson(json);

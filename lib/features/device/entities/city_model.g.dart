@@ -10,10 +10,10 @@ _CityModel _$CityModelFromJson(Map<String, dynamic> json) =>
     $checkedCreate('_CityModel', json, ($checkedConvert) {
       final val = _CityModel(
         code: $checkedConvert('code', (v) => v as String),
-        name: $checkedConvert('name', (v) => v as String),
-        province: $checkedConvert('province', (v) => v as String),
-        city: $checkedConvert('city', (v) => v as String),
-        count: $checkedConvert('count', (v) => (v as num).toInt()),
+        name: $checkedConvert('name', (v) => v as String? ?? ''),
+        province: $checkedConvert('province', (v) => v as String? ?? ''),
+        city: $checkedConvert('city', (v) => v as String? ?? ''),
+        count: $checkedConvert('count', (v) => (v as num?)?.toInt() ?? 0),
       );
       return val;
     });

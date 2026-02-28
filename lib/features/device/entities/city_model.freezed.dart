@@ -124,10 +124,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _CityModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -186,10 +183,7 @@ return $default(_that.code,_that.name,_that.province,_that.city,_that.count);cas
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String code,  String name,  String province,  String city,  int count)  $default,) {final _that = this;
 switch (_that) {
 case _CityModel():
-return $default(_that.code,_that.name,_that.province,_that.city,_that.count);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.code,_that.name,_that.province,_that.city,_that.count);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -218,19 +212,19 @@ return $default(_that.code,_that.name,_that.province,_that.city,_that.count);cas
 @JsonSerializable()
 
 class _CityModel implements CityModel {
-  const _CityModel({required this.code, required this.name, required this.province, required this.city, required this.count});
+  const _CityModel({required this.code, this.name = '', this.province = '', this.city = '', this.count = 0});
   factory _CityModel.fromJson(Map<String, dynamic> json) => _$CityModelFromJson(json);
 
 /// 城市代码 (如: "440100")
 @override final  String code;
 /// 城市名称 (如: "广州市")
-@override final  String name;
+@override@JsonKey() final  String name;
 /// 省份代码 (如: "44")
-@override final  String province;
+@override@JsonKey() final  String province;
 /// 城市短码 (如: "01")
-@override final  String city;
+@override@JsonKey() final  String city;
 /// 城市下的设备数量
-@override final  int count;
+@override@JsonKey() final  int count;
 
 /// Create a copy of CityModel
 /// with the given fields replaced by the non-null parameter values.

@@ -5,46 +5,46 @@ part 'device_model.g.dart';
 
 /// 设备模型
 @freezed
-abstract class DeviceModel with _$DeviceModel {
+sealed class DeviceModel with _$DeviceModel {
   const factory DeviceModel({
     /// 设备ID
     required int id,
 
     /// 设备编号
-    required String no,
+    @Default('') String no,
 
     /// 设备名称
-    required String name,
+    @Default('') String name,
 
     /// 是否启用
-    @JsonKey(name: 'is_enabled') required bool isEnabled,
+    @JsonKey(name: 'is_enabled') @Default(true) bool isEnabled,
 
     /// 距离 (如: "48880.04m")
-    String? distance,
+    @Default('') String? distance,
 
     /// 距离公里 (如: "48.88km")
-    @JsonKey(name: 'distance_km') String? distanceKm,
+    @JsonKey(name: 'distance_km') @Default('') String? distanceKm,
 
     /// 经度
-    required String longitude,
+    @Default('') String longitude,
 
     /// 纬度
-    required String latitude,
+    @Default('') String latitude,
 
     /// 街道地址
-    @JsonKey(name: 'street_address') required String streetAddress,
+    @JsonKey(name: 'street_address') @Default('') String streetAddress,
 
     /// 完整地址
-    @JsonKey(name: 'full_address') required String fullAddress,
+    @JsonKey(name: 'full_address') @Default('') String fullAddress,
 
     /// 营业时间
-    @JsonKey(name: 'business_hours') required String businessHours,
+    @JsonKey(name: 'business_hours') @Default('') String businessHours,
 
     /// 图片URL
-    @JsonKey(name: 'image_url') required String imageUrl,
+    @JsonKey(name: 'image_url') @Default('') String imageUrl,
 
     /// 城市信息
-    required DeviceCityModel city,
+    @Default(DeviceCityModel(id: '', name: '')) DeviceCityModel city,
   }) = _DeviceModel;
 
   factory DeviceModel.fromJson(Map<String, dynamic> json) =>
@@ -53,13 +53,13 @@ abstract class DeviceModel with _$DeviceModel {
 
 /// 设备所属城市简要模型
 @freezed
-abstract class DeviceCityModel with _$DeviceCityModel {
+sealed class DeviceCityModel with _$DeviceCityModel {
   const factory DeviceCityModel({
     /// 城市ID/代码
     required String id,
 
     /// 城市名称
-    required String name,
+    @Default('') String name,
   }) = _DeviceCityModel;
 
   factory DeviceCityModel.fromJson(Map<String, dynamic> json) =>

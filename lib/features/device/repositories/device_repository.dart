@@ -1,4 +1,3 @@
-import 'package:lunchbox/core/errors/failure.dart';
 import 'package:lunchbox/features/device/datasources/device_rest_client.dart';
 import 'package:lunchbox/features/device/entities/device_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -28,17 +27,11 @@ class DeviceRepository {
       latitude: latitude,
       longitude: longitude,
     );
-    if (response.success && response.data != null) {
-      return response.data!;
-    }
-    throw Failure.server(message: response.message, statusCode: response.code);
+    return response.data ?? [];
   }
 
   Future<List<DeviceModel>> getFrequentDevices() async {
     final response = await _client.getFrequentDevices();
-    if (response.success && response.data != null) {
-      return response.data!;
-    }
-    throw Failure.server(message: response.message, statusCode: response.code);
+    return response.data ?? [];
   }
 }

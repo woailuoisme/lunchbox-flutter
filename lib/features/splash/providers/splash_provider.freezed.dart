@@ -116,10 +116,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _SplashState():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -178,10 +175,7 @@ return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  String? errorMessage,  double initializationProgress,  String? navigationPath,  bool hasInitialized)  $default,) {final _that = this;
 switch (_that) {
 case _SplashState():
-return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,_that.navigationPath,_that.hasInitialized);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,_that.navigationPath,_that.hasInitialized);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///

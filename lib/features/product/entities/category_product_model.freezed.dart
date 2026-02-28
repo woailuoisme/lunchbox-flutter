@@ -124,10 +124,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _CategoryProductModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -186,10 +183,7 @@ return $default(_that.id,_that.name,_that.thumb,_that.order,_that.products);case
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String thumb,  int order,  List<ProductModel> products)  $default,) {final _that = this;
 switch (_that) {
 case _CategoryProductModel():
-return $default(_that.id,_that.name,_that.thumb,_that.order,_that.products);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.name,_that.thumb,_that.order,_that.products);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -218,17 +212,17 @@ return $default(_that.id,_that.name,_that.thumb,_that.order,_that.products);case
 @JsonSerializable()
 
 class _CategoryProductModel implements CategoryProductModel {
-  const _CategoryProductModel({required this.id, required this.name, required this.thumb, required this.order, final  List<ProductModel> products = const []}): _products = products;
+  const _CategoryProductModel({required this.id, this.name = '', this.thumb = '', this.order = 0, final  List<ProductModel> products = const []}): _products = products;
   factory _CategoryProductModel.fromJson(Map<String, dynamic> json) => _$CategoryProductModelFromJson(json);
 
 /// 分类ID
 @override final  int id;
 /// 分类名称
-@override final  String name;
+@override@JsonKey() final  String name;
 /// 分类图标/缩略图
-@override final  String thumb;
+@override@JsonKey() final  String thumb;
 /// 排序权重
-@override final  int order;
+@override@JsonKey() final  int order;
 /// 分类下的产品列表
  final  List<ProductModel> _products;
 /// 分类下的产品列表
@@ -448,10 +442,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _ProductModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -510,10 +501,7 @@ return $default(_that.id,_that.name,_that.description,_that.price,_that.original
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String description, @JsonKey(fromJson: _priceFromJson)  double price, @JsonKey(name: 'original_price', fromJson: _priceFromJson)  double? originalPrice, @JsonKey(name: 'cost_price', fromJson: _priceFromJson)  double? costPrice, @JsonKey(name: 'net_profit', fromJson: _priceFromJson)  double? netProfit,  int sales,  String type, @JsonKey(name: 'daily_limit')  int? dailyLimit, @JsonKey(name: 'thumb')  String imageUrl,  ProductInventory? inventory, @JsonKey(name: 'created_at')  String? createdAt,  bool isHot,  bool isPromotion)  $default,) {final _that = this;
 switch (_that) {
 case _ProductModel():
-return $default(_that.id,_that.name,_that.description,_that.price,_that.originalPrice,_that.costPrice,_that.netProfit,_that.sales,_that.type,_that.dailyLimit,_that.imageUrl,_that.inventory,_that.createdAt,_that.isHot,_that.isPromotion);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.name,_that.description,_that.price,_that.originalPrice,_that.costPrice,_that.netProfit,_that.sales,_that.type,_that.dailyLimit,_that.imageUrl,_that.inventory,_that.createdAt,_that.isHot,_that.isPromotion);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -542,15 +530,15 @@ return $default(_that.id,_that.name,_that.description,_that.price,_that.original
 @JsonSerializable()
 
 class _ProductModel extends ProductModel {
-  const _ProductModel({required this.id, required this.name, required this.description, @JsonKey(fromJson: _priceFromJson) required this.price, @JsonKey(name: 'original_price', fromJson: _priceFromJson) this.originalPrice, @JsonKey(name: 'cost_price', fromJson: _priceFromJson) this.costPrice, @JsonKey(name: 'net_profit', fromJson: _priceFromJson) this.netProfit, this.sales = 0, required this.type, @JsonKey(name: 'daily_limit') this.dailyLimit, @JsonKey(name: 'thumb') required this.imageUrl, this.inventory, @JsonKey(name: 'created_at') this.createdAt, this.isHot = false, this.isPromotion = false}): super._();
+  const _ProductModel({required this.id, this.name = '', this.description = '', @JsonKey(fromJson: _priceFromJson) this.price = 0.0, @JsonKey(name: 'original_price', fromJson: _priceFromJson) this.originalPrice, @JsonKey(name: 'cost_price', fromJson: _priceFromJson) this.costPrice, @JsonKey(name: 'net_profit', fromJson: _priceFromJson) this.netProfit, this.sales = 0, this.type = '', @JsonKey(name: 'daily_limit') this.dailyLimit, @JsonKey(name: 'thumb') this.imageUrl = '', this.inventory, @JsonKey(name: 'created_at') this.createdAt, this.isHot = false, this.isPromotion = false}): super._();
   factory _ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);
 
 /// 产品ID
 @override final  int id;
 /// 产品名称
-@override final  String name;
+@override@JsonKey() final  String name;
 /// 产品描述
-@override final  String description;
+@override@JsonKey() final  String description;
 /// 产品价格
 @override@JsonKey(fromJson: _priceFromJson) final  double price;
 /// 产品原价（用于促销显示）
@@ -562,7 +550,7 @@ class _ProductModel extends ProductModel {
 /// 销量
 @override@JsonKey() final  int sales;
 /// 产品类型/类别
-@override final  String type;
+@override@JsonKey() final  String type;
 /// 每日限购数量
 @override@JsonKey(name: 'daily_limit') final  int? dailyLimit;
 /// 产品图片URL/缩略图
@@ -769,10 +757,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _ProductInventory():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -831,10 +816,7 @@ return $default(_that.no,_that.productCount);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String no, @JsonKey(name: 'product_count')  int productCount)  $default,) {final _that = this;
 switch (_that) {
 case _ProductInventory():
-return $default(_that.no,_that.productCount);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.no,_that.productCount);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -863,11 +845,11 @@ return $default(_that.no,_that.productCount);case _:
 @JsonSerializable()
 
 class _ProductInventory implements ProductInventory {
-  const _ProductInventory({required this.no, @JsonKey(name: 'product_count') required this.productCount});
+  const _ProductInventory({this.no = '', @JsonKey(name: 'product_count') this.productCount = 0});
   factory _ProductInventory.fromJson(Map<String, dynamic> json) => _$ProductInventoryFromJson(json);
 
 /// 设备编号
-@override final  String no;
+@override@JsonKey() final  String no;
 /// 产品库存数量
 @override@JsonKey(name: 'product_count') final  int productCount;
 

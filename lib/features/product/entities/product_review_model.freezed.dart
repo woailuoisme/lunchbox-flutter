@@ -20,11 +20,11 @@ mixin _$ProductReviewModel {
  String get productId;/// 用户ID
  String get userId;/// 用户昵称
  String get userName;/// 用户头像
- String? get avatarUrl;/// 评分 (1-5)
+ String get avatarUrl;/// 评分 (1-5)
  double get rating;/// 评价内容
  String get content;/// 评价时间
- DateTime get createdAt;/// 评价图片列表
- List<String>? get images;
+@JsonKey(name: 'created_at') String get createdAt;/// 评价图片列表
+ List<String> get images;
 /// Create a copy of ProductReviewModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -57,7 +57,7 @@ abstract mixin class $ProductReviewModelCopyWith<$Res>  {
   factory $ProductReviewModelCopyWith(ProductReviewModel value, $Res Function(ProductReviewModel) _then) = _$ProductReviewModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String productId, String userId, String userName, String? avatarUrl, double rating, String content, DateTime createdAt, List<String>? images
+ String id, String productId, String userId, String userName, String avatarUrl, double rating, String content,@JsonKey(name: 'created_at') String createdAt, List<String> images
 });
 
 
@@ -74,18 +74,18 @@ class _$ProductReviewModelCopyWithImpl<$Res>
 
 /// Create a copy of ProductReviewModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? productId = null,Object? userId = null,Object? userName = null,Object? avatarUrl = freezed,Object? rating = null,Object? content = null,Object? createdAt = null,Object? images = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? productId = null,Object? userId = null,Object? userName = null,Object? avatarUrl = null,Object? rating = null,Object? content = null,Object? createdAt = null,Object? images = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,userName: null == userName ? _self.userName : userName // ignore: cast_nullable_to_non_nullable
-as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
-as String?,rating: null == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
+as String,avatarUrl: null == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String,rating: null == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
 as double,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,images: freezed == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
-as List<String>?,
+as String,images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
@@ -132,10 +132,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _ProductReviewModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -170,7 +167,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String productId,  String userId,  String userName,  String? avatarUrl,  double rating,  String content,  DateTime createdAt,  List<String>? images)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String productId,  String userId,  String userName,  String avatarUrl,  double rating,  String content, @JsonKey(name: 'created_at')  String createdAt,  List<String> images)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProductReviewModel() when $default != null:
 return $default(_that.id,_that.productId,_that.userId,_that.userName,_that.avatarUrl,_that.rating,_that.content,_that.createdAt,_that.images);case _:
@@ -191,13 +188,10 @@ return $default(_that.id,_that.productId,_that.userId,_that.userName,_that.avata
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String productId,  String userId,  String userName,  String? avatarUrl,  double rating,  String content,  DateTime createdAt,  List<String>? images)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String productId,  String userId,  String userName,  String avatarUrl,  double rating,  String content, @JsonKey(name: 'created_at')  String createdAt,  List<String> images)  $default,) {final _that = this;
 switch (_that) {
 case _ProductReviewModel():
-return $default(_that.id,_that.productId,_that.userId,_that.userName,_that.avatarUrl,_that.rating,_that.content,_that.createdAt,_that.images);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.productId,_that.userId,_that.userName,_that.avatarUrl,_that.rating,_that.content,_that.createdAt,_that.images);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -211,7 +205,7 @@ return $default(_that.id,_that.productId,_that.userId,_that.userName,_that.avata
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String productId,  String userId,  String userName,  String? avatarUrl,  double rating,  String content,  DateTime createdAt,  List<String>? images)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String productId,  String userId,  String userName,  String avatarUrl,  double rating,  String content, @JsonKey(name: 'created_at')  String createdAt,  List<String> images)?  $default,) {final _that = this;
 switch (_that) {
 case _ProductReviewModel() when $default != null:
 return $default(_that.id,_that.productId,_that.userId,_that.userName,_that.avatarUrl,_that.rating,_that.content,_that.createdAt,_that.images);case _:
@@ -226,34 +220,32 @@ return $default(_that.id,_that.productId,_that.userId,_that.userName,_that.avata
 @JsonSerializable()
 
 class _ProductReviewModel implements ProductReviewModel {
-  const _ProductReviewModel({required this.id, required this.productId, required this.userId, required this.userName, this.avatarUrl, required this.rating, required this.content, required this.createdAt, final  List<String>? images}): _images = images;
+  const _ProductReviewModel({required this.id, this.productId = '', this.userId = '', this.userName = '', this.avatarUrl = '', this.rating = 5.0, this.content = '', @JsonKey(name: 'created_at') this.createdAt = '', final  List<String> images = const []}): _images = images;
   factory _ProductReviewModel.fromJson(Map<String, dynamic> json) => _$ProductReviewModelFromJson(json);
 
 /// 评价ID
 @override final  String id;
 /// 商品ID
-@override final  String productId;
+@override@JsonKey() final  String productId;
 /// 用户ID
-@override final  String userId;
+@override@JsonKey() final  String userId;
 /// 用户昵称
-@override final  String userName;
+@override@JsonKey() final  String userName;
 /// 用户头像
-@override final  String? avatarUrl;
+@override@JsonKey() final  String avatarUrl;
 /// 评分 (1-5)
-@override final  double rating;
+@override@JsonKey() final  double rating;
 /// 评价内容
-@override final  String content;
+@override@JsonKey() final  String content;
 /// 评价时间
-@override final  DateTime createdAt;
+@override@JsonKey(name: 'created_at') final  String createdAt;
 /// 评价图片列表
- final  List<String>? _images;
+ final  List<String> _images;
 /// 评价图片列表
-@override List<String>? get images {
-  final value = _images;
-  if (value == null) return null;
+@override@JsonKey() List<String> get images {
   if (_images is EqualUnmodifiableListView) return _images;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(value);
+  return EqualUnmodifiableListView(_images);
 }
 
 
@@ -290,7 +282,7 @@ abstract mixin class _$ProductReviewModelCopyWith<$Res> implements $ProductRevie
   factory _$ProductReviewModelCopyWith(_ProductReviewModel value, $Res Function(_ProductReviewModel) _then) = __$ProductReviewModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String productId, String userId, String userName, String? avatarUrl, double rating, String content, DateTime createdAt, List<String>? images
+ String id, String productId, String userId, String userName, String avatarUrl, double rating, String content,@JsonKey(name: 'created_at') String createdAt, List<String> images
 });
 
 
@@ -307,18 +299,18 @@ class __$ProductReviewModelCopyWithImpl<$Res>
 
 /// Create a copy of ProductReviewModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? productId = null,Object? userId = null,Object? userName = null,Object? avatarUrl = freezed,Object? rating = null,Object? content = null,Object? createdAt = null,Object? images = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? productId = null,Object? userId = null,Object? userName = null,Object? avatarUrl = null,Object? rating = null,Object? content = null,Object? createdAt = null,Object? images = null,}) {
   return _then(_ProductReviewModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,userName: null == userName ? _self.userName : userName // ignore: cast_nullable_to_non_nullable
-as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
-as String?,rating: null == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
+as String,avatarUrl: null == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String,rating: null == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
 as double,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,images: freezed == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
-as List<String>?,
+as String,images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 

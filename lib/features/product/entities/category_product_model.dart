@@ -6,19 +6,19 @@ part 'category_product_model.g.dart';
 /// 产品分类模型
 /// 包含分类信息及其下的产品列表
 @freezed
-abstract class CategoryProductModel with _$CategoryProductModel {
+sealed class CategoryProductModel with _$CategoryProductModel {
   const factory CategoryProductModel({
     /// 分类ID
     required int id,
 
     /// 分类名称
-    required String name,
+    @Default('') String name,
 
     /// 分类图标/缩略图
-    required String thumb,
+    @Default('') String thumb,
 
     /// 排序权重
-    required int order,
+    @Default(0) int order,
 
     /// 分类下的产品列表
     @Default([]) List<ProductModel> products,
@@ -31,19 +31,19 @@ abstract class CategoryProductModel with _$CategoryProductModel {
 /// 产品模型类
 /// 表示自动售货机中的商品信息
 @freezed
-abstract class ProductModel with _$ProductModel {
+sealed class ProductModel with _$ProductModel {
   const factory ProductModel({
     /// 产品ID
     required int id,
 
     /// 产品名称
-    required String name,
+    @Default('') String name,
 
     /// 产品描述
-    required String description,
+    @Default('') String description,
 
     /// 产品价格
-    @JsonKey(fromJson: _priceFromJson) required double price,
+    @JsonKey(fromJson: _priceFromJson) @Default(0.0) double price,
 
     /// 产品原价（用于促销显示）
     @JsonKey(name: 'original_price', fromJson: _priceFromJson)
@@ -59,13 +59,13 @@ abstract class ProductModel with _$ProductModel {
     @Default(0) int sales,
 
     /// 产品类型/类别
-    required String type,
+    @Default('') String type,
 
     /// 每日限购数量
     @JsonKey(name: 'daily_limit') int? dailyLimit,
 
     /// 产品图片URL/缩略图
-    @JsonKey(name: 'thumb') required String imageUrl,
+    @JsonKey(name: 'thumb') @Default('') String imageUrl,
 
     /// 库存信息
     ProductInventory? inventory,
@@ -104,13 +104,13 @@ abstract class ProductModel with _$ProductModel {
 }
 
 @freezed
-abstract class ProductInventory with _$ProductInventory {
+sealed class ProductInventory with _$ProductInventory {
   const factory ProductInventory({
     /// 设备编号
-    required String no,
+    @Default('') String no,
 
     /// 产品库存数量
-    @JsonKey(name: 'product_count') required int productCount,
+    @JsonKey(name: 'product_count') @Default(0) int productCount,
   }) = _ProductInventory;
 
   factory ProductInventory.fromJson(Map<String, dynamic> json) =>

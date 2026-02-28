@@ -6,16 +6,16 @@ part 'location_model.g.dart';
 /// Location data model
 /// Used for data transfer and JSON serialization
 @freezed
-abstract class LocationModel with _$LocationModel {
+sealed class LocationModel with _$LocationModel {
   const factory LocationModel({
     /// Latitude coordinate
-    required double latitude,
+    @Default(0.0) double latitude,
 
     /// Longitude coordinate
-    required double longitude,
+    @Default(0.0) double longitude,
 
     /// Optional address description
-    String? address,
+    @Default('') String? address,
   }) = _LocationModel;
 
   /// Create LocationModel from JSON

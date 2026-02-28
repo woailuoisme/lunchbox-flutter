@@ -42,7 +42,7 @@ class AuthRepository {
         id: 'admin_bypass_id',
         username: 'admin',
         nickname: '管理员(离线模式)',
-        registeredAt: DateTime(2024),
+        registeredAt: DateTime(2024).toIso8601String(),
       );
 
       await _writeSession(
@@ -65,7 +65,7 @@ class AuthRepository {
         username: data['telephone'] as String,
         phone: data['telephone'] as String,
         nickname: data['telephone'] as String,
-        registeredAt: DateTime.parse(data['created_at'] as String),
+        registeredAt: data['created_at'] as String,
       );
 
       await _writeSession(token: token, userId: userId, permissions: ['user']);
@@ -118,7 +118,7 @@ class AuthRepository {
       id: 'google_user_mock',
       username: 'mock@google.com',
       nickname: 'Google User',
-      registeredAt: DateTime.now(),
+      registeredAt: DateTime.now().toIso8601String(),
     );
 
     await _writeSession(

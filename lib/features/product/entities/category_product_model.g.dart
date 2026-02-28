@@ -11,9 +11,9 @@ _CategoryProductModel _$CategoryProductModelFromJson(
 ) => $checkedCreate('_CategoryProductModel', json, ($checkedConvert) {
   final val = _CategoryProductModel(
     id: $checkedConvert('id', (v) => (v as num).toInt()),
-    name: $checkedConvert('name', (v) => v as String),
-    thumb: $checkedConvert('thumb', (v) => v as String),
-    order: $checkedConvert('order', (v) => (v as num).toInt()),
+    name: $checkedConvert('name', (v) => v as String? ?? ''),
+    thumb: $checkedConvert('thumb', (v) => v as String? ?? ''),
+    order: $checkedConvert('order', (v) => (v as num?)?.toInt() ?? 0),
     products: $checkedConvert(
       'products',
       (v) =>
@@ -44,9 +44,12 @@ _ProductModel _$ProductModelFromJson(
   ($checkedConvert) {
     final val = _ProductModel(
       id: $checkedConvert('id', (v) => (v as num).toInt()),
-      name: $checkedConvert('name', (v) => v as String),
-      description: $checkedConvert('description', (v) => v as String),
-      price: $checkedConvert('price', (v) => _priceFromJson(v)),
+      name: $checkedConvert('name', (v) => v as String? ?? ''),
+      description: $checkedConvert('description', (v) => v as String? ?? ''),
+      price: $checkedConvert(
+        'price',
+        (v) => v == null ? 0.0 : _priceFromJson(v),
+      ),
       originalPrice: $checkedConvert(
         'original_price',
         (v) => _priceFromJson(v),
@@ -54,9 +57,9 @@ _ProductModel _$ProductModelFromJson(
       costPrice: $checkedConvert('cost_price', (v) => _priceFromJson(v)),
       netProfit: $checkedConvert('net_profit', (v) => _priceFromJson(v)),
       sales: $checkedConvert('sales', (v) => (v as num?)?.toInt() ?? 0),
-      type: $checkedConvert('type', (v) => v as String),
+      type: $checkedConvert('type', (v) => v as String? ?? ''),
       dailyLimit: $checkedConvert('daily_limit', (v) => (v as num?)?.toInt()),
-      imageUrl: $checkedConvert('thumb', (v) => v as String),
+      imageUrl: $checkedConvert('thumb', (v) => v as String? ?? ''),
       inventory: $checkedConvert(
         'inventory',
         (v) => v == null
@@ -103,10 +106,10 @@ Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
 _ProductInventory _$ProductInventoryFromJson(Map<String, dynamic> json) =>
     $checkedCreate('_ProductInventory', json, ($checkedConvert) {
       final val = _ProductInventory(
-        no: $checkedConvert('no', (v) => v as String),
+        no: $checkedConvert('no', (v) => v as String? ?? ''),
         productCount: $checkedConvert(
           'product_count',
-          (v) => (v as num).toInt(),
+          (v) => (v as num?)?.toInt() ?? 0,
         ),
       );
       return val;

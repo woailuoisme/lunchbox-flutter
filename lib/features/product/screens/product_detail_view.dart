@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lunchbox/core/widgets/widgets.dart';
-import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/product/entities/product_detail_model.dart';
 import 'package:lunchbox/features/product/providers/product_provider.dart';
+import 'package:lunchbox/features/product/widgets/product_detail_app_bar.dart';
+import 'package:lunchbox/features/product/widgets/product_detail_basic_info.dart';
+import 'package:lunchbox/features/product/widgets/product_detail_bottom_bar.dart';
+import 'package:lunchbox/features/product/widgets/product_detail_description.dart';
+import 'package:lunchbox/features/product/widgets/product_detail_reviews.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 /// 产品详情视图
@@ -21,35 +22,53 @@ class ProductDetailView extends ConsumerWidget {
     final productAsync = ref.watch(productDetailProvider(productId));
     final theme = Theme.of(context);
 
+    // 调试日志：检查产品详情状态
+    debugPrint(
+      'ProductDetailView: productId=$productId, status=${productAsync.runtimeType}, hasValue=${productAsync.hasValue}, isLoading=${productAsync.isLoading}',
+    );
+
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: productAsync.when(
-        data: (product) => _buildBody(context, product),
-        loading: () => Skeletonizer(
-          enabled: true,
-          child: _buildBody(
-            context,
-            const ProductDetailModel(
-              id: 0,
-              name: '加载中...',
-              description: '正在加载商品详情，请稍候...',
-              imageUrl: '',
-              content: '',
-              price: 0.0,
-              type: 'food',
-              isEnabled: true,
-              comments: [],
-              media: [],
+        data: (product) {
+          debugPrint(
+            'ProductDetailView: Data received, productId=${product.id}',
+          );
+          return _buildBody(context, product);
+        },
+        loading: () {
+          debugPrint('ProductDetailView: Loading...');
+          return Skeletonizer(
+            enabled: true,
+            child: _buildBody(
+              context,
+              const ProductDetailModel(
+                id: 0,
+                name: 'Loading Product Name',
+                description:
+                    'This is a loading description for the product detail view to show skeleton.',
+                imageUrl: '',
+                content: '',
+                price: 99.99,
+                type: 'food',
+                isEnabled: true,
+                comments: [],
+                media: [],
+              ),
             ),
-          ),
-        ),
-        error: (error, stack) =>
-            Center(child: Text('${t.common.loadFailed}: $error')),
+          );
+        },
+        error: (error, stack) {
+          debugPrint('ProductDetailView: Error=$error');
+          return Center(child: Text('${t.common.loadFailed}: $error'));
+        },
       ),
 
       // 底部操作栏
       bottomNavigationBar: productAsync.value != null
-          ? _buildBottomBar(context, ref, productAsync.value!).animate().slideY(
+          ? ProductDetailBottomBar(
+              product: productAsync.value!,
+            ).animate().slideY(
               begin: 1,
               end: 0,
               duration: 400.ms,
@@ -61,126 +80,31 @@ class ProductDetailView extends ConsumerWidget {
 
   Widget _buildBody(BuildContext context, ProductDetailModel product) {
     final theme = Theme.of(context);
+    final expandedHeight = MediaQuery.of(context).size.height / 4;
+
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
         // 产品图片
-        SliverAppBar(
-          expandedHeight: 420.h,
-          pinned: true,
-          stretch: true,
-          backgroundColor: theme.scaffoldBackgroundColor,
-          foregroundColor: theme.colorScheme.onSurface,
-          leading: Container(
-            margin: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surface.withValues(alpha: 0.8),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => context.pop(),
-              padding: EdgeInsets.zero,
-            ),
-          ),
-          actions: [
-            Container(
-              margin: EdgeInsets.only(right: 12.w),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface.withValues(alpha: 0.8),
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: IconButton(
-                icon: const Icon(Symbols.share, size: 20),
-                onPressed: () {},
-                padding: EdgeInsets.zero,
-              ),
-            ),
-          ],
-          flexibleSpace: FlexibleSpaceBar(
-            stretchModes: const [
-              StretchMode.zoomBackground,
-              StretchMode.blurBackground,
-            ],
-            background: Stack(
-              fit: StackFit.expand,
-              children: [
-                Hero(
-                  tag: 'product_image_${product.id}',
-                  child: AppImage(
-                    imageUrl: product.imageUrl,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // Gradient overlay for better text visibility
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withValues(alpha: 0.3),
-                          Colors.transparent,
-                          Colors.transparent,
-                          Colors.black.withValues(alpha: 0.2),
-                        ],
-                        stops: const [0.0, 0.2, 0.8, 1.0],
-                      ),
-                    ),
-                  ),
-                ),
-                // Rounded corner at the bottom
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: -1,
-                  height: 32.h,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: theme.scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(32.r),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        ProductDetailAppBar(product: product, expandedHeight: expandedHeight),
 
         // 产品信息
         SliverToBoxAdapter(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildBasicInfo(context, product),
-                SizedBox(height: 32.h),
+                ProductDetailBasicInfo(product: product),
+                SizedBox(height: 24.h),
                 _buildSectionDivider(theme),
-                SizedBox(height: 32.h),
-                _buildDescription(context, product),
-                SizedBox(height: 32.h),
+                SizedBox(height: 24.h),
+                ProductDetailDescription(product: product),
+                SizedBox(height: 24.h),
                 _buildSectionDivider(theme),
-                SizedBox(height: 32.h),
-                _buildReviews(context, product),
-                SizedBox(height: 120.h), // 底部留白
+                SizedBox(height: 24.h),
+                ProductDetailReviews(product: product),
+                SizedBox(height: 120.h),
               ],
             ),
           ),
@@ -191,497 +115,8 @@ class ProductDetailView extends ConsumerWidget {
 
   Widget _buildSectionDivider(ThemeData theme) {
     return Divider(
-      color: theme.dividerColor.withValues(alpha: 0.08),
-      thickness: 8.h,
-    );
-  }
-
-  /// 构建基本信息
-  Widget _buildBasicInfo(BuildContext context, ProductDetailModel product) {
-    final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // 标签（如果有）
-        // if (product.isHot || product.isPromotion) // ProductDetailModel 目前没这几个字段，先移除或适配
-        //   Row(
-        //     children: [
-        //       if (product.isHot)
-        //         _buildTag(
-        //           context,
-        //           t.product.hot,
-        //           theme.colorScheme.error,
-        //         ).animate().scale(),
-        //       if (product.isPromotion) ...[
-        //         SizedBox(width: 8.w),
-        //         _buildTag(
-        //           context,
-        //           t.product.promotion,
-        //           theme.colorScheme.tertiary,
-        //         ).animate().scale(delay: 100.ms),
-        //       ],
-        //     ],
-        //   ),
-        // if (product.isHot || product.isPromotion) SizedBox(height: 12.h),
-
-        // 产品名称
-        Text(
-          product.name,
-          style: TextStyle(
-            fontSize: 24.sp,
-            fontWeight: FontWeight.w800,
-            color: theme.colorScheme.onSurface,
-            letterSpacing: -0.5,
-            height: 1.2,
-          ),
-        ).animate().fadeIn().slideX(begin: -0.1, end: 0),
-        SizedBox(height: 16.h),
-
-        // 价格和销量
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              '¥',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.error,
-              ),
-            ),
-            Text(
-              product.price.toStringAsFixed(2),
-              style: TextStyle(
-                fontSize: 32.sp,
-                fontWeight: FontWeight.w900,
-                color: theme.colorScheme.error,
-                height: 1.0,
-              ),
-            ),
-            if (product.originalPrice != null &&
-                product.originalPrice! > product.price) ...[
-              SizedBox(width: 12.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '¥${product.originalPrice!.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: theme.hintColor,
-                      decoration: TextDecoration.lineThrough,
-                    ),
-                  ),
-                  SizedBox(height: 2.h),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 6.w,
-                      vertical: 2.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.errorContainer,
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                    child: Text(
-                      '${((1 - product.price / product.originalPrice!) * 100).round()}% OFF',
-                      style: TextStyle(
-                        fontSize: 10.sp,
-                        color: theme.colorScheme.error,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ],
-        ).animate().fadeIn(delay: 100.ms),
-        SizedBox(height: 16.h),
-
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerLow,
-            borderRadius: BorderRadius.circular(8.r),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Symbols.sell, size: 16.sp, color: theme.colorScheme.primary),
-              SizedBox(width: 8.w),
-              Text(
-                '${t.product.monthlySales} ${product.sales}',
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              SizedBox(width: 16.w),
-              Container(width: 1, height: 12.h, color: theme.dividerColor),
-              SizedBox(width: 16.w),
-              Text(
-                product.isEnabled ? t.product.stockFull : t.device.soldOut,
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  color: product.isEnabled
-                      ? theme.colorScheme.onSurfaceVariant
-                      : theme.colorScheme.error,
-                  fontWeight: product.isEnabled
-                      ? FontWeight.normal
-                      : FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ).animate().fadeIn(delay: 200.ms),
-      ],
-    );
-  }
-
-  Widget _buildTag(BuildContext context, String text, Color color) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(6.r),
-        boxShadow: [
-          BoxShadow(
-            color: color.withValues(alpha: 0.3),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 11.sp,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  /// 构建描述
-  Widget _buildDescription(BuildContext context, ProductDetailModel product) {
-    final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          t.product.detail,
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-        SizedBox(height: 16.h),
-        Text(
-          product.description.isEmpty
-              ? '暂无详细介绍' // TODO: add to translations
-              : product.description,
-          style: TextStyle(
-            fontSize: 15.sp,
-            color: theme.colorScheme.onSurfaceVariant,
-            height: 1.8,
-          ),
-        ),
-      ],
-    ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1, end: 0);
-  }
-
-  /// 构建评论区域
-  Widget _buildReviews(BuildContext context, ProductDetailModel product) {
-    final theme = Theme.of(context);
-    final reviews = product.comments;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '商品评价 (${reviews.length})',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onSurface,
-              ),
-            ),
-            if (reviews.isNotEmpty)
-              Row(
-                children: [
-                  Icon(Icons.star, size: 16.sp, color: const Color(0xFFFFC107)),
-                  SizedBox(width: 4.w),
-                  Text(
-                    '5.0', // TODO: API should provide average rating
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurface,
-                    ),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 12.sp,
-                    color: theme.hintColor,
-                  ),
-                ],
-              ),
-          ],
-        ),
-        SizedBox(height: 16.h),
-        if (reviews.isEmpty)
-          Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 32.h),
-              child: Text(
-                '暂无评价', // TODO: i18n
-                style: TextStyle(color: theme.hintColor),
-              ),
-            ),
-          )
-        else
-          ListView.separated(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: reviews.length,
-            separatorBuilder: (context, index) => SizedBox(height: 16.h),
-            itemBuilder: (context, index) {
-              final review = reviews[index];
-              return Container(
-                    padding: EdgeInsets.all(12.w),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceContainerLow,
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 16.r,
-                              backgroundColor: theme.colorScheme.primary
-                                  .withValues(alpha: 0.1),
-                              child: Text(
-                                review.user.name.characters.first,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: theme.colorScheme.primary,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    review.user.name,
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: theme.colorScheme.onSurface,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: List.generate(
-                                      5,
-                                      (i) => Icon(
-                                        Icons.star,
-                                        size: 12.sp,
-                                        color: i < review.rating
-                                            ? const Color(0xFFFFC107)
-                                            : theme.disabledColor.withValues(
-                                                alpha: 0.3,
-                                              ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Text(
-                              review.createdAtHuman,
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                color: theme.hintColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          review.content,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: theme.colorScheme.onSurfaceVariant,
-                            height: 1.5,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(delay: (300 + index * 100).ms)
-                  .slideY(begin: 0.1, end: 0);
-            },
-          ),
-        if (reviews.isNotEmpty) ...[
-          SizedBox(height: 16.h),
-          Center(
-            child: TextButton(
-              onPressed: () {},
-              child: Text(
-                '查看全部评价', // TODO: i18n
-                style: TextStyle(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-
-  /// 构建底部操作栏
-  Widget _buildBottomBar(
-    BuildContext context,
-    WidgetRef ref,
-    ProductDetailModel product,
-  ) {
-    final theme = Theme.of(context);
-    final cartState = ref.watch(cartProvider);
-
-    return Container(
-      padding: EdgeInsets.fromLTRB(
-        24.w,
-        16.h,
-        24.w,
-        MediaQuery.of(context).padding.bottom + 16.h,
-      ),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 20,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // 购物车图标（带角标）
-          Badge(
-            label: Text(
-              cartState.totalQuantity.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
-            ),
-            isLabelVisible: cartState.totalQuantity > 0,
-            backgroundColor: theme.colorScheme.error,
-            padding: EdgeInsets.symmetric(horizontal: 6.w),
-            offset: const Offset(4, -4),
-            child: Container(
-              height: 48.w,
-              width: 48.w,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.secondaryContainer.withValues(
-                  alpha: 0.5,
-                ),
-                borderRadius: BorderRadius.circular(16.r),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.1),
-                ),
-              ),
-              child: IconButton(
-                onPressed: () {
-                  context.push('/cart');
-                },
-                icon: Icon(Symbols.shopping_cart, size: 24.sp),
-                color: theme.colorScheme.onSecondaryContainer,
-                tooltip: t.cart.title,
-              ),
-            ),
-          ),
-          SizedBox(width: 16.w),
-
-          // 加入购物车按钮
-          Expanded(
-            child: SizedBox(
-              height: 54.h,
-              child: ElevatedButton(
-                onPressed: product.isEnabled
-                    ? () {
-                        ref
-                            .read(cartProvider.notifier)
-                            .addToCart(product.toProductModel());
-                        // Haptic feedback could be added here
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Row(
-                              children: [
-                                Icon(
-                                  Symbols.check_circle,
-                                  color: theme.colorScheme.onInverseSurface,
-                                  size: 20.sp,
-                                ),
-                                SizedBox(width: 12.w),
-                                Expanded(
-                                  child: Text(
-                                    '${t.product.addedToCart}: ${product.name}',
-                                    style: TextStyle(
-                                      color: theme.colorScheme.onInverseSurface,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                            margin: EdgeInsets.fromLTRB(
-                              16.w,
-                              0,
-                              16.w,
-                              MediaQuery.of(context).padding.bottom + 80.h,
-                            ),
-                            duration: 2.seconds,
-                          ),
-                        );
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.colorScheme.primary,
-                  foregroundColor: theme.colorScheme.onPrimary,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  textStyle: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                child: Text(
-                  product.isEnabled ? t.product.addToCart : t.device.soldOut,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+      color: theme.dividerColor.withValues(alpha: 0.05),
+      thickness: 6.h,
     );
   }
 }

@@ -18,5 +18,11 @@
   "sortPriceDesc": "Price: High to Low",
   "sortName": "Name",
   "filterOnlyAvailable": "Show Available Only",
-  "cart": "Cart"
+  "cart": "Cart",
+  "noProducts": "No products found",
+  "loadingDetail": "Loading product details, please wait...",
+  "noDescription": "No detailed description",
+  "reviews": "Product Reviews",
+  "noReviews": "No reviews yet",
+  "viewAllReviews": "View all reviews"
 }

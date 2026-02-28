@@ -13,16 +13,21 @@ _NearestDeviceModel _$NearestDeviceModelFromJson(Map<String, dynamic> json) =>
       ($checkedConvert) {
         final val = _NearestDeviceModel(
           id: $checkedConvert('id', (v) => (v as num).toInt()),
-          name: $checkedConvert('name', (v) => v as String),
-          distance: $checkedConvert('distance', (v) => v as String),
-          distanceKm: $checkedConvert('distance_km', (v) => v as String),
-          latitude: $checkedConvert('latitude', (v) => v as String),
-          longitude: $checkedConvert('longitude', (v) => v as String),
+          name: $checkedConvert('name', (v) => v as String? ?? ''),
+          distance: $checkedConvert('distance', (v) => v as String? ?? ''),
+          distanceKm: $checkedConvert('distance_km', (v) => v as String? ?? ''),
+          latitude: $checkedConvert('latitude', (v) => v as String? ?? ''),
+          longitude: $checkedConvert('longitude', (v) => v as String? ?? ''),
           city: $checkedConvert(
             'city',
-            (v) => NearestCity.fromJson(v as Map<String, dynamic>),
+            (v) => v == null
+                ? const NearestCity(name: '', code: '')
+                : NearestCity.fromJson(v as Map<String, dynamic>),
           ),
-          streetAddress: $checkedConvert('street_address', (v) => v as String),
+          streetAddress: $checkedConvert(
+            'street_address',
+            (v) => v as String? ?? '',
+          ),
         );
         return val;
       },
@@ -47,8 +52,8 @@ Map<String, dynamic> _$NearestDeviceModelToJson(_NearestDeviceModel instance) =>
 _NearestCity _$NearestCityFromJson(Map<String, dynamic> json) =>
     $checkedCreate('_NearestCity', json, ($checkedConvert) {
       final val = _NearestCity(
-        name: $checkedConvert('name', (v) => v as String),
-        code: $checkedConvert('code', (v) => v as String),
+        name: $checkedConvert('name', (v) => v as String? ?? ''),
+        code: $checkedConvert('code', (v) => v as String? ?? ''),
       );
       return val;
     });

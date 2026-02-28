@@ -1816,6 +1816,29 @@ class _TranslationsProductZhTw extends TranslationsProductZhCn {
   @override
   String get cart =>
       TranslationOverrides.string(_root.$meta, 'product.cart', {}) ?? '購物車';
+  @override
+  String get noProducts =>
+      TranslationOverrides.string(_root.$meta, 'product.noProducts', {}) ??
+      '暫无商品';
+  @override
+  String get loadingDetail =>
+      TranslationOverrides.string(_root.$meta, 'product.loadingDetail', {}) ??
+      '正在加载商品详情，请稍候...';
+  @override
+  String get noDescription =>
+      TranslationOverrides.string(_root.$meta, 'product.noDescription', {}) ??
+      '暫无详细介绍';
+  @override
+  String get reviews =>
+      TranslationOverrides.string(_root.$meta, 'product.reviews', {}) ?? '商品评价';
+  @override
+  String get noReviews =>
+      TranslationOverrides.string(_root.$meta, 'product.noReviews', {}) ??
+      '暫无评价';
+  @override
+  String get viewAllReviews =>
+      TranslationOverrides.string(_root.$meta, 'product.viewAllReviews', {}) ??
+      '查看全部评价';
 }
 
 // Path: profile
@@ -4265,6 +4288,28 @@ extension on TranslationsZhTw {
             '僅顯示可用商品',
       'product.cart' =>
         TranslationOverrides.string(_root.$meta, 'product.cart', {}) ?? '購物車',
+      'product.noProducts' =>
+        TranslationOverrides.string(_root.$meta, 'product.noProducts', {}) ??
+            '暫无商品',
+      'product.loadingDetail' =>
+        TranslationOverrides.string(_root.$meta, 'product.loadingDetail', {}) ??
+            '正在加载商品详情，请稍候...',
+      'product.noDescription' =>
+        TranslationOverrides.string(_root.$meta, 'product.noDescription', {}) ??
+            '暫无详细介绍',
+      'product.reviews' =>
+        TranslationOverrides.string(_root.$meta, 'product.reviews', {}) ??
+            '商品评价',
+      'product.noReviews' =>
+        TranslationOverrides.string(_root.$meta, 'product.noReviews', {}) ??
+            '暫无评价',
+      'product.viewAllReviews' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'product.viewAllReviews',
+              {},
+            ) ??
+            '查看全部评价',
       'profile.title' =>
         TranslationOverrides.string(_root.$meta, 'profile.title', {}) ?? '用戶中心',
       'profile.notLoggedIn' =>

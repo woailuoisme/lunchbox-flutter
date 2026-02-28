@@ -18,14 +18,14 @@ mixin _$UserModel {
 /// 用户ID
  String get id;/// 用户名（手机号或邮箱）
  String get username;/// 用户注册时间
- DateTime get registeredAt;/// 手机号
+@JsonKey(name: 'registered_at') String get registeredAt;/// 手机号
  String? get phone;/// 邮箱
  String? get email;/// 用户昵称
  String get nickname;/// 用户头像URL
  String? get avatar;/// 用户性别：male、female、unknown
  String get gender;/// 用户生日
- DateTime? get birthday;/// 用户最后登录时间
- DateTime? get lastLoginAt;/// 用户积分
+ String? get birthday;/// 用户最后登录时间
+@JsonKey(name: 'last_login_at') String? get lastLoginAt;/// 用户积分
  int get points;/// 用户会员等级
  String get memberLevel;/// 用户是否已实名认证
  bool get isVerified;/// 保存的设备ID列表（常用设备）
@@ -62,7 +62,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String username, DateTime registeredAt, String? phone, String? email, String nickname, String? avatar, String gender, DateTime? birthday, DateTime? lastLoginAt, int points, String memberLevel, bool isVerified, List<String> favoriteDevices
+ String id, String username,@JsonKey(name: 'registered_at') String registeredAt, String? phone, String? email, String nickname, String? avatar, String gender, String? birthday,@JsonKey(name: 'last_login_at') String? lastLoginAt, int points, String memberLevel, bool isVerified, List<String> favoriteDevices
 });
 
 
@@ -84,14 +84,14 @@ class _$UserModelCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,registeredAt: null == registeredAt ? _self.registeredAt : registeredAt // ignore: cast_nullable_to_non_nullable
-as DateTime,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,avatar: freezed == avatar ? _self.avatar : avatar // ignore: cast_nullable_to_non_nullable
 as String?,gender: null == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
 as String,birthday: freezed == birthday ? _self.birthday : birthday // ignore: cast_nullable_to_non_nullable
-as DateTime?,lastLoginAt: freezed == lastLoginAt ? _self.lastLoginAt : lastLoginAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
+as String?,lastLoginAt: freezed == lastLoginAt ? _self.lastLoginAt : lastLoginAt // ignore: cast_nullable_to_non_nullable
+as String?,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
 as int,memberLevel: null == memberLevel ? _self.memberLevel : memberLevel // ignore: cast_nullable_to_non_nullable
 as String,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable
 as bool,favoriteDevices: null == favoriteDevices ? _self.favoriteDevices : favoriteDevices // ignore: cast_nullable_to_non_nullable
@@ -142,10 +142,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _UserModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -180,7 +177,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  DateTime registeredAt,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  DateTime? birthday,  DateTime? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username, @JsonKey(name: 'registered_at')  String registeredAt,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  String? birthday, @JsonKey(name: 'last_login_at')  String? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
 return $default(_that.id,_that.username,_that.registeredAt,_that.phone,_that.email,_that.nickname,_that.avatar,_that.gender,_that.birthday,_that.lastLoginAt,_that.points,_that.memberLevel,_that.isVerified,_that.favoriteDevices);case _:
@@ -201,13 +198,10 @@ return $default(_that.id,_that.username,_that.registeredAt,_that.phone,_that.ema
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  DateTime registeredAt,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  DateTime? birthday,  DateTime? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username, @JsonKey(name: 'registered_at')  String registeredAt,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  String? birthday, @JsonKey(name: 'last_login_at')  String? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
-return $default(_that.id,_that.username,_that.registeredAt,_that.phone,_that.email,_that.nickname,_that.avatar,_that.gender,_that.birthday,_that.lastLoginAt,_that.points,_that.memberLevel,_that.isVerified,_that.favoriteDevices);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.username,_that.registeredAt,_that.phone,_that.email,_that.nickname,_that.avatar,_that.gender,_that.birthday,_that.lastLoginAt,_that.points,_that.memberLevel,_that.isVerified,_that.favoriteDevices);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -221,7 +215,7 @@ return $default(_that.id,_that.username,_that.registeredAt,_that.phone,_that.ema
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  DateTime registeredAt,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  DateTime? birthday,  DateTime? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username, @JsonKey(name: 'registered_at')  String registeredAt,  String? phone,  String? email,  String nickname,  String? avatar,  String gender,  String? birthday, @JsonKey(name: 'last_login_at')  String? lastLoginAt,  int points,  String memberLevel,  bool isVerified,  List<String> favoriteDevices)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
 return $default(_that.id,_that.username,_that.registeredAt,_that.phone,_that.email,_that.nickname,_that.avatar,_that.gender,_that.birthday,_that.lastLoginAt,_that.points,_that.memberLevel,_that.isVerified,_that.favoriteDevices);case _:
@@ -236,29 +230,29 @@ return $default(_that.id,_that.username,_that.registeredAt,_that.phone,_that.ema
 @JsonSerializable()
 
 class _UserModel extends UserModel {
-  const _UserModel({required this.id, required this.username, required this.registeredAt, this.phone, this.email, this.nickname = '', this.avatar, this.gender = 'unknown', this.birthday, this.lastLoginAt, this.points = 0, this.memberLevel = 'normal', this.isVerified = false, final  List<String> favoriteDevices = const []}): _favoriteDevices = favoriteDevices,super._();
+  const _UserModel({required this.id, this.username = '', @JsonKey(name: 'registered_at') this.registeredAt = '', this.phone = '', this.email = '', this.nickname = '', this.avatar = '', this.gender = 'unknown', this.birthday = '', @JsonKey(name: 'last_login_at') this.lastLoginAt = '', this.points = 0, this.memberLevel = 'normal', this.isVerified = false, final  List<String> favoriteDevices = const []}): _favoriteDevices = favoriteDevices,super._();
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 /// 用户ID
 @override final  String id;
 /// 用户名（手机号或邮箱）
-@override final  String username;
+@override@JsonKey() final  String username;
 /// 用户注册时间
-@override final  DateTime registeredAt;
+@override@JsonKey(name: 'registered_at') final  String registeredAt;
 /// 手机号
-@override final  String? phone;
+@override@JsonKey() final  String? phone;
 /// 邮箱
-@override final  String? email;
+@override@JsonKey() final  String? email;
 /// 用户昵称
 @override@JsonKey() final  String nickname;
 /// 用户头像URL
-@override final  String? avatar;
+@override@JsonKey() final  String? avatar;
 /// 用户性别：male、female、unknown
 @override@JsonKey() final  String gender;
 /// 用户生日
-@override final  DateTime? birthday;
+@override@JsonKey() final  String? birthday;
 /// 用户最后登录时间
-@override final  DateTime? lastLoginAt;
+@override@JsonKey(name: 'last_login_at') final  String? lastLoginAt;
 /// 用户积分
 @override@JsonKey() final  int points;
 /// 用户会员等级
@@ -308,7 +302,7 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String username, DateTime registeredAt, String? phone, String? email, String nickname, String? avatar, String gender, DateTime? birthday, DateTime? lastLoginAt, int points, String memberLevel, bool isVerified, List<String> favoriteDevices
+ String id, String username,@JsonKey(name: 'registered_at') String registeredAt, String? phone, String? email, String nickname, String? avatar, String gender, String? birthday,@JsonKey(name: 'last_login_at') String? lastLoginAt, int points, String memberLevel, bool isVerified, List<String> favoriteDevices
 });
 
 
@@ -330,14 +324,14 @@ class __$UserModelCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,registeredAt: null == registeredAt ? _self.registeredAt : registeredAt // ignore: cast_nullable_to_non_nullable
-as DateTime,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,avatar: freezed == avatar ? _self.avatar : avatar // ignore: cast_nullable_to_non_nullable
 as String?,gender: null == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
 as String,birthday: freezed == birthday ? _self.birthday : birthday // ignore: cast_nullable_to_non_nullable
-as DateTime?,lastLoginAt: freezed == lastLoginAt ? _self.lastLoginAt : lastLoginAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
+as String?,lastLoginAt: freezed == lastLoginAt ? _self.lastLoginAt : lastLoginAt // ignore: cast_nullable_to_non_nullable
+as String?,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
 as int,memberLevel: null == memberLevel ? _self.memberLevel : memberLevel // ignore: cast_nullable_to_non_nullable
 as String,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable
 as bool,favoriteDevices: null == favoriteDevices ? _self._favoriteDevices : favoriteDevices // ignore: cast_nullable_to_non_nullable

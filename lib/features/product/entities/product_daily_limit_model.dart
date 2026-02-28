@@ -4,7 +4,7 @@ part 'product_daily_limit_model.freezed.dart';
 part 'product_daily_limit_model.g.dart';
 
 @freezed
-abstract class ProductDailyLimitModel with _$ProductDailyLimitModel {
+sealed class ProductDailyLimitModel with _$ProductDailyLimitModel {
   const factory ProductDailyLimitModel({
     /// 当前已购买数量
     @Default(0) int current,

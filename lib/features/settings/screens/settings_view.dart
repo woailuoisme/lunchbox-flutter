@@ -9,6 +9,9 @@ import 'package:lunchbox/core/theme/theme_provider.dart';
 import 'package:lunchbox/features/settings/providers/settings_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
+import 'package:lunchbox/features/settings/widgets/settings_item.dart';
+import 'package:lunchbox/features/settings/widgets/settings_section_card.dart';
+import 'package:lunchbox/features/settings/widgets/settings_section_header.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:lunchbox/core/env/app_env.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -43,96 +46,47 @@ class SettingsView extends ConsumerWidget {
           padding: EdgeInsets.symmetric(vertical: 16.h),
           children:
               [
-                    _buildSectionHeader(context, t.settings.general),
-                    _buildSectionCard(context, [
-                      _buildSettingsItem(
-                        context: context,
-                        icon: Symbols.colors,
-                        iconColor: colorScheme.primary,
-                        title: t.settings.themeScheme,
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 16.w,
-                              height: 16.w,
-                              decoration: BoxDecoration(
-                                color: _getSchemeColor(themeState.scheme),
-                                shape: BoxShape.circle,
+                    SettingsSectionHeader(title: t.settings.general),
+                    SettingsSectionCard(
+                      children: [
+                        SettingsItem(
+                          icon: Symbols.colors,
+                          iconColor: colorScheme.primary,
+                          title: t.settings.themeScheme,
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 16.w,
+                                height: 16.w,
+                                decoration: BoxDecoration(
+                                  color: _getSchemeColor(themeState.scheme),
+                                  shape: BoxShape.circle,
+                                ),
                               ),
-                            ),
-                            SizedBox(width: 8.w),
-                            Icon(
-                              Symbols.arrow_forward_ios,
-                              size: 14.sp,
-                              color: colorScheme.outline,
-                            ),
-                          ],
-                        ),
-                        onTap: () =>
-                            _showSchemePicker(context, ref, themeState.scheme),
-                      ),
-                      _buildSettingsItem(
-                        context: context,
-                        icon: Symbols.palette,
-                        iconColor: colorScheme.primary,
-                        title: t.settings.theme,
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              _getThemeModeName(themeState.mode),
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: colorScheme.onSurfaceVariant,
+                              SizedBox(width: 8.w),
+                              Icon(
+                                Symbols.arrow_forward_ios,
+                                size: 14.sp,
+                                color: colorScheme.outline,
                               ),
-                            ),
-                            SizedBox(width: 8.w),
-                            Icon(
-                              Symbols.arrow_forward_ios,
-                              size: 14.sp,
-                              color: colorScheme.outline,
-                            ),
-                          ],
+                            ],
+                          ),
+                          onTap: () => _showSchemePicker(
+                            context,
+                            ref,
+                            themeState.scheme,
+                          ),
                         ),
-                        onTap: () =>
-                            _showThemePicker(context, ref, themeState.mode),
-                      ),
-                      _buildSettingsItem(
-                        context: context,
-                        icon: Symbols.language,
-                        iconColor: colorScheme.primary,
-                        title: t.settings.language,
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              _getLocaleName(currentLocale),
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                            Icon(
-                              Symbols.arrow_forward_ios,
-                              size: 14.sp,
-                              color: colorScheme.outline,
-                            ),
-                          ],
-                        ),
-                        onTap: () =>
-                            _showLanguagePicker(context, ref, currentLocale),
-                      ),
-                      _buildSettingsItem(
-                        context: context,
-                        icon: Symbols.system_update,
-                        iconColor: colorScheme.primary,
-                        title: t.settings.checkUpdate,
-                        trailing: packageInfoAsync.when(
-                          data: (PackageInfo info) => Row(
+                        SettingsItem(
+                          icon: Symbols.palette,
+                          iconColor: colorScheme.primary,
+                          title: t.settings.theme,
+                          trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'v${info.version}',
+                                _getThemeModeName(themeState.mode),
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: colorScheme.onSurfaceVariant,
                                 ),
@@ -145,82 +99,114 @@ class SettingsView extends ConsumerWidget {
                               ),
                             ],
                           ),
-                          loading: () => SizedBox(
-                            width: 14.w,
-                            height: 14.w,
-                            child: const CircularProgressIndicator(
-                              strokeWidth: 2,
+                          onTap: () =>
+                              _showThemePicker(context, ref, themeState.mode),
+                        ),
+                        SettingsItem(
+                          icon: Symbols.language,
+                          iconColor: colorScheme.primary,
+                          title: t.settings.language,
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                _getLocaleName(currentLocale),
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                              SizedBox(width: 8.w),
+                              Icon(
+                                Symbols.arrow_forward_ios,
+                                size: 14.sp,
+                                color: colorScheme.outline,
+                              ),
+                            ],
+                          ),
+                          onTap: () =>
+                              _showLanguagePicker(context, ref, currentLocale),
+                        ),
+                        SettingsItem(
+                          icon: Symbols.system_update,
+                          iconColor: colorScheme.primary,
+                          title: t.settings.checkUpdate,
+                          trailing: packageInfoAsync.when(
+                            data: (PackageInfo info) => Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'v${info.version}',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: colorScheme.onSurfaceVariant,
+                                  ),
+                                ),
+                                SizedBox(width: 8.w),
+                                Icon(
+                                  Symbols.arrow_forward_ios,
+                                  size: 14.sp,
+                                  color: colorScheme.outline,
+                                ),
+                              ],
+                            ),
+                            loading: () => SizedBox(
+                              width: 14.w,
+                              height: 14.w,
+                              child: const CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            ),
+                            error: (_, stack) => Icon(
+                              Symbols.arrow_forward_ios,
+                              size: 14.sp,
+                              color: colorScheme.outline,
                             ),
                           ),
-                          error: (_, stack) => Icon(
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(t.settings.checkingUpdate),
+                                duration: const Duration(seconds: 1),
+                              ),
+                            );
+                          },
+                        ),
+                        SettingsItem(
+                          icon: Symbols.cleaning_services,
+                          iconColor: colorScheme.primary,
+                          title: t.settings.clearCache,
+                          showDivider: false,
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(t.settings.cacheCleared),
+                                duration: const Duration(seconds: 1),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 24.h),
+                    SettingsSectionHeader(title: t.settings.about),
+                    SettingsSectionCard(
+                      children: [
+                        SettingsItem(
+                          icon: Symbols.perm_device_information,
+                          iconColor: colorScheme.primary,
+                          title: t.settings.deviceInfo,
+                          trailing: Icon(
                             Symbols.arrow_forward_ios,
                             size: 14.sp,
                             color: colorScheme.outline,
                           ),
+                          onTap: () => context.push(
+                            '${AppRoutes.settings}/${AppRoutes.deviceInfo}',
+                          ),
                         ),
-                        onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(t.settings.checkingUpdate),
-                              duration: const Duration(seconds: 1),
-                            ),
-                          );
-                        },
-                      ),
-                      _buildSettingsItem(
-                        context: context,
-                        icon: Symbols.cleaning_services,
-                        iconColor: colorScheme.primary,
-                        title: t.settings.clearCache,
-                        showDivider: false,
-                        onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(t.settings.cacheCleared),
-                              duration: const Duration(seconds: 1),
-                            ),
-                          );
-                        },
-                      ),
-                    ]),
-                    SizedBox(height: 24.h),
-                    _buildSectionHeader(context, t.settings.about),
-                    _buildSectionCard(context, [
-                      _buildSettingsItem(
-                        context: context,
-                        icon: Symbols.perm_device_information,
-                        iconColor: colorScheme.primary,
-                        title: t.settings.deviceInfo,
-                        trailing: Icon(
-                          Symbols.arrow_forward_ios,
-                          size: 14.sp,
-                          color: colorScheme.outline,
-                        ),
-                        onTap: () => context.push(
-                          '${AppRoutes.settings}/${AppRoutes.deviceInfo}',
-                        ),
-                      ),
-                      _buildSettingsItem(
-                        context: context,
-                        icon: Symbols.info,
-                        iconColor: colorScheme.primary,
-                        title: t.settings.aboutUs,
-                        showDivider: false,
-                        trailing: Icon(
-                          Symbols.arrow_forward_ios,
-                          size: 14.sp,
-                          color: colorScheme.outline,
-                        ),
-                        onTap: () => context.push(
-                          '${AppRoutes.settings}/${AppRoutes.about}',
-                        ),
-                      ),
-                      if (AppEnvConfig.current.debug)
-                        _buildSettingsItem(
-                          context: context,
-                          icon: Symbols.bug_report,
-                          iconColor: colorScheme.error,
-                          title: 'Debug Tools',
+                        SettingsItem(
+                          icon: Symbols.info,
+                          iconColor: colorScheme.primary,
+                          title: t.settings.aboutUs,
                           showDivider: false,
                           trailing: Icon(
                             Symbols.arrow_forward_ios,
@@ -228,10 +214,26 @@ class SettingsView extends ConsumerWidget {
                             color: colorScheme.outline,
                           ),
                           onTap: () => context.push(
-                            '${AppRoutes.settings}/${AppRoutes.debug}',
+                            '${AppRoutes.settings}/${AppRoutes.about}',
                           ),
                         ),
-                    ]),
+                        if (AppEnvConfig.current.debug)
+                          SettingsItem(
+                            icon: Symbols.bug_report,
+                            iconColor: colorScheme.error,
+                            title: 'Debug Tools',
+                            showDivider: false,
+                            trailing: Icon(
+                              Symbols.arrow_forward_ios,
+                              size: 14.sp,
+                              color: colorScheme.outline,
+                            ),
+                            onTap: () => context.push(
+                              '${AppRoutes.settings}/${AppRoutes.debug}',
+                            ),
+                          ),
+                      ],
+                    ),
                     SizedBox(height: 32.h),
                     SizedBox(height: 20.h),
                   ]
@@ -560,91 +562,6 @@ class SettingsView extends ConsumerWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildSectionHeader(BuildContext context, String title) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    return Padding(
-      padding: EdgeInsets.fromLTRB(24.w, 0, 24.w, 8.h),
-      child: Text(
-        title,
-        style: theme.textTheme.titleSmall?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionCard(BuildContext context, List<Widget> children) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: colorScheme.shadow.withValues(alpha: 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(children: children),
-    );
-  }
-
-  Widget _buildSettingsItem({
-    required BuildContext context,
-    required IconData icon,
-    required Color iconColor,
-    required String title,
-    Widget? trailing,
-    VoidCallback? onTap,
-    bool showDivider = true,
-  }) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    return Column(
-      children: [
-        Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(16.r),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              child: Row(
-                children: [
-                  Icon(icon, color: iconColor, size: 24.sp),
-                  SizedBox(width: 16.w),
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: colorScheme.onSurface,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  ?trailing,
-                ],
-              ),
-            ),
-          ),
-        ),
-        if (showDivider)
-          Divider(
-            height: 1,
-            indent: 56.w,
-            endIndent: 16.w,
-            color: colorScheme.outlineVariant.withValues(alpha: 0.5),
-          ),
-      ],
     );
   }
 }

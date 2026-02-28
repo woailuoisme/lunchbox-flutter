@@ -6,37 +6,37 @@ part 'user_model.g.dart';
 /// 用户模型类
 /// 表示系统用户信息
 @freezed
-abstract class UserModel with _$UserModel {
+sealed class UserModel with _$UserModel {
   const factory UserModel({
     /// 用户ID
     required String id,
 
     /// 用户名（手机号或邮箱）
-    required String username,
+    @Default('') String username,
 
     /// 用户注册时间
-    required DateTime registeredAt,
+    @JsonKey(name: 'registered_at') @Default('') String registeredAt,
 
     /// 手机号
-    String? phone,
+    @Default('') String? phone,
 
     /// 邮箱
-    String? email,
+    @Default('') String? email,
 
     /// 用户昵称
     @Default('') String nickname,
 
     /// 用户头像URL
-    String? avatar,
+    @Default('') String? avatar,
 
     /// 用户性别：male、female、unknown
     @Default('unknown') String gender,
 
     /// 用户生日
-    DateTime? birthday,
+    @Default('') String? birthday,
 
     /// 用户最后登录时间
-    DateTime? lastLoginAt,
+    @JsonKey(name: 'last_login_at') @Default('') String? lastLoginAt,
 
     /// 用户积分
     @Default(0) int points,
@@ -63,15 +63,20 @@ abstract class UserModel with _$UserModel {
 
   /// 获取用户年龄
   int? get age {
-    if (birthday == null) {
+    if (birthday == null || birthday!.isEmpty) {
       return null;
     }
-    final now = DateTime.now();
-    int age = now.year - birthday!.year;
-    if (now.month < birthday!.month ||
-        (now.month == birthday!.month && now.day < birthday!.day)) {
-      age--;
+    try {
+      final birthDate = DateTime.parse(birthday!);
+      final now = DateTime.now();
+      int age = now.year - birthDate.year;
+      if (now.month < birthDate.month ||
+          (now.month == birthDate.month && now.day < birthDate.day)) {
+        age--;
+      }
+      return age;
+    } catch (_) {
+      return null;
     }
-    return age;
   }
 }

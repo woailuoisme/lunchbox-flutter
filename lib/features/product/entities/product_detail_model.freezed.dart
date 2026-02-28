@@ -176,10 +176,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _ProductDetailModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -238,10 +235,7 @@ return $default(_that.id,_that.name,_that.description,_that.imageUrl,_that.conte
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String description, @JsonKey(name: 'thumb')  String imageUrl,  String content, @JsonKey(fromJson: _priceFromJson)  double price, @JsonKey(name: 'original_price', fromJson: _priceFromJson)  double? originalPrice, @JsonKey(name: 'cost_price', fromJson: _priceFromJson)  double? costPrice, @JsonKey(name: 'net_profit', fromJson: _priceFromJson)  double? netProfit, @JsonKey(name: 'shelf_life')  int? shelfLife,  int sales, @JsonKey(name: 'heating_time')  int? heatingTime,  String type, @JsonKey(name: 'sauce_id')  int? sauceId,  int? weigh, @JsonKey(name: 'daily_limit')  int? dailyLimit,  String? spec, @JsonKey(name: 'supply_chain')  String? supplyChain, @JsonKey(name: 'is_enabled')  bool isEnabled, @JsonKey(name: 'time_discount')  String? timeDiscount,  ProductDetailCategory? category,  List<ProductDetailComment> comments,  List<ProductDetailMedia> media, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _ProductDetailModel():
-return $default(_that.id,_that.name,_that.description,_that.imageUrl,_that.content,_that.price,_that.originalPrice,_that.costPrice,_that.netProfit,_that.shelfLife,_that.sales,_that.heatingTime,_that.type,_that.sauceId,_that.weigh,_that.dailyLimit,_that.spec,_that.supplyChain,_that.isEnabled,_that.timeDiscount,_that.category,_that.comments,_that.media,_that.createdAt,_that.updatedAt);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.name,_that.description,_that.imageUrl,_that.content,_that.price,_that.originalPrice,_that.costPrice,_that.netProfit,_that.shelfLife,_that.sales,_that.heatingTime,_that.type,_that.sauceId,_that.weigh,_that.dailyLimit,_that.spec,_that.supplyChain,_that.isEnabled,_that.timeDiscount,_that.category,_that.comments,_that.media,_that.createdAt,_that.updatedAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -270,19 +264,19 @@ return $default(_that.id,_that.name,_that.description,_that.imageUrl,_that.conte
 @JsonSerializable()
 
 class _ProductDetailModel extends ProductDetailModel {
-  const _ProductDetailModel({required this.id, required this.name, required this.description, @JsonKey(name: 'thumb') required this.imageUrl, required this.content, @JsonKey(fromJson: _priceFromJson) required this.price, @JsonKey(name: 'original_price', fromJson: _priceFromJson) this.originalPrice, @JsonKey(name: 'cost_price', fromJson: _priceFromJson) this.costPrice, @JsonKey(name: 'net_profit', fromJson: _priceFromJson) this.netProfit, @JsonKey(name: 'shelf_life') this.shelfLife, this.sales = 0, @JsonKey(name: 'heating_time') this.heatingTime, required this.type, @JsonKey(name: 'sauce_id') this.sauceId, this.weigh, @JsonKey(name: 'daily_limit') this.dailyLimit, this.spec, @JsonKey(name: 'supply_chain') this.supplyChain, @JsonKey(name: 'is_enabled') this.isEnabled = true, @JsonKey(name: 'time_discount') this.timeDiscount, this.category, final  List<ProductDetailComment> comments = const [], final  List<ProductDetailMedia> media = const [], @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt}): _comments = comments,_media = media,super._();
+  const _ProductDetailModel({required this.id, this.name = '', this.description = '', @JsonKey(name: 'thumb') this.imageUrl = '', this.content = '', @JsonKey(fromJson: _priceFromJson) this.price = 0.0, @JsonKey(name: 'original_price', fromJson: _priceFromJson) this.originalPrice = 0.0, @JsonKey(name: 'cost_price', fromJson: _priceFromJson) this.costPrice = 0.0, @JsonKey(name: 'net_profit', fromJson: _priceFromJson) this.netProfit = 0.0, @JsonKey(name: 'shelf_life') this.shelfLife = 0, this.sales = 0, @JsonKey(name: 'heating_time') this.heatingTime = 0, this.type = 'food', @JsonKey(name: 'sauce_id') this.sauceId = 0, this.weigh = 0, @JsonKey(name: 'daily_limit') this.dailyLimit = 0, this.spec = '', @JsonKey(name: 'supply_chain') this.supplyChain = '', @JsonKey(name: 'is_enabled') this.isEnabled = true, @JsonKey(name: 'time_discount') this.timeDiscount = '', this.category, final  List<ProductDetailComment> comments = const [], final  List<ProductDetailMedia> media = const [], @JsonKey(name: 'created_at') this.createdAt = '', @JsonKey(name: 'updated_at') this.updatedAt = ''}): _comments = comments,_media = media,super._();
   factory _ProductDetailModel.fromJson(Map<String, dynamic> json) => _$ProductDetailModelFromJson(json);
 
 /// 商品ID
 @override final  int id;
 /// 商品名称
-@override final  String name;
+@override@JsonKey() final  String name;
 /// 商品简述
-@override final  String description;
+@override@JsonKey() final  String description;
 /// 商品主图
 @override@JsonKey(name: 'thumb') final  String imageUrl;
 /// 商品详情 HTML 内容
-@override final  String content;
+@override@JsonKey() final  String content;
 /// 商品价格
 @override@JsonKey(fromJson: _priceFromJson) final  double price;
 /// 商品原价
@@ -298,15 +292,15 @@ class _ProductDetailModel extends ProductDetailModel {
 /// 加热时间 (秒)
 @override@JsonKey(name: 'heating_time') final  int? heatingTime;
 /// 商品类型
-@override final  String type;
+@override@JsonKey() final  String type;
 /// 酱料ID
 @override@JsonKey(name: 'sauce_id') final  int? sauceId;
 /// 重量
-@override final  int? weigh;
+@override@JsonKey() final  int? weigh;
 /// 每日限购
 @override@JsonKey(name: 'daily_limit') final  int? dailyLimit;
 /// 规格
-@override final  String? spec;
+@override@JsonKey() final  String? spec;
 /// 供应链
 @override@JsonKey(name: 'supply_chain') final  String? supplyChain;
 /// 是否上架
@@ -539,10 +533,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _ProductDetailCategory():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -601,10 +592,7 @@ return $default(_that.id,_that.name);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name)  $default,) {final _that = this;
 switch (_that) {
 case _ProductDetailCategory():
-return $default(_that.id,_that.name);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.name);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -633,11 +621,11 @@ return $default(_that.id,_that.name);case _:
 @JsonSerializable()
 
 class _ProductDetailCategory implements ProductDetailCategory {
-  const _ProductDetailCategory({required this.id, required this.name});
+  const _ProductDetailCategory({required this.id, this.name = ''});
   factory _ProductDetailCategory.fromJson(Map<String, dynamic> json) => _$ProductDetailCategoryFromJson(json);
 
 @override final  int id;
-@override final  String name;
+@override@JsonKey() final  String name;
 
 /// Create a copy of ProductDetailCategory
 /// with the given fields replaced by the non-null parameter values.
@@ -823,10 +811,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _ProductDetailComment():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -885,10 +870,7 @@ return $default(_that.id,_that.content,_that.rating,_that.ratingStars,_that.stat
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String content,  int rating, @JsonKey(name: 'rating_stars')  String ratingStars,  String status, @JsonKey(name: 'likes_count')  int likesCount, @JsonKey(name: 'is_liked')  bool isLiked,  ProductDetailUser user, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'updated_at')  String updatedAt, @JsonKey(name: 'created_at_human')  String createdAtHuman)  $default,) {final _that = this;
 switch (_that) {
 case _ProductDetailComment():
-return $default(_that.id,_that.content,_that.rating,_that.ratingStars,_that.status,_that.likesCount,_that.isLiked,_that.user,_that.createdAt,_that.updatedAt,_that.createdAtHuman);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.content,_that.rating,_that.ratingStars,_that.status,_that.likesCount,_that.isLiked,_that.user,_that.createdAt,_that.updatedAt,_that.createdAtHuman);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -917,17 +899,17 @@ return $default(_that.id,_that.content,_that.rating,_that.ratingStars,_that.stat
 @JsonSerializable()
 
 class _ProductDetailComment implements ProductDetailComment {
-  const _ProductDetailComment({required this.id, required this.content, required this.rating, @JsonKey(name: 'rating_stars') required this.ratingStars, required this.status, @JsonKey(name: 'likes_count') this.likesCount = 0, @JsonKey(name: 'is_liked') this.isLiked = false, required this.user, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt, @JsonKey(name: 'created_at_human') required this.createdAtHuman});
+  const _ProductDetailComment({required this.id, this.content = '', this.rating = 5, @JsonKey(name: 'rating_stars') this.ratingStars = '', this.status = '', @JsonKey(name: 'likes_count') this.likesCount = 0, @JsonKey(name: 'is_liked') this.isLiked = false, this.user = const ProductDetailUser(id: 0), @JsonKey(name: 'created_at') this.createdAt = '', @JsonKey(name: 'updated_at') this.updatedAt = '', @JsonKey(name: 'created_at_human') this.createdAtHuman = ''});
   factory _ProductDetailComment.fromJson(Map<String, dynamic> json) => _$ProductDetailCommentFromJson(json);
 
 @override final  int id;
-@override final  String content;
-@override final  int rating;
+@override@JsonKey() final  String content;
+@override@JsonKey() final  int rating;
 @override@JsonKey(name: 'rating_stars') final  String ratingStars;
-@override final  String status;
+@override@JsonKey() final  String status;
 @override@JsonKey(name: 'likes_count') final  int likesCount;
 @override@JsonKey(name: 'is_liked') final  bool isLiked;
-@override final  ProductDetailUser user;
+@override@JsonKey() final  ProductDetailUser user;
 @override@JsonKey(name: 'created_at') final  String createdAt;
 @override@JsonKey(name: 'updated_at') final  String updatedAt;
 @override@JsonKey(name: 'created_at_human') final  String createdAtHuman;
@@ -1117,10 +1099,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _ProductDetailUser():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -1179,10 +1158,7 @@ return $default(_that.id,_that.name,_that.avatar);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String avatar)  $default,) {final _that = this;
 switch (_that) {
 case _ProductDetailUser():
-return $default(_that.id,_that.name,_that.avatar);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.name,_that.avatar);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -1211,12 +1187,12 @@ return $default(_that.id,_that.name,_that.avatar);case _:
 @JsonSerializable()
 
 class _ProductDetailUser implements ProductDetailUser {
-  const _ProductDetailUser({required this.id, required this.name, required this.avatar});
+  const _ProductDetailUser({required this.id, this.name = '', this.avatar = ''});
   factory _ProductDetailUser.fromJson(Map<String, dynamic> json) => _$ProductDetailUserFromJson(json);
 
 @override final  int id;
-@override final  String name;
-@override final  String avatar;
+@override@JsonKey() final  String name;
+@override@JsonKey() final  String avatar;
 
 /// Create a copy of ProductDetailUser
 /// with the given fields replaced by the non-null parameter values.
@@ -1385,10 +1361,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _ProductDetailMedia():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -1447,10 +1420,7 @@ return $default(_that.id,_that.url);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String url)  $default,) {final _that = this;
 switch (_that) {
 case _ProductDetailMedia():
-return $default(_that.id,_that.url);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.url);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -1479,11 +1449,11 @@ return $default(_that.id,_that.url);case _:
 @JsonSerializable()
 
 class _ProductDetailMedia implements ProductDetailMedia {
-  const _ProductDetailMedia({required this.id, required this.url});
+  const _ProductDetailMedia({required this.id, this.url = ''});
   factory _ProductDetailMedia.fromJson(Map<String, dynamic> json) => _$ProductDetailMediaFromJson(json);
 
 @override final  int id;
-@override final  String url;
+@override@JsonKey() final  String url;
 
 /// Create a copy of ProductDetailMedia
 /// with the given fields replaced by the non-null parameter values.

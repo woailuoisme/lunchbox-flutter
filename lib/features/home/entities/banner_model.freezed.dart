@@ -130,10 +130,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _BannerModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -192,10 +189,7 @@ return $default(_that.id,_that.title,_that.type,_that.mpPage,_that.thumb,_that.t
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String title,  String type,  String? mpPage,  String thumb,  ThumbMedia thumbMedia,  int order)  $default,) {final _that = this;
 switch (_that) {
 case _BannerModel():
-return $default(_that.id,_that.title,_that.type,_that.mpPage,_that.thumb,_that.thumbMedia,_that.order);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.title,_that.type,_that.mpPage,_that.thumb,_that.thumbMedia,_that.order);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -224,16 +218,16 @@ return $default(_that.id,_that.title,_that.type,_that.mpPage,_that.thumb,_that.t
 @JsonSerializable()
 
 class _BannerModel implements BannerModel {
-  const _BannerModel({required this.id, required this.title, required this.type, this.mpPage, required this.thumb, required this.thumbMedia, required this.order});
+  const _BannerModel({required this.id, this.title = '', this.type = '', this.mpPage = '', this.thumb = '', this.thumbMedia = const ThumbMedia(thumbnail: '', webp: ''), this.order = 0});
   factory _BannerModel.fromJson(Map<String, dynamic> json) => _$BannerModelFromJson(json);
 
 @override final  int id;
-@override final  String title;
-@override final  String type;
-@override final  String? mpPage;
-@override final  String thumb;
-@override final  ThumbMedia thumbMedia;
-@override final  int order;
+@override@JsonKey() final  String title;
+@override@JsonKey() final  String type;
+@override@JsonKey() final  String? mpPage;
+@override@JsonKey() final  String thumb;
+@override@JsonKey() final  ThumbMedia thumbMedia;
+@override@JsonKey() final  int order;
 
 /// Create a copy of BannerModel
 /// with the given fields replaced by the non-null parameter values.
@@ -415,10 +409,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _ThumbMedia():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -477,10 +468,7 @@ return $default(_that.thumbnail,_that.webp);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String thumbnail,  String webp)  $default,) {final _that = this;
 switch (_that) {
 case _ThumbMedia():
-return $default(_that.thumbnail,_that.webp);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.thumbnail,_that.webp);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -509,11 +497,11 @@ return $default(_that.thumbnail,_that.webp);case _:
 @JsonSerializable()
 
 class _ThumbMedia implements ThumbMedia {
-  const _ThumbMedia({required this.thumbnail, required this.webp});
+  const _ThumbMedia({this.thumbnail = '', this.webp = ''});
   factory _ThumbMedia.fromJson(Map<String, dynamic> json) => _$ThumbMediaFromJson(json);
 
-@override final  String thumbnail;
-@override final  String webp;
+@override@JsonKey() final  String thumbnail;
+@override@JsonKey() final  String webp;
 
 /// Create a copy of ThumbMedia
 /// with the given fields replaced by the non-null parameter values.

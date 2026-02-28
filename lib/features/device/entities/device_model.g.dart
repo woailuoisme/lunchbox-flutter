@@ -12,20 +12,28 @@ _DeviceModel _$DeviceModelFromJson(Map<String, dynamic> json) => $checkedCreate(
   ($checkedConvert) {
     final val = _DeviceModel(
       id: $checkedConvert('id', (v) => (v as num).toInt()),
-      no: $checkedConvert('no', (v) => v as String),
-      name: $checkedConvert('name', (v) => v as String),
-      isEnabled: $checkedConvert('is_enabled', (v) => v as bool),
-      distance: $checkedConvert('distance', (v) => v as String?),
-      distanceKm: $checkedConvert('distance_km', (v) => v as String?),
-      longitude: $checkedConvert('longitude', (v) => v as String),
-      latitude: $checkedConvert('latitude', (v) => v as String),
-      streetAddress: $checkedConvert('street_address', (v) => v as String),
-      fullAddress: $checkedConvert('full_address', (v) => v as String),
-      businessHours: $checkedConvert('business_hours', (v) => v as String),
-      imageUrl: $checkedConvert('image_url', (v) => v as String),
+      no: $checkedConvert('no', (v) => v as String? ?? ''),
+      name: $checkedConvert('name', (v) => v as String? ?? ''),
+      isEnabled: $checkedConvert('is_enabled', (v) => v as bool? ?? true),
+      distance: $checkedConvert('distance', (v) => v as String? ?? ''),
+      distanceKm: $checkedConvert('distance_km', (v) => v as String? ?? ''),
+      longitude: $checkedConvert('longitude', (v) => v as String? ?? ''),
+      latitude: $checkedConvert('latitude', (v) => v as String? ?? ''),
+      streetAddress: $checkedConvert(
+        'street_address',
+        (v) => v as String? ?? '',
+      ),
+      fullAddress: $checkedConvert('full_address', (v) => v as String? ?? ''),
+      businessHours: $checkedConvert(
+        'business_hours',
+        (v) => v as String? ?? '',
+      ),
+      imageUrl: $checkedConvert('image_url', (v) => v as String? ?? ''),
       city: $checkedConvert(
         'city',
-        (v) => DeviceCityModel.fromJson(v as Map<String, dynamic>),
+        (v) => v == null
+            ? const DeviceCityModel(id: '', name: '')
+            : DeviceCityModel.fromJson(v as Map<String, dynamic>),
       ),
     );
     return val;
@@ -61,7 +69,7 @@ _DeviceCityModel _$DeviceCityModelFromJson(Map<String, dynamic> json) =>
     $checkedCreate('_DeviceCityModel', json, ($checkedConvert) {
       final val = _DeviceCityModel(
         id: $checkedConvert('id', (v) => v as String),
-        name: $checkedConvert('name', (v) => v as String),
+        name: $checkedConvert('name', (v) => v as String? ?? ''),
       );
       return val;
     });

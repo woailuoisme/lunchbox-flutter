@@ -62,7 +62,15 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
     // 初始化本地状态（如果未初始化）
     if (user != null) {
       _selectedGender ??= user.gender;
-      _selectedBirthday ??= user.birthday;
+      if (_selectedBirthday == null &&
+          user.birthday != null &&
+          user.birthday!.isNotEmpty) {
+        try {
+          _selectedBirthday = DateTime.parse(user.birthday!);
+        } catch (_) {
+          // 忽略解析错误
+        }
+      }
     }
 
     return Scaffold(

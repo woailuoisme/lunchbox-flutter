@@ -131,10 +131,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _NearestDeviceModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -193,10 +190,7 @@ return $default(_that.id,_that.name,_that.distance,_that.distanceKm,_that.latitu
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String distance, @JsonKey(name: 'distance_km')  String distanceKm,  String latitude,  String longitude,  NearestCity city, @JsonKey(name: 'street_address')  String streetAddress)  $default,) {final _that = this;
 switch (_that) {
 case _NearestDeviceModel():
-return $default(_that.id,_that.name,_that.distance,_that.distanceKm,_that.latitude,_that.longitude,_that.city,_that.streetAddress);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.name,_that.distance,_that.distanceKm,_that.latitude,_that.longitude,_that.city,_that.streetAddress);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -225,16 +219,16 @@ return $default(_that.id,_that.name,_that.distance,_that.distanceKm,_that.latitu
 @JsonSerializable()
 
 class _NearestDeviceModel implements NearestDeviceModel {
-  const _NearestDeviceModel({required this.id, required this.name, required this.distance, @JsonKey(name: 'distance_km') required this.distanceKm, required this.latitude, required this.longitude, required this.city, @JsonKey(name: 'street_address') required this.streetAddress});
+  const _NearestDeviceModel({required this.id, this.name = '', this.distance = '', @JsonKey(name: 'distance_km') this.distanceKm = '', this.latitude = '', this.longitude = '', this.city = const NearestCity(name: '', code: ''), @JsonKey(name: 'street_address') this.streetAddress = ''});
   factory _NearestDeviceModel.fromJson(Map<String, dynamic> json) => _$NearestDeviceModelFromJson(json);
 
 @override final  int id;
-@override final  String name;
-@override final  String distance;
+@override@JsonKey() final  String name;
+@override@JsonKey() final  String distance;
 @override@JsonKey(name: 'distance_km') final  String distanceKm;
-@override final  String latitude;
-@override final  String longitude;
-@override final  NearestCity city;
+@override@JsonKey() final  String latitude;
+@override@JsonKey() final  String longitude;
+@override@JsonKey() final  NearestCity city;
 @override@JsonKey(name: 'street_address') final  String streetAddress;
 
 /// Create a copy of NearestDeviceModel
@@ -418,10 +412,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _NearestCity():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -480,10 +471,7 @@ return $default(_that.name,_that.code);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String code)  $default,) {final _that = this;
 switch (_that) {
 case _NearestCity():
-return $default(_that.name,_that.code);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.name,_that.code);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -512,11 +500,11 @@ return $default(_that.name,_that.code);case _:
 @JsonSerializable()
 
 class _NearestCity implements NearestCity {
-  const _NearestCity({required this.name, required this.code});
+  const _NearestCity({this.name = '', this.code = ''});
   factory _NearestCity.fromJson(Map<String, dynamic> json) => _$NearestCityFromJson(json);
 
-@override final  String name;
-@override final  String code;
+@override@JsonKey() final  String name;
+@override@JsonKey() final  String code;
 
 /// Create a copy of NearestCity
 /// with the given fields replaced by the non-null parameter values.

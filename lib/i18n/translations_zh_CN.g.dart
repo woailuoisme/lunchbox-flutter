@@ -2505,6 +2505,35 @@ class TranslationsProductZhCn {
   /// zh-CN: '购物车'
   String get cart =>
       TranslationOverrides.string(_root.$meta, 'product.cart', {}) ?? '购物车';
+
+  /// zh-CN: '暂无商品'
+  String get noProducts =>
+      TranslationOverrides.string(_root.$meta, 'product.noProducts', {}) ??
+      '暂无商品';
+
+  /// zh-CN: '正在加载商品详情，请稍候...'
+  String get loadingDetail =>
+      TranslationOverrides.string(_root.$meta, 'product.loadingDetail', {}) ??
+      '正在加载商品详情，请稍候...';
+
+  /// zh-CN: '暂无详细介绍'
+  String get noDescription =>
+      TranslationOverrides.string(_root.$meta, 'product.noDescription', {}) ??
+      '暂无详细介绍';
+
+  /// zh-CN: '商品评价'
+  String get reviews =>
+      TranslationOverrides.string(_root.$meta, 'product.reviews', {}) ?? '商品评价';
+
+  /// zh-CN: '暂无评价'
+  String get noReviews =>
+      TranslationOverrides.string(_root.$meta, 'product.noReviews', {}) ??
+      '暂无评价';
+
+  /// zh-CN: '查看全部评价'
+  String get viewAllReviews =>
+      TranslationOverrides.string(_root.$meta, 'product.viewAllReviews', {}) ??
+      '查看全部评价';
 }
 
 // Path: profile
@@ -7239,6 +7268,40 @@ extension on Translations {
           'product.cart' =>
             TranslationOverrides.string(_root.$meta, 'product.cart', {}) ??
                 '购物车',
+          'product.noProducts' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'product.noProducts',
+                  {},
+                ) ??
+                '暂无商品',
+          'product.loadingDetail' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'product.loadingDetail',
+                  {},
+                ) ??
+                '正在加载商品详情，请稍候...',
+          'product.noDescription' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'product.noDescription',
+                  {},
+                ) ??
+                '暂无详细介绍',
+          'product.reviews' =>
+            TranslationOverrides.string(_root.$meta, 'product.reviews', {}) ??
+                '商品评价',
+          'product.noReviews' =>
+            TranslationOverrides.string(_root.$meta, 'product.noReviews', {}) ??
+                '暂无评价',
+          'product.viewAllReviews' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'product.viewAllReviews',
+                  {},
+                ) ??
+                '查看全部评价',
           'profile.title' =>
             TranslationOverrides.string(_root.$meta, 'profile.title', {}) ??
                 '个人中心',

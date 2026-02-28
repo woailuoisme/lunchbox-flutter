@@ -35,11 +35,9 @@ class ProductGridList extends ConsumerWidget {
                   ),
                   SizedBox(height: 16.h),
                   Text(
-                    t.order.noOrders,
-                    style: TextStyle(
+                    t.product.noProducts,
+                    style: theme.textTheme.bodyLarge?.copyWith(
                       color: theme.disabledColor,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],

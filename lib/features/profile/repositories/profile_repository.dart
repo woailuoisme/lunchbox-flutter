@@ -20,11 +20,11 @@ class ProfileRepository extends _$ProfileRepository {
       nickname: '测试用户',
       avatar: 'https://picsum.photos/seed/user/200',
       gender: 'male',
-      birthday: DateTime(1990, 1, 1),
+      birthday: DateTime(1990, 1, 1).toIso8601String(),
       points: 100,
       memberLevel: 'gold',
       isVerified: true,
-      registeredAt: DateTime(2023, 1, 1),
+      registeredAt: DateTime(2023, 1, 1).toIso8601String(),
     );
   }
 
@@ -42,7 +42,7 @@ class ProfileRepository extends _$ProfileRepository {
       nickname: nickname ?? currentUser.nickname,
       avatar: avatar ?? currentUser.avatar,
       gender: gender ?? currentUser.gender,
-      birthday: birthday ?? currentUser.birthday,
+      birthday: birthday?.toIso8601String() ?? currentUser.birthday,
     );
   }
 }

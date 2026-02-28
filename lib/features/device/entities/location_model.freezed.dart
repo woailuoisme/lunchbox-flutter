@@ -120,10 +120,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _LocationModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -182,10 +179,7 @@ return $default(_that.latitude,_that.longitude,_that.address);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double latitude,  double longitude,  String? address)  $default,) {final _that = this;
 switch (_that) {
 case _LocationModel():
-return $default(_that.latitude,_that.longitude,_that.address);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.latitude,_that.longitude,_that.address);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -214,15 +208,15 @@ return $default(_that.latitude,_that.longitude,_that.address);case _:
 @JsonSerializable()
 
 class _LocationModel extends LocationModel {
-  const _LocationModel({required this.latitude, required this.longitude, this.address}): super._();
+  const _LocationModel({this.latitude = 0.0, this.longitude = 0.0, this.address = ''}): super._();
   factory _LocationModel.fromJson(Map<String, dynamic> json) => _$LocationModelFromJson(json);
 
 /// Latitude coordinate
-@override final  double latitude;
+@override@JsonKey() final  double latitude;
 /// Longitude coordinate
-@override final  double longitude;
+@override@JsonKey() final  double longitude;
 /// Optional address description
-@override final  String? address;
+@override@JsonKey() final  String? address;
 
 /// Create a copy of LocationModel
 /// with the given fields replaced by the non-null parameter values.

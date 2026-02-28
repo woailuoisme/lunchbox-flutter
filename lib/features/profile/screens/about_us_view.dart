@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/core/services/dialog_service.dart';
 import 'package:lunchbox/core/widgets/html_web_view.dart';
+import 'package:lunchbox/features/profile/widgets/about_feature_item.dart';
+import 'package:lunchbox/features/profile/widgets/section_title.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -255,7 +257,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionTitle(context, t.about.featuresTitle),
+          SectionTitle(title: t.about.featuresTitle),
           SizedBox(height: 16.h),
           GridView.count(
             shrinkWrap: true,
@@ -265,97 +267,31 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
             crossAxisSpacing: 12.w,
             childAspectRatio: 1.3,
             children: [
-              _buildFeatureItem(
-                context,
-                Symbols.restaurant,
-                t.about.feature1Title,
-                t.about.feature1Desc,
-                theme.colorScheme.primary,
+              AboutFeatureItem(
+                icon: Symbols.restaurant,
+                title: t.about.feature1Title,
+                desc: t.about.feature1Desc,
+                color: theme.colorScheme.primary,
               ),
-              _buildFeatureItem(
-                context,
-                Symbols.rocket_launch,
-                t.about.feature2Title,
-                t.about.feature2Desc,
-                theme.colorScheme.primary,
+              AboutFeatureItem(
+                icon: Symbols.rocket_launch,
+                title: t.about.feature2Title,
+                desc: t.about.feature2Desc,
+                color: theme.colorScheme.primary,
               ),
-              _buildFeatureItem(
-                context,
-                Symbols.star,
-                t.about.feature3Title,
-                t.about.feature3Desc,
-                theme.colorScheme.primary,
+              AboutFeatureItem(
+                icon: Symbols.star,
+                title: t.about.feature3Title,
+                desc: t.about.feature3Desc,
+                color: theme.colorScheme.primary,
               ),
-              _buildFeatureItem(
-                context,
-                Symbols.diamond,
-                t.about.feature4Title,
-                t.about.feature4Desc,
-                theme.colorScheme.primary,
+              AboutFeatureItem(
+                icon: Symbols.diamond,
+                title: t.about.feature4Title,
+                desc: t.about.feature4Desc,
+                color: theme.colorScheme.primary,
               ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFeatureItem(
-    BuildContext context,
-    IconData icon,
-    String title,
-    String desc,
-    Color color,
-  ) {
-    final theme = Theme.of(context);
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: theme.shadowColor.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Icon(icon, size: 20.sp, color: color),
-          ),
-          const Spacer(),
-          Text(
-            title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-              color: theme.textTheme.titleMedium?.color,
-            ),
-          ),
-          const Spacer(),
-          Text(
-            desc,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 11.sp,
-              color: theme.textTheme.bodySmall?.color,
-              height: 1.4,
-            ),
           ),
         ],
       ),
@@ -369,7 +305,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionTitle(context, t.about.policyTitle),
+          SectionTitle(title: t.about.policyTitle),
           SizedBox(height: 12.h),
           Container(
             decoration: BoxDecoration(
@@ -431,7 +367,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionTitle(context, t.about.contactTitle),
+          SectionTitle(title: t.about.contactTitle),
           SizedBox(height: 12.h),
           Container(
             decoration: BoxDecoration(
@@ -521,21 +457,6 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
         borderRadius: BorderRadius.vertical(
           top: isFirst ? Radius.circular(16.r) : Radius.zero,
           bottom: isLast ? Radius.circular(16.r) : Radius.zero,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(BuildContext context, String title) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.only(left: 4.w),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.bold,
-          color: theme.textTheme.titleMedium?.color,
         ),
       ),
     );

@@ -121,10 +121,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _RecommendProductModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -183,10 +180,7 @@ return $default(_that.id,_that.name,_that.image,_that.category,_that.price,_that
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String image,  String category,  String price, @JsonKey(name: 'original_price')  String? originalPrice,  List<String> tags)  $default,) {final _that = this;
 switch (_that) {
 case _RecommendProductModel():
-return $default(_that.id,_that.name,_that.image,_that.category,_that.price,_that.originalPrice,_that.tags);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.name,_that.image,_that.category,_that.price,_that.originalPrice,_that.tags);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -215,14 +209,14 @@ return $default(_that.id,_that.name,_that.image,_that.category,_that.price,_that
 @JsonSerializable()
 
 class _RecommendProductModel implements RecommendProductModel {
-  const _RecommendProductModel({required this.id, required this.name, required this.image, required this.category, required this.price, @JsonKey(name: 'original_price') this.originalPrice, final  List<String> tags = const []}): _tags = tags;
+  const _RecommendProductModel({required this.id, this.name = '', this.image = '', this.category = '', this.price = '', @JsonKey(name: 'original_price') this.originalPrice = '', final  List<String> tags = const []}): _tags = tags;
   factory _RecommendProductModel.fromJson(Map<String, dynamic> json) => _$RecommendProductModelFromJson(json);
 
 @override final  int id;
-@override final  String name;
-@override final  String image;
-@override final  String category;
-@override final  String price;
+@override@JsonKey() final  String name;
+@override@JsonKey() final  String image;
+@override@JsonKey() final  String category;
+@override@JsonKey() final  String price;
 @override@JsonKey(name: 'original_price') final  String? originalPrice;
  final  List<String> _tags;
 @override@JsonKey() List<String> get tags {

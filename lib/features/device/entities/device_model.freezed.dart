@@ -149,10 +149,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _DeviceModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -211,10 +208,7 @@ return $default(_that.id,_that.no,_that.name,_that.isEnabled,_that.distance,_tha
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String no,  String name, @JsonKey(name: 'is_enabled')  bool isEnabled,  String? distance, @JsonKey(name: 'distance_km')  String? distanceKm,  String longitude,  String latitude, @JsonKey(name: 'street_address')  String streetAddress, @JsonKey(name: 'full_address')  String fullAddress, @JsonKey(name: 'business_hours')  String businessHours, @JsonKey(name: 'image_url')  String imageUrl,  DeviceCityModel city)  $default,) {final _that = this;
 switch (_that) {
 case _DeviceModel():
-return $default(_that.id,_that.no,_that.name,_that.isEnabled,_that.distance,_that.distanceKm,_that.longitude,_that.latitude,_that.streetAddress,_that.fullAddress,_that.businessHours,_that.imageUrl,_that.city);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.no,_that.name,_that.isEnabled,_that.distance,_that.distanceKm,_that.longitude,_that.latitude,_that.streetAddress,_that.fullAddress,_that.businessHours,_that.imageUrl,_that.city);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -243,25 +237,25 @@ return $default(_that.id,_that.no,_that.name,_that.isEnabled,_that.distance,_tha
 @JsonSerializable()
 
 class _DeviceModel implements DeviceModel {
-  const _DeviceModel({required this.id, required this.no, required this.name, @JsonKey(name: 'is_enabled') required this.isEnabled, this.distance, @JsonKey(name: 'distance_km') this.distanceKm, required this.longitude, required this.latitude, @JsonKey(name: 'street_address') required this.streetAddress, @JsonKey(name: 'full_address') required this.fullAddress, @JsonKey(name: 'business_hours') required this.businessHours, @JsonKey(name: 'image_url') required this.imageUrl, required this.city});
+  const _DeviceModel({required this.id, this.no = '', this.name = '', @JsonKey(name: 'is_enabled') this.isEnabled = true, this.distance = '', @JsonKey(name: 'distance_km') this.distanceKm = '', this.longitude = '', this.latitude = '', @JsonKey(name: 'street_address') this.streetAddress = '', @JsonKey(name: 'full_address') this.fullAddress = '', @JsonKey(name: 'business_hours') this.businessHours = '', @JsonKey(name: 'image_url') this.imageUrl = '', this.city = const DeviceCityModel(id: '', name: '')});
   factory _DeviceModel.fromJson(Map<String, dynamic> json) => _$DeviceModelFromJson(json);
 
 /// 设备ID
 @override final  int id;
 /// 设备编号
-@override final  String no;
+@override@JsonKey() final  String no;
 /// 设备名称
-@override final  String name;
+@override@JsonKey() final  String name;
 /// 是否启用
 @override@JsonKey(name: 'is_enabled') final  bool isEnabled;
 /// 距离 (如: "48880.04m")
-@override final  String? distance;
+@override@JsonKey() final  String? distance;
 /// 距离公里 (如: "48.88km")
 @override@JsonKey(name: 'distance_km') final  String? distanceKm;
 /// 经度
-@override final  String longitude;
+@override@JsonKey() final  String longitude;
 /// 纬度
-@override final  String latitude;
+@override@JsonKey() final  String latitude;
 /// 街道地址
 @override@JsonKey(name: 'street_address') final  String streetAddress;
 /// 完整地址
@@ -271,7 +265,7 @@ class _DeviceModel implements DeviceModel {
 /// 图片URL
 @override@JsonKey(name: 'image_url') final  String imageUrl;
 /// 城市信息
-@override final  DeviceCityModel city;
+@override@JsonKey() final  DeviceCityModel city;
 
 /// Create a copy of DeviceModel
 /// with the given fields replaced by the non-null parameter values.
@@ -461,10 +455,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _DeviceCityModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -523,10 +514,7 @@ return $default(_that.id,_that.name);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name)  $default,) {final _that = this;
 switch (_that) {
 case _DeviceCityModel():
-return $default(_that.id,_that.name);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.name);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -555,13 +543,13 @@ return $default(_that.id,_that.name);case _:
 @JsonSerializable()
 
 class _DeviceCityModel implements DeviceCityModel {
-  const _DeviceCityModel({required this.id, required this.name});
+  const _DeviceCityModel({required this.id, this.name = ''});
   factory _DeviceCityModel.fromJson(Map<String, dynamic> json) => _$DeviceCityModelFromJson(json);
 
 /// 城市ID/代码
 @override final  String id;
 /// 城市名称
-@override final  String name;
+@override@JsonKey() final  String name;
 
 /// Create a copy of DeviceCityModel
 /// with the given fields replaced by the non-null parameter values.

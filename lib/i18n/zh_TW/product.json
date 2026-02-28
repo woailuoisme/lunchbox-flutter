@@ -18,5 +18,11 @@
   "sortPriceDesc": "價格從高到低",
   "sortName": "按名稱排序",
   "filterOnlyAvailable": "僅顯示可用商品",
-  "cart": "購物車"
+  "cart": "購物車",
+  "noProducts": "暫无商品",
+  "loadingDetail": "正在加载商品详情，请稍候...",
+  "noDescription": "暫无详细介绍",
+  "reviews": "商品评价",
+  "noReviews": "暫无评价",
+  "viewAllReviews": "查看全部评价"
 }

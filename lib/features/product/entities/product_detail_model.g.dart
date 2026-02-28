@@ -14,28 +14,46 @@ _ProductDetailModel _$ProductDetailModelFromJson(
   ($checkedConvert) {
     final val = _ProductDetailModel(
       id: $checkedConvert('id', (v) => (v as num).toInt()),
-      name: $checkedConvert('name', (v) => v as String),
-      description: $checkedConvert('description', (v) => v as String),
-      imageUrl: $checkedConvert('thumb', (v) => v as String),
-      content: $checkedConvert('content', (v) => v as String),
-      price: $checkedConvert('price', (v) => _priceFromJson(v)),
+      name: $checkedConvert('name', (v) => v as String? ?? ''),
+      description: $checkedConvert('description', (v) => v as String? ?? ''),
+      imageUrl: $checkedConvert('thumb', (v) => v as String? ?? ''),
+      content: $checkedConvert('content', (v) => v as String? ?? ''),
+      price: $checkedConvert(
+        'price',
+        (v) => v == null ? 0.0 : _priceFromJson(v),
+      ),
       originalPrice: $checkedConvert(
         'original_price',
-        (v) => _priceFromJson(v),
+        (v) => v == null ? 0.0 : _priceFromJson(v),
       ),
-      costPrice: $checkedConvert('cost_price', (v) => _priceFromJson(v)),
-      netProfit: $checkedConvert('net_profit', (v) => _priceFromJson(v)),
-      shelfLife: $checkedConvert('shelf_life', (v) => (v as num?)?.toInt()),
+      costPrice: $checkedConvert(
+        'cost_price',
+        (v) => v == null ? 0.0 : _priceFromJson(v),
+      ),
+      netProfit: $checkedConvert(
+        'net_profit',
+        (v) => v == null ? 0.0 : _priceFromJson(v),
+      ),
+      shelfLife: $checkedConvert(
+        'shelf_life',
+        (v) => (v as num?)?.toInt() ?? 0,
+      ),
       sales: $checkedConvert('sales', (v) => (v as num?)?.toInt() ?? 0),
-      heatingTime: $checkedConvert('heating_time', (v) => (v as num?)?.toInt()),
-      type: $checkedConvert('type', (v) => v as String),
-      sauceId: $checkedConvert('sauce_id', (v) => (v as num?)?.toInt()),
-      weigh: $checkedConvert('weigh', (v) => (v as num?)?.toInt()),
-      dailyLimit: $checkedConvert('daily_limit', (v) => (v as num?)?.toInt()),
-      spec: $checkedConvert('spec', (v) => v as String?),
-      supplyChain: $checkedConvert('supply_chain', (v) => v as String?),
+      heatingTime: $checkedConvert(
+        'heating_time',
+        (v) => (v as num?)?.toInt() ?? 0,
+      ),
+      type: $checkedConvert('type', (v) => v as String? ?? 'food'),
+      sauceId: $checkedConvert('sauce_id', (v) => (v as num?)?.toInt() ?? 0),
+      weigh: $checkedConvert('weigh', (v) => (v as num?)?.toInt() ?? 0),
+      dailyLimit: $checkedConvert(
+        'daily_limit',
+        (v) => (v as num?)?.toInt() ?? 0,
+      ),
+      spec: $checkedConvert('spec', (v) => v as String? ?? ''),
+      supplyChain: $checkedConvert('supply_chain', (v) => v as String? ?? ''),
       isEnabled: $checkedConvert('is_enabled', (v) => v as bool? ?? true),
-      timeDiscount: $checkedConvert('time_discount', (v) => v as String?),
+      timeDiscount: $checkedConvert('time_discount', (v) => v as String? ?? ''),
       category: $checkedConvert(
         'category',
         (v) => v == null
@@ -63,8 +81,8 @@ _ProductDetailModel _$ProductDetailModelFromJson(
                 .toList() ??
             const [],
       ),
-      createdAt: $checkedConvert('created_at', (v) => v as String?),
-      updatedAt: $checkedConvert('updated_at', (v) => v as String?),
+      createdAt: $checkedConvert('created_at', (v) => v as String? ?? ''),
+      updatedAt: $checkedConvert('updated_at', (v) => v as String? ?? ''),
     );
     return val;
   },
@@ -119,7 +137,7 @@ _ProductDetailCategory _$ProductDetailCategoryFromJson(
 ) => $checkedCreate('_ProductDetailCategory', json, ($checkedConvert) {
   final val = _ProductDetailCategory(
     id: $checkedConvert('id', (v) => (v as num).toInt()),
-    name: $checkedConvert('name', (v) => v as String),
+    name: $checkedConvert('name', (v) => v as String? ?? ''),
   );
   return val;
 });
@@ -136,10 +154,10 @@ _ProductDetailComment _$ProductDetailCommentFromJson(
   ($checkedConvert) {
     final val = _ProductDetailComment(
       id: $checkedConvert('id', (v) => (v as num).toInt()),
-      content: $checkedConvert('content', (v) => v as String),
-      rating: $checkedConvert('rating', (v) => (v as num).toInt()),
-      ratingStars: $checkedConvert('rating_stars', (v) => v as String),
-      status: $checkedConvert('status', (v) => v as String),
+      content: $checkedConvert('content', (v) => v as String? ?? ''),
+      rating: $checkedConvert('rating', (v) => (v as num?)?.toInt() ?? 5),
+      ratingStars: $checkedConvert('rating_stars', (v) => v as String? ?? ''),
+      status: $checkedConvert('status', (v) => v as String? ?? ''),
       likesCount: $checkedConvert(
         'likes_count',
         (v) => (v as num?)?.toInt() ?? 0,
@@ -147,11 +165,16 @@ _ProductDetailComment _$ProductDetailCommentFromJson(
       isLiked: $checkedConvert('is_liked', (v) => v as bool? ?? false),
       user: $checkedConvert(
         'user',
-        (v) => ProductDetailUser.fromJson(v as Map<String, dynamic>),
+        (v) => v == null
+            ? const ProductDetailUser(id: 0)
+            : ProductDetailUser.fromJson(v as Map<String, dynamic>),
       ),
-      createdAt: $checkedConvert('created_at', (v) => v as String),
-      updatedAt: $checkedConvert('updated_at', (v) => v as String),
-      createdAtHuman: $checkedConvert('created_at_human', (v) => v as String),
+      createdAt: $checkedConvert('created_at', (v) => v as String? ?? ''),
+      updatedAt: $checkedConvert('updated_at', (v) => v as String? ?? ''),
+      createdAtHuman: $checkedConvert(
+        'created_at_human',
+        (v) => v as String? ?? '',
+      ),
     );
     return val;
   },
@@ -185,8 +208,8 @@ _ProductDetailUser _$ProductDetailUserFromJson(Map<String, dynamic> json) =>
     $checkedCreate('_ProductDetailUser', json, ($checkedConvert) {
       final val = _ProductDetailUser(
         id: $checkedConvert('id', (v) => (v as num).toInt()),
-        name: $checkedConvert('name', (v) => v as String),
-        avatar: $checkedConvert('avatar', (v) => v as String),
+        name: $checkedConvert('name', (v) => v as String? ?? ''),
+        avatar: $checkedConvert('avatar', (v) => v as String? ?? ''),
       );
       return val;
     });
@@ -202,7 +225,7 @@ _ProductDetailMedia _$ProductDetailMediaFromJson(Map<String, dynamic> json) =>
     $checkedCreate('_ProductDetailMedia', json, ($checkedConvert) {
       final val = _ProductDetailMedia(
         id: $checkedConvert('id', (v) => (v as num).toInt()),
-        url: $checkedConvert('url', (v) => v as String),
+        url: $checkedConvert('url', (v) => v as String? ?? ''),
       );
       return val;
     });

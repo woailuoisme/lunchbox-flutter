@@ -42,7 +42,7 @@ class UserRepository {
         username: data['telephone'] as String,
         phone: data['telephone'] as String,
         nickname: data['telephone'] as String,
-        registeredAt: DateTime.parse(data['created_at'] as String),
+        registeredAt: data['created_at'] as String,
       );
 
       _saveUserInfo(user);

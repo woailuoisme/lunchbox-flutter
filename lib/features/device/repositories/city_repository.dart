@@ -4,7 +4,6 @@ import 'package:lunchbox/core/services/services.dart';
 import 'package:lunchbox/core/constants/constants.dart';
 import 'package:lunchbox/features/device/entities/city_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:lunchbox/core/errors/failure.dart';
 
 part 'city_repository.g.dart';
 
@@ -26,10 +25,7 @@ class CityRepository {
   /// 获取所有城市列表
   Future<List<CityModel>> getAllCities() async {
     final response = await _client.getEnableCities();
-    if (response.success && response.data != null) {
-      return response.data!;
-    }
-    throw Failure.server(message: response.message, statusCode: response.code);
+    return response.data ?? [];
   }
 
   /// 获取热门城市列表
@@ -60,17 +56,13 @@ class CityRepository {
 
   /// 获取已选择的城市
   CityModel? getSelectedCity() {
-    try {
-      final jsonStr = _storageService.read<String>(
-        AppConstants.keySelectedCity,
-      );
-      if (jsonStr != null) {
+    final jsonStr = _storageService.read<String>(AppConstants.keySelectedCity);
+    if (jsonStr != null) {
+      try {
         return CityModel.fromJson(json.decode(jsonStr) as Map<String, dynamic>);
-      }
-      return null;
-    } catch (e) {
-      return null;
+      } catch (_) {}
     }
+    return null;
   }
 
   /// 保存已选择的城市
@@ -82,15 +74,15 @@ class CityRepository {
   }
 
   /// 根据城市ID获取城市信息
-  Future<CityModel> getCityById(String cityId) async {
+  Future<CityModel?> getCityById(String cityId) async {
     final cities = await getAllCities();
-    return cities.firstWhere(
-      (city) => city.code == cityId || city.city == cityId,
-      orElse: () => throw const Failure.server(
-        message: 'City not found',
-        statusCode: 404,
-      ),
-    );
+    try {
+      return cities.firstWhere(
+        (city) => city.code == cityId || city.city == cityId,
+      );
+    } catch (_) {
+      return null;
+    }
   }
 
   /// 搜索城市
@@ -116,9 +108,6 @@ class CityRepository {
   /// 获取用户当前位置附近的城市
   Future<CityModel?> getNearbyCity(double latitude, double longitude) async {
     final cities = await getAllCities();
-    if (cities.isEmpty) {
-      return null;
-    }
-    return cities.first;
+    return cities.isEmpty ? null : cities.first;
   }
 }

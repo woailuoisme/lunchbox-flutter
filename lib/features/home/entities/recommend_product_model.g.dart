@@ -14,11 +14,14 @@ _RecommendProductModel _$RecommendProductModelFromJson(
   ($checkedConvert) {
     final val = _RecommendProductModel(
       id: $checkedConvert('id', (v) => (v as num).toInt()),
-      name: $checkedConvert('name', (v) => v as String),
-      image: $checkedConvert('image', (v) => v as String),
-      category: $checkedConvert('category', (v) => v as String),
-      price: $checkedConvert('price', (v) => v as String),
-      originalPrice: $checkedConvert('original_price', (v) => v as String?),
+      name: $checkedConvert('name', (v) => v as String? ?? ''),
+      image: $checkedConvert('image', (v) => v as String? ?? ''),
+      category: $checkedConvert('category', (v) => v as String? ?? ''),
+      price: $checkedConvert('price', (v) => v as String? ?? ''),
+      originalPrice: $checkedConvert(
+        'original_price',
+        (v) => v as String? ?? '',
+      ),
       tags: $checkedConvert(
         'tags',
         (v) =>

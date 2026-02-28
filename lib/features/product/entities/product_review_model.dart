@@ -4,34 +4,34 @@ part 'product_review_model.freezed.dart';
 part 'product_review_model.g.dart';
 
 @freezed
-abstract class ProductReviewModel with _$ProductReviewModel {
+sealed class ProductReviewModel with _$ProductReviewModel {
   const factory ProductReviewModel({
     /// 评价ID
     required String id,
 
     /// 商品ID
-    required String productId,
+    @Default('') String productId,
 
     /// 用户ID
-    required String userId,
+    @Default('') String userId,
 
     /// 用户昵称
-    required String userName,
+    @Default('') String userName,
 
     /// 用户头像
-    String? avatarUrl,
+    @Default('') String avatarUrl,
 
     /// 评分 (1-5)
-    required double rating,
+    @Default(5.0) double rating,
 
     /// 评价内容
-    required String content,
+    @Default('') String content,
 
     /// 评价时间
-    required DateTime createdAt,
+    @JsonKey(name: 'created_at') @Default('') String createdAt,
 
     /// 评价图片列表
-    List<String>? images,
+    @Default([]) List<String> images,
   }) = _ProductReviewModel;
 
   factory ProductReviewModel.fromJson(Map<String, dynamic> json) =>
