@@ -5,6 +5,9 @@ abstract class AppEnv {
   String get baseUrl;
 
   String get stripePublishableKey;
+
+  String get sentryDsn;
+  bool get debug;
 }
 
 class AppEnvConfig {

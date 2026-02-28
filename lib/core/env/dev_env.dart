@@ -11,9 +11,21 @@ class DevEnv implements AppEnv {
   @EnviedField(varName: 'STRIPE_PUBLISHABLE_KEY')
   static const String _stripePublishableKey = _DevEnv._stripePublishableKey;
 
+  @EnviedField(varName: 'SENTRY_DSN')
+  static const String _sentryDsn = _DevEnv._sentryDsn;
+
+  @EnviedField(varName: 'DEBUG')
+  static const bool _debug = _DevEnv._debug;
+
   @override
   String get baseUrl => _baseUrl;
 
   @override
   String get stripePublishableKey => _stripePublishableKey;
+
+  @override
+  String get sentryDsn => _sentryDsn;
+
+  @override
+  bool get debug => _debug;
 }

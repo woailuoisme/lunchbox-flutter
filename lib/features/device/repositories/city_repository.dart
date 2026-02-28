@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'package:lunchbox/core/errors/repository_error_handler_mixin.dart';
-import 'package:lunchbox/core/errors/errors.dart';
 import 'package:lunchbox/features/device/datasources/device_rest_client.dart';
 import 'package:lunchbox/core/services/services.dart';
 import 'package:lunchbox/core/constants/constants.dart';
 import 'package:lunchbox/features/device/entities/city_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:lunchbox/core/errors/failure.dart';
 
 part 'city_repository.g.dart';
 
@@ -18,7 +17,7 @@ CityRepository cityRepository(Ref ref) {
 
 /// 城市仓库类
 /// 负责处理城市相关的数据访问和业务逻辑
-class CityRepository with RepositoryErrorHandlerMixin {
+class CityRepository {
   CityRepository(this._client, this._storageService);
 
   final DeviceRestClient _client;
@@ -26,18 +25,11 @@ class CityRepository with RepositoryErrorHandlerMixin {
 
   /// 获取所有城市列表
   Future<List<CityModel>> getAllCities() async {
-    try {
-      final response = await _client.getEnableCities();
-      if (response.success && response.data != null) {
-        return response.data!;
-      }
-      throw Failure.server(
-        message: response.message,
-        statusCode: response.code,
-      );
-    } catch (e, stack) {
-      throw handleError(e, stack);
+    final response = await _client.getEnableCities();
+    if (response.success && response.data != null) {
+      return response.data!;
     }
+    throw Failure.server(message: response.message, statusCode: response.code);
   }
 
   /// 获取热门城市列表

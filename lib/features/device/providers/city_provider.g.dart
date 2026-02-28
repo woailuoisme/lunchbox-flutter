@@ -260,7 +260,7 @@ final class GroupedCitiesProvider
   }
 }
 
-String _$groupedCitiesHash() => r'df67d34aa791ec645dda41f5d07c983fa5dbcbac';
+String _$groupedCitiesHash() => r'099be85fc53d6d4e0b75d3f0ea01d23f765d4968';
 
 /// 分组城市列表（按首字母）
 

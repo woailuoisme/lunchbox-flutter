@@ -1,12 +1,9 @@
-import 'package:lunchbox/features/product/entities/product_model.dart';
 import 'package:lunchbox/core/network/response/paginated_response.dart';
-import 'package:lunchbox/core/errors/errors.dart';
-import 'package:lunchbox/features/cart/cart.dart';
+import 'package:lunchbox/core/errors/failure.dart';
+import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
 import 'package:lunchbox/features/order/datasources/order_rest_client.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:lunchbox/core/errors/repository_error_handler_mixin.dart';
 
 part 'order_repository.g.dart';
 
@@ -17,7 +14,7 @@ OrderRepository orderRepository(Ref ref) {
 
 /// 订单仓库类
 /// 负责处理订单相关的数据访问 and 业务逻辑
-class OrderRepository with RepositoryErrorHandlerMixin {
+class OrderRepository {
   OrderRepository(this._client);
 
   final OrderRestClient _client;
@@ -29,71 +26,43 @@ class OrderRepository with RepositoryErrorHandlerMixin {
     String? status,
     String? payStatus,
   }) async {
-    try {
-      final response = await _client.getOrders(
-        page: page,
-        perPage: perPage,
-        status: status,
-        payStatus: payStatus,
-      );
-      if (response.success && response.data != null) {
-        return response.data!;
-      }
-      throw Failure.server(
-        message: response.message,
-        statusCode: response.code,
-      );
-    } catch (e, stack) {
-      throw handleError(e, stack);
+    final response = await _client.getOrders(
+      page: page,
+      perPage: perPage,
+      status: status,
+      payStatus: payStatus,
+    );
+    if (response.success && response.data != null) {
+      return response.data!;
     }
+    throw Failure.server(message: response.message, statusCode: response.code);
   }
 
   /// 根据订单ID获取订单详情
   Future<OrderModel> getOrderDetail(String orderId) async {
-    try {
-      final response = await _client.getOrderDetail(orderId);
-      if (response.success && response.data != null) {
-        return response.data!;
-      }
-      throw Failure.server(
-        message: response.message,
-        statusCode: response.code,
-      );
-    } catch (e, stack) {
-      throw handleError(e, stack);
+    final response = await _client.getOrderDetail(orderId);
+    if (response.success && response.data != null) {
+      return response.data!;
     }
+    throw Failure.server(message: response.message, statusCode: response.code);
   }
 
   /// 取消订单
   Future<void> cancelOrder(String orderId) async {
-    try {
-      final response = await _client.cancelOrderV1(orderId);
-      if (response.success) {
-        return;
-      }
-      throw Failure.server(
-        message: response.message,
-        statusCode: response.code,
-      );
-    } catch (e, stack) {
-      throw handleError(e, stack);
+    final response = await _client.cancelOrderV1(orderId);
+    if (response.success) {
+      return;
     }
+    throw Failure.server(message: response.message, statusCode: response.code);
   }
 
   /// 确认收货
   Future<void> confirmOrder(String orderId) async {
-    try {
-      final response = await _client.confirmOrder(orderId);
-      if (response.success) {
-        return;
-      }
-      throw Failure.server(
-        message: response.message,
-        statusCode: response.code,
-      );
-    } catch (e, stack) {
-      throw handleError(e, stack);
+    final response = await _client.confirmOrder(orderId);
+    if (response.success) {
+      return;
     }
+    throw Failure.server(message: response.message, statusCode: response.code);
   }
 
   /// 支付订单 (未实现)
@@ -106,29 +75,17 @@ class OrderRepository with RepositoryErrorHandlerMixin {
 
   /// 重新下单（基于历史订单）
   Future<List<CartItemModel>> reorder(OrderModel originalOrder) async {
-    try {
-      final cartItems = originalOrder.products.map((product) {
-        return CartItemModel(
-          id: '${DateTime.now().millisecondsSinceEpoch}_${product.id}',
-          productId: product.id.toString(),
-          product: ProductModel(
-            id: product.id.toString(),
-            name: product.name,
-            category: product.category,
-            imageUrl: product.thumb,
-            description: product.description,
-            price: double.tryParse(product.salePrice) ?? 0.0,
-            updateTime: DateTime.now(),
-          ),
-          quantity: product.quantity,
-          deviceId: originalOrder.device?.id.toString(),
-          addedTime: DateTime.now(),
-        );
-      }).toList();
+    final cartItems = originalOrder.products.map((orderProduct) {
+      return CartItemModel(
+        id: '${DateTime.now().millisecondsSinceEpoch}_${orderProduct.id}',
+        productId: orderProduct.id.toString(),
+        product: orderProduct.toCartProductModel(),
+        quantity: orderProduct.quantity,
+        deviceId: originalOrder.device?.id.toString(),
+        addedTime: DateTime.now(),
+      );
+    }).toList();
 
-      return cartItems;
-    } catch (e, stack) {
-      throw handleError(e, stack);
-    }
+    return cartItems;
   }
 }

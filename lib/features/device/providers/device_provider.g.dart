@@ -182,39 +182,39 @@ abstract class _$DeviceSearchQuery extends $Notifier<String> {
   }
 }
 
-/// 原始设备列表（基于选中的城市）
+/// 附近设备列表（基于选中的城市和当前位置）
 
-@ProviderFor(RawDevices)
-final rawDevicesProvider = RawDevicesProvider._();
+@ProviderFor(NearbyDevices)
+final nearbyDevicesProvider = NearbyDevicesProvider._();
 
-/// 原始设备列表（基于选中的城市）
-final class RawDevicesProvider
-    extends $AsyncNotifierProvider<RawDevices, List<DeviceModel>> {
-  /// 原始设备列表（基于选中的城市）
-  RawDevicesProvider._()
+/// 附近设备列表（基于选中的城市和当前位置）
+final class NearbyDevicesProvider
+    extends $AsyncNotifierProvider<NearbyDevices, List<DeviceModel>> {
+  /// 附近设备列表（基于选中的城市和当前位置）
+  NearbyDevicesProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'rawDevicesProvider',
+        name: r'nearbyDevicesProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$rawDevicesHash();
+  String debugGetCreateSourceHash() => _$nearbyDevicesHash();
 
   @$internal
   @override
-  RawDevices create() => RawDevices();
+  NearbyDevices create() => NearbyDevices();
 }
 
-String _$rawDevicesHash() => r'ca39179e8ade3d8aca09c59247c9a262aa5c4988';
+String _$nearbyDevicesHash() => r'a7b495a3449ae60fa5c8550a19e37baed1f503af';
 
-/// 原始设备列表（基于选中的城市）
+/// 附近设备列表（基于选中的城市和当前位置）
 
-abstract class _$RawDevices extends $AsyncNotifier<List<DeviceModel>> {
+abstract class _$NearbyDevices extends $AsyncNotifier<List<DeviceModel>> {
   FutureOr<List<DeviceModel>> build();
   @$mustCallSuper
   @override
@@ -233,14 +233,65 @@ abstract class _$RawDevices extends $AsyncNotifier<List<DeviceModel>> {
   }
 }
 
-/// 过滤和排序后的设备列表
+/// 常用设备列表
 
-@ProviderFor(filteredDevices)
-final filteredDevicesProvider = FilteredDevicesProvider._();
+@ProviderFor(FrequentDevices)
+final frequentDevicesProvider = FrequentDevicesProvider._();
 
-/// 过滤和排序后的设备列表
+/// 常用设备列表
+final class FrequentDevicesProvider
+    extends $AsyncNotifierProvider<FrequentDevices, List<DeviceModel>> {
+  /// 常用设备列表
+  FrequentDevicesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'frequentDevicesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-final class FilteredDevicesProvider
+  @override
+  String debugGetCreateSourceHash() => _$frequentDevicesHash();
+
+  @$internal
+  @override
+  FrequentDevices create() => FrequentDevices();
+}
+
+String _$frequentDevicesHash() => r'3f7b3b8e1b985f60f77c5051a55496e1d798ba26';
+
+/// 常用设备列表
+
+abstract class _$FrequentDevices extends $AsyncNotifier<List<DeviceModel>> {
+  FutureOr<List<DeviceModel>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref =
+        this.ref as $Ref<AsyncValue<List<DeviceModel>>, List<DeviceModel>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<DeviceModel>>, List<DeviceModel>>,
+              AsyncValue<List<DeviceModel>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
+/// 过滤和排序后的附近设备列表
+
+@ProviderFor(filteredNearbyDevices)
+final filteredNearbyDevicesProvider = FilteredNearbyDevicesProvider._();
+
+/// 过滤和排序后的附近设备列表
+
+final class FilteredNearbyDevicesProvider
     extends
         $FunctionalProvider<
           AsyncValue<List<DeviceModel>>,
@@ -250,20 +301,20 @@ final class FilteredDevicesProvider
     with
         $FutureModifier<List<DeviceModel>>,
         $FutureProvider<List<DeviceModel>> {
-  /// 过滤和排序后的设备列表
-  FilteredDevicesProvider._()
+  /// 过滤和排序后的附近设备列表
+  FilteredNearbyDevicesProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'filteredDevicesProvider',
+        name: r'filteredNearbyDevicesProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$filteredDevicesHash();
+  String debugGetCreateSourceHash() => _$filteredNearbyDevicesHash();
 
   @$internal
   @override
@@ -273,11 +324,59 @@ final class FilteredDevicesProvider
 
   @override
   FutureOr<List<DeviceModel>> create(Ref ref) {
-    return filteredDevices(ref);
+    return filteredNearbyDevices(ref);
   }
 }
 
-String _$filteredDevicesHash() => r'd52a4278021366c69a44bb540178623d24b28b14';
+String _$filteredNearbyDevicesHash() =>
+    r'049788784f00ea36b490f2df5cbd8708cb337b84';
+
+/// 过滤和排序后的常用设备列表
+
+@ProviderFor(filteredFrequentDevices)
+final filteredFrequentDevicesProvider = FilteredFrequentDevicesProvider._();
+
+/// 过滤和排序后的常用设备列表
+
+final class FilteredFrequentDevicesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<DeviceModel>>,
+          List<DeviceModel>,
+          FutureOr<List<DeviceModel>>
+        >
+    with
+        $FutureModifier<List<DeviceModel>>,
+        $FutureProvider<List<DeviceModel>> {
+  /// 过滤和排序后的常用设备列表
+  FilteredFrequentDevicesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'filteredFrequentDevicesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$filteredFrequentDevicesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<DeviceModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<DeviceModel>> create(Ref ref) {
+    return filteredFrequentDevices(ref);
+  }
+}
+
+String _$filteredFrequentDevicesHash() =>
+    r'3bead86e00da2f0f9506fab1b2388cd8693ffc42';
 
 /// 当前选中的设备
 
@@ -294,7 +393,7 @@ final class SelectedDeviceProvider
         argument: null,
         retry: null,
         name: r'selectedDeviceProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -315,7 +414,7 @@ final class SelectedDeviceProvider
   }
 }
 
-String _$selectedDeviceHash() => r'76a4f914568e8277fe8704cddefaa4976087b461';
+String _$selectedDeviceHash() => r'6807abcadd32be6f66d3c5ea83d3bf6dee50b184';
 
 /// 当前选中的设备
 
@@ -397,7 +496,7 @@ final class DeviceDetailProvider
   }
 }
 
-String _$deviceDetailHash() => r'b250e52e515df81567a64f41635a27efc38dc342';
+String _$deviceDetailHash() => r'79272875ce3bf417c5b4289533149d8f5f13f372';
 
 /// 根据ID获取设备详情
 
@@ -483,7 +582,7 @@ final class DeviceProductsProvider
   }
 }
 
-String _$deviceProductsHash() => r'8fedb27ac0bd594a17a161885048d992a4d95de7';
+String _$deviceProductsHash() => r'82e48fdde8d555c9b5b84c301a0ebd7e15b8026c';
 
 /// 获取指定设备的产品列表
 

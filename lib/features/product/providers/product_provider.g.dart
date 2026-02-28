@@ -102,7 +102,7 @@ final class ProductFilterAvailableProvider
 }
 
 String _$productFilterAvailableHash() =>
-    r'51097d6cb1147fcf8637ec222408b156c40140c2';
+    r'fc47796c5a8ac40458c606cab219a682ca35eebd';
 
 /// 仅显示有货过滤
 
@@ -183,15 +183,15 @@ abstract class _$ProductSearchQuery extends $Notifier<String> {
   }
 }
 
-/// 当前选中的产品分类
+/// 当前选中的产品分类ID
 
 @ProviderFor(ProductCategory)
 final productCategoryProvider = ProductCategoryProvider._();
 
-/// 当前选中的产品分类
+/// 当前选中的产品分类ID
 final class ProductCategoryProvider
-    extends $NotifierProvider<ProductCategory, String> {
-  /// 当前选中的产品分类
+    extends $NotifierProvider<ProductCategory, int> {
+  /// 当前选中的产品分类ID
   ProductCategoryProvider._()
     : super(
         from: null,
@@ -211,29 +211,29 @@ final class ProductCategoryProvider
   ProductCategory create() => ProductCategory();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(String value) {
+  Override overrideWithValue(int value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<String>(value),
+      providerOverride: $SyncValueProvider<int>(value),
     );
   }
 }
 
-String _$productCategoryHash() => r'0180c3a43f21860b248d1e6b77156a95bccca8aa';
+String _$productCategoryHash() => r'c4946ab7caf3e69c19c52c395e1d24516b1ce04a';
 
-/// 当前选中的产品分类
+/// 当前选中的产品分类ID
 
-abstract class _$ProductCategory extends $Notifier<String> {
-  String build();
+abstract class _$ProductCategory extends $Notifier<int> {
+  int build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<String, String>;
+    final ref = this.ref as $Ref<int, int>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<String, String>,
-              String,
+              AnyNotifier<int, int>,
+              int,
               Object?,
               Object?
             >;
@@ -241,22 +241,124 @@ abstract class _$ProductCategory extends $Notifier<String> {
   }
 }
 
+/// 获取指定设备的所有产品分类（包含产品）
+/// 这是数据源的单一入口，其他Provider基于此派生
+
+@ProviderFor(deviceCategoryProducts)
+final deviceCategoryProductsProvider = DeviceCategoryProductsFamily._();
+
+/// 获取指定设备的所有产品分类（包含产品）
+/// 这是数据源的单一入口，其他Provider基于此派生
+
+final class DeviceCategoryProductsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<CategoryProductModel>>,
+          List<CategoryProductModel>,
+          FutureOr<List<CategoryProductModel>>
+        >
+    with
+        $FutureModifier<List<CategoryProductModel>>,
+        $FutureProvider<List<CategoryProductModel>> {
+  /// 获取指定设备的所有产品分类（包含产品）
+  /// 这是数据源的单一入口，其他Provider基于此派生
+  DeviceCategoryProductsProvider._({
+    required DeviceCategoryProductsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'deviceCategoryProductsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$deviceCategoryProductsHash();
+
+  @override
+  String toString() {
+    return r'deviceCategoryProductsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<CategoryProductModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<CategoryProductModel>> create(Ref ref) {
+    final argument = this.argument as String;
+    return deviceCategoryProducts(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DeviceCategoryProductsProvider &&
+        other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$deviceCategoryProductsHash() =>
+    r'b294cfa992470e5bfc4a5b1fdb6ce46c355bdf34';
+
+/// 获取指定设备的所有产品分类（包含产品）
+/// 这是数据源的单一入口，其他Provider基于此派生
+
+final class DeviceCategoryProductsFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<CategoryProductModel>>,
+          String
+        > {
+  DeviceCategoryProductsFamily._()
+    : super(
+        retry: null,
+        name: r'deviceCategoryProductsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// 获取指定设备的所有产品分类（包含产品）
+  /// 这是数据源的单一入口，其他Provider基于此派生
+
+  DeviceCategoryProductsProvider call(String deviceId) =>
+      DeviceCategoryProductsProvider._(argument: deviceId, from: this);
+
+  @override
+  String toString() => r'deviceCategoryProductsProvider';
+}
+
 /// 获取指定设备的产品分类列表
+/// 包含一个虚拟的"全部"分类
 
 @ProviderFor(productCategories)
 final productCategoriesProvider = ProductCategoriesFamily._();
 
 /// 获取指定设备的产品分类列表
+/// 包含一个虚拟的"全部"分类
 
 final class ProductCategoriesProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<String>>,
-          List<String>,
-          FutureOr<List<String>>
+          AsyncValue<List<CategoryProductModel>>,
+          List<CategoryProductModel>,
+          FutureOr<List<CategoryProductModel>>
         >
-    with $FutureModifier<List<String>>, $FutureProvider<List<String>> {
+    with
+        $FutureModifier<List<CategoryProductModel>>,
+        $FutureProvider<List<CategoryProductModel>> {
   /// 获取指定设备的产品分类列表
+  /// 包含一个虚拟的"全部"分类
   ProductCategoriesProvider._({
     required ProductCategoriesFamily super.from,
     required String super.argument,
@@ -280,12 +382,12 @@ final class ProductCategoriesProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<String>> $createElement(
+  $FutureProviderElement<List<CategoryProductModel>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<String>> create(Ref ref) {
+  FutureOr<List<CategoryProductModel>> create(Ref ref) {
     final argument = this.argument as String;
     return productCategories(ref, argument);
   }
@@ -301,12 +403,17 @@ final class ProductCategoriesProvider
   }
 }
 
-String _$productCategoriesHash() => r'a21fa9ea99a2e6a2f6c524447dfc2c035943fa71';
+String _$productCategoriesHash() => r'45eb1c11f04729b7549856a1c3759e57688cce22';
 
 /// 获取指定设备的产品分类列表
+/// 包含一个虚拟的"全部"分类
 
 final class ProductCategoriesFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<List<String>>, String> {
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<CategoryProductModel>>,
+          String
+        > {
   ProductCategoriesFamily._()
     : super(
         retry: null,
@@ -317,6 +424,7 @@ final class ProductCategoriesFamily extends $Family
       );
 
   /// 获取指定设备的产品分类列表
+  /// 包含一个虚拟的"全部"分类
 
   ProductCategoriesProvider call(String deviceId) =>
       ProductCategoriesProvider._(argument: deviceId, from: this);
@@ -326,14 +434,17 @@ final class ProductCategoriesFamily extends $Family
 }
 
 /// 获取指定设备的产品列表（原始列表）
+/// 根据当前选中的分类筛选
 
 @ProviderFor(RawProducts)
 final rawProductsProvider = RawProductsFamily._();
 
 /// 获取指定设备的产品列表（原始列表）
+/// 根据当前选中的分类筛选
 final class RawProductsProvider
     extends $AsyncNotifierProvider<RawProducts, List<ProductModel>> {
   /// 获取指定设备的产品列表（原始列表）
+  /// 根据当前选中的分类筛选
   RawProductsProvider._({
     required RawProductsFamily super.from,
     required String super.argument,
@@ -370,9 +481,10 @@ final class RawProductsProvider
   }
 }
 
-String _$rawProductsHash() => r'a76aa2e1f3019d6b14c16ea88dfd8234c282329f';
+String _$rawProductsHash() => r'5008df2b48415cddec19b82f0f04af726b6c2c08';
 
 /// 获取指定设备的产品列表（原始列表）
+/// 根据当前选中的分类筛选
 
 final class RawProductsFamily extends $Family
     with
@@ -393,6 +505,7 @@ final class RawProductsFamily extends $Family
       );
 
   /// 获取指定设备的产品列表（原始列表）
+  /// 根据当前选中的分类筛选
 
   RawProductsProvider call(String deviceId) =>
       RawProductsProvider._(argument: deviceId, from: this);
@@ -402,6 +515,7 @@ final class RawProductsFamily extends $Family
 }
 
 /// 获取指定设备的产品列表（原始列表）
+/// 根据当前选中的分类筛选
 
 abstract class _$RawProducts extends $AsyncNotifier<List<ProductModel>> {
   late final _$args = ref.$arg as String;
@@ -521,11 +635,13 @@ final productDetailProvider = ProductDetailFamily._();
 final class ProductDetailProvider
     extends
         $FunctionalProvider<
-          AsyncValue<ProductModel>,
-          ProductModel,
-          FutureOr<ProductModel>
+          AsyncValue<ProductDetailModel>,
+          ProductDetailModel,
+          FutureOr<ProductDetailModel>
         >
-    with $FutureModifier<ProductModel>, $FutureProvider<ProductModel> {
+    with
+        $FutureModifier<ProductDetailModel>,
+        $FutureProvider<ProductDetailModel> {
   /// 根据ID获取产品详情
   ProductDetailProvider._({
     required ProductDetailFamily super.from,
@@ -550,12 +666,12 @@ final class ProductDetailProvider
 
   @$internal
   @override
-  $FutureProviderElement<ProductModel> $createElement(
+  $FutureProviderElement<ProductDetailModel> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<ProductModel> create(Ref ref) {
+  FutureOr<ProductDetailModel> create(Ref ref) {
     final argument = this.argument as String;
     return productDetail(ref, argument);
   }
@@ -571,12 +687,12 @@ final class ProductDetailProvider
   }
 }
 
-String _$productDetailHash() => r'09f5c72f57ea06153bd5cb86f7688649ba6dab48';
+String _$productDetailHash() => r'b0b423b329fca1f9d4ecc3e57c129df55f5115eb';
 
 /// 根据ID获取产品详情
 
 final class ProductDetailFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<ProductModel>, String> {
+    with $FunctionalFamilyOverride<FutureOr<ProductDetailModel>, String> {
   ProductDetailFamily._()
     : super(
         retry: null,

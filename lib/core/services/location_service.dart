@@ -16,8 +16,23 @@ class LocationService {
 
   final PermissionService _permissionService;
 
+  // 内存缓存当前位置和获取时间
+  Position? _lastPosition;
+  DateTime? _lastFetchTime;
+  // 缓存有效时间 (1分钟)
+  static const _cacheDuration = Duration(minutes: 1);
+
   /// 获取当前位置
-  Future<Position?> getCurrentPosition() async {
+  Future<Position?> getCurrentPosition({bool forceRefresh = false}) async {
+    // 检查缓存是否有效且不是强制刷新
+    if (!forceRefresh &&
+        _lastPosition != null &&
+        _lastFetchTime != null &&
+        DateTime.now().difference(_lastFetchTime!) < _cacheDuration) {
+      LoggerUtils.d('LocationService: Using cached position.');
+      return _lastPosition;
+    }
+
     bool serviceEnabled;
 
     // Test if location services are enabled.
@@ -39,7 +54,10 @@ class LocationService {
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     try {
-      return await Geolocator.getCurrentPosition();
+      final position = await Geolocator.getCurrentPosition();
+      _lastPosition = position;
+      _lastFetchTime = DateTime.now();
+      return position;
     } catch (e) {
       LoggerUtils.e('LocationService: Failed to get current position', e);
       return null;

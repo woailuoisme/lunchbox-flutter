@@ -5,26 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/features/cart/cart.dart';
-import 'package:lunchbox/features/product/entities/product_model.dart';
+import 'package:lunchbox/features/product/entities/product_detail_model.dart';
 import 'package:lunchbox/features/product/providers/product_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
-final _dummyProduct = ProductModel(
-  id: 'dummy',
-  name: '美味的便当名称',
-  description: '这是一份美味的便当描述信息，用于展示骨架屏效果。',
-  price: 29.90,
-  originalPrice: 39.90,
-  imageUrl: 'https://via.placeholder.com/300',
-  updateTime: DateTime.now(),
-  stock: 100,
-  monthlySales: 500,
-  isHot: true,
-  isPromotion: true,
-  category: 'food',
-);
 
 /// 产品详情视图
 class ProductDetailView extends ConsumerWidget {
@@ -42,7 +27,21 @@ class ProductDetailView extends ConsumerWidget {
         data: (product) => _buildBody(context, product),
         loading: () => Skeletonizer(
           enabled: true,
-          child: _buildBody(context, _dummyProduct),
+          child: _buildBody(
+            context,
+            const ProductDetailModel(
+              id: 0,
+              name: '加载中...',
+              description: '正在加载商品详情，请稍候...',
+              imageUrl: '',
+              content: '',
+              price: 0.0,
+              type: 'food',
+              isEnabled: true,
+              comments: [],
+              media: [],
+            ),
+          ),
         ),
         error: (error, stack) =>
             Center(child: Text('${t.common.loadFailed}: $error')),
@@ -60,7 +59,7 @@ class ProductDetailView extends ConsumerWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context, ProductModel product) {
+  Widget _buildBody(BuildContext context, ProductDetailModel product) {
     final theme = Theme.of(context);
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -180,7 +179,7 @@ class ProductDetailView extends ConsumerWidget {
                 SizedBox(height: 32.h),
                 _buildSectionDivider(theme),
                 SizedBox(height: 32.h),
-                _buildReviews(context),
+                _buildReviews(context, product),
                 SizedBox(height: 120.h), // 底部留白
               ],
             ),
@@ -198,32 +197,32 @@ class ProductDetailView extends ConsumerWidget {
   }
 
   /// 构建基本信息
-  Widget _buildBasicInfo(BuildContext context, ProductModel product) {
+  Widget _buildBasicInfo(BuildContext context, ProductDetailModel product) {
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // 标签（如果有）
-        if (product.isHot || product.isPromotion)
-          Row(
-            children: [
-              if (product.isHot)
-                _buildTag(
-                  context,
-                  t.product.hot,
-                  theme.colorScheme.error,
-                ).animate().scale(),
-              if (product.isPromotion) ...[
-                SizedBox(width: 8.w),
-                _buildTag(
-                  context,
-                  t.product.promotion,
-                  theme.colorScheme.tertiary,
-                ).animate().scale(delay: 100.ms),
-              ],
-            ],
-          ),
-        if (product.isHot || product.isPromotion) SizedBox(height: 12.h),
+        // if (product.isHot || product.isPromotion) // ProductDetailModel 目前没这几个字段，先移除或适配
+        //   Row(
+        //     children: [
+        //       if (product.isHot)
+        //         _buildTag(
+        //           context,
+        //           t.product.hot,
+        //           theme.colorScheme.error,
+        //         ).animate().scale(),
+        //       if (product.isPromotion) ...[
+        //         SizedBox(width: 8.w),
+        //         _buildTag(
+        //           context,
+        //           t.product.promotion,
+        //           theme.colorScheme.tertiary,
+        //         ).animate().scale(delay: 100.ms),
+        //       ],
+        //     ],
+        //   ),
+        // if (product.isHot || product.isPromotion) SizedBox(height: 12.h),
 
         // 产品名称
         Text(
@@ -259,7 +258,8 @@ class ProductDetailView extends ConsumerWidget {
                 height: 1.0,
               ),
             ),
-            if (product.hasDiscount) ...[
+            if (product.originalPrice != null &&
+                product.originalPrice! > product.price) ...[
               SizedBox(width: 12.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,7 +283,7 @@ class ProductDetailView extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(4.r),
                     ),
                     child: Text(
-                      '${product.discountPercentage}% OFF',
+                      '${((1 - product.price / product.originalPrice!) * 100).round()}% OFF',
                       style: TextStyle(
                         fontSize: 10.sp,
                         color: theme.colorScheme.error,
@@ -310,7 +310,7 @@ class ProductDetailView extends ConsumerWidget {
               Icon(Symbols.sell, size: 16.sp, color: theme.colorScheme.primary),
               SizedBox(width: 8.w),
               Text(
-                '${t.product.monthlySales} ${product.monthlySales}',
+                '${t.product.monthlySales} ${product.sales}',
                 style: TextStyle(
                   fontSize: 13.sp,
                   color: theme.colorScheme.onSurfaceVariant,
@@ -320,13 +320,13 @@ class ProductDetailView extends ConsumerWidget {
               Container(width: 1, height: 12.h, color: theme.dividerColor),
               SizedBox(width: 16.w),
               Text(
-                product.hasStock ? t.product.stockFull : t.device.soldOut,
+                product.isEnabled ? t.product.stockFull : t.device.soldOut,
                 style: TextStyle(
                   fontSize: 13.sp,
-                  color: product.hasStock
+                  color: product.isEnabled
                       ? theme.colorScheme.onSurfaceVariant
                       : theme.colorScheme.error,
-                  fontWeight: product.hasStock
+                  fontWeight: product.isEnabled
                       ? FontWeight.normal
                       : FontWeight.bold,
                 ),
@@ -364,7 +364,7 @@ class ProductDetailView extends ConsumerWidget {
   }
 
   /// 构建描述
-  Widget _buildDescription(BuildContext context, ProductModel product) {
+  Widget _buildDescription(BuildContext context, ProductDetailModel product) {
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -393,32 +393,9 @@ class ProductDetailView extends ConsumerWidget {
   }
 
   /// 构建评论区域
-  Widget _buildReviews(BuildContext context) {
+  Widget _buildReviews(BuildContext context, ProductDetailModel product) {
     final theme = Theme.of(context);
-    // 模拟评论数据
-    final reviews = [
-      (
-        user: 'Alice',
-        rating: 5,
-        content: '非常好的商品，味道很棒！',
-        date: '2024-03-20',
-        avatar: 'A',
-      ),
-      (
-        user: 'Bob',
-        rating: 4,
-        content: '配送很快，包装也很完整。就是有点凉了。',
-        date: '2024-03-19',
-        avatar: 'B',
-      ),
-      (
-        user: 'Charlie',
-        rating: 5,
-        content: '性价比很高，下次还会购买。',
-        date: '2024-03-18',
-        avatar: 'C',
-      ),
-    ];
+    final reviews = product.comments;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -427,136 +404,150 @@ class ProductDetailView extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '商品评价 (128)', // TODO: i18n
+              '商品评价 (${reviews.length})',
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.onSurface,
               ),
             ),
-            Row(
-              children: [
-                Icon(Icons.star, size: 16.sp, color: const Color(0xFFFFC107)),
-                SizedBox(width: 4.w),
-                Text(
-                  '4.8',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.onSurface,
+            if (reviews.isNotEmpty)
+              Row(
+                children: [
+                  Icon(Icons.star, size: 16.sp, color: const Color(0xFFFFC107)),
+                  SizedBox(width: 4.w),
+                  Text(
+                    '5.0', // TODO: API should provide average rating
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onSurface,
+                    ),
                   ),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 12.sp,
-                  color: theme.hintColor,
-                ),
-              ],
-            ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 12.sp,
+                    color: theme.hintColor,
+                  ),
+                ],
+              ),
           ],
         ),
         SizedBox(height: 16.h),
-        ListView.separated(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: reviews.length,
-          separatorBuilder: (context, index) => SizedBox(height: 16.h),
-          itemBuilder: (context, index) {
-            final review = reviews[index];
-            return Container(
-                  padding: EdgeInsets.all(12.w),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerLow,
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 16.r,
-                            backgroundColor: theme.colorScheme.primary
-                                .withValues(alpha: 0.1),
-                            child: Text(
-                              review.avatar,
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.bold,
-                                color: theme.colorScheme.primary,
+        if (reviews.isEmpty)
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 32.h),
+              child: Text(
+                '暂无评价', // TODO: i18n
+                style: TextStyle(color: theme.hintColor),
+              ),
+            ),
+          )
+        else
+          ListView.separated(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: reviews.length,
+            separatorBuilder: (context, index) => SizedBox(height: 16.h),
+            itemBuilder: (context, index) {
+              final review = reviews[index];
+              return Container(
+                    padding: EdgeInsets.all(12.w),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainerLow,
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 16.r,
+                              backgroundColor: theme.colorScheme.primary
+                                  .withValues(alpha: 0.1),
+                              child: Text(
+                                review.user.name.characters.first,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.colorScheme.primary,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(width: 8.w),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  review.user,
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: theme.colorScheme.onSurface,
-                                  ),
-                                ),
-                                Row(
-                                  children: List.generate(
-                                    5,
-                                    (i) => Icon(
-                                      Icons.star,
-                                      size: 12.sp,
-                                      color: i < review.rating
-                                          ? const Color(0xFFFFC107)
-                                          : theme.disabledColor.withValues(
-                                              alpha: 0.3,
-                                            ),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    review.user.name,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: theme.colorScheme.onSurface,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Row(
+                                    children: List.generate(
+                                      5,
+                                      (i) => Icon(
+                                        Icons.star,
+                                        size: 12.sp,
+                                        color: i < review.rating
+                                            ? const Color(0xFFFFC107)
+                                            : theme.disabledColor.withValues(
+                                                alpha: 0.3,
+                                              ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Text(
-                            review.date,
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: theme.hintColor,
+                            Text(
+                              review.createdAtHuman,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: theme.hintColor,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        review.content,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: theme.colorScheme.onSurfaceVariant,
-                          height: 1.5,
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                )
-                .animate()
-                .fadeIn(delay: (300 + index * 100).ms)
-                .slideY(begin: 0.1, end: 0);
-          },
-        ),
-        SizedBox(height: 16.h),
-        Center(
-          child: TextButton(
-            onPressed: () {},
-            child: Text(
-              '查看全部评价', // TODO: i18n
-              style: TextStyle(
-                color: theme.colorScheme.primary,
-                fontWeight: FontWeight.w600,
+                        SizedBox(height: 8.h),
+                        Text(
+                          review.content,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: theme.colorScheme.onSurfaceVariant,
+                            height: 1.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                  .animate()
+                  .fadeIn(delay: (300 + index * 100).ms)
+                  .slideY(begin: 0.1, end: 0);
+            },
+          ),
+        if (reviews.isNotEmpty) ...[
+          SizedBox(height: 16.h),
+          Center(
+            child: TextButton(
+              onPressed: () {},
+              child: Text(
+                '查看全部评价', // TODO: i18n
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ],
     );
   }
@@ -565,7 +556,7 @@ class ProductDetailView extends ConsumerWidget {
   Widget _buildBottomBar(
     BuildContext context,
     WidgetRef ref,
-    ProductModel product,
+    ProductDetailModel product,
   ) {
     final theme = Theme.of(context);
     final cartState = ref.watch(cartProvider);
@@ -629,9 +620,11 @@ class ProductDetailView extends ConsumerWidget {
             child: SizedBox(
               height: 54.h,
               child: ElevatedButton(
-                onPressed: product.hasStock
+                onPressed: product.isEnabled
                     ? () {
-                        ref.read(cartProvider.notifier).addToCart(product);
+                        ref
+                            .read(cartProvider.notifier)
+                            .addToCart(product.toProductModel());
                         // Haptic feedback could be added here
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -664,9 +657,7 @@ class ProductDetailView extends ConsumerWidget {
                               16.w,
                               MediaQuery.of(context).padding.bottom + 80.h,
                             ),
-                            duration: const Duration(milliseconds: 1500),
-                            backgroundColor: theme.colorScheme.inverseSurface,
-                            elevation: 4,
+                            duration: 2.seconds,
                           ),
                         );
                       }
@@ -674,19 +665,17 @@ class ProductDetailView extends ConsumerWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.colorScheme.primary,
                   foregroundColor: theme.colorScheme.onPrimary,
+                  elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.r),
                   ),
-                  elevation: 8,
-                  shadowColor: theme.colorScheme.primary.withValues(alpha: 0.4),
-                ),
-                child: Text(
-                  product.hasStock ? t.product.addToCart : t.device.soldOut,
-                  style: TextStyle(
+                  textStyle: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
-                    letterSpacing: 0.5,
                   ),
+                ),
+                child: Text(
+                  product.isEnabled ? t.product.addToCart : t.device.soldOut,
                 ),
               ),
             ),

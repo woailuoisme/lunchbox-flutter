@@ -6,6 +6,7 @@ import 'package:lunchbox/core/network/interceptors/error_handling_interceptor.da
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/core/constants/app_constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:sentry_dio/sentry_dio.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 part 'dio_provider.g.dart';
@@ -71,6 +72,10 @@ Dio dio(Ref ref) {
   }
 
   dio.interceptors.add(ref.read(errorHandlingInterceptorProvider));
+
+  // Sentry 必须在所有拦截器和配置完成后最后调用
+  // 详见: https://pub.dev/packages/sentry_dio
+  dio.addSentry();
 
   return dio;
 }

@@ -347,6 +347,7 @@ class AboutUsRoute extends GoRouteData with $AboutUsRoute {
   routes: [
     TypedGoRoute<AboutRoute>(path: AppRoutes.about),
     TypedGoRoute<DeviceInfoRoute>(path: AppRoutes.deviceInfo),
+    TypedGoRoute<DebugRoute>(path: AppRoutes.debug),
   ],
 )
 class SettingsRoute extends GoRouteData with $SettingsRoute {
@@ -370,6 +371,13 @@ class DeviceInfoRoute extends GoRouteData with $DeviceInfoRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const DeviceInfoView();
+}
+
+class DebugRoute extends GoRouteData with $DebugRoute {
+  const DebugRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const DebugView();
 }
 
 // 主应用 Shell

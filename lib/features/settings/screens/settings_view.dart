@@ -10,6 +10,7 @@ import 'package:lunchbox/features/settings/providers/settings_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:lunchbox/core/env/app_env.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -214,6 +215,22 @@ class SettingsView extends ConsumerWidget {
                           '${AppRoutes.settings}/${AppRoutes.about}',
                         ),
                       ),
+                      if (AppEnvConfig.current.debug)
+                        _buildSettingsItem(
+                          context: context,
+                          icon: Symbols.bug_report,
+                          iconColor: colorScheme.error,
+                          title: 'Debug Tools',
+                          showDivider: false,
+                          trailing: Icon(
+                            Symbols.arrow_forward_ios,
+                            size: 14.sp,
+                            color: colorScheme.outline,
+                          ),
+                          onTap: () => context.push(
+                            '${AppRoutes.settings}/${AppRoutes.debug}',
+                          ),
+                        ),
                     ]),
                     SizedBox(height: 32.h),
                     SizedBox(height: 20.h),

@@ -13,4 +13,9 @@ final class _DevEnv {
   static const String _baseUrl = 'https://rest.haoxiaoguai.xyz';
 
   static const String _stripePublishableKey = 'pk_test_placeholder';
+
+  static const String _sentryDsn =
+      'https://1246d3e8c39b70919447f701f457887e@o4505111003136000.ingest.us.sentry.io/4510961133813760';
+
+  static const bool _debug = true;
 }

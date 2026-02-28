@@ -70,4 +70,5 @@ class AppRoutes {
   static const String settings = '/settings';
   static const String about = 'about';
   static const String deviceInfo = 'device-info';
+  static const String debug = 'debug';
 }

@@ -35,42 +35,60 @@ class DeviceSearchQuery extends _$DeviceSearchQuery {
   void update(String query) => state = query;
 }
 
-/// 原始设备列表（基于选中的城市）
+/// 附近设备列表（基于选中的城市和当前位置）
 @riverpod
-class RawDevices extends _$RawDevices {
+class NearbyDevices extends _$NearbyDevices {
   @override
   Future<List<DeviceModel>> build() async {
     final repository = ref.watch(deviceRepositoryProvider);
-    final selectedCityAsync = ref.watch(selectedCityProvider);
+    // 等待选中的城市加载完成，避免使用默认值发起两次请求
+    final selectedCity = await ref.watch(selectedCityProvider.future);
     final locationService = ref.watch(locationServiceProvider);
 
-    // 等待城市加载完成
-    final selectedCity = selectedCityAsync.value;
+    final cityCode = selectedCity?.code ?? '440300'; // 默认深圳 (440300)
+    final position = await locationService.getCurrentPosition();
+    final latitude = position?.latitude ?? 22.543099;
+    final longitude = position?.longitude ?? 114.057868;
 
-    if (selectedCity != null) {
-      final position = await locationService.getCurrentPosition();
-      final latitude = position?.latitude ?? 22.543099;
-      final longitude = position?.longitude ?? 114.057868;
-      return await repository.getDevicesWithDistance(
-        cityCode: selectedCity.code,
-        latitude: latitude,
-        longitude: longitude,
-      );
-    } else {
-      return await repository.getFrequentDevices();
-    }
+    return await repository.getDevicesWithDistance(
+      cityCode: cityCode,
+      latitude: latitude,
+      longitude: longitude,
+    );
   }
 }
 
-/// 过滤和排序后的设备列表
+/// 常用设备列表
 @riverpod
-Future<List<DeviceModel>> filteredDevices(Ref ref) async {
-  final devicesAsync = await ref.watch(rawDevicesProvider.future);
+class FrequentDevices extends _$FrequentDevices {
+  @override
+  Future<List<DeviceModel>> build() async {
+    final repository = ref.watch(deviceRepositoryProvider);
+    return await repository.getFrequentDevices();
+  }
+}
+
+/// 过滤和排序后的附近设备列表
+@riverpod
+Future<List<DeviceModel>> filteredNearbyDevices(Ref ref) async {
+  final devices = await ref.watch(nearbyDevicesProvider.future);
+  return _applyFilters(ref, devices);
+}
+
+/// 过滤和排序后的常用设备列表
+@riverpod
+Future<List<DeviceModel>> filteredFrequentDevices(Ref ref) async {
+  final devices = await ref.watch(frequentDevicesProvider.future);
+  return _applyFilters(ref, devices);
+}
+
+/// 内部方法：应用过滤和排序逻辑
+List<DeviceModel> _applyFilters(Ref ref, List<DeviceModel> devices) {
   final sort = ref.watch(deviceSortProvider);
   final onlineOnly = ref.watch(deviceFilterOnlineProvider);
   final searchQuery = ref.watch(deviceSearchQueryProvider);
 
-  var filtered = List<DeviceModel>.from(devicesAsync);
+  var filtered = List<DeviceModel>.from(devices);
 
   // 过滤：在线状态
   if (onlineOnly) {
@@ -121,7 +139,7 @@ Future<List<DeviceModel>> filteredDevices(Ref ref) async {
 }
 
 /// 当前选中的设备
-@riverpod
+@Riverpod(keepAlive: true)
 class SelectedDevice extends _$SelectedDevice {
   @override
   DeviceModel? build() => null;
@@ -134,40 +152,38 @@ class SelectedDevice extends _$SelectedDevice {
 @riverpod
 Future<DeviceModel> deviceDetail(Ref ref, String deviceId) async {
   ref.keepAlive();
+
+  // 1. 先从当前选中设备缓存获取，这是最快且最常见的路径
   final selectedDevice = ref.watch(selectedDeviceProvider);
   if (selectedDevice != null && selectedDevice.id.toString() == deviceId) {
     return selectedDevice;
   }
 
-  try {
-    final devices = await ref.watch(rawDevicesProvider.future);
-    final matched = devices.firstWhere(
-      (device) => device.id.toString() == deviceId,
-      orElse: () => throw const Failure.server(
-        message: 'Device not found',
-        statusCode: 404,
-      ),
-    );
-    return matched;
-  } on Failure {
-    rethrow;
-  } catch (_) {
-    final repository = ref.watch(deviceRepositoryProvider);
-    final List<DeviceModel> devices = await repository.getFrequentDevices();
-    return devices.firstWhere(
-      (DeviceModel device) => device.id.toString() == deviceId,
-      orElse: () => throw const Failure.server(
-        message: 'Device not found',
-        statusCode: 404,
-      ),
-    );
-  }
+  // 2. 从附近设备列表查找
+  final nearbyDevices = await ref.watch(nearbyDevicesProvider.future);
+  final matchedNearby = nearbyDevices.cast<DeviceModel?>().firstWhere(
+    (DeviceModel? device) => device?.id.toString() == deviceId,
+    orElse: () => null,
+  );
+  if (matchedNearby != null) return matchedNearby;
+
+  // 3. 从常用设备列表查找
+  final frequentDevices = await ref.watch(frequentDevicesProvider.future);
+  final matchedFrequent = frequentDevices.cast<DeviceModel?>().firstWhere(
+    (DeviceModel? device) => device?.id.toString() == deviceId,
+    orElse: () => null,
+  );
+  if (matchedFrequent != null) return matchedFrequent;
+
+  throw const Failure.server(message: 'Device not found', statusCode: 404);
 }
 
 /// 获取指定设备的产品列表
 @riverpod
 Future<List<ProductModel>> deviceProducts(Ref ref, String deviceId) async {
   ref.keepAlive();
-  final repository = ref.watch(productRepositoryProvider);
-  return await repository.getProductsByDeviceId(deviceId);
+  final categories = await ref.watch(
+    deviceCategoryProductsProvider(deviceId).future,
+  );
+  return categories.expand((c) => c.products).toList();
 }

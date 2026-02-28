@@ -1,9 +1,10 @@
 import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
+import 'package:lunchbox/features/cart/entities/cart_product_model.dart';
 import 'package:lunchbox/features/cart/providers/cart_state.dart';
 import 'package:lunchbox/features/cart/repositories/cart_repository.dart';
-import 'package:lunchbox/features/product/entities/product_model.dart';
+import 'package:lunchbox/features/product/entities/category_product_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'cart_provider.g.dart';
@@ -26,6 +27,14 @@ class CartNotifier extends _$CartNotifier with AsyncRunnerMixin<CartState> {
   }
 
   Future<void> addToCart(ProductModel product, {int quantity = 1}) async {
+    final cartProduct = CartProductModel.fromProductModel(product);
+    await addCartProductToCart(cartProduct, quantity: quantity);
+  }
+
+  Future<void> addCartProductToCart(
+    CartProductModel product, {
+    int quantity = 1,
+  }) async {
     await runAsync(() async {
       await ref
           .read(cartRepositoryProvider)

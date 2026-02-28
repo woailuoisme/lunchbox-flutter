@@ -359,8 +359,10 @@ $CouponRuleModelCopyWith<$Res> get rule {
 mixin _$CouponRuleModel {
 
 /// 减免金额
-@JsonKey(name: 'reduce_amount') double? get reduceAmount;/// 折扣比例 (0-1)
-@JsonKey(name: 'discount_rate') double? get discountRate;/// 满减门槛金额
+@JsonKey(name: 'reduce_amount') double? get reduceAmount;/// 折扣比例 (0-100)
+@JsonKey(name: 'discount_rate') double? get discountRate;/// 最高折扣金额
+@JsonKey(name: 'max_discount') double? get maxDiscount;/// 门槛金额 (min_amount 或 min_spend_amount)
+@JsonKey(name: 'min_amount') double? get minAmount;/// 满减门槛金额 (兼容旧字段)
 @JsonKey(name: 'min_spend_amount') double? get minSpendAmount;
 /// Create a copy of CouponRuleModel
 /// with the given fields replaced by the non-null parameter values.
@@ -374,16 +376,16 @@ $CouponRuleModelCopyWith<CouponRuleModel> get copyWith => _$CouponRuleModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CouponRuleModel&&(identical(other.reduceAmount, reduceAmount) || other.reduceAmount == reduceAmount)&&(identical(other.discountRate, discountRate) || other.discountRate == discountRate)&&(identical(other.minSpendAmount, minSpendAmount) || other.minSpendAmount == minSpendAmount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CouponRuleModel&&(identical(other.reduceAmount, reduceAmount) || other.reduceAmount == reduceAmount)&&(identical(other.discountRate, discountRate) || other.discountRate == discountRate)&&(identical(other.maxDiscount, maxDiscount) || other.maxDiscount == maxDiscount)&&(identical(other.minAmount, minAmount) || other.minAmount == minAmount)&&(identical(other.minSpendAmount, minSpendAmount) || other.minSpendAmount == minSpendAmount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,reduceAmount,discountRate,minSpendAmount);
+int get hashCode => Object.hash(runtimeType,reduceAmount,discountRate,maxDiscount,minAmount,minSpendAmount);
 
 @override
 String toString() {
-  return 'CouponRuleModel(reduceAmount: $reduceAmount, discountRate: $discountRate, minSpendAmount: $minSpendAmount)';
+  return 'CouponRuleModel(reduceAmount: $reduceAmount, discountRate: $discountRate, maxDiscount: $maxDiscount, minAmount: $minAmount, minSpendAmount: $minSpendAmount)';
 }
 
 
@@ -394,7 +396,7 @@ abstract mixin class $CouponRuleModelCopyWith<$Res>  {
   factory $CouponRuleModelCopyWith(CouponRuleModel value, $Res Function(CouponRuleModel) _then) = _$CouponRuleModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'reduce_amount') double? reduceAmount,@JsonKey(name: 'discount_rate') double? discountRate,@JsonKey(name: 'min_spend_amount') double? minSpendAmount
+@JsonKey(name: 'reduce_amount') double? reduceAmount,@JsonKey(name: 'discount_rate') double? discountRate,@JsonKey(name: 'max_discount') double? maxDiscount,@JsonKey(name: 'min_amount') double? minAmount,@JsonKey(name: 'min_spend_amount') double? minSpendAmount
 });
 
 
@@ -411,10 +413,12 @@ class _$CouponRuleModelCopyWithImpl<$Res>
 
 /// Create a copy of CouponRuleModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? reduceAmount = freezed,Object? discountRate = freezed,Object? minSpendAmount = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? reduceAmount = freezed,Object? discountRate = freezed,Object? maxDiscount = freezed,Object? minAmount = freezed,Object? minSpendAmount = freezed,}) {
   return _then(_self.copyWith(
 reduceAmount: freezed == reduceAmount ? _self.reduceAmount : reduceAmount // ignore: cast_nullable_to_non_nullable
 as double?,discountRate: freezed == discountRate ? _self.discountRate : discountRate // ignore: cast_nullable_to_non_nullable
+as double?,maxDiscount: freezed == maxDiscount ? _self.maxDiscount : maxDiscount // ignore: cast_nullable_to_non_nullable
+as double?,minAmount: freezed == minAmount ? _self.minAmount : minAmount // ignore: cast_nullable_to_non_nullable
 as double?,minSpendAmount: freezed == minSpendAmount ? _self.minSpendAmount : minSpendAmount // ignore: cast_nullable_to_non_nullable
 as double?,
   ));
@@ -501,10 +505,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'reduce_amount')  double? reduceAmount, @JsonKey(name: 'discount_rate')  double? discountRate, @JsonKey(name: 'min_spend_amount')  double? minSpendAmount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'reduce_amount')  double? reduceAmount, @JsonKey(name: 'discount_rate')  double? discountRate, @JsonKey(name: 'max_discount')  double? maxDiscount, @JsonKey(name: 'min_amount')  double? minAmount, @JsonKey(name: 'min_spend_amount')  double? minSpendAmount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CouponRuleModel() when $default != null:
-return $default(_that.reduceAmount,_that.discountRate,_that.minSpendAmount);case _:
+return $default(_that.reduceAmount,_that.discountRate,_that.maxDiscount,_that.minAmount,_that.minSpendAmount);case _:
   return orElse();
 
 }
@@ -522,10 +526,10 @@ return $default(_that.reduceAmount,_that.discountRate,_that.minSpendAmount);case
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'reduce_amount')  double? reduceAmount, @JsonKey(name: 'discount_rate')  double? discountRate, @JsonKey(name: 'min_spend_amount')  double? minSpendAmount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'reduce_amount')  double? reduceAmount, @JsonKey(name: 'discount_rate')  double? discountRate, @JsonKey(name: 'max_discount')  double? maxDiscount, @JsonKey(name: 'min_amount')  double? minAmount, @JsonKey(name: 'min_spend_amount')  double? minSpendAmount)  $default,) {final _that = this;
 switch (_that) {
 case _CouponRuleModel():
-return $default(_that.reduceAmount,_that.discountRate,_that.minSpendAmount);case _:
+return $default(_that.reduceAmount,_that.discountRate,_that.maxDiscount,_that.minAmount,_that.minSpendAmount);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -542,10 +546,10 @@ return $default(_that.reduceAmount,_that.discountRate,_that.minSpendAmount);case
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'reduce_amount')  double? reduceAmount, @JsonKey(name: 'discount_rate')  double? discountRate, @JsonKey(name: 'min_spend_amount')  double? minSpendAmount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'reduce_amount')  double? reduceAmount, @JsonKey(name: 'discount_rate')  double? discountRate, @JsonKey(name: 'max_discount')  double? maxDiscount, @JsonKey(name: 'min_amount')  double? minAmount, @JsonKey(name: 'min_spend_amount')  double? minSpendAmount)?  $default,) {final _that = this;
 switch (_that) {
 case _CouponRuleModel() when $default != null:
-return $default(_that.reduceAmount,_that.discountRate,_that.minSpendAmount);case _:
+return $default(_that.reduceAmount,_that.discountRate,_that.maxDiscount,_that.minAmount,_that.minSpendAmount);case _:
   return null;
 
 }
@@ -557,14 +561,18 @@ return $default(_that.reduceAmount,_that.discountRate,_that.minSpendAmount);case
 @JsonSerializable()
 
 class _CouponRuleModel implements CouponRuleModel {
-  const _CouponRuleModel({@JsonKey(name: 'reduce_amount') this.reduceAmount, @JsonKey(name: 'discount_rate') this.discountRate, @JsonKey(name: 'min_spend_amount') this.minSpendAmount});
+  const _CouponRuleModel({@JsonKey(name: 'reduce_amount') this.reduceAmount, @JsonKey(name: 'discount_rate') this.discountRate, @JsonKey(name: 'max_discount') this.maxDiscount, @JsonKey(name: 'min_amount') this.minAmount, @JsonKey(name: 'min_spend_amount') this.minSpendAmount});
   factory _CouponRuleModel.fromJson(Map<String, dynamic> json) => _$CouponRuleModelFromJson(json);
 
 /// 减免金额
 @override@JsonKey(name: 'reduce_amount') final  double? reduceAmount;
-/// 折扣比例 (0-1)
+/// 折扣比例 (0-100)
 @override@JsonKey(name: 'discount_rate') final  double? discountRate;
-/// 满减门槛金额
+/// 最高折扣金额
+@override@JsonKey(name: 'max_discount') final  double? maxDiscount;
+/// 门槛金额 (min_amount 或 min_spend_amount)
+@override@JsonKey(name: 'min_amount') final  double? minAmount;
+/// 满减门槛金额 (兼容旧字段)
 @override@JsonKey(name: 'min_spend_amount') final  double? minSpendAmount;
 
 /// Create a copy of CouponRuleModel
@@ -580,16 +588,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CouponRuleModel&&(identical(other.reduceAmount, reduceAmount) || other.reduceAmount == reduceAmount)&&(identical(other.discountRate, discountRate) || other.discountRate == discountRate)&&(identical(other.minSpendAmount, minSpendAmount) || other.minSpendAmount == minSpendAmount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CouponRuleModel&&(identical(other.reduceAmount, reduceAmount) || other.reduceAmount == reduceAmount)&&(identical(other.discountRate, discountRate) || other.discountRate == discountRate)&&(identical(other.maxDiscount, maxDiscount) || other.maxDiscount == maxDiscount)&&(identical(other.minAmount, minAmount) || other.minAmount == minAmount)&&(identical(other.minSpendAmount, minSpendAmount) || other.minSpendAmount == minSpendAmount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,reduceAmount,discountRate,minSpendAmount);
+int get hashCode => Object.hash(runtimeType,reduceAmount,discountRate,maxDiscount,minAmount,minSpendAmount);
 
 @override
 String toString() {
-  return 'CouponRuleModel(reduceAmount: $reduceAmount, discountRate: $discountRate, minSpendAmount: $minSpendAmount)';
+  return 'CouponRuleModel(reduceAmount: $reduceAmount, discountRate: $discountRate, maxDiscount: $maxDiscount, minAmount: $minAmount, minSpendAmount: $minSpendAmount)';
 }
 
 
@@ -600,7 +608,7 @@ abstract mixin class _$CouponRuleModelCopyWith<$Res> implements $CouponRuleModel
   factory _$CouponRuleModelCopyWith(_CouponRuleModel value, $Res Function(_CouponRuleModel) _then) = __$CouponRuleModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'reduce_amount') double? reduceAmount,@JsonKey(name: 'discount_rate') double? discountRate,@JsonKey(name: 'min_spend_amount') double? minSpendAmount
+@JsonKey(name: 'reduce_amount') double? reduceAmount,@JsonKey(name: 'discount_rate') double? discountRate,@JsonKey(name: 'max_discount') double? maxDiscount,@JsonKey(name: 'min_amount') double? minAmount,@JsonKey(name: 'min_spend_amount') double? minSpendAmount
 });
 
 
@@ -617,10 +625,12 @@ class __$CouponRuleModelCopyWithImpl<$Res>
 
 /// Create a copy of CouponRuleModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? reduceAmount = freezed,Object? discountRate = freezed,Object? minSpendAmount = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? reduceAmount = freezed,Object? discountRate = freezed,Object? maxDiscount = freezed,Object? minAmount = freezed,Object? minSpendAmount = freezed,}) {
   return _then(_CouponRuleModel(
 reduceAmount: freezed == reduceAmount ? _self.reduceAmount : reduceAmount // ignore: cast_nullable_to_non_nullable
 as double?,discountRate: freezed == discountRate ? _self.discountRate : discountRate // ignore: cast_nullable_to_non_nullable
+as double?,maxDiscount: freezed == maxDiscount ? _self.maxDiscount : maxDiscount // ignore: cast_nullable_to_non_nullable
+as double?,minAmount: freezed == minAmount ? _self.minAmount : minAmount // ignore: cast_nullable_to_non_nullable
 as double?,minSpendAmount: freezed == minSpendAmount ? _self.minSpendAmount : minSpendAmount // ignore: cast_nullable_to_non_nullable
 as double?,
   ));

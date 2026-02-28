@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lunchbox/features/product/entities/product_model.dart';
+import 'package:lunchbox/features/cart/entities/cart_product_model.dart';
 
 part 'cart_item_model.freezed.dart';
 part 'cart_item_model.g.dart';
@@ -16,7 +16,7 @@ abstract class CartItemModel with _$CartItemModel {
     required String productId,
 
     /// 产品信息
-    required ProductModel product,
+    required CartProductModel product,
 
     /// 添加时间
     required DateTime addedTime,

@@ -16,7 +16,7 @@ _CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) =>
           productId: $checkedConvert('product_id', (v) => v as String),
           product: $checkedConvert(
             'product',
-            (v) => ProductModel.fromJson(v as Map<String, dynamic>),
+            (v) => CartProductModel.fromJson(v as Map<String, dynamic>),
           ),
           addedTime: $checkedConvert(
             'added_time',

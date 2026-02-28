@@ -50,7 +50,7 @@ class _ProductRestClient implements ProductRestClient {
   }
 
   @override
-  Future<ApiResponse<List<ProductModel>>> getDeviceProducts({
+  Future<ApiResponse<List<CategoryProductModel>>> getDeviceProducts({
     String? deviceId,
   }) async {
     final _extra = <String, dynamic>{};
@@ -58,7 +58,7 @@ class _ProductRestClient implements ProductRestClient {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<ProductModel>>>(
+    final _options = _setStreamType<ApiResponse<List<CategoryProductModel>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -69,14 +69,16 @@ class _ProductRestClient implements ProductRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<ProductModel>> _value;
+    late ApiResponse<List<CategoryProductModel>> _value;
     try {
-      _value = ApiResponse<List<ProductModel>>.fromJson(
+      _value = ApiResponse<List<CategoryProductModel>>.fromJson(
         _result.data!,
         (json) => json is List<dynamic>
             ? json
-                  .map<ProductModel>(
-                    (i) => ProductModel.fromJson(i as Map<String, dynamic>),
+                  .map<CategoryProductModel>(
+                    (i) => CategoryProductModel.fromJson(
+                      i as Map<String, dynamic>,
+                    ),
                   )
                   .toList()
             : List.empty(),
@@ -89,12 +91,14 @@ class _ProductRestClient implements ProductRestClient {
   }
 
   @override
-  Future<ApiResponse<ProductModel>> getProductDetail(String productId) async {
+  Future<ApiResponse<ProductDetailModel>> getProductDetail(
+    String productId,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<ProductModel>>(
+    final _options = _setStreamType<ApiResponse<ProductDetailModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -105,11 +109,11 @@ class _ProductRestClient implements ProductRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<ProductModel> _value;
+    late ApiResponse<ProductDetailModel> _value;
     try {
-      _value = ApiResponse<ProductModel>.fromJson(
+      _value = ApiResponse<ProductDetailModel>.fromJson(
         _result.data!,
-        (json) => ProductModel.fromJson(json as Map<String, dynamic>),
+        (json) => ProductDetailModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -153,148 +157,6 @@ class _ProductRestClient implements ProductRestClient {
                   .map<ProductReviewModel>(
                     (i) =>
                         ProductReviewModel.fromJson(i as Map<String, dynamic>),
-                  )
-                  .toList()
-            : List.empty(),
-      );
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<ApiResponse<PaginatedResponse<ProductModel>>> getProductsByDeviceId(
-    String deviceId,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options =
-        _setStreamType<ApiResponse<PaginatedResponse<ProductModel>>>(
-          Options(method: 'GET', headers: _headers, extra: _extra)
-              .compose(
-                _dio.options,
-                '/api/devices/${deviceId}/products',
-                queryParameters: queryParameters,
-                data: _data,
-              )
-              .copyWith(
-                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
-              ),
-        );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<PaginatedResponse<ProductModel>> _value;
-    try {
-      _value = ApiResponse<PaginatedResponse<ProductModel>>.fromJson(
-        _result.data!,
-        (json) => PaginatedResponse<ProductModel>.fromJson(
-          json as Map<String, dynamic>,
-          (json) => ProductModel.fromJson(json as Map<String, dynamic>),
-        ),
-      );
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<ApiResponse<ProductModel>> getProductById(String id) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<ProductModel>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/products/${id}',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<ProductModel> _value;
-    try {
-      _value = ApiResponse<ProductModel>.fromJson(
-        _result.data!,
-        (json) => ProductModel.fromJson(json as Map<String, dynamic>),
-      );
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<ApiResponse<bool>> updateProductStock(
-    String deviceId,
-    String productId,
-    Map<String, dynamic> body,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
-    final _options = _setStreamType<ApiResponse<bool>>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/devices/${deviceId}/products/${productId}/stock',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<bool> _value;
-    try {
-      _value = ApiResponse<bool>.fromJson(
-        _result.data!,
-        (json) => json as bool,
-      );
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<ApiResponse<List<ProductModel>>> getProductsBatch(
-    Map<String, dynamic> body,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
-    final _options = _setStreamType<ApiResponse<List<ProductModel>>>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/products/batch',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<ProductModel>> _value;
-    try {
-      _value = ApiResponse<List<ProductModel>>.fromJson(
-        _result.data!,
-        (json) => json is List<dynamic>
-            ? json
-                  .map<ProductModel>(
-                    (i) => ProductModel.fromJson(i as Map<String, dynamic>),
                   )
                   .toList()
             : List.empty(),

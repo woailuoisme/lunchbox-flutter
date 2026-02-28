@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:lunchbox/core/network/dio_provider.dart';
 import 'package:lunchbox/core/network/response/api_response.dart';
-import 'package:lunchbox/core/network/response/paginated_response.dart';
 import 'package:lunchbox/features/product/entities/product_daily_limit_model.dart';
-import 'package:lunchbox/features/product/entities/product_model.dart';
+import 'package:lunchbox/features/product/entities/product_detail_model.dart';
+import 'package:lunchbox/features/product/entities/category_product_model.dart';
 import 'package:lunchbox/features/product/entities/product_review_model.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -24,15 +24,15 @@ abstract class ProductRestClient {
   @GET('/api/v1/home/product_daily_limit')
   Future<ApiResponse<ProductDailyLimitModel>> getProductDailyLimit();
 
-  /// 获取指定设备的所有商品
+  /// 获取指定设备的所有商品（按分类组织）
   @GET('/api/v1/home/device_products')
-  Future<ApiResponse<List<ProductModel>>> getDeviceProducts({
+  Future<ApiResponse<List<CategoryProductModel>>> getDeviceProducts({
     @Query('device_id') String? deviceId,
   });
 
   /// 获取商品详情
   @GET('/api/v1/home/products/{product_id}')
-  Future<ApiResponse<ProductModel>> getProductDetail(
+  Future<ApiResponse<ProductDetailModel>> getProductDetail(
     @Path('product_id') String productId,
   );
 
@@ -43,28 +43,4 @@ abstract class ProductRestClient {
     @Query('page') int? page,
     @Query('size') int? size,
   });
-
-  /// 获取设备的所有产品列表
-  @GET('/api/devices/{deviceId}/products')
-  Future<ApiResponse<PaginatedResponse<ProductModel>>> getProductsByDeviceId(
-    @Path('deviceId') String deviceId,
-  );
-
-  /// 根据产品ID获取产品详情
-  @GET('/api/products/{id}')
-  Future<ApiResponse<ProductModel>> getProductById(@Path('id') String id);
-
-  /// 更新产品库存
-  @POST('/api/devices/{deviceId}/products/{productId}/stock')
-  Future<ApiResponse<bool>> updateProductStock(
-    @Path('deviceId') String deviceId,
-    @Path('productId') String productId,
-    @Body() Map<String, dynamic> body,
-  );
-
-  /// 批量获取产品
-  @POST('/api/products/batch')
-  Future<ApiResponse<List<ProductModel>>> getProductsBatch(
-    @Body() Map<String, dynamic> body,
-  );
 }

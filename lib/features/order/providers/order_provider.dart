@@ -96,7 +96,10 @@ class OrderNotifier extends _$OrderNotifier with AsyncRunnerMixin<OrderState> {
 
         final cartNotifier = ref.read(cartProvider.notifier);
         for (final item in cartItems) {
-          await cartNotifier.addToCart(item.product, quantity: item.quantity);
+          await cartNotifier.addCartProductToCart(
+            item.product,
+            quantity: item.quantity,
+          );
         }
         LoggerUtils.i('OrderNotifier: Reordered: ${order.id}');
       });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lunchbox/features/order/entities/order_product_model.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
 part 'order_model.freezed.dart';
@@ -71,23 +72,6 @@ abstract class OrderDeviceModel with _$OrderDeviceModel {
 
   factory OrderDeviceModel.fromJson(Map<String, dynamic> json) =>
       _$OrderDeviceModelFromJson(json);
-}
-
-/// 订单中的商品信息
-@freezed
-abstract class OrderProductModel with _$OrderProductModel {
-  const factory OrderProductModel({
-    required int id,
-    required String name,
-    required String category,
-    required String thumb,
-    required String description,
-    @JsonKey(name: 'sale_price') required String salePrice,
-    required int quantity,
-  }) = _OrderProductModel;
-
-  factory OrderProductModel.fromJson(Map<String, dynamic> json) =>
-      _$OrderProductModelFromJson(json);
 }
 
 /// 订单模型类

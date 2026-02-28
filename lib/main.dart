@@ -5,10 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:lunchbox/core/env/app_env.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/theme/theme.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_router.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
@@ -29,16 +31,23 @@ void main() async {
     await LocaleSettings.setLocale(AppLocale.zhCn);
   }
 
-  // 主题设置由 themeProvider 在 build 时自动从 sharedPreferences 初始化
-  // 不需要在此显式调用，因为 ProviderScope 已 override 了 sharedPreferencesProvider
-
-  runApp(
-    ProviderScope(
-      observers: [],
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-      ],
-      child: TranslationProvider(child: const MyApp()),
+  // 初始化 Sentry
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = AppEnvConfig.current.sentryDsn;
+      // 设置采样率，开发环境下可以设置高一些，生产环境下建议根据需求调整
+      options.tracesSampleRate = 1.0;
+      // 启用截图功能
+      options.attachScreenshot = true;
+    },
+    appRunner: () => runApp(
+      ProviderScope(
+        observers: [],
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+        ],
+        child: TranslationProvider(child: SentryWidget(child: const MyApp())),
+      ),
     ),
   );
 }

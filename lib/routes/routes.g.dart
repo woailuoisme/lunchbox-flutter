@@ -773,6 +773,7 @@ RouteBase get $settingsRoute => GoRouteData.$route(
       path: 'device-info',
       factory: $DeviceInfoRoute._fromState,
     ),
+    GoRouteData.$route(path: 'debug', factory: $DebugRoute._fromState),
   ],
 );
 
@@ -822,6 +823,26 @@ mixin $DeviceInfoRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/settings/device-info');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $DebugRoute on GoRouteData {
+  static DebugRoute _fromState(GoRouterState state) => const DebugRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/debug');
 
   @override
   void go(BuildContext context) => context.go(location);

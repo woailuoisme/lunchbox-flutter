@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lunchbox/core/providers/providers.dart';
 import 'package:lunchbox/core/services/services.dart';
 import 'package:lunchbox/features/auth/auth.dart';
+import 'package:lunchbox/features/splash/splash.dart';
 import 'package:lunchbox/routes/routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -23,6 +24,7 @@ GoRouter goRouter(Ref ref) {
 
   // 监听认证状态变化以触发路由重定向
   final isAuthenticated = ref.watch(authProvider);
+  final hasInitialized = ref.watch(splashProvider).hasInitialized;
   final analytics = ref.watch(firebaseAnalyticsProvider);
 
   return GoRouter(
@@ -34,11 +36,23 @@ GoRouter goRouter(Ref ref) {
     // 认证守卫：实现 redirect 逻辑
     // 验证需求：2.4
     redirect: (context, state) {
+      final isSplashRoute =
+          state.matchedLocation == const SplashRoute().location;
+
+      // 如果已经初始化完成，不允许再回到 Splash 屏
+      if (hasInitialized && isSplashRoute) {
+        final navigationPath = ref.read(splashProvider).navigationPath;
+        return navigationPath ??
+            (isAuthenticated
+                ? const HomeRoute().location
+                : const LoginRoute().location);
+      }
+
       final isAuthRoute =
           state.matchedLocation == const LoginRoute().location ||
           state.matchedLocation == const RegisterRoute().location ||
           state.matchedLocation == const ForgotPasswordRoute().location ||
-          state.matchedLocation == const SplashRoute().location ||
+          isSplashRoute ||
           state.matchedLocation == const OnboardingRoute().location;
 
       // 如果用户未认证且不在认证相关页面，重定向到登录页

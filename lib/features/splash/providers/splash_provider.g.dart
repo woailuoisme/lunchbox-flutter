@@ -20,7 +20,7 @@ final class SplashNotifierProvider
         argument: null,
         retry: null,
         name: r'splashProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -41,7 +41,7 @@ final class SplashNotifierProvider
   }
 }
 
-String _$splashNotifierHash() => r'afe2476b4cec5335b12d7985f80fdccfd375afd7';
+String _$splashNotifierHash() => r'38d50c86580cce8910562262aaadf3423b57e3e3';
 
 abstract class _$SplashNotifier extends $Notifier<SplashState> {
   SplashState build();

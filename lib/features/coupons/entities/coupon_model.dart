@@ -58,10 +58,16 @@ abstract class CouponRuleModel with _$CouponRuleModel {
     /// 减免金额
     @JsonKey(name: 'reduce_amount') double? reduceAmount,
 
-    /// 折扣比例 (0-1)
+    /// 折扣比例 (0-100)
     @JsonKey(name: 'discount_rate') double? discountRate,
 
-    /// 满减门槛金额
+    /// 最高折扣金额
+    @JsonKey(name: 'max_discount') double? maxDiscount,
+
+    /// 门槛金额 (min_amount 或 min_spend_amount)
+    @JsonKey(name: 'min_amount') double? minAmount,
+
+    /// 满减门槛金额 (兼容旧字段)
     @JsonKey(name: 'min_spend_amount') double? minSpendAmount,
   }) = _CouponRuleModel;
 

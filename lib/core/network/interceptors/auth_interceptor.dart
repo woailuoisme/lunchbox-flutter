@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/constants/app_constants.dart';
+import 'package:lunchbox/features/auth/providers/auth_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_interceptor.g.dart';
@@ -41,11 +42,8 @@ class AuthInterceptor extends Interceptor {
   ) async {
     // Handle 401 Unauthorized - token expired or invalid
     if (err.response?.statusCode == 401) {
-      // TODO(User): Implement token refresh logic when auth repository is available
-      // For now, just clear the token and let the app redirect to login
-      final storage = _ref.read(storageServiceProvider);
-      await storage.remove(AppConstants.keyAuthToken);
-      await storage.remove(AppConstants.keyUserId);
+      // 调用 AuthProvider 处理未授权逻辑，同步状态并触发重定向
+      await _ref.read(authProvider.notifier).handleUnauthorized();
     }
 
     return handler.next(err);

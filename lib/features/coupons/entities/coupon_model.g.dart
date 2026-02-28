@@ -82,6 +82,14 @@ _CouponRuleModel _$CouponRuleModelFromJson(Map<String, dynamic> json) =>
             'discount_rate',
             (v) => (v as num?)?.toDouble(),
           ),
+          maxDiscount: $checkedConvert(
+            'max_discount',
+            (v) => (v as num?)?.toDouble(),
+          ),
+          minAmount: $checkedConvert(
+            'min_amount',
+            (v) => (v as num?)?.toDouble(),
+          ),
           minSpendAmount: $checkedConvert(
             'min_spend_amount',
             (v) => (v as num?)?.toDouble(),
@@ -92,6 +100,8 @@ _CouponRuleModel _$CouponRuleModelFromJson(Map<String, dynamic> json) =>
       fieldKeyMap: const {
         'reduceAmount': 'reduce_amount',
         'discountRate': 'discount_rate',
+        'maxDiscount': 'max_discount',
+        'minAmount': 'min_amount',
         'minSpendAmount': 'min_spend_amount',
       },
     );
@@ -100,5 +110,7 @@ Map<String, dynamic> _$CouponRuleModelToJson(_CouponRuleModel instance) =>
     <String, dynamic>{
       'reduce_amount': ?instance.reduceAmount,
       'discount_rate': ?instance.discountRate,
+      'max_discount': ?instance.maxDiscount,
+      'min_amount': ?instance.minAmount,
       'min_spend_amount': ?instance.minSpendAmount,
     };

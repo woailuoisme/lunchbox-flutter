@@ -18,7 +18,7 @@ mixin _$CartItemModel {
 /// 购物车项ID
  String get id;/// 产品ID
  String get productId;/// 产品信息
- ProductModel get product;/// 添加时间
+ CartProductModel get product;/// 添加时间
  DateTime get addedTime;/// 购买数量
  int get quantity;/// 是否选中
  bool get isSelected;/// 设备ID（从哪个设备添加）
@@ -55,11 +55,11 @@ abstract mixin class $CartItemModelCopyWith<$Res>  {
   factory $CartItemModelCopyWith(CartItemModel value, $Res Function(CartItemModel) _then) = _$CartItemModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String productId, ProductModel product, DateTime addedTime, int quantity, bool isSelected, String? deviceId
+ String id, String productId, CartProductModel product, DateTime addedTime, int quantity, bool isSelected, String? deviceId
 });
 
 
-$ProductModelCopyWith<$Res> get product;
+$CartProductModelCopyWith<$Res> get product;
 
 }
 /// @nodoc
@@ -77,7 +77,7 @@ class _$CartItemModelCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String,product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
-as ProductModel,addedTime: null == addedTime ? _self.addedTime : addedTime // ignore: cast_nullable_to_non_nullable
+as CartProductModel,addedTime: null == addedTime ? _self.addedTime : addedTime // ignore: cast_nullable_to_non_nullable
 as DateTime,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,isSelected: null == isSelected ? _self.isSelected : isSelected // ignore: cast_nullable_to_non_nullable
 as bool,deviceId: freezed == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
@@ -88,9 +88,9 @@ as String?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$ProductModelCopyWith<$Res> get product {
+$CartProductModelCopyWith<$Res> get product {
   
-  return $ProductModelCopyWith<$Res>(_self.product, (value) {
+  return $CartProductModelCopyWith<$Res>(_self.product, (value) {
     return _then(_self.copyWith(product: value));
   });
 }
@@ -175,7 +175,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String productId,  ProductModel product,  DateTime addedTime,  int quantity,  bool isSelected,  String? deviceId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String productId,  CartProductModel product,  DateTime addedTime,  int quantity,  bool isSelected,  String? deviceId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CartItemModel() when $default != null:
 return $default(_that.id,_that.productId,_that.product,_that.addedTime,_that.quantity,_that.isSelected,_that.deviceId);case _:
@@ -196,7 +196,7 @@ return $default(_that.id,_that.productId,_that.product,_that.addedTime,_that.qua
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String productId,  ProductModel product,  DateTime addedTime,  int quantity,  bool isSelected,  String? deviceId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String productId,  CartProductModel product,  DateTime addedTime,  int quantity,  bool isSelected,  String? deviceId)  $default,) {final _that = this;
 switch (_that) {
 case _CartItemModel():
 return $default(_that.id,_that.productId,_that.product,_that.addedTime,_that.quantity,_that.isSelected,_that.deviceId);case _:
@@ -216,7 +216,7 @@ return $default(_that.id,_that.productId,_that.product,_that.addedTime,_that.qua
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String productId,  ProductModel product,  DateTime addedTime,  int quantity,  bool isSelected,  String? deviceId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String productId,  CartProductModel product,  DateTime addedTime,  int quantity,  bool isSelected,  String? deviceId)?  $default,) {final _that = this;
 switch (_that) {
 case _CartItemModel() when $default != null:
 return $default(_that.id,_that.productId,_that.product,_that.addedTime,_that.quantity,_that.isSelected,_that.deviceId);case _:
@@ -239,7 +239,7 @@ class _CartItemModel extends CartItemModel {
 /// 产品ID
 @override final  String productId;
 /// 产品信息
-@override final  ProductModel product;
+@override final  CartProductModel product;
 /// 添加时间
 @override final  DateTime addedTime;
 /// 购买数量
@@ -282,11 +282,11 @@ abstract mixin class _$CartItemModelCopyWith<$Res> implements $CartItemModelCopy
   factory _$CartItemModelCopyWith(_CartItemModel value, $Res Function(_CartItemModel) _then) = __$CartItemModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String productId, ProductModel product, DateTime addedTime, int quantity, bool isSelected, String? deviceId
+ String id, String productId, CartProductModel product, DateTime addedTime, int quantity, bool isSelected, String? deviceId
 });
 
 
-@override $ProductModelCopyWith<$Res> get product;
+@override $CartProductModelCopyWith<$Res> get product;
 
 }
 /// @nodoc
@@ -304,7 +304,7 @@ class __$CartItemModelCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String,product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
-as ProductModel,addedTime: null == addedTime ? _self.addedTime : addedTime // ignore: cast_nullable_to_non_nullable
+as CartProductModel,addedTime: null == addedTime ? _self.addedTime : addedTime // ignore: cast_nullable_to_non_nullable
 as DateTime,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,isSelected: null == isSelected ? _self.isSelected : isSelected // ignore: cast_nullable_to_non_nullable
 as bool,deviceId: freezed == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
@@ -316,9 +316,9 @@ as String?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$ProductModelCopyWith<$Res> get product {
+$CartProductModelCopyWith<$Res> get product {
   
-  return $ProductModelCopyWith<$Res>(_self.product, (value) {
+  return $CartProductModelCopyWith<$Res>(_self.product, (value) {
     return _then(_self.copyWith(product: value));
   });
 }

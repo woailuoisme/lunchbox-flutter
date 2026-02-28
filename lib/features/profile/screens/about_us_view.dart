@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/core/services/dialog_service.dart';
+import 'package:lunchbox/core/widgets/html_web_view.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -120,57 +120,9 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
                     ),
                   );
                 }
-                return Scrollbar(
-                  thumbVisibility: true,
-                  radius: Radius.circular(4.r),
-                  thickness: 4.w,
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20.w,
-                      vertical: 16.h,
-                    ),
-                    child: Html(
-                      data: snapshot.data ?? '',
-                      style: {
-                        "body": Style(
-                          fontSize: FontSize(14.sp),
-                          lineHeight: const LineHeight(1.6),
-                          padding: HtmlPaddings.zero,
-                          margin: Margins.zero,
-                          color: Theme.of(context).textTheme.bodyMedium?.color,
-                          fontFamily: 'Roboto',
-                        ),
-                        "h1": Style(
-                          fontSize: FontSize(20.sp),
-                          fontWeight: FontWeight.bold,
-                          textAlign: TextAlign.center,
-                          margin: Margins.only(bottom: 24.h),
-                          color: Theme.of(context).textTheme.titleLarge?.color,
-                        ),
-                        "h2": Style(
-                          fontSize: FontSize(16.sp),
-                          fontWeight: FontWeight.bold,
-                          margin: Margins.only(top: 20.h, bottom: 12.h),
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        "h3": Style(
-                          fontSize: FontSize(15.sp),
-                          fontWeight: FontWeight.w600,
-                          margin: Margins.only(top: 16.h, bottom: 8.h),
-                          color: Theme.of(context).textTheme.titleMedium?.color,
-                        ),
-                        "p": Style(
-                          margin: Margins.only(bottom: 12.h),
-                          textAlign: TextAlign.justify,
-                        ),
-                        "li": Style(margin: Margins.only(bottom: 8.h)),
-                        "a": Style(
-                          color: Theme.of(context).colorScheme.primary,
-                          textDecoration: TextDecoration.none,
-                        ),
-                      },
-                    ),
-                  ),
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(8.r),
+                  child: HtmlWebView(htmlContent: snapshot.data ?? ''),
                 );
               },
             ),

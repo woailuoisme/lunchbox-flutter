@@ -1,3 +1,4 @@
+import 'package:lpinyin/lpinyin.dart';
 import 'package:lunchbox/features/device/entities/city_model.dart';
 import 'package:lunchbox/features/device/repositories/city_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -71,17 +72,40 @@ class GroupedCities extends _$GroupedCities {
     final Map<String, List<CityModel>> result = {};
 
     for (final city in cities) {
-      final initial = city.name.isNotEmpty ? city.name[0].toUpperCase() : '#';
+      // 使用 lpinyin 获取城市名称的首字母
+      String initial = '#';
+      if (city.name.isNotEmpty) {
+        final pinyin = PinyinHelper.getPinyin(city.name);
+        if (pinyin.isNotEmpty) {
+          initial = pinyin[0].toUpperCase();
+        }
+      }
+
+      // 确保 initial 是 A-Z，否则归类到 #
+      if (!RegExp(r'[A-Z]').hasMatch(initial)) {
+        initial = '#';
+      }
+
       if (!result.containsKey(initial)) {
         result[initial] = [];
       }
       result[initial]!.add(city);
     }
 
-    final sortedKeys = result.keys.toList()..sort();
+    // 排序逻辑：A-Z 在前，# 在最后
+    final sortedKeys = result.keys.toList()
+      ..sort((a, b) {
+        if (a == '#') return 1;
+        if (b == '#') return -1;
+        return a.compareTo(b);
+      });
+
     final Map<String, List<CityModel>> sortedResult = {};
     for (final key in sortedKeys) {
-      sortedResult[key] = result[key]!;
+      // 组内城市按名称排序
+      final list = result[key]!;
+      list.sort((a, b) => a.name.compareTo(b.name));
+      sortedResult[key] = list;
     }
 
     return sortedResult;

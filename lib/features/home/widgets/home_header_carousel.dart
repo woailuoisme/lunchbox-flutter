@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/features/home/providers/home_provider.dart';
 
@@ -141,24 +142,21 @@ class _HomeHeaderCarouselState extends ConsumerState<HomeHeaderCarousel> {
               bottom: 20.h,
               left: 0,
               right: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: displayBanners.asMap().entries.map((entry) {
-                  return GestureDetector(
-                    onTap: () => _headerController.animateToPage(entry.key),
-                    child: Container(
-                      width: 8.w,
-                      height: 8.w,
-                      margin: EdgeInsets.symmetric(horizontal: 4.w),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withValues(
-                          alpha: _currentHeaderIndex == entry.key ? 0.9 : 0.4,
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+              child: Center(
+                child: AnimatedSmoothIndicator(
+                  activeIndex: _currentHeaderIndex,
+                  count: displayBanners.length,
+                  onDotClicked: (index) =>
+                      _headerController.animateToPage(index),
+                  effect: ExpandingDotsEffect(
+                    dotWidth: 8.w,
+                    dotHeight: 8.w,
+                    spacing: 8.w,
+                    activeDotColor: colorScheme.primary,
+                    dotColor: colorScheme.primary.withValues(alpha: 0.4),
+                    expansionFactor: 3,
+                  ),
+                ),
               ),
             ),
         ],

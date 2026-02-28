@@ -1,4 +1,5 @@
 import 'package:lunchbox/core/utils/logger_utils.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 提供通用异步执行能力的 Mixin
 ///
@@ -15,7 +16,7 @@ mixin AsyncRunnerMixin<S> {
   ///
   /// [action] 要执行的异步操作
   /// [showLoading] 是否自动更新 state.isLoading
-  /// [errorLabel] 发生错误时的日志前缀
+  /// [errorLabel] 发生错误时的日志前缀（默认为 i18n 中的 common.error）
   /// [loadingStateUpdater] 自定义如何更新 loading 状态，如果为 null 则尝试使用 dynamic 调用 copyWith
   Future<T?> runAsync<T>(
     Future<T> Function() action, {
@@ -31,7 +32,7 @@ mixin AsyncRunnerMixin<S> {
       final result = await action();
       return result;
     } catch (e, stack) {
-      LoggerUtils.e(errorLabel ?? "操作失败", e, stack);
+      LoggerUtils.e(errorLabel ?? t.common.error, e, stack);
       rethrow;
     } finally {
       if (showLoading) {

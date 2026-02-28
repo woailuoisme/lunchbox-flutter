@@ -1,5 +1,5 @@
-import 'package:lunchbox/core/errors/failure.dart';
-import 'package:lunchbox/features/product/entities/product_model.dart';
+import 'package:lunchbox/features/product/entities/product_detail_model.dart';
+import 'package:lunchbox/features/product/entities/category_product_model.dart';
 import 'package:lunchbox/features/product/repositories/product_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,7 +19,7 @@ class ProductSort extends _$ProductSort {
 @riverpod
 class ProductFilterAvailable extends _$ProductFilterAvailable {
   @override
-  bool build() => true;
+  bool build() => false; // Default to false to show all products initially
 
   void toggle() => state = !state;
 }
@@ -34,58 +34,92 @@ class ProductSearchQuery extends _$ProductSearchQuery {
   void update(String query) => state = query;
 }
 
-/// 当前选中的产品分类
+/// 当前选中的产品分类ID
 @riverpod
 class ProductCategory extends _$ProductCategory {
   @override
-  String build() => 'all';
+  int build() => -1; // -1 represents 'all'
 
   // ignore: use_setters_to_change_properties
-  void update(String category) => state = category;
+  void update(int categoryId) => state = categoryId;
+}
+
+/// 获取指定设备的所有产品分类（包含产品）
+/// 这是数据源的单一入口，其他Provider基于此派生
+@riverpod
+Future<List<CategoryProductModel>> deviceCategoryProducts(
+  Ref ref,
+  String deviceId,
+) async {
+  ref.keepAlive();
+  final repository = ref.watch(productRepositoryProvider);
+  return repository.getDeviceProducts(deviceId);
 }
 
 /// 获取指定设备的产品分类列表
+/// 包含一个虚拟的"全部"分类
 @riverpod
-Future<List<String>> productCategories(Ref ref, String deviceId) async {
+Future<List<CategoryProductModel>> productCategories(
+  Ref ref,
+  String deviceId,
+) async {
   ref.keepAlive();
-  final repository = ref.watch(productRepositoryProvider);
   try {
-    final List<String> categories = await repository.getProductCategories(
-      deviceId,
+    final categories = await ref.watch(
+      deviceCategoryProductsProvider(deviceId).future,
     );
-    return <String>['all', ...categories];
+    // Add a virtual 'All' category at the beginning
+    return [
+      const CategoryProductModel(
+        id: -1,
+        name: 'all', // This will be handled in UI for localization
+        thumb: '',
+        order: -1,
+        products: [],
+      ),
+      ...categories,
+    ];
   } catch (_) {
-    return <String>['all'];
+    return [
+      const CategoryProductModel(
+        id: -1,
+        name: 'all',
+        thumb: '',
+        order: -1,
+        products: [],
+      ),
+    ];
   }
 }
 
 /// 获取指定设备的产品列表（原始列表）
+/// 根据当前选中的分类筛选
 @riverpod
 class RawProducts extends _$RawProducts {
   @override
   Future<List<ProductModel>> build(String deviceId) async {
-    final repository = ref.watch(productRepositoryProvider);
-    final category = ref.watch(productCategoryProvider);
+    final categoryId = ref.watch(productCategoryProvider);
 
-    try {
-      final List<ProductModel> products = await (category != 'all'
-          ? repository.getProductsByCategory(deviceId, category)
-          : repository.getProductsByDeviceId(deviceId));
-      return products;
-    } catch (e) {
-      if (e is Failure) {
-        final String message = e.when(
-          network: (msg, _) => msg,
-          server: (msg, _) => msg,
-          cache: (msg) => msg,
-          notFound: (res) => 'Resource not found: $res',
-          unauthorized: () => 'Unauthorized access',
-          validation: (msg, _) => msg,
-        );
-        throw Exception(message);
-      }
-      rethrow;
+    final categories = await ref.watch(
+      deviceCategoryProductsProvider(deviceId).future,
+    );
+
+    if (categoryId == -1) {
+      return categories.expand((c) => c.products).toList();
     }
+
+    return categories
+        .firstWhere(
+          (c) => c.id == categoryId,
+          orElse: () => const CategoryProductModel(
+            id: 0,
+            name: '',
+            thumb: '',
+            order: 0,
+            products: [],
+          ),
+        )
+        .products;
   }
 }
 
@@ -126,24 +160,8 @@ Future<List<ProductModel>> filteredProducts(Ref ref, String deviceId) async {
 
 /// 根据ID获取产品详情
 @riverpod
-Future<ProductModel> productDetail(Ref ref, String productId) async {
+Future<ProductDetailModel> productDetail(Ref ref, String productId) async {
   ref.keepAlive();
   final repository = ref.watch(productRepositoryProvider);
-  try {
-    final ProductModel product = await repository.getProductById(productId);
-    return product;
-  } catch (e) {
-    if (e is Failure) {
-      final String message = e.when(
-        network: (msg, _) => msg,
-        server: (msg, _) => msg,
-        cache: (msg) => msg,
-        notFound: (res) => 'Resource not found: $res',
-        unauthorized: () => 'Unauthorized access',
-        validation: (msg, _) => msg,
-      );
-      throw Exception(message);
-    }
-    rethrow;
-  }
+  return repository.getProductById(productId);
 }

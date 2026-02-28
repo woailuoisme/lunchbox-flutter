@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:drift/drift.dart';
-import 'package:lunchbox/core/errors/repository_error_handler_mixin.dart';
 import 'package:lunchbox/features/cart/datasources/cart_rest_client.dart';
 import 'package:lunchbox/core/services/database_service.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
-import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
-import 'package:lunchbox/features/product/entities/product_model.dart';
+import 'package:lunchbox/features/cart/entities/cart_product_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'cart_repository.g.dart';
@@ -22,7 +20,7 @@ CartRepository cartRepository(Ref ref) {
 
 /// 购物车仓库类
 /// 负责处理购物车相关的数据访问和业务逻辑
-class CartRepository with RepositoryErrorHandlerMixin {
+class CartRepository {
   CartRepository(this._storage, this._client, this._db);
   static const String currentDeviceKey = 'current_device_id';
 
@@ -32,26 +30,21 @@ class CartRepository with RepositoryErrorHandlerMixin {
 
   /// 获取当前购物车中的所有商品
   Future<List<CartItemModel>> getCartItems() async {
-    try {
-      final items = await _db.select(_db.cartItems).get();
-      return items.map((item) {
-        final product = ProductModel.fromJson(
-          jsonDecode(item.productData) as Map<String, dynamic>,
-        );
-        return CartItemModel(
-          id: item.id.toString(),
-          productId: item.productId,
-          product: product,
-          deviceId: item.deviceId,
-          quantity: item.quantity,
-          addedTime: item.createdAt,
-          isSelected: item.isSelected,
-        );
-      }).toList();
-    } catch (e, stack) {
-      LoggerUtils.e('Failed to fetch cart items from database', e, stack);
-      return [];
-    }
+    final items = await _db.select(_db.cartItems).get();
+    return items.map((item) {
+      final product = CartProductModel.fromJson(
+        jsonDecode(item.productData) as Map<String, dynamic>,
+      );
+      return CartItemModel(
+        id: item.id.toString(),
+        productId: item.productId,
+        product: product,
+        deviceId: item.deviceId,
+        quantity: item.quantity,
+        addedTime: item.createdAt,
+        isSelected: item.isSelected,
+      );
+    }).toList();
   }
 
   /// 设置当前设备ID
@@ -65,10 +58,11 @@ class CartRepository with RepositoryErrorHandlerMixin {
   }
 
   /// 添加商品到购物车
-  Future<void> addToCart(ProductModel product, {int quantity = 1}) async {
-    final existingItem = await (_db.select(
-      _db.cartItems,
-    )..where((t) => t.productId.equals(product.id))).getSingleOrNull();
+  Future<void> addToCart(CartProductModel product, {int quantity = 1}) async {
+    final existingItem =
+        await (_db.select(_db.cartItems)
+              ..where((t) => t.productId.equals(product.id.toString())))
+            .getSingleOrNull();
 
     if (existingItem != null) {
       // 如果商品已存在，更新数量
@@ -92,7 +86,7 @@ class CartRepository with RepositoryErrorHandlerMixin {
           .insert(
             CartItemsCompanion.insert(
               deviceId: getCurrentDeviceId() ?? '',
-              productId: product.id,
+              productId: product.id.toString(),
               productData: jsonEncode(product.toJson()),
               quantity: Value(quantity),
               isSelected: const Value(true),
@@ -194,20 +188,15 @@ class CartRepository with RepositoryErrorHandlerMixin {
 
   /// 同步购物车数据（与服务器同步）
   Future<bool> syncCart() async {
-    try {
-      // 在实际项目中，这里应该与服务器同步购物车数据
-      // 例如：final remoteCart = await _client.getCart();
-      // 然后更新本地数据库
-      return true;
-    } catch (e, stack) {
-      LoggerUtils.e('Failed to sync cart', e, stack);
-      throw handleError(e, stack);
-    }
+    // 在实际项目中，这里应该与服务器同步购物车数据
+    // 例如：final remoteCart = await _client.getCart();
+    // 然后更新本地数据库
+    return true;
   }
 
   /// 批量添加商品到购物车
   Future<void> addMultipleToCart(
-    Map<ProductModel, int> productsWithQuantity,
+    Map<CartProductModel, int> productsWithQuantity,
   ) async {
     for (final entry in productsWithQuantity.entries) {
       await addToCart(entry.key, quantity: entry.value);
