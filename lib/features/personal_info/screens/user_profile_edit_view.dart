@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lunchbox/features/personal_info/repositories/personal_info_repository.dart';
 import 'package:lunchbox/features/profile/providers/profile_provider.dart';
-import 'package:lunchbox/features/profile/providers/profile_state.dart';
+import 'package:lunchbox/features/personal_info/widgets/profile_avatar_edit.dart';
+import 'package:lunchbox/features/personal_info/widgets/profile_info_card.dart';
+import 'package:lunchbox/features/personal_info/widgets/profile_info_tile.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
@@ -93,32 +95,41 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                       children: [
                         SizedBox(height: 32.h),
                         // 头像区域
-                        _buildAvatarSection(context, state),
+                        ProfileAvatarEdit(
+                          avatarUrl:
+                              user.avatar ??
+                              'https://picsum.photos/seed/user/200',
+                          changeLabel: t.profile.avatar.clickToChange,
+                          onTap: () {
+                            toastification.show(
+                              context: context,
+                              title: Text(t.profile.avatar.uploading),
+                              type: ToastificationType.info,
+                              autoCloseDuration: const Duration(seconds: 2),
+                            );
+                          },
+                        ),
                         SizedBox(height: 32.h),
 
                         // 基本信息卡片
-                        _buildInfoCard(
-                          context: context,
+                        ProfileInfoCard(
                           title: t.profile.info.basic,
                           children: [
-                            _buildInfoTile(
-                              context: context,
+                            ProfileInfoTile(
                               icon: Symbols.phone_android,
                               label: t.profile.info.phone,
                               value: _maskPhoneNumber(user.phone ?? ''),
                               isEditable: false,
                             ),
                             _buildDivider(context),
-                            _buildInfoTile(
-                              context: context,
+                            ProfileInfoTile(
                               icon: Symbols.wc,
                               label: t.profile.info.gender,
                               value: _getGenderLabel(_selectedGender),
                               onTap: () => _showGenderPicker(context),
                             ),
                             _buildDivider(context),
-                            _buildInfoTile(
-                              context: context,
+                            ProfileInfoTile(
                               icon: Symbols.cake,
                               label: t.profile.info.birthday,
                               value: _selectedBirthday != null
@@ -133,12 +144,10 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                         SizedBox(height: 16.h),
 
                         // 其他信息卡片
-                        _buildInfoCard(
-                          context: context,
+                        ProfileInfoCard(
                           title: t.profile.info.other,
                           children: [
-                            _buildInfoTile(
-                              context: context,
+                            ProfileInfoTile(
                               icon: Symbols.mail,
                               label: t.profile.info.email,
                               value: user.email ?? 'user@example.com',
@@ -205,161 +214,6 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                 ),
               ],
             ),
-    );
-  }
-
-  Widget _buildAvatarSection(BuildContext context, ProfileState state) {
-    final user = state.currentUser;
-    final theme = Theme.of(context);
-    return Center(
-      child: GestureDetector(
-        onTap: () {
-          toastification.show(
-            context: context,
-            title: Text(t.profile.avatar.uploading),
-            type: ToastificationType.info,
-            autoCloseDuration: const Duration(seconds: 2),
-          );
-        },
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: 100.r,
-                  height: 100.r,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: theme.colorScheme.surface,
-                      width: 4,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: theme.shadowColor.withValues(alpha: 0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        user?.avatar ?? 'https://picsum.photos/seed/user/200',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(6.w),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Symbols.camera_alt,
-                      size: 16.sp,
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 12.h),
-            Text(
-              t.profile.avatar.clickToChange,
-              style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoCard({
-    required BuildContext context,
-    required String title,
-    required List<Widget> children,
-  }) {
-    final theme = Theme.of(context);
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Row(
-              children: [
-                Container(
-                  width: 4.w,
-                  height: 16.h,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(2.r),
-                  ),
-                ),
-                SizedBox(width: 8.w),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: theme.textTheme.titleMedium?.color,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          ...children,
-          SizedBox(height: 8.h),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoTile({
-    required BuildContext context,
-    required IconData icon,
-    required String label,
-    required String value,
-    bool isEditable = true,
-    VoidCallback? onTap,
-  }) {
-    final theme = Theme.of(context);
-    return InkWell(
-      onTap: isEditable ? onTap : null,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-        child: Row(
-          children: [
-            Icon(icon, size: 20.sp, color: theme.colorScheme.primary),
-            SizedBox(width: 12.w),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 15.sp,
-                color: theme.textTheme.bodyLarge?.color,
-              ),
-            ),
-            const Spacer(),
-            Text(
-              value,
-              style: TextStyle(fontSize: 15.sp, color: theme.hintColor),
-            ),
-            if (isEditable) ...[
-              SizedBox(width: 4.w),
-              Icon(Symbols.chevron_right, size: 20.sp, color: theme.hintColor),
-            ],
-          ],
-        ),
-      ),
     );
   }
 

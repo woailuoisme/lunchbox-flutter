@@ -149,10 +149,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _CouponModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -211,10 +208,7 @@ return $default(_that.id,_that.name,_that.description,_that.type,_that.rule,_tha
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String? description,  String type,  CouponRuleModel rule, @JsonKey(name: 'total_quantity')  int totalQuantity, @JsonKey(name: 'used_quantity')  int usedQuantity, @JsonKey(name: 'remaining_quantity')  int remainingQuantity, @JsonKey(name: 'per_user_limit')  int? perUserLimit, @JsonKey(name: 'is_activated')  bool isActivated, @JsonKey(name: 'start_at')  String? startAt, @JsonKey(name: 'end_at')  String? endAt, @JsonKey(name: 'created_at')  String createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _CouponModel():
-return $default(_that.id,_that.name,_that.description,_that.type,_that.rule,_that.totalQuantity,_that.usedQuantity,_that.remainingQuantity,_that.perUserLimit,_that.isActivated,_that.startAt,_that.endAt,_that.createdAt);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.id,_that.name,_that.description,_that.type,_that.rule,_that.totalQuantity,_that.usedQuantity,_that.remainingQuantity,_that.perUserLimit,_that.isActivated,_that.startAt,_that.endAt,_that.createdAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -243,19 +237,19 @@ return $default(_that.id,_that.name,_that.description,_that.type,_that.rule,_tha
 @JsonSerializable()
 
 class _CouponModel implements CouponModel {
-  const _CouponModel({required this.id, required this.name, this.description, required this.type, required this.rule, @JsonKey(name: 'total_quantity') required this.totalQuantity, @JsonKey(name: 'used_quantity') required this.usedQuantity, @JsonKey(name: 'remaining_quantity') required this.remainingQuantity, @JsonKey(name: 'per_user_limit') this.perUserLimit, @JsonKey(name: 'is_activated') this.isActivated = true, @JsonKey(name: 'start_at') this.startAt, @JsonKey(name: 'end_at') this.endAt, @JsonKey(name: 'created_at') required this.createdAt});
+  const _CouponModel({required this.id, this.name = '', this.description = null, this.type = 'reduction', this.rule = const CouponRuleModel(), @JsonKey(name: 'total_quantity') this.totalQuantity = 0, @JsonKey(name: 'used_quantity') this.usedQuantity = 0, @JsonKey(name: 'remaining_quantity') this.remainingQuantity = 0, @JsonKey(name: 'per_user_limit') this.perUserLimit = null, @JsonKey(name: 'is_activated') this.isActivated = true, @JsonKey(name: 'start_at') this.startAt = null, @JsonKey(name: 'end_at') this.endAt = null, @JsonKey(name: 'created_at') this.createdAt = ''});
   factory _CouponModel.fromJson(Map<String, dynamic> json) => _$CouponModelFromJson(json);
 
 /// 优惠券ID
 @override final  int id;
 /// 优惠券名称
-@override final  String name;
+@override@JsonKey() final  String name;
 /// 优惠券描述
-@override final  String? description;
+@override@JsonKey() final  String? description;
 /// 优惠券类型 (full_reduction: 满减券, discount: 折扣券, reduction: 减免)
-@override final  String type;
+@override@JsonKey() final  String type;
 /// 优惠规则
-@override final  CouponRuleModel rule;
+@override@JsonKey() final  CouponRuleModel rule;
 /// 总数量
 @override@JsonKey(name: 'total_quantity') final  int totalQuantity;
 /// 已使用数量
@@ -467,10 +461,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _CouponRuleModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -529,10 +520,7 @@ return $default(_that.reduceAmount,_that.discountRate,_that.maxDiscount,_that.mi
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'reduce_amount')  double? reduceAmount, @JsonKey(name: 'discount_rate')  double? discountRate, @JsonKey(name: 'max_discount')  double? maxDiscount, @JsonKey(name: 'min_amount')  double? minAmount, @JsonKey(name: 'min_spend_amount')  double? minSpendAmount)  $default,) {final _that = this;
 switch (_that) {
 case _CouponRuleModel():
-return $default(_that.reduceAmount,_that.discountRate,_that.maxDiscount,_that.minAmount,_that.minSpendAmount);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.reduceAmount,_that.discountRate,_that.maxDiscount,_that.minAmount,_that.minSpendAmount);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -561,7 +549,7 @@ return $default(_that.reduceAmount,_that.discountRate,_that.maxDiscount,_that.mi
 @JsonSerializable()
 
 class _CouponRuleModel implements CouponRuleModel {
-  const _CouponRuleModel({@JsonKey(name: 'reduce_amount') this.reduceAmount, @JsonKey(name: 'discount_rate') this.discountRate, @JsonKey(name: 'max_discount') this.maxDiscount, @JsonKey(name: 'min_amount') this.minAmount, @JsonKey(name: 'min_spend_amount') this.minSpendAmount});
+  const _CouponRuleModel({@JsonKey(name: 'reduce_amount') this.reduceAmount = null, @JsonKey(name: 'discount_rate') this.discountRate = null, @JsonKey(name: 'max_discount') this.maxDiscount = null, @JsonKey(name: 'min_amount') this.minAmount = null, @JsonKey(name: 'min_spend_amount') this.minSpendAmount = null});
   factory _CouponRuleModel.fromJson(Map<String, dynamic> json) => _$CouponRuleModelFromJson(json);
 
 /// 减免金额

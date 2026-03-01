@@ -17,18 +17,23 @@ _UserCouponModel _$UserCouponModelFromJson(Map<String, dynamic> json) =>
             (v) => (v as num).toInt(),
           ),
           couponId: $checkedConvert('coupon_id', (v) => (v as num).toInt()),
-          usedAt: $checkedConvert('used_at', (v) => v as String?),
+          usedAt: $checkedConvert('used_at', (v) => v as String? ?? null),
           isUsed: $checkedConvert('is_used', (v) => v as bool? ?? false),
-          name: $checkedConvert('name', (v) => v as String),
-          description: $checkedConvert('description', (v) => v as String?),
-          category: $checkedConvert('category', (v) => v as String),
-          type: $checkedConvert('type', (v) => v as String),
+          name: $checkedConvert('name', (v) => v as String? ?? ''),
+          description: $checkedConvert(
+            'description',
+            (v) => v as String? ?? null,
+          ),
+          category: $checkedConvert('category', (v) => v as String? ?? 'shop'),
+          type: $checkedConvert('type', (v) => v as String? ?? 'reduction'),
           rule: $checkedConvert(
             'rule',
-            (v) => CouponRuleModel.fromJson(v as Map<String, dynamic>),
+            (v) => v == null
+                ? const CouponRuleModel()
+                : CouponRuleModel.fromJson(v as Map<String, dynamic>),
           ),
-          startAt: $checkedConvert('start_at', (v) => v as String?),
-          endAt: $checkedConvert('end_at', (v) => v as String?),
+          startAt: $checkedConvert('start_at', (v) => v as String? ?? null),
+          endAt: $checkedConvert('end_at', (v) => v as String? ?? null),
         );
         return val;
       },

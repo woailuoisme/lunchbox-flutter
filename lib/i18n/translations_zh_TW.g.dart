@@ -118,6 +118,9 @@ class TranslationsZhTw extends Translations
   late final _TranslationsSplashZhTw splash = _TranslationsSplashZhTw._(_root);
   @override
   late final _TranslationsTimeZhTw time = _TranslationsTimeZhTw._(_root);
+  @override
+  late final _TranslationsWelcomeGiftZhTw welcome_gift =
+      _TranslationsWelcomeGiftZhTw._(_root);
 }
 
 // Path: about
@@ -2140,6 +2143,31 @@ class _TranslationsTimeZhTw extends TranslationsTimeZhCn {
       '${days}天前';
 }
 
+// Path: welcome_gift
+class _TranslationsWelcomeGiftZhTw extends TranslationsWelcomeGiftZhCn {
+  _TranslationsWelcomeGiftZhTw._(TranslationsZhTw root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title =>
+      TranslationOverrides.string(_root.$meta, 'welcome_gift.title', {}) ??
+      '新人禮包';
+  @override
+  String get subtitle =>
+      TranslationOverrides.string(_root.$meta, 'welcome_gift.subtitle', {}) ??
+      '註冊30天內可領取，每個禮包限領一次';
+  @override
+  late final _TranslationsWelcomeGiftTabsZhTw tabs =
+      _TranslationsWelcomeGiftTabsZhTw._(_root);
+  @override
+  late final _TranslationsWelcomeGiftCardZhTw card =
+      _TranslationsWelcomeGiftCardZhTw._(_root);
+}
+
 // Path: community.features
 class _TranslationsCommunityFeaturesZhTw
     extends TranslationsCommunityFeaturesZhCn {
@@ -2586,6 +2614,54 @@ class _TranslationsSettingsSchemesZhTw extends TranslationsSettingsSchemesZhCn {
       '錦緞紅 (Damask)';
 }
 
+// Path: welcome_gift.tabs
+class _TranslationsWelcomeGiftTabsZhTw extends TranslationsWelcomeGiftTabsZhCn {
+  _TranslationsWelcomeGiftTabsZhTw._(TranslationsZhTw root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get available =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.tabs.available',
+        {},
+      ) ??
+      '可領取';
+  @override
+  String get received =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.tabs.received',
+        {},
+      ) ??
+      '已領取';
+}
+
+// Path: welcome_gift.card
+class _TranslationsWelcomeGiftCardZhTw extends TranslationsWelcomeGiftCardZhCn {
+  _TranslationsWelcomeGiftCardZhTw._(TranslationsZhTw root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get tag =>
+      TranslationOverrides.string(_root.$meta, 'welcome_gift.card.tag', {}) ??
+      '禮包';
+  @override
+  late final _TranslationsWelcomeGiftCardStatusZhTw status =
+      _TranslationsWelcomeGiftCardStatusZhTw._(_root);
+  @override
+  late final _TranslationsWelcomeGiftCardButtonZhTw button =
+      _TranslationsWelcomeGiftCardButtonZhTw._(_root);
+}
+
 // Path: home.lottery.prizeStats
 class _TranslationsHomeLotteryPrizeStatsZhTw
     extends TranslationsHomeLotteryPrizeStatsZhCn {
@@ -2699,6 +2775,54 @@ class _TranslationsHomeLotteryPrizeCardZhTw
         {},
       ) ??
       '已過期';
+}
+
+// Path: welcome_gift.card.status
+class _TranslationsWelcomeGiftCardStatusZhTw
+    extends TranslationsWelcomeGiftCardStatusZhCn {
+  _TranslationsWelcomeGiftCardStatusZhTw._(TranslationsZhTw root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get received =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.card.status.received',
+        {},
+      ) ??
+      '已領取';
+}
+
+// Path: welcome_gift.card.button
+class _TranslationsWelcomeGiftCardButtonZhTw
+    extends TranslationsWelcomeGiftCardButtonZhCn {
+  _TranslationsWelcomeGiftCardButtonZhTw._(TranslationsZhTw root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get claim =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.card.button.claim',
+        {},
+      ) ??
+      '領取';
+  @override
+  String get received =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.card.button.received',
+        {},
+      ) ??
+      '已領取';
 }
 
 /// The flat map containing all translations for locale <zh-TW>.
@@ -4603,6 +4727,50 @@ extension on TranslationsZhTw {
               'days': days,
             }) ??
             '${days}天前',
+      'welcome_gift.title' =>
+        TranslationOverrides.string(_root.$meta, 'welcome_gift.title', {}) ??
+            '新人禮包',
+      'welcome_gift.subtitle' =>
+        TranslationOverrides.string(_root.$meta, 'welcome_gift.subtitle', {}) ??
+            '註冊30天內可領取，每個禮包限領一次',
+      'welcome_gift.tabs.available' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'welcome_gift.tabs.available',
+              {},
+            ) ??
+            '可領取',
+      'welcome_gift.tabs.received' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'welcome_gift.tabs.received',
+              {},
+            ) ??
+            '已領取',
+      'welcome_gift.card.tag' =>
+        TranslationOverrides.string(_root.$meta, 'welcome_gift.card.tag', {}) ??
+            '禮包',
+      'welcome_gift.card.status.received' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'welcome_gift.card.status.received',
+              {},
+            ) ??
+            '已領取',
+      'welcome_gift.card.button.claim' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'welcome_gift.card.button.claim',
+              {},
+            ) ??
+            '領取',
+      'welcome_gift.card.button.received' =>
+        TranslationOverrides.string(
+              _root.$meta,
+              'welcome_gift.card.button.received',
+              {},
+            ) ??
+            '已領取',
       _ => null,
     };
   }

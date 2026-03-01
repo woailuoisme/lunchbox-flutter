@@ -1,6 +1,7 @@
 import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/features/lottery/entities/lottery_prize.dart';
 import 'package:lunchbox/features/lottery/entities/lottery_state.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'lottery_provider.g.dart';
@@ -15,12 +16,12 @@ class LotteryNotifier extends _$LotteryNotifier
 
   /// 奖盘配置项
   List<String> get wheelItems => [
-    '5乖乖币',
-    '10乖乖币',
-    '50乖乖币',
-    '100乖乖币',
-    '150乖乖币',
-    '200乖乖币',
+    '5${t.points.unit}',
+    '10${t.points.unit}',
+    '50${t.points.unit}',
+    '100${t.points.unit}',
+    '150${t.points.unit}',
+    '200${t.points.unit}',
   ];
 
   /// 开始抽奖
@@ -67,7 +68,7 @@ class LotteryNotifier extends _$LotteryNotifier
   /// 构造奖品对象（辅助方法，用于UI在动画结束后调用 completeSpin）
   LotteryPrize createPrize(int index) {
     final winItem = wheelItems[index];
-    final amount = double.tryParse(winItem.replaceAll('乖乖币', '')) ?? 0;
+    final amount = double.tryParse(winItem.replaceAll(t.points.unit, '')) ?? 0;
     return LotteryPrize(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: winItem,

@@ -109,6 +109,8 @@ class Translations with BaseTranslations<AppLocale, Translations> {
   late final TranslationsTeamOrderingZhCn teamOrdering =
       TranslationsTeamOrderingZhCn.internal(_root);
   late final TranslationsTimeZhCn time = TranslationsTimeZhCn.internal(_root);
+  late final TranslationsWelcomeGiftZhCn welcome_gift =
+      TranslationsWelcomeGiftZhCn.internal(_root);
 }
 
 // Path: about
@@ -2958,6 +2960,30 @@ class TranslationsTimeZhCn {
       '${days} 天前';
 }
 
+// Path: welcome_gift
+class TranslationsWelcomeGiftZhCn {
+  TranslationsWelcomeGiftZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '新人礼包'
+  String get title =>
+      TranslationOverrides.string(_root.$meta, 'welcome_gift.title', {}) ??
+      '新人礼包';
+
+  /// zh-CN: '注册30天内可领取，每个礼包限领一次'
+  String get subtitle =>
+      TranslationOverrides.string(_root.$meta, 'welcome_gift.subtitle', {}) ??
+      '注册30天内可领取，每个礼包限领一次';
+
+  late final TranslationsWelcomeGiftTabsZhCn tabs =
+      TranslationsWelcomeGiftTabsZhCn.internal(_root);
+  late final TranslationsWelcomeGiftCardZhCn card =
+      TranslationsWelcomeGiftCardZhCn.internal(_root);
+}
+
 // Path: community.features
 class TranslationsCommunityFeaturesZhCn {
   TranslationsCommunityFeaturesZhCn.internal(this._root);
@@ -4170,6 +4196,52 @@ class TranslationsTeamOrderingAdvantagesZhCn {
       '严格把控食材质量，确保每一份餐点新鲜美味';
 }
 
+// Path: welcome_gift.tabs
+class TranslationsWelcomeGiftTabsZhCn {
+  TranslationsWelcomeGiftTabsZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '可领取'
+  String get available =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.tabs.available',
+        {},
+      ) ??
+      '可领取';
+
+  /// zh-CN: '已领取'
+  String get received =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.tabs.received',
+        {},
+      ) ??
+      '已领取';
+}
+
+// Path: welcome_gift.card
+class TranslationsWelcomeGiftCardZhCn {
+  TranslationsWelcomeGiftCardZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '礼包'
+  String get tag =>
+      TranslationOverrides.string(_root.$meta, 'welcome_gift.card.tag', {}) ??
+      '礼包';
+
+  late final TranslationsWelcomeGiftCardStatusZhCn status =
+      TranslationsWelcomeGiftCardStatusZhCn.internal(_root);
+  late final TranslationsWelcomeGiftCardButtonZhCn button =
+      TranslationsWelcomeGiftCardButtonZhCn.internal(_root);
+}
+
 // Path: home.lottery.prizeStats
 class TranslationsHomeLotteryPrizeStatsZhCn {
   TranslationsHomeLotteryPrizeStatsZhCn.internal(this._root);
@@ -4328,6 +4400,51 @@ class TranslationsProfileWalletPageRulesZhCn {
   late final TranslationsProfileWalletPageRulesUsageInstructionsZhCn
   usageInstructions =
       TranslationsProfileWalletPageRulesUsageInstructionsZhCn.internal(_root);
+}
+
+// Path: welcome_gift.card.status
+class TranslationsWelcomeGiftCardStatusZhCn {
+  TranslationsWelcomeGiftCardStatusZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '已领取'
+  String get received =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.card.status.received',
+        {},
+      ) ??
+      '已领取';
+}
+
+// Path: welcome_gift.card.button
+class TranslationsWelcomeGiftCardButtonZhCn {
+  TranslationsWelcomeGiftCardButtonZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '领取'
+  String get claim =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.card.button.claim',
+        {},
+      ) ??
+      '领取';
+
+  /// zh-CN: '已领取'
+  String get received =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.card.button.received',
+        {},
+      ) ??
+      '已领取';
 }
 
 // Path: profile.walletPage.rules.rechargeRules
@@ -8160,6 +8277,62 @@ extension on Translations {
                   'days': days,
                 }) ??
                 '${days} 天前',
+          'welcome_gift.title' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.title',
+                  {},
+                ) ??
+                '新人礼包',
+          'welcome_gift.subtitle' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.subtitle',
+                  {},
+                ) ??
+                '注册30天内可领取，每个礼包限领一次',
+          'welcome_gift.tabs.available' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.tabs.available',
+                  {},
+                ) ??
+                '可领取',
+          'welcome_gift.tabs.received' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.tabs.received',
+                  {},
+                ) ??
+                '已领取',
+          'welcome_gift.card.tag' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.card.tag',
+                  {},
+                ) ??
+                '礼包',
+          'welcome_gift.card.status.received' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.card.status.received',
+                  {},
+                ) ??
+                '已领取',
+          'welcome_gift.card.button.claim' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.card.button.claim',
+                  {},
+                ) ??
+                '领取',
+          'welcome_gift.card.button.received' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.card.button.received',
+                  {},
+                ) ??
+                '已领取',
           _ => null,
         };
   }

@@ -1,0 +1,18 @@
+{
+  "title": "新人礼包",
+  "subtitle": "注册30天内可领取，每个礼包限领一次",
+  "tabs": {
+    "available": "可领取",
+    "received": "已领取"
+  },
+  "card": {
+    "tag": "礼包",
+    "status": {
+      "received": "已领取"
+    },
+    "button": {
+      "claim": "领取",
+      "received": "已领取"
+    }
+  }
+}

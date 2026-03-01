@@ -41,7 +41,7 @@
   "saveFailed": "保存失败: ${error}",
   "saveInfo": "保存信息",
   "walletBalance": "钱包余额",
-  "coin": "乖乖币",
+  "coin": "积分",
   "couponCount": "优惠券",
   "walletPage": {
     "title": "钱包",
@@ -49,12 +49,12 @@
     "balance": "钱包余额",
     "selectAmount": "选择充值金额",
     "rule": "规则说明",
-    "ruleDesc": "充值部分套餐可获取乖乖币，自选金额充值不获取乖乖币",
+    "ruleDesc": "充值部分套餐可获取积分，自选金额充值不获取积分",
     "customAmount": "自选金额",
     "customAmountHint": "仅限500元以上充值",
     "realPay": "实付¥${amount}",
-    "bonus": "送${amount}乖乖币",
-    "noBonus": "无乖乖币",
+    "bonus": "送${amount}积分",
+    "noBonus": "无积分",
     "history": "充值记录",
     "historyCount": "共${count}笔",
     "noHistory": "暂无充值记录",
@@ -69,7 +69,7 @@
           "充值金额单次有100000元上限",
           "充值成功后立即到账",
           "充值金额可用于购买商品和支付订单",
-          "充值部分套餐可获取乖乖币，自选金额充值只可获取400乖乖币"
+          "充值部分套餐可获取积分，自选金额充值只可获取400积分"
         ]
       },
       "usageInstructions": {

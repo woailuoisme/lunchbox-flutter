@@ -41,6 +41,6 @@
   "saveFailed": "保存失敗: ${error}",
   "saveInfo": "保存信息",
   "walletBalance": "錢包餘額",
-  "coin": "乖乖幣",
+  "coin": "積分",
   "couponCount": "優惠券"
 }

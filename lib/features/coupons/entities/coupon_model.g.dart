@@ -12,30 +12,35 @@ _CouponModel _$CouponModelFromJson(Map<String, dynamic> json) => $checkedCreate(
   ($checkedConvert) {
     final val = _CouponModel(
       id: $checkedConvert('id', (v) => (v as num).toInt()),
-      name: $checkedConvert('name', (v) => v as String),
-      description: $checkedConvert('description', (v) => v as String?),
-      type: $checkedConvert('type', (v) => v as String),
+      name: $checkedConvert('name', (v) => v as String? ?? ''),
+      description: $checkedConvert('description', (v) => v as String? ?? null),
+      type: $checkedConvert('type', (v) => v as String? ?? 'reduction'),
       rule: $checkedConvert(
         'rule',
-        (v) => CouponRuleModel.fromJson(v as Map<String, dynamic>),
+        (v) => v == null
+            ? const CouponRuleModel()
+            : CouponRuleModel.fromJson(v as Map<String, dynamic>),
       ),
       totalQuantity: $checkedConvert(
         'total_quantity',
-        (v) => (v as num).toInt(),
+        (v) => (v as num?)?.toInt() ?? 0,
       ),
-      usedQuantity: $checkedConvert('used_quantity', (v) => (v as num).toInt()),
+      usedQuantity: $checkedConvert(
+        'used_quantity',
+        (v) => (v as num?)?.toInt() ?? 0,
+      ),
       remainingQuantity: $checkedConvert(
         'remaining_quantity',
-        (v) => (v as num).toInt(),
+        (v) => (v as num?)?.toInt() ?? 0,
       ),
       perUserLimit: $checkedConvert(
         'per_user_limit',
-        (v) => (v as num?)?.toInt(),
+        (v) => (v as num?)?.toInt() ?? null,
       ),
       isActivated: $checkedConvert('is_activated', (v) => v as bool? ?? true),
-      startAt: $checkedConvert('start_at', (v) => v as String?),
-      endAt: $checkedConvert('end_at', (v) => v as String?),
-      createdAt: $checkedConvert('created_at', (v) => v as String),
+      startAt: $checkedConvert('start_at', (v) => v as String? ?? null),
+      endAt: $checkedConvert('end_at', (v) => v as String? ?? null),
+      createdAt: $checkedConvert('created_at', (v) => v as String? ?? ''),
     );
     return val;
   },
@@ -76,23 +81,23 @@ _CouponRuleModel _$CouponRuleModelFromJson(Map<String, dynamic> json) =>
         final val = _CouponRuleModel(
           reduceAmount: $checkedConvert(
             'reduce_amount',
-            (v) => (v as num?)?.toDouble(),
+            (v) => (v as num?)?.toDouble() ?? null,
           ),
           discountRate: $checkedConvert(
             'discount_rate',
-            (v) => (v as num?)?.toDouble(),
+            (v) => (v as num?)?.toDouble() ?? null,
           ),
           maxDiscount: $checkedConvert(
             'max_discount',
-            (v) => (v as num?)?.toDouble(),
+            (v) => (v as num?)?.toDouble() ?? null,
           ),
           minAmount: $checkedConvert(
             'min_amount',
-            (v) => (v as num?)?.toDouble(),
+            (v) => (v as num?)?.toDouble() ?? null,
           ),
           minSpendAmount: $checkedConvert(
             'min_spend_amount',
-            (v) => (v as num?)?.toDouble(),
+            (v) => (v as num?)?.toDouble() ?? null,
           ),
         );
         return val;

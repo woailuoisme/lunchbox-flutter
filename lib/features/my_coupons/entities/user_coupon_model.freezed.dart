@@ -145,10 +145,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _UserCouponModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -207,10 +204,7 @@ return $default(_that.userCouponId,_that.couponId,_that.usedAt,_that.isUsed,_tha
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'user_coupon_id')  int userCouponId, @JsonKey(name: 'coupon_id')  int couponId, @JsonKey(name: 'used_at')  String? usedAt, @JsonKey(name: 'is_used')  bool isUsed,  String name,  String? description,  String category,  String type,  CouponRuleModel rule, @JsonKey(name: 'start_at')  String? startAt, @JsonKey(name: 'end_at')  String? endAt)  $default,) {final _that = this;
 switch (_that) {
 case _UserCouponModel():
-return $default(_that.userCouponId,_that.couponId,_that.usedAt,_that.isUsed,_that.name,_that.description,_that.category,_that.type,_that.rule,_that.startAt,_that.endAt);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.userCouponId,_that.couponId,_that.usedAt,_that.isUsed,_that.name,_that.description,_that.category,_that.type,_that.rule,_that.startAt,_that.endAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -239,7 +233,7 @@ return $default(_that.userCouponId,_that.couponId,_that.usedAt,_that.isUsed,_tha
 @JsonSerializable()
 
 class _UserCouponModel implements UserCouponModel {
-  const _UserCouponModel({@JsonKey(name: 'user_coupon_id') required this.userCouponId, @JsonKey(name: 'coupon_id') required this.couponId, @JsonKey(name: 'used_at') this.usedAt, @JsonKey(name: 'is_used') this.isUsed = false, required this.name, this.description, required this.category, required this.type, required this.rule, @JsonKey(name: 'start_at') this.startAt, @JsonKey(name: 'end_at') this.endAt});
+  const _UserCouponModel({@JsonKey(name: 'user_coupon_id') required this.userCouponId, @JsonKey(name: 'coupon_id') required this.couponId, @JsonKey(name: 'used_at') this.usedAt = null, @JsonKey(name: 'is_used') this.isUsed = false, this.name = '', this.description = null, this.category = 'shop', this.type = 'reduction', this.rule = const CouponRuleModel(), @JsonKey(name: 'start_at') this.startAt = null, @JsonKey(name: 'end_at') this.endAt = null});
   factory _UserCouponModel.fromJson(Map<String, dynamic> json) => _$UserCouponModelFromJson(json);
 
 /// 用户优惠券关联ID
@@ -251,15 +245,15 @@ class _UserCouponModel implements UserCouponModel {
 /// 是否已使用
 @override@JsonKey(name: 'is_used') final  bool isUsed;
 /// 优惠券名称
-@override final  String name;
+@override@JsonKey() final  String name;
 /// 优惠券描述
-@override final  String? description;
+@override@JsonKey() final  String? description;
 /// 优惠券分类 (shop: 商城, goods: 食品)
-@override final  String category;
+@override@JsonKey() final  String category;
 /// 优惠券类型 (full_reduction, discount, exchange, gift, reduction)
-@override final  String type;
+@override@JsonKey() final  String type;
 /// 优惠规则
-@override final  CouponRuleModel rule;
+@override@JsonKey() final  CouponRuleModel rule;
 /// 开始时间
 @override@JsonKey(name: 'start_at') final  String? startAt;
 /// 结束时间

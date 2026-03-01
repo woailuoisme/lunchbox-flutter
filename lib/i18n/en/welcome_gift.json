@@ -1,0 +1,18 @@
+{
+  "title": "Welcome Gift",
+  "subtitle": "Can be claimed within 30 days of registration, one gift per person",
+  "tabs": {
+    "available": "Available",
+    "received": "Received"
+  },
+  "card": {
+    "tag": "Gift",
+    "status": {
+      "received": "Received"
+    },
+    "button": {
+      "claim": "Claim",
+      "received": "Received"
+    }
+  }
+}

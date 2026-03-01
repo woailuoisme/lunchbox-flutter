@@ -120,6 +120,9 @@ class TranslationsEn extends Translations
       _TranslationsTeamOrderingEn._(_root);
   @override
   late final _TranslationsTimeEn time = _TranslationsTimeEn._(_root);
+  @override
+  late final _TranslationsWelcomeGiftEn welcome_gift =
+      _TranslationsWelcomeGiftEn._(_root);
 }
 
 // Path: about
@@ -2561,6 +2564,31 @@ class _TranslationsTimeEn extends TranslationsTimeZhCn {
       '${days} days ago';
 }
 
+// Path: welcome_gift
+class _TranslationsWelcomeGiftEn extends TranslationsWelcomeGiftZhCn {
+  _TranslationsWelcomeGiftEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title =>
+      TranslationOverrides.string(_root.$meta, 'welcome_gift.title', {}) ??
+      'Welcome Gift';
+  @override
+  String get subtitle =>
+      TranslationOverrides.string(_root.$meta, 'welcome_gift.subtitle', {}) ??
+      'Can be claimed within 30 days of registration, one gift per person';
+  @override
+  late final _TranslationsWelcomeGiftTabsEn tabs =
+      _TranslationsWelcomeGiftTabsEn._(_root);
+  @override
+  late final _TranslationsWelcomeGiftCardEn card =
+      _TranslationsWelcomeGiftCardEn._(_root);
+}
+
 // Path: community.features
 class _TranslationsCommunityFeaturesEn
     extends TranslationsCommunityFeaturesZhCn {
@@ -3650,6 +3678,54 @@ class _TranslationsTeamOrderingAdvantagesEn
       'Strictly control ingredient quality, ensure every meal is fresh and delicious';
 }
 
+// Path: welcome_gift.tabs
+class _TranslationsWelcomeGiftTabsEn extends TranslationsWelcomeGiftTabsZhCn {
+  _TranslationsWelcomeGiftTabsEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get available =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.tabs.available',
+        {},
+      ) ??
+      'Available';
+  @override
+  String get received =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.tabs.received',
+        {},
+      ) ??
+      'Received';
+}
+
+// Path: welcome_gift.card
+class _TranslationsWelcomeGiftCardEn extends TranslationsWelcomeGiftCardZhCn {
+  _TranslationsWelcomeGiftCardEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get tag =>
+      TranslationOverrides.string(_root.$meta, 'welcome_gift.card.tag', {}) ??
+      'Gift';
+  @override
+  late final _TranslationsWelcomeGiftCardStatusEn status =
+      _TranslationsWelcomeGiftCardStatusEn._(_root);
+  @override
+  late final _TranslationsWelcomeGiftCardButtonEn button =
+      _TranslationsWelcomeGiftCardButtonEn._(_root);
+}
+
 // Path: home.lottery.prizeStats
 class _TranslationsHomeLotteryPrizeStatsEn
     extends TranslationsHomeLotteryPrizeStatsZhCn {
@@ -3763,6 +3839,54 @@ class _TranslationsHomeLotteryPrizeCardEn
         {},
       ) ??
       'Expired';
+}
+
+// Path: welcome_gift.card.status
+class _TranslationsWelcomeGiftCardStatusEn
+    extends TranslationsWelcomeGiftCardStatusZhCn {
+  _TranslationsWelcomeGiftCardStatusEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get received =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.card.status.received',
+        {},
+      ) ??
+      'Received';
+}
+
+// Path: welcome_gift.card.button
+class _TranslationsWelcomeGiftCardButtonEn
+    extends TranslationsWelcomeGiftCardButtonZhCn {
+  _TranslationsWelcomeGiftCardButtonEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get claim =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.card.button.claim',
+        {},
+      ) ??
+      'Claim';
+  @override
+  String get received =>
+      TranslationOverrides.string(
+        _root.$meta,
+        'welcome_gift.card.button.received',
+        {},
+      ) ??
+      'Received';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -7363,6 +7487,62 @@ extension on TranslationsEn {
                   'days': days,
                 }) ??
                 '${days} days ago',
+          'welcome_gift.title' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.title',
+                  {},
+                ) ??
+                'Welcome Gift',
+          'welcome_gift.subtitle' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.subtitle',
+                  {},
+                ) ??
+                'Can be claimed within 30 days of registration, one gift per person',
+          'welcome_gift.tabs.available' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.tabs.available',
+                  {},
+                ) ??
+                'Available',
+          'welcome_gift.tabs.received' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.tabs.received',
+                  {},
+                ) ??
+                'Received',
+          'welcome_gift.card.tag' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.card.tag',
+                  {},
+                ) ??
+                'Gift',
+          'welcome_gift.card.status.received' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.card.status.received',
+                  {},
+                ) ??
+                'Received',
+          'welcome_gift.card.button.claim' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.card.button.claim',
+                  {},
+                ) ??
+                'Claim',
+          'welcome_gift.card.button.received' =>
+            TranslationOverrides.string(
+                  _root.$meta,
+                  'welcome_gift.card.button.received',
+                  {},
+                ) ??
+                'Received',
           _ => null,
         };
   }

@@ -4,7 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:lunchbox/features/partner/repositories/partner_repository.dart';
-import 'package:timelines_plus/timelines_plus.dart';
+import 'package:lunchbox/features/partner/widgets/partner_advantage_item.dart';
+import 'package:lunchbox/features/partner/widgets/partner_application_form.dart';
+import 'package:lunchbox/features/partner/widgets/partner_condition_list.dart';
+import 'package:lunchbox/features/partner/widgets/partner_header.dart';
+import 'package:lunchbox/features/partner/widgets/partner_process_list.dart';
+import 'package:lunchbox/features/partner/widgets/partner_section_card.dart';
 
 class PartnerView extends ConsumerStatefulWidget {
   const PartnerView({super.key});
@@ -96,7 +101,7 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHeader(context),
+            PartnerHeader(title: t.partner.title, subtitle: t.partner.subtitle),
             Padding(
               padding: EdgeInsets.all(16.w),
               child: Column(
@@ -120,129 +125,35 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 32.h),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            theme.colorScheme.primary,
-            theme.colorScheme.primaryContainer,
-          ],
-        ),
-      ),
-      child: Column(
-        children: [
-          Text(
-            t.partner.title,
-            style: TextStyle(
-              color: theme.colorScheme.onPrimary,
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            t.partner.subtitle,
-            style: TextStyle(
-              color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
-              fontSize: 14.sp,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildAdvantages(BuildContext context) {
-    final theme = Theme.of(context);
-    return _buildSectionCard(
-      context: context,
+    return PartnerSectionCard(
       title: t.partner.advantages,
       children: [
-        _buildAdvantageItem(
-          Symbols.monetization_on,
-          t.partner.advantage1Title,
-          t.partner.advantage1Desc,
-          theme.colorScheme.primary,
-          context,
+        PartnerAdvantageItem(
+          icon: Symbols.monetization_on,
+          title: t.partner.advantage1Title,
+          description: t.partner.advantage1Desc,
         ),
-        _buildAdvantageItem(
-          Symbols.security,
-          t.partner.advantage2Title,
-          t.partner.advantage2Desc,
-          theme.colorScheme.primary,
-          context,
+        PartnerAdvantageItem(
+          icon: Symbols.security,
+          title: t.partner.advantage2Title,
+          description: t.partner.advantage2Desc,
         ),
-        _buildAdvantageItem(
-          Symbols.trending_up,
-          t.partner.advantage3Title,
-          t.partner.advantage3Desc,
-          theme.colorScheme.primary,
-          context,
+        PartnerAdvantageItem(
+          icon: Symbols.trending_up,
+          title: t.partner.advantage3Title,
+          description: t.partner.advantage3Desc,
         ),
-        _buildAdvantageItem(
-          Symbols.school,
-          t.partner.advantage4Title,
-          t.partner.advantage4Desc,
-          theme.colorScheme.primary,
-          context,
+        PartnerAdvantageItem(
+          icon: Symbols.school,
+          title: t.partner.advantage4Title,
+          description: t.partner.advantage4Desc,
         ),
       ],
     );
   }
 
-  Widget _buildAdvantageItem(
-    IconData icon,
-    String title,
-    String desc,
-    Color color,
-    BuildContext context,
-  ) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 12.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Icon(icon, color: color, size: 24.sp),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: theme.textTheme.titleMedium?.color,
-                  ),
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  desc,
-                  style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildProcess(BuildContext context) {
-    final theme = Theme.of(context);
     final processes = [
       {
         'step': '1',
@@ -271,73 +182,13 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
       },
     ];
 
-    return _buildSectionCard(
-      context: context,
+    return PartnerSectionCard(
       title: t.partner.process,
-      children: [
-        FixedTimeline.tileBuilder(
-          theme: TimelineThemeData(
-            nodePosition: 0,
-            color: theme.colorScheme.primary,
-            indicatorTheme: IndicatorThemeData(position: 0, size: 24.w),
-            connectorTheme: ConnectorThemeData(
-              thickness: 2.w,
-              color: theme.dividerColor,
-            ),
-          ),
-          builder: TimelineTileBuilder.connected(
-            connectionDirection: ConnectionDirection.after,
-            itemCount: processes.length,
-            contentsBuilder: (context, index) {
-              final item = processes[index];
-              return Padding(
-                padding: EdgeInsets.only(left: 12.w, bottom: 24.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item['title']!,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                        color: theme.textTheme.titleMedium?.color,
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      item['desc']!,
-                      style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
-                    ),
-                  ],
-                ),
-              );
-            },
-            indicatorBuilder: (context, index) {
-              final item = processes[index];
-              return DotIndicator(
-                color: theme.colorScheme.primary,
-                child: Center(
-                  child: Text(
-                    item['step']!,
-                    style: TextStyle(
-                      color: theme.colorScheme.onPrimary,
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                ),
-              );
-            },
-            connectorBuilder: (context, index, type) {
-              return SolidLineConnector(color: theme.dividerColor);
-            },
-          ),
-        ),
-      ],
+      children: [PartnerProcessList(processes: processes)],
     );
   }
 
   Widget _buildConditions(BuildContext context) {
-    final theme = Theme.of(context);
     final conditions = [
       t.partner.condition1,
       t.partner.condition2,
@@ -346,261 +197,76 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
       t.partner.condition5,
     ];
 
-    return _buildSectionCard(
-      context: context,
+    return PartnerSectionCard(
       title: t.partner.conditions,
-      children: [
-        FixedTimeline.tileBuilder(
-          theme: TimelineThemeData(
-            nodePosition: 0,
-            color: theme.colorScheme.primary,
-            indicatorTheme: IndicatorThemeData(position: 0, size: 20.w),
-            connectorTheme: ConnectorThemeData(
-              thickness: 2.w,
-              color: theme.dividerColor,
-            ),
-          ),
-          builder: TimelineTileBuilder.connected(
-            connectionDirection: ConnectionDirection.after,
-            itemCount: conditions.length,
-            contentsBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.only(left: 12.w, bottom: 24.h),
-                child: Text(
-                  conditions[index],
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: theme.textTheme.bodyMedium?.color,
-                  ),
-                ),
-              );
-            },
-            indicatorBuilder: (context, index) {
-              return DotIndicator(
-                color: theme.colorScheme.primary,
-                child: Icon(
-                  Symbols.check,
-                  size: 14.sp,
-                  color: theme.colorScheme.onPrimary,
-                ),
-              );
-            },
-            connectorBuilder: (context, index, type) {
-              return SolidLineConnector(color: theme.dividerColor);
-            },
-          ),
-        ),
-      ],
+      children: [PartnerConditionList(conditions: conditions)],
     );
   }
 
   Widget _buildApplicationForm(BuildContext context) {
-    final theme = Theme.of(context);
-    return _buildSectionCard(
-      context: context,
+    return PartnerSectionCard(
       title: t.partner.applicationTitle,
       children: [
-        _buildTextField(
-          context,
-          t.partner.nameLabel,
-          t.partner.nameInputHint,
-          controller: _nameController,
-        ),
-        SizedBox(height: 12.h),
-        _buildTextField(
-          context,
-          t.partner.companyLabel,
-          t.partner.companyInputHint,
-          controller: _companyController,
-        ),
-        SizedBox(height: 12.h),
-        _buildTextField(
-          context,
-          t.partner.phoneLabel,
-          t.partner.phoneInputHint,
-          controller: _phoneController,
-        ),
-        SizedBox(height: 12.h),
-        _buildTextField(
-          context,
-          t.partner.intentionLabel,
-          t.partner.intentionInputHint,
-          maxLines: 3,
-          controller: _intentionController,
-        ),
-        SizedBox(height: 24.h),
-        SizedBox(
-          width: double.infinity,
-          height: 48.h,
-          child: ElevatedButton(
-            onPressed: _isSubmitting ? null : _submitApplication,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: theme.colorScheme.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-            ),
-            child: _isSubmitting
-                ? SizedBox(
-                    width: 24.w,
-                    height: 24.w,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation(
-                        theme.colorScheme.onPrimary,
-                      ),
-                    ),
-                  )
-                : Text(
-                    t.partner.submit,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTextField(
-    BuildContext context,
-    String label,
-    String hint, {
-    int maxLines = 1,
-    TextEditingController? controller,
-  }) {
-    final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.bold,
-            color: theme.textTheme.titleMedium?.color,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        TextField(
-          controller: controller,
-          maxLines: maxLines,
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(color: theme.hintColor),
-            filled: true,
-            fillColor: theme.colorScheme.surfaceContainerHighest,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4.r),
-              borderSide: BorderSide.none,
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 12.w,
-              vertical: 12.h,
-            ),
-          ),
+        PartnerApplicationForm(
+          nameLabel: t.partner.nameLabel,
+          nameHint: t.partner.nameInputHint,
+          companyLabel: t.partner.companyLabel,
+          companyHint: t.partner.companyInputHint,
+          phoneLabel: t.partner.phoneLabel,
+          phoneHint: t.partner.phoneInputHint,
+          intentionLabel: t.partner.intentionLabel,
+          intentionHint: t.partner.intentionInputHint,
+          submitText: t.partner.submit,
+          nameController: _nameController,
+          companyController: _companyController,
+          phoneController: _phoneController,
+          intentionController: _intentionController,
+          onSubmit: _submitApplication,
+          isSubmitting: _isSubmitting,
         ),
       ],
     );
   }
 
   Widget _buildContactInfo(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Column(
-        children: [
-          Text(
-            t.partner.contactTitle,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: theme.textTheme.titleMedium?.color,
-            ),
-          ),
-          SizedBox(height: 16.h),
-          Row(
-            children: [
-              Icon(
-                Symbols.phone,
-                size: 20.sp,
-                color: theme.colorScheme.primary,
-              ),
-              SizedBox(width: 8.w),
-              Expanded(
-                child: Text(
-                  '${t.partner.serviceHotline}: 400-114-8818',
-                  style: TextStyle(color: theme.textTheme.bodyMedium?.color),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 12.h),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                Symbols.location_on,
-                size: 20.sp,
-                color: theme.colorScheme.primary,
-              ),
-              SizedBox(width: 8.w),
-              Expanded(
-                child: Text(
-                  '${t.partner.address}: 广东省东莞市松山湖园区科汇路1号1栋1510室',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: theme.textTheme.bodyMedium?.color,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+    return PartnerSectionCard(
+      title: t.partner.contactTitle,
+      children: [
+        _buildContactTile(
+          context,
+          Symbols.phone,
+          t.partner.serviceHotline,
+          '400-114-8818',
+        ),
+        _buildContactTile(
+          context,
+          Symbols.location_on,
+          t.partner.address,
+          '广东省东莞市松山湖园区科汇路1号1栋1510室',
+        ),
+      ],
     );
   }
 
-  Widget _buildSectionCard({
-    required BuildContext context,
-    required String title,
-    required List<Widget> children,
-  }) {
+  Widget _buildContactTile(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String content,
+  ) {
     final theme = Theme.of(context);
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Column(
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.h),
+      child: Row(
         children: [
-          Column(
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: theme.textTheme.titleMedium?.color,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 4.h, bottom: 16.h),
-                width: 32.w,
-                height: 3.h,
-                color: theme.colorScheme.primary.withValues(alpha: 0.3),
-              ),
-            ],
+          Icon(icon, size: 20.sp, color: theme.colorScheme.primary),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Text(
+              '$label: $content',
+              style: TextStyle(color: theme.textTheme.bodyMedium?.color),
+            ),
           ),
-          ...children,
         ],
       ),
     );

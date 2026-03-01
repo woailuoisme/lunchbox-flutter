@@ -6,6 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
+import 'package:lunchbox/features/order/widgets/order_action_button.dart';
+import 'package:lunchbox/features/order/widgets/order_empty_state.dart';
+import 'package:lunchbox/features/order/widgets/order_list_item.dart';
+import 'package:lunchbox/features/order/widgets/order_list_tab_bar.dart';
 import 'package:lunchbox/core/widgets/widgets.dart';
 import 'package:lunchbox/features/order/providers/order_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
@@ -186,46 +190,7 @@ class _OrderListViewState extends ConsumerState<OrderListView>
       ),
       body: Column(
         children: [
-          Container(
-            color: theme.cardColor,
-            width: double.infinity,
-            alignment: Alignment.centerLeft,
-            child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              padding: EdgeInsets.zero,
-              labelColor: theme.colorScheme.primary,
-              unselectedLabelColor: theme.hintColor,
-              indicatorColor: theme.colorScheme.primary,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorWeight: 0,
-              indicator: UnderlineTabIndicator(
-                borderSide: BorderSide(
-                  width: 3.h,
-                  color: theme.colorScheme.primary,
-                ),
-                insets: EdgeInsets.symmetric(horizontal: 14.w),
-                borderRadius: BorderRadius.circular(2.r),
-              ),
-              labelStyle: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-              ),
-              unselectedLabelStyle: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.normal,
-              ),
-              labelPadding: EdgeInsets.symmetric(horizontal: 12.w),
-              splashFactory: NoSplash.splashFactory,
-              overlayColor: WidgetStateProperty.all(Colors.transparent),
-              dividerColor: Colors.transparent,
-              tabs: _filterTitles.map((title) => Tab(text: title)).toList(),
-              onTap: (index) {
-                // 可选：点击时的额外逻辑，TabBarView 会自动处理切换
-              },
-            ),
-          ),
+          OrderListTabBar(controller: _tabController, titles: _filterTitles),
           Expanded(
             child: TabBarView(
               controller: _tabController,
@@ -243,9 +208,8 @@ class _OrderListViewState extends ConsumerState<OrderListView>
 
   Widget _buildOrderList({PagingController<int, OrderModel>? controller}) {
     if (controller == null) {
-      return _buildEmptyState();
+      return const OrderEmptyState();
     }
-
     return CustomRefreshView(
       onRefresh: () async {
         controller.refresh();
@@ -275,7 +239,8 @@ class _OrderListViewState extends ConsumerState<OrderListView>
                   ],
                 ),
               ),
-              noItemsFoundIndicatorBuilder: (context) => _buildEmptyState(),
+              noItemsFoundIndicatorBuilder: (context) =>
+                  const OrderEmptyState(),
               firstPageProgressIndicatorBuilder: (context) =>
                   const Center(child: CircularProgressIndicator()),
               newPageProgressIndicatorBuilder: (context) => const Padding(
@@ -290,207 +255,19 @@ class _OrderListViewState extends ConsumerState<OrderListView>
   }
 
   Widget _buildEmptyState() {
-    final theme = Theme.of(context);
-    return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.receipt_long, size: 64.sp, color: theme.disabledColor),
-              SizedBox(height: 16.h),
-              Text(
-                t.order.noOrders,
-                style: TextStyle(color: theme.hintColor, fontSize: 14.sp),
-              ),
-            ],
-          ),
-        )
-        .animate()
-        .fadeIn(duration: 400.ms)
-        .scale(
-          begin: const Offset(0.9, 0.9),
-          curve: Curves.easeOutBack,
-          duration: 400.ms,
-        );
+    return const OrderEmptyState();
   }
 
   Widget _buildOrderCard(OrderModel order) {
-    final theme = Theme.of(context);
-    if (order.products.isEmpty) {
-      return const SizedBox();
-    }
-
-    // Since we don't have storeName in OrderModel, we might skip it or use a default
-    // Or check if user wants to display it. Assuming skip for now as it's not in model.
-    final item = order.products.first;
-    final statusText = order.status.label;
-    final statusColor = order.status.color;
-
-    return GestureDetector(
+    return OrderListItem(
+          order: order,
           onTap: () {
             context.push(
               '${AppRoutes.orderDetail}/${order.id}',
               extra: {'order': order},
             );
           },
-          child: Container(
-            margin: EdgeInsets.only(bottom: 16.h),
-            padding: EdgeInsets.all(16.w),
-            decoration: BoxDecoration(
-              color: theme.cardColor,
-              borderRadius: BorderRadius.circular(16.r),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Text(
-                            '${t.order.orderIdLabel}${order.id.toString().substring(order.id.toString().length > 8 ? order.id.toString().length - 8 : 0)}',
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              color: theme.hintColor,
-                            ),
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 12.sp,
-                            color: theme.hintColor,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      statusText,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: statusColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Divider(height: 24.h, color: theme.dividerColor),
-
-                // Content
-                Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8.r),
-                      child: Image.network(
-                        item.thumb,
-                        width: 80.w,
-                        height: 80.w,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Container(
-                          width: 80.w,
-                          height: 80.w,
-                          color: theme.disabledColor,
-                          child: const Icon(Icons.image_not_supported),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item.name,
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.textTheme.bodyLarge?.color,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              Text(
-                                '¥${item.salePrice}',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: theme.textTheme.bodyLarge?.color,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            item.description,
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: theme.hintColor,
-                            ),
-                          ),
-                          SizedBox(height: 20.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                t.order.summary(count: order.products.length),
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: theme.hintColor,
-                                ),
-                              ),
-                              Text(
-                                '¥${order.totalAmount}',
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: theme.textTheme.bodyLarge?.color,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-
-                if (order.status == OrderStatus.refund)
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.h),
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12.w,
-                        vertical: 8.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.errorContainer,
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                      child: Text(
-                        t.order.refund,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: theme.colorScheme.error,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                // Action Buttons
-                SizedBox(height: 16.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: _buildActionButtons(context, order),
-                ),
-              ],
-            ),
-          ),
+          actionButtons: _buildActionButtons(context, order),
         )
         .animate()
         .fadeIn(duration: 300.ms)
@@ -508,17 +285,15 @@ class _OrderListViewState extends ConsumerState<OrderListView>
 
     if (order.status == OrderStatus.paid) {
       buttons.add(
-        _buildButton(
-          t.order.refund,
-          textColor: theme.hintColor,
-          borderColor: theme.dividerColor,
+        OrderActionButton(
+          text: t.order.refund,
           onTap: () => _handleAction(order, 'refund', context),
         ),
       );
       buttons.add(SizedBox(width: 8.w));
       buttons.add(
-        _buildButton(
-          t.order.viewCode,
+        OrderActionButton(
+          text: t.order.viewCode,
           textColor: theme.colorScheme.primary,
           borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'view_code', context),
@@ -527,17 +302,15 @@ class _OrderListViewState extends ConsumerState<OrderListView>
     } else if (order.status == OrderStatus.completed ||
         order.status == OrderStatus.refund) {
       buttons.add(
-        _buildButton(
-          t.order.deleteOrder,
-          textColor: theme.hintColor,
-          borderColor: theme.dividerColor,
+        OrderActionButton(
+          text: t.order.deleteOrder,
           onTap: () => _handleAction(order, 'delete', context),
         ),
       );
       buttons.add(SizedBox(width: 8.w));
       buttons.add(
-        _buildButton(
-          t.order.reorder,
+        OrderActionButton(
+          text: t.order.reorder,
           textColor: theme.colorScheme.primary,
           borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'reorder', context),
@@ -545,17 +318,15 @@ class _OrderListViewState extends ConsumerState<OrderListView>
       );
     } else if (order.status == OrderStatus.pending) {
       buttons.add(
-        _buildButton(
-          t.order.cancelOrder,
-          textColor: theme.hintColor,
-          borderColor: theme.dividerColor,
+        OrderActionButton(
+          text: t.order.cancelOrder,
           onTap: () => _handleAction(order, 'cancel', context),
         ),
       );
       buttons.add(SizedBox(width: 8.w));
       buttons.add(
-        _buildButton(
-          t.order.payNow,
+        OrderActionButton(
+          text: t.order.payNow,
           textColor: theme.colorScheme.primary,
           borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'pay', context),
@@ -563,8 +334,8 @@ class _OrderListViewState extends ConsumerState<OrderListView>
       );
     } else if (order.status == OrderStatus.cancelled) {
       buttons.add(
-        _buildButton(
-          t.order.reorder,
+        OrderActionButton(
+          text: t.order.reorder,
           textColor: theme.colorScheme.primary,
           borderColor: theme.colorScheme.primary,
           onTap: () => _handleAction(order, 'reorder', context),
@@ -573,27 +344,5 @@ class _OrderListViewState extends ConsumerState<OrderListView>
     }
 
     return buttons;
-  }
-
-  Widget _buildButton(
-    String text, {
-    required Color textColor,
-    required Color borderColor,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-        decoration: BoxDecoration(
-          border: Border.all(color: borderColor, width: 1),
-          borderRadius: BorderRadius.circular(16.r),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 12.sp, color: textColor),
-        ),
-      ),
-    );
   }
 }

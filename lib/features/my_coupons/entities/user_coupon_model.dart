@@ -6,7 +6,7 @@ part 'user_coupon_model.g.dart';
 
 /// 用户优惠券模型
 @freezed
-abstract class UserCouponModel with _$UserCouponModel {
+sealed class UserCouponModel with _$UserCouponModel {
   const factory UserCouponModel({
     /// 用户优惠券关联ID
     @JsonKey(name: 'user_coupon_id') required int userCouponId,
@@ -15,31 +15,31 @@ abstract class UserCouponModel with _$UserCouponModel {
     @JsonKey(name: 'coupon_id') required int couponId,
 
     /// 使用时间
-    @JsonKey(name: 'used_at') String? usedAt,
+    @JsonKey(name: 'used_at') @Default(null) String? usedAt,
 
     /// 是否已使用
     @JsonKey(name: 'is_used') @Default(false) bool isUsed,
 
     /// 优惠券名称
-    required String name,
+    @Default('') String name,
 
     /// 优惠券描述
-    String? description,
+    @Default(null) String? description,
 
     /// 优惠券分类 (shop: 商城, goods: 食品)
-    required String category,
+    @Default('shop') String category,
 
     /// 优惠券类型 (full_reduction, discount, exchange, gift, reduction)
-    required String type,
+    @Default('reduction') String type,
 
     /// 优惠规则
-    required CouponRuleModel rule,
+    @Default(CouponRuleModel()) CouponRuleModel rule,
 
     /// 开始时间
-    @JsonKey(name: 'start_at') String? startAt,
+    @JsonKey(name: 'start_at') @Default(null) String? startAt,
 
     /// 结束时间
-    @JsonKey(name: 'end_at') String? endAt,
+    @JsonKey(name: 'end_at') @Default(null) String? endAt,
   }) = _UserCouponModel;
 
   factory UserCouponModel.fromJson(Map<String, dynamic> json) =>

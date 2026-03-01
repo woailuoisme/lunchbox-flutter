@@ -1,0 +1,18 @@
+{
+  "title": "新人禮包",
+  "subtitle": "註冊30天內可領取，每個禮包限領一次",
+  "tabs": {
+    "available": "可領取",
+    "received": "已領取"
+  },
+  "card": {
+    "tag": "禮包",
+    "status": {
+      "received": "已領取"
+    },
+    "button": {
+      "claim": "領取",
+      "received": "已領取"
+    }
+  }
+}

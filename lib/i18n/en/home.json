@@ -14,7 +14,7 @@
   "lottery": {
     "title": "Lucky Draw",
     "prizes": "My Prizes",
-    "rules": "Draw Rules",
+    "rules": "Activity Rules",
     "subtitle": "Join the draw, win great prizes",
     "remaining": "Remaining: ${count}",
     "spin": "Spin",
@@ -22,9 +22,9 @@
     "congratulations": "Congratulations",
     "accept": "Accept",
     "rule1": "Free draws daily, complete tasks for more",
-    "rule2": "Coupons valid for 48h, Coins added automatically",
+    "rule2": "Coupons valid for 48h, Points added automatically",
     "rule3": "Platform reserves all rights",
-    "prizeUnit": "Coins",
+    "prizeUnit": "Points",
     "prizeList": "Prize List",
     "back": "Back",
     "prizeStats": {
@@ -39,7 +39,7 @@
       "expired": "Expired"
     },
     "prizeCard": {
-      "source": "Coin rewards, can be used in Coin Mall",
+      "source": "Point rewards, can be used in Point Mall",
       "getTime": "Got at: ${time}",
       "expiryTime": "Expiry: ${time}",
       "statusExpired": "Expired"

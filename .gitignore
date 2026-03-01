@@ -51,4 +51,5 @@ app.*.map.json
 
 # Envied
 .env*
+!.env.example
 !lib/env/.env* # If you want to commit example env files

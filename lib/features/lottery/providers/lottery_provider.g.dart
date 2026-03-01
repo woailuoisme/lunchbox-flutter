@@ -41,7 +41,7 @@ final class LotteryNotifierProvider
   }
 }
 
-String _$lotteryNotifierHash() => r'498ed43547e4808bdbcbac705af3a4d607f5c5a0';
+String _$lotteryNotifierHash() => r'36f5df2a56521d36bfcaf418c41b1ede0b099d3d';
 
 abstract class _$LotteryNotifier extends $Notifier<LotteryState> {
   LotteryState build();

@@ -22,7 +22,7 @@
   "lottery": {
     "title": "幸運抽獎",
     "prizes": "我的獎品",
-    "rules": "抽獎規則",
+    "rules": "活動規則",
     "subtitle": "參與抽獎，贏取好禮",
     "remaining": "剩餘次數: ${count}",
     "spin": "抽獎",
@@ -30,9 +30,9 @@
     "congratulations": "恭喜獲得",
     "accept": "開心收下",
     "rule1": "每日有免費抽獎次數，次數用完後可領取任務獲得",
-    "rule2": "優惠券48小時內有效，乖乖幣自動到帳",
+    "rule2": "優惠券48小時內有效，積分自動到帳",
     "rule3": "活動最終解釋權歸平台所有",
-    "prizeUnit": "乖乖幣",
+    "prizeUnit": "積分",
     "prizeList": "獎品說明",
     "back": "返回",
     "prizeStats": {
@@ -47,7 +47,7 @@
       "expired": "已過期"
     },
     "prizeCard": {
-      "source": "乖乖幣獎勵，可在乖乖幣商城使用",
+      "source": "積分獎勵，可在積分商城使用",
       "getTime": "獲得時間: ${time}",
       "expiryTime": "有效期至: ${time}",
       "statusExpired": "已過期"
