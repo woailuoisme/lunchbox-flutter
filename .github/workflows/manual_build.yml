@@ -1,0 +1,70 @@
+name: Manual Build & Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build Type'
+        required: true
+        default: 'apk'
+        type: choice
+        options:
+          - apk
+          - appbundle
+          - ios
+      build_mode:
+        description: 'Build Mode'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - release
+          - debug
+
+jobs:
+  build:
+    name: Build ${{ github.event.inputs.build_type }}
+    runs-on: ${{ github.event.inputs.build_type == 'ios' && 'macos-latest' || 'ubuntu-latest' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        if: github.event.inputs.build_type != 'ios'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Build Runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build APK
+        if: github.event.inputs.build_type == 'apk'
+        run: flutter build apk --${{ github.event.inputs.build_mode }}
+
+      - name: Build AppBundle
+        if: github.event.inputs.build_type == 'appbundle'
+        run: flutter build appbundle --${{ github.event.inputs.build_mode }}
+
+      - name: Build iOS
+        if: github.event.inputs.build_type == 'ios'
+        run: flutter build ios --release --no-codesign
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.inputs.build_type }}-${{ github.event.inputs.build_mode }}
+          path: |
+            build/app/outputs/flutter-apk/*.apk
+            build/app/outputs/bundle/release/*.aab
+            build/ios/iphoneos/*.app
