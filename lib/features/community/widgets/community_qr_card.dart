@@ -4,15 +4,15 @@ import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 /// 社群二维码卡片组件
-/// 
+///
 /// 显示加群二维码及相关提示文字
 class CommunityQrCard extends StatelessWidget {
-  final String qrData;
 
   const CommunityQrCard({
     super.key,
     this.qrData = 'https://u.wechat.com/EXAMPLE',
   });
+  final String qrData;
 
   @override
   Widget build(BuildContext context) {

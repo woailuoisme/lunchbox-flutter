@@ -122,10 +122,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _ApiResponseModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -184,10 +181,7 @@ return $default(_that.code,_that.message,_that.timestamp,_that.data);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int code,  String message,  int timestamp,  T? data)  $default,) {final _that = this;
 switch (_that) {
 case _ApiResponseModel():
-return $default(_that.code,_that.message,_that.timestamp,_that.data);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.code,_that.message,_that.timestamp,_that.data);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -402,10 +396,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _PaginatedResponseModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -464,10 +455,7 @@ return $default(_that.list,_that.total,_that.page,_that.pageSize);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<T> list,  int total,  int page,  int pageSize)  $default,) {final _that = this;
 switch (_that) {
 case _PaginatedResponseModel():
-return $default(_that.list,_that.total,_that.page,_that.pageSize);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.list,_that.total,_that.page,_that.pageSize);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///

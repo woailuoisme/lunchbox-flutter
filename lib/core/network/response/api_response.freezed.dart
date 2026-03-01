@@ -119,10 +119,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _ApiResponse():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -181,10 +178,7 @@ return $default(_that.success,_that.code,_that.message,_that.data,_that.errors);
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool success,  int code,  String message,  T? data,  Map<String, List<String>>? errors)  $default,) {final _that = this;
 switch (_that) {
 case _ApiResponse():
-return $default(_that.success,_that.code,_that.message,_that.data,_that.errors);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.success,_that.code,_that.message,_that.data,_that.errors);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///

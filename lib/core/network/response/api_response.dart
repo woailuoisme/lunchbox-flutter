@@ -5,7 +5,7 @@ part 'api_response.g.dart';
 
 /// 通用 API 响应封装
 @Freezed(genericArgumentFactories: true)
-abstract class ApiResponse<T> with _$ApiResponse<T> {
+sealed class ApiResponse<T> with _$ApiResponse<T> {
   const factory ApiResponse({
     required bool success,
     required int code,

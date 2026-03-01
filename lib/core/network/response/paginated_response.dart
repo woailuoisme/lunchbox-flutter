@@ -5,7 +5,7 @@ part 'paginated_response.g.dart';
 
 /// 分页响应封装
 @Freezed(genericArgumentFactories: true)
-abstract class PaginatedResponse<T> with _$PaginatedResponse<T> {
+sealed class PaginatedResponse<T> with _$PaginatedResponse<T> {
   const factory PaginatedResponse({
     required List<T> items,
     required PaginationMeta meta,
@@ -19,7 +19,7 @@ abstract class PaginatedResponse<T> with _$PaginatedResponse<T> {
 
 /// 分页元数据
 @freezed
-abstract class PaginationMeta with _$PaginationMeta {
+sealed class PaginationMeta with _$PaginationMeta {
   const factory PaginationMeta({
     @JsonKey(name: 'current_page') required int currentPage,
     @JsonKey(name: 'per_page') required int perPage,

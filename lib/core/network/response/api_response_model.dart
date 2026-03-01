@@ -6,7 +6,7 @@ part 'api_response_model.g.dart';
 /// API响应模型类
 /// 用于标准化处理网络请求返回的数据格式
 @Freezed(genericArgumentFactories: true)
-abstract class ApiResponseModel<T> with _$ApiResponseModel<T> {
+sealed class ApiResponseModel<T> with _$ApiResponseModel<T> {
   const factory ApiResponseModel({
     /// 响应状态码
     required int code,
@@ -53,7 +53,7 @@ abstract class ApiResponseModel<T> with _$ApiResponseModel<T> {
 
 /// 分页响应模型类
 @Freezed(genericArgumentFactories: true)
-abstract class PaginatedResponseModel<T> with _$PaginatedResponseModel<T> {
+sealed class PaginatedResponseModel<T> with _$PaginatedResponseModel<T> {
   const factory PaginatedResponseModel({
     /// 数据列表
     required List<T> list,

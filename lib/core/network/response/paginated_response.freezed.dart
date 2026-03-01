@@ -125,10 +125,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _PaginatedResponse():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -187,10 +184,7 @@ return $default(_that.items,_that.meta);case _:
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<T> items,  PaginationMeta meta)  $default,) {final _that = this;
 switch (_that) {
 case _PaginatedResponse():
-return $default(_that.items,_that.meta);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.items,_that.meta);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -411,10 +405,7 @@ return $default(_that);case _:
 final _that = this;
 switch (_that) {
 case _PaginationMeta():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -473,10 +464,7 @@ return $default(_that.currentPage,_that.perPage,_that.lastPage,_that.hasMore,_th
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'current_page')  int currentPage, @JsonKey(name: 'per_page')  int perPage, @JsonKey(name: 'last_page')  int lastPage, @JsonKey(name: 'has_more')  bool hasMore,  int total,  int from,  int to)  $default,) {final _that = this;
 switch (_that) {
 case _PaginationMeta():
-return $default(_that.currentPage,_that.perPage,_that.lastPage,_that.hasMore,_that.total,_that.from,_that.to);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return $default(_that.currentPage,_that.perPage,_that.lastPage,_that.hasMore,_that.total,_that.from,_that.to);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///

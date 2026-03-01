@@ -4,7 +4,7 @@ import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 /// 社群特色功能列表组件
-/// 
+///
 /// 显示加入社群可享受的福利特色
 class CommunityFeatures extends StatelessWidget {
   const CommunityFeatures({super.key});
@@ -46,12 +46,14 @@ class CommunityFeatures extends StatelessWidget {
       ),
       child: Column(
         children: features
-            .map((d) => _CommunityFeatureItem(
-                  icon: d['icon'] as IconData,
-                  title: d['title'] as String,
-                  subtitle: d['subtitle'] as String,
-                  iconColor: d['color'] as Color,
-                ))
+            .map(
+              (d) => _CommunityFeatureItem(
+                icon: d['icon'] as IconData,
+                title: d['title'] as String,
+                subtitle: d['subtitle'] as String,
+                iconColor: d['color'] as Color,
+              ),
+            )
             .toList(),
       ),
     );
@@ -59,10 +61,6 @@ class CommunityFeatures extends StatelessWidget {
 }
 
 class _CommunityFeatureItem extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final Color iconColor;
 
   const _CommunityFeatureItem({
     required this.icon,
@@ -70,6 +68,10 @@ class _CommunityFeatureItem extends StatelessWidget {
     required this.subtitle,
     required this.iconColor,
   });
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -84,11 +86,7 @@ class _CommunityFeatureItem extends StatelessWidget {
             width: 40.w,
             height: 40.w,
             alignment: Alignment.center,
-            child: Icon(
-              icon,
-              size: 24.sp,
-              color: iconColor,
-            ),
+            child: Icon(icon, size: 24.sp, color: iconColor),
           ),
           SizedBox(width: 16.w),
           Expanded(

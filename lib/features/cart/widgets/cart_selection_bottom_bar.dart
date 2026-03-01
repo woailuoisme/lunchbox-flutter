@@ -5,7 +5,6 @@ import 'package:material_symbols_icons/symbols.dart';
 
 /// 购物车选择模式底部操作栏
 class CartSelectionBottomBar extends StatelessWidget {
-
   const CartSelectionBottomBar({
     super.key,
     required this.selectedCount,

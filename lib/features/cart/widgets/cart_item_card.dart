@@ -9,7 +9,6 @@ import 'package:material_symbols_icons/symbols.dart';
 
 /// 购物车商品项卡片组件
 class CartItemCard extends StatelessWidget {
-
   const CartItemCard({
     super.key,
     required this.item,

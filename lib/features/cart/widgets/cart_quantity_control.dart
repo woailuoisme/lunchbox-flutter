@@ -4,7 +4,6 @@ import 'package:material_symbols_icons/symbols.dart';
 
 /// 购物车商品数量控制组件
 class CartQuantityControl extends StatelessWidget {
-
   const CartQuantityControl({
     super.key,
     required this.quantity,
@@ -49,7 +48,6 @@ class CartQuantityControl extends StatelessWidget {
 }
 
 class _QuantityButton extends StatelessWidget {
-
   const _QuantityButton({required this.icon, required this.onPressed});
   final IconData icon;
   final VoidCallback onPressed;

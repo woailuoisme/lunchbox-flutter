@@ -103,7 +103,7 @@ class _LotteryViewState extends ConsumerState<LotteryView>
     notifier.completeSpin(prize);
 
     if (mounted) {
-      LotteryResultDialog.show(context, prize.name);
+      await LotteryResultDialog.show(context, prize.name);
     }
   }
 

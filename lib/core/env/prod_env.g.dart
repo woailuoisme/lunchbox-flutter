@@ -12,7 +12,8 @@ part of 'prod_env.dart';
 final class _ProdEnv {
   static const String _baseUrl = 'https://rest.haoxiaoguai.xyz';
 
-  static const String _stripePublishableKey = 'pk_live_placeholder';
+  static const String _stripePublishableKey =
+      'pk_test_51K5b84LHzHCCzdgcmAQfSGsl6ik4MawpXrGtWNmvNwKurf9xHk1t3kbBErAc1r87Hzn7rH2inPd63b1qZ7CKYkEN00y0dLoGQ6';
 
   static const String _sentryDsn =
       'https://1246d3e8c39b70919447f701f457887e@o4505111003136000.ingest.us.sentry.io/4510961133813760';

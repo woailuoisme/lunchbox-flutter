@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 加入社群理由组件
-/// 
+///
 /// 以列表形式展示加入社群的具体好处
 class CommunityWhyJoin extends StatelessWidget {
   const CommunityWhyJoin({super.key});
@@ -44,9 +44,9 @@ class CommunityWhyJoin extends StatelessWidget {
 }
 
 class _WhyJoinBulletPoint extends StatelessWidget {
-  final String text;
 
   const _WhyJoinBulletPoint({required this.text});
+  final String text;
 
   @override
   Widget build(BuildContext context) {

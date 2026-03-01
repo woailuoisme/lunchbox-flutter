@@ -4,7 +4,6 @@ import 'package:lunchbox/i18n/translations.g.dart';
 
 /// 购物车底部结算栏组件
 class CartBottomBar extends StatelessWidget {
-
   const CartBottomBar({
     super.key,
     required this.totalQuantity,
