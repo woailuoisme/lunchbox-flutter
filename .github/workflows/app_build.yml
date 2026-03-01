@@ -1,0 +1,103 @@
+name: Manual Build & Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_apk:
+        description: 'Build Android APK'
+        required: false
+        type: boolean
+        default: true
+      build_appbundle:
+        description: 'Build Android AppBundle (AAB)'
+        required: false
+        type: boolean
+        default: false
+      build_ios:
+        description: 'Build iOS App'
+        required: false
+        type: boolean
+        default: false
+      build_mode:
+        description: 'Build Mode'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - release
+          - debug
+
+jobs:
+  prepare:
+    name: Prepare Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has_tasks: ${{ steps.set-matrix.outputs.has_tasks }}
+    steps:
+      - id: set-matrix
+        run: |
+          TASKS=()
+          if [ "${{ github.event.inputs.build_apk }}" == "true" ]; then TASKS+=("apk"); fi
+          if [ "${{ github.event.inputs.build_appbundle }}" == "true" ]; then TASKS+=("appbundle"); fi
+          if [ "${{ github.event.inputs.build_ios }}" == "true" ]; then TASKS+=("ios"); fi
+          
+          if [ ${#TASKS[@]} -eq 0 ]; then
+            echo "has_tasks=false" >> $GITHUB_OUTPUT
+            echo "matrix={\"task\":[]}" >> $GITHUB_OUTPUT
+          else
+            JSON_TASKS=$(printf '%s\n' "${TASKS[@]}" | jq -R . | jq -s -c .)
+            echo "has_tasks=true" >> $GITHUB_OUTPUT
+            echo "matrix={\"task\":$JSON_TASKS}" >> $GITHUB_OUTPUT
+          fi
+
+  build:
+    needs: prepare
+    if: needs.prepare.outputs.has_tasks == 'true'
+    name: Build ${{ matrix.task }}
+    runs-on: ${{ matrix.task == 'ios' && 'macos-latest' || 'ubuntu-latest' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        if: matrix.task != 'ios'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Build Runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build Task
+        run: |
+          if [ "${{ matrix.task }}" == "apk" ]; then
+            flutter build apk --${{ github.event.inputs.build_mode }}
+          elif [ "${{ matrix.task }}" == "appbundle" ]; then
+            flutter build appbundle --${{ github.event.inputs.build_mode }}
+          elif [ "${{ matrix.task }}" == "ios" ]; then
+            flutter build ios --release --no-codesign
+          fi
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.task }}-${{ github.event.inputs.build_mode }}
+          path: |
+            build/app/outputs/flutter-apk/*.apk
+            build/app/outputs/bundle/release/*.aab
+            build/ios/iphoneos/*.app
+            build/ios/iphoneos/*.ipa
