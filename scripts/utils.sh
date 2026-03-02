@@ -1,21 +1,21 @@
 #!/bin/bash
 
-# ==================== 路径锚定 ====================
-# 确保脚本在项目根目录下运行
+# ==================== Path Anchoring ====================
+# Ensure the script runs in the project root directory
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$PROJECT_ROOT" || exit 1
 
-# ==================== 颜色定义 ====================
+# ==================== Color Definitions ====================
 C_R="\033[31m" C_G="\033[32m" C_Y="\033[33m" C_B="\033[34m" C_C="\033[36m" C_1="\033[1m" C_0="\033[0m"
 RED=$C_R GREEN=$C_G YELLOW=$C_Y BLUE=$C_B CYAN=$C_C BOLD=$C_1 NC=$C_0
 
-# ==================== 日志函数 ====================
-# 默认日志文件，如果脚本未指定则使用此文件
+# ==================== Logging Functions ====================
+# Default log file, uses this if the script doesn't specify one
 LOG_FILE="${LOG_FILE:-logs/script.log}"
 mkdir -p "$(dirname "$LOG_FILE")"
 
-# 内部函数：仅写入文件（去除颜色）
+# Internal function: Write to file only (strip colors)
 _log_to_file() {
     local level="$1"
     local msg="$2"
@@ -32,8 +32,8 @@ ensure_dir() {
 }
 
 require_cmd() {
-    command -v "$1" &>/dev/null || { log_error "未找到命令: $1"; exit 1; }
+    command -v "$1" &>/dev/null || { log_error "Command not found: $1"; exit 1; }
 }
 
-# 导出函数供子进程使用（如果需要）
+# Export functions for use in sub-processes (if needed)
 export -f log_info log_success log_warning log_error ensure_dir require_cmd
