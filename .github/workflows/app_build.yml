@@ -87,22 +87,37 @@ jobs:
       - name: Build Runner
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
+      - name: Set Beijing Timestamp
+        id: timestamp
+        run: echo "time=$(TZ='Asia/Shanghai' date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
+
       - name: Build Task
         run: |
+          BUILD_MODE="${{ github.event.inputs.build_mode }}"
           if [ "${{ matrix.task }}" == "apk" ]; then
-            flutter build apk --${{ github.event.inputs.build_mode }}
+            flutter build apk --$BUILD_MODE
+            # Rename APK
+            mv build/app/outputs/flutter-apk/app-$BUILD_MODE.apk build/app/outputs/flutter-apk/apk-$BUILD_MODE-${{ steps.timestamp.outputs.time }}.apk
           elif [ "${{ matrix.task }}" == "appbundle" ]; then
-            flutter build appbundle --${{ github.event.inputs.build_mode }}
+            flutter build appbundle --$BUILD_MODE
+            # Rename AAB (Path varies by build mode)
+            # Release: build/app/outputs/bundle/release/app-release.aab
+            # Debug: build/app/outputs/bundle/debug/app-debug.aab
+            if [ "$BUILD_MODE" == "release" ]; then
+              mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/aab-release-${{ steps.timestamp.outputs.time }}.aab
+            else
+              mv build/app/outputs/bundle/debug/app-debug.aab build/app/outputs/bundle/debug/aab-debug-${{ steps.timestamp.outputs.time }}.aab
+            fi
           elif [ "${{ matrix.task }}" == "ios" ]; then
             flutter build ios --release --no-codesign
           fi
 
       - name: Upload Artifacts
+        if: matrix.task != 'ios'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.task }}-${{ github.event.inputs.build_mode }}
+          name: ${{ matrix.task }}-${{ github.event.inputs.build_mode }}-${{ steps.timestamp.outputs.time }}
           path: |
             build/app/outputs/flutter-apk/*.apk
-            build/app/outputs/bundle/release/*.aab
-            build/ios/iphoneos/*.app
-            build/ios/iphoneos/*.ipa
+            build/app/outputs/bundle/*/*.aab
+          compression-level: 0
