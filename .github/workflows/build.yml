@@ -1,4 +1,7 @@
-name: Manual Build & Release
+name: Flutter Build & Release app
+
+permissions:
+  contents: write
 
 on:
   workflow_dispatch:
@@ -123,5 +126,6 @@ jobs:
             build/app/outputs/bundle/*/*.aab
           draft: false
           prerelease: false
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
