@@ -10,11 +10,13 @@ class AppRoutes {
   static const String onboarding = '/onboarding';
 
   // 认证相关
-  static const String login = '/login';
-  static const String simpleLogin = '/simple-login';
-  static const String complexLogin = '/complex-login';
-  static const String register = '/register';
+  static const String signin = '/signin';
+  static const String simpleSignIn = '/simple-signin';
+  static const String complexSignIn = '/complex-signin';
+  static const String signup = '/signup';
   static const String forgotPassword = '/forgot-password';
+  static const String otpVerification = '/otp-verification';
+  static const String resetPassword = '/reset-password';
 
   // 主页面
   static const String home = '/home';

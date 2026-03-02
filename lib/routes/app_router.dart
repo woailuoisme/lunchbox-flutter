@@ -45,24 +45,24 @@ GoRouter goRouter(Ref ref) {
         return navigationPath ??
             (isAuthenticated
                 ? const HomeRoute().location
-                : const LoginRoute().location);
+                : const SignInRoute().location);
       }
 
       final isAuthRoute =
-          state.matchedLocation == const LoginRoute().location ||
-          state.matchedLocation == const RegisterRoute().location ||
+          state.matchedLocation == const SignInRoute().location ||
+          state.matchedLocation == const SignUpRoute().location ||
           state.matchedLocation == const ForgotPasswordRoute().location ||
           isSplashRoute ||
           state.matchedLocation == const OnboardingRoute().location;
 
       // 如果用户未认证且不在认证相关页面，重定向到登录页
       if (!isAuthenticated && !isAuthRoute) {
-        return const LoginRoute().location;
+        return const SignInRoute().location;
       }
 
       // 如果用户已认证且在登录页，重定向到首页
       if (isAuthenticated &&
-          state.matchedLocation == const LoginRoute().location) {
+          state.matchedLocation == const SignInRoute().location) {
         return const HomeRoute().location;
       }
 

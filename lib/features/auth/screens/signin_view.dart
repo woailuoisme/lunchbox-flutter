@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lunchbox/features/auth/providers/login_provider.dart';
-import 'package:lunchbox/features/auth/providers/login_state.dart';
-import 'package:lunchbox/features/auth/widgets/login_content.dart';
+import 'package:lunchbox/features/auth/providers/signin_provider.dart';
+import 'package:lunchbox/features/auth/providers/signin_state.dart';
+import 'package:lunchbox/features/auth/widgets/signin_content.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/routes.dart';
 import 'package:toastification/toastification.dart';
 
-class LoginView extends ConsumerStatefulWidget {
-  const LoginView({super.key});
+class SignInView extends ConsumerStatefulWidget {
+  const SignInView({super.key});
 
   @override
-  ConsumerState<LoginView> createState() => _LoginViewState();
+  ConsumerState<SignInView> createState() => _SignInViewState();
 }
 
-class _LoginViewState extends ConsumerState<LoginView>
+class _SignInViewState extends ConsumerState<SignInView>
     with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormBuilderState>();
   late final TabController _tabController;
-  ProviderSubscription<LoginState>? _loginSubscription;
+  ProviderSubscription<SignInState>? _signInSubscription;
   bool _obscurePassword = true;
 
   @override
@@ -27,7 +27,7 @@ class _LoginViewState extends ConsumerState<LoginView>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabSelection);
-    _loginSubscription = ref.listenManual<LoginState>(loginProvider, (
+    _signInSubscription = ref.listenManual<SignInState>(signInProvider, (
       previous,
       next,
     ) {
@@ -50,7 +50,7 @@ class _LoginViewState extends ConsumerState<LoginView>
 
   @override
   void dispose() {
-    _loginSubscription?.close();
+    _signInSubscription?.close();
     _tabController.removeListener(_handleTabSelection);
     _tabController.dispose();
     super.dispose();
@@ -58,16 +58,16 @@ class _LoginViewState extends ConsumerState<LoginView>
 
   void _handleTabSelection() {
     final type = _tabController.index == 0
-        ? LoginType.password
-        : LoginType.phone;
-    final currentType = ref.read(loginProvider).loginType;
+        ? SignInType.password
+        : SignInType.phone;
+    final currentType = ref.read(signInProvider).signInType;
     if (currentType != type) {
-      ref.read(loginProvider.notifier).setLoginType(type);
+      ref.read(signInProvider.notifier).setSignInType(type);
     }
   }
 
-  void _handleLogin() {
-    ref.read(loginProvider.notifier).login();
+  void _handleSignIn() {
+    ref.read(signInProvider.notifier).signIn();
   }
 
   void _togglePasswordVisibility() {
@@ -78,37 +78,39 @@ class _LoginViewState extends ConsumerState<LoginView>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final state = ref.watch(loginProvider);
+    final state = ref.watch(signInProvider);
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      body: LoginContent(
+      body: SignInContent(
         formKey: _formKey,
         colorScheme: colorScheme,
         state: state,
         tabController: _tabController,
         obscurePassword: _obscurePassword,
         onTogglePasswordVisibility: _togglePasswordVisibility,
-        onLogin: _handleLogin,
+        onSignIn: _handleSignIn,
         canSendCode: state.canSendCode,
         canSubmit: state.canSubmit,
         onTabTap: (index) {
-          final type = index == 0 ? LoginType.password : LoginType.phone;
-          ref.read(loginProvider.notifier).setLoginType(type);
+          final type = index == 0 ? SignInType.password : SignInType.phone;
+          ref.read(signInProvider.notifier).setSignInType(type);
         },
         onUsernameChanged: (value) =>
-            ref.read(loginProvider.notifier).usernameChanged(value),
+            ref.read(signInProvider.notifier).usernameChanged(value),
         onPasswordChanged: (value) =>
-            ref.read(loginProvider.notifier).passwordChanged(value),
+            ref.read(signInProvider.notifier).passwordChanged(value),
         onPhoneChanged: (value) =>
-            ref.read(loginProvider.notifier).phoneNumberChanged(value),
+            ref.read(signInProvider.notifier).phoneNumberChanged(value),
         onCodeChanged: (value) =>
-            ref.read(loginProvider.notifier).verificationCodeChanged(value),
+            ref.read(signInProvider.notifier).verificationCodeChanged(value),
         onSendCode: () =>
-            ref.read(loginProvider.notifier).sendVerificationCode(),
-        onRegister: () => const RegisterRoute().push<void>(context),
+            ref.read(signInProvider.notifier).sendVerificationCode(),
+        onSignUp: () => const SignUpRoute().push<void>(context),
         onForgotPassword: () => const ForgotPasswordRoute().push<void>(context),
-        onGoogleLogin: () => ref.read(loginProvider.notifier).loginWithGoogle(),
+        onGoogleSignIn: () {
+          // TODO: Implement Google Sign In
+        },
       ),
     );
   }

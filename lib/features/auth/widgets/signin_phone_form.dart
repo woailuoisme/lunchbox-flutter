@@ -6,23 +6,31 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:pinput/pinput.dart';
 
-class LoginPhoneForm extends StatelessWidget {
-  const LoginPhoneForm({
+class SignInPhoneForm extends StatelessWidget {
+  const SignInPhoneForm({
     super.key,
     required this.colorScheme,
+    required this.phoneNumber,
+    required this.verificationCode,
     required this.countdown,
-    required this.canSendCode,
+    required this.isCodeSent,
     required this.onPhoneChanged,
     required this.onCodeChanged,
     required this.onSendCode,
+    required this.canSendCode,
+    required this.onSubmit,
   });
 
   final ColorScheme colorScheme;
+  final String phoneNumber;
+  final String verificationCode;
   final int countdown;
-  final bool canSendCode;
+  final bool isCodeSent;
   final ValueChanged<String> onPhoneChanged;
   final ValueChanged<String> onCodeChanged;
   final VoidCallback onSendCode;
+  final bool canSendCode;
+  final VoidCallback onSubmit;
 
   @override
   Widget build(BuildContext context) {

@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
-class LoginFooterLinks extends StatelessWidget {
-  const LoginFooterLinks({
+class SignInFooterLinks extends StatelessWidget {
+  const SignInFooterLinks({
     super.key,
     required this.colorScheme,
-    required this.onRegister,
+    required this.onSignUp,
     required this.onForgotPassword,
   });
 
   final ColorScheme colorScheme;
-  final VoidCallback onRegister;
+  final VoidCallback onSignUp;
   final VoidCallback onForgotPassword;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [_buildRegisterHint(), _buildForgotPassword()],
+      children: [_buildSignUpHint(), _buildForgotPassword()],
     );
   }
 
-  Widget _buildRegisterHint() {
+  Widget _buildSignUpHint() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -34,7 +34,7 @@ class LoginFooterLinks extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: onRegister,
+          onPressed: onSignUp,
           style: TextButton.styleFrom(
             padding: EdgeInsets.only(left: 4.w),
             minimumSize: Size.zero,

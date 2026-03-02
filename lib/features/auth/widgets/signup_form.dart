@@ -5,8 +5,8 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class RegisterForm extends StatelessWidget {
-  const RegisterForm({
+class SignUpForm extends StatelessWidget {
+  const SignUpForm({
     super.key,
     required this.colorScheme,
     required this.obscurePassword,
@@ -107,7 +107,8 @@ class RegisterForm extends StatelessWidget {
       prefixIcon: Icon(prefixIcon, color: colorScheme.primary),
       suffixIcon: suffixIcon,
       filled: true,
-      fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.1),
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.r),
         borderSide: BorderSide.none,

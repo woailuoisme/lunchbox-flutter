@@ -114,7 +114,7 @@ class SplashNotifier extends _$SplashNotifier
       state = state.copyWith(navigationPath: AppRoutes.onboarding);
     } else {
       state = state.copyWith(
-        navigationPath: isLoggedIn ? AppRoutes.home : AppRoutes.login,
+        navigationPath: isLoggedIn ? AppRoutes.home : AppRoutes.signin,
       );
     }
 
@@ -126,6 +126,6 @@ class SplashNotifier extends _$SplashNotifier
 
   /// 跳过错误并进入登录页
   void skipError() {
-    state = state.copyWith(navigationPath: AppRoutes.login);
+    state = state.copyWith(navigationPath: AppRoutes.signin);
   }
 }

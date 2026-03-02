@@ -3,15 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class LoginSocialLogin extends StatelessWidget {
-  const LoginSocialLogin({
+class SignInSocialSignIn extends StatelessWidget {
+  const SignInSocialSignIn({
     super.key,
     required this.colorScheme,
-    required this.onGoogleLogin,
+    required this.onGoogleSignIn,
   });
 
   final ColorScheme colorScheme;
-  final VoidCallback onGoogleLogin;
+  final VoidCallback onGoogleSignIn;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class LoginSocialLogin extends StatelessWidget {
         ),
         SizedBox(height: 24.h),
         InkWell(
-          onTap: onGoogleLogin,
+          onTap: onGoogleSignIn,
           borderRadius: BorderRadius.circular(30.r),
           child: Container(
             padding: EdgeInsets.all(12.w),

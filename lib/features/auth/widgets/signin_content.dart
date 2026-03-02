@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/features/auth/providers/login_state.dart';
-import 'package:lunchbox/features/auth/widgets/login_footer_links.dart';
-import 'package:lunchbox/features/auth/widgets/login_header.dart';
-import 'package:lunchbox/features/auth/widgets/login_password_form.dart';
-import 'package:lunchbox/features/auth/widgets/login_phone_form.dart';
-import 'package:lunchbox/features/auth/widgets/login_social_login.dart';
-import 'package:lunchbox/features/auth/widgets/login_type_selector.dart';
+import 'package:lunchbox/features/auth/providers/signin_state.dart';
+import 'package:lunchbox/features/auth/widgets/signin_footer_links.dart';
+import 'package:lunchbox/features/auth/widgets/signin_header.dart';
+import 'package:lunchbox/features/auth/widgets/signin_password_form.dart';
+import 'package:lunchbox/features/auth/widgets/signin_phone_form.dart';
+import 'package:lunchbox/features/auth/widgets/signin_social_signin.dart';
+import 'package:lunchbox/features/auth/widgets/signin_type_selector.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
-class LoginContent extends StatelessWidget {
-  const LoginContent({
+class SignInContent extends StatelessWidget {
+  const SignInContent({
     super.key,
     required this.formKey,
     required this.colorScheme,
@@ -20,7 +20,7 @@ class LoginContent extends StatelessWidget {
     required this.tabController,
     required this.obscurePassword,
     required this.onTogglePasswordVisibility,
-    required this.onLogin,
+    required this.onSignIn,
     required this.onTabTap,
     required this.onUsernameChanged,
     required this.onPasswordChanged,
@@ -29,18 +29,18 @@ class LoginContent extends StatelessWidget {
     required this.onSendCode,
     required this.canSendCode,
     required this.canSubmit,
-    required this.onRegister,
+    required this.onSignUp,
     required this.onForgotPassword,
-    required this.onGoogleLogin,
+    required this.onGoogleSignIn,
   });
 
   final GlobalKey<FormBuilderState> formKey;
   final ColorScheme colorScheme;
-  final LoginState state;
+  final SignInState state;
   final TabController tabController;
   final bool obscurePassword;
   final VoidCallback onTogglePasswordVisibility;
-  final VoidCallback onLogin;
+  final VoidCallback onSignIn;
   final ValueChanged<int> onTabTap;
   final ValueChanged<String> onUsernameChanged;
   final ValueChanged<String> onPasswordChanged;
@@ -49,9 +49,9 @@ class LoginContent extends StatelessWidget {
   final VoidCallback onSendCode;
   final bool canSendCode;
   final bool canSubmit;
-  final VoidCallback onRegister;
+  final VoidCallback onSignUp;
   final VoidCallback onForgotPassword;
-  final VoidCallback onGoogleLogin;
+  final VoidCallback onGoogleSignIn;
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +70,12 @@ class LoginContent extends StatelessWidget {
                   children:
                       [
                             SizedBox(height: 48.h),
-                            LoginHeader(colorScheme: colorScheme),
+                            SignInHeader(colorScheme: colorScheme),
                             SizedBox(height: 48.h),
-                            LoginTypeSelector(
+                            SignInTypeSelector(
                               colorScheme: colorScheme,
                               tabController: tabController,
-                              loginType: state.loginType,
+                              signInType: state.signInType,
                               onTabTap: onTabTap,
                             ),
                             SizedBox(height: 32.h),
@@ -88,7 +88,7 @@ class LoginContent extends StatelessWidget {
                                   controller: tabController,
                                   physics: const BouncingScrollPhysics(),
                                   children: [
-                                    LoginPasswordForm(
+                                    SignInPasswordForm(
                                       colorScheme: colorScheme,
                                       username: state.username,
                                       password: state.password,
@@ -97,47 +97,47 @@ class LoginContent extends StatelessWidget {
                                       onPasswordChanged: onPasswordChanged,
                                       onTogglePasswordVisibility:
                                           onTogglePasswordVisibility,
-                                      onSubmit: onLogin,
+                                      onSubmit: onSignIn,
                                     ),
-                                    LoginPhoneForm(
+                                    SignInPhoneForm(
                                       colorScheme: colorScheme,
+                                      phoneNumber: state.phoneNumber,
+                                      verificationCode: state.verificationCode,
                                       countdown: state.countdown,
-                                      canSendCode: canSendCode,
+                                      isCodeSent: state.isCodeSent,
                                       onPhoneChanged: onPhoneChanged,
                                       onCodeChanged: onCodeChanged,
                                       onSendCode: onSendCode,
+                                      canSendCode: canSendCode,
+                                      onSubmit: onSignIn,
                                     ),
                                   ],
                                 ),
                               ),
                             ),
                             SizedBox(height: 32.h),
-                            _LoginButton(
+                            _SignInButton(
                               colorScheme: colorScheme,
                               isLoading: state.status.isInProgress,
                               isEnabled: canSubmit,
-                              onLogin: onLogin,
+                              onSignIn: onSignIn,
                             ),
-                            SizedBox(height: 16.h),
-                            LoginFooterLinks(
+                            SizedBox(height: 48.h),
+                            SignInSocialSignIn(
                               colorScheme: colorScheme,
-                              onRegister: onRegister,
+                              onGoogleSignIn: onGoogleSignIn,
+                            ),
+                            const Spacer(),
+                            SignInFooterLinks(
+                              colorScheme: colorScheme,
+                              onSignUp: onSignUp,
                               onForgotPassword: onForgotPassword,
-                            ),
-                            SizedBox(height: 32.h),
-                            LoginSocialLogin(
-                              colorScheme: colorScheme,
-                              onGoogleLogin: onGoogleLogin,
                             ),
                             SizedBox(height: 24.h),
                           ]
                           .animate(interval: 50.ms)
-                          .fadeIn(duration: 400.ms)
-                          .slideY(
-                            begin: 0.1,
-                            end: 0,
-                            curve: Curves.easeOutQuad,
-                          ),
+                          .fadeIn(duration: 400.ms, curve: Curves.easeOut)
+                          .slideY(begin: 0.1, end: 0, curve: Curves.easeOut),
                 ),
               ),
             ),
@@ -148,25 +148,25 @@ class LoginContent extends StatelessWidget {
   }
 }
 
-class _LoginButton extends StatelessWidget {
-  const _LoginButton({
+class _SignInButton extends StatelessWidget {
+  const _SignInButton({
     required this.colorScheme,
     required this.isLoading,
     required this.isEnabled,
-    required this.onLogin,
+    required this.onSignIn,
   });
 
   final ColorScheme colorScheme;
   final bool isLoading;
   final bool isEnabled;
-  final VoidCallback onLogin;
+  final VoidCallback onSignIn;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 56.h,
       child: FilledButton(
-        onPressed: isLoading || !isEnabled ? null : onLogin,
+        onPressed: isLoading || !isEnabled ? null : onSignIn,
         style: FilledButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.r),

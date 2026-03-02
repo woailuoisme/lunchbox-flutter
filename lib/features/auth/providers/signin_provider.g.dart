@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_provider.dart';
+part of 'signin_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,51 +9,51 @@ part of 'login_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(LoginNotifier)
-final loginProvider = LoginNotifierProvider._();
+@ProviderFor(SignInNotifier)
+final signInProvider = SignInNotifierProvider._();
 
-final class LoginNotifierProvider
-    extends $NotifierProvider<LoginNotifier, LoginState> {
-  LoginNotifierProvider._()
+final class SignInNotifierProvider
+    extends $NotifierProvider<SignInNotifier, SignInState> {
+  SignInNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'loginProvider',
+        name: r'signInProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$loginNotifierHash();
+  String debugGetCreateSourceHash() => _$signInNotifierHash();
 
   @$internal
   @override
-  LoginNotifier create() => LoginNotifier();
+  SignInNotifier create() => SignInNotifier();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(LoginState value) {
+  Override overrideWithValue(SignInState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<LoginState>(value),
+      providerOverride: $SyncValueProvider<SignInState>(value),
     );
   }
 }
 
-String _$loginNotifierHash() => r'd27738bf7490c1191ae2a3b81d3b18c08b7acd8d';
+String _$signInNotifierHash() => r'b4b066242d2bf48460598fa53b04fec2d47b23c5';
 
-abstract class _$LoginNotifier extends $Notifier<LoginState> {
-  LoginState build();
+abstract class _$SignInNotifier extends $Notifier<SignInState> {
+  SignInState build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<LoginState, LoginState>;
+    final ref = this.ref as $Ref<SignInState, SignInState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<LoginState, LoginState>,
-              LoginState,
+              AnyNotifier<SignInState, SignInState>,
+              SignInState,
               Object?,
               Object?
             >;

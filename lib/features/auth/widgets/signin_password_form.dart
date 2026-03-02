@@ -5,8 +5,8 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class LoginPasswordForm extends StatelessWidget {
-  const LoginPasswordForm({
+class SignInPasswordForm extends StatelessWidget {
+  const SignInPasswordForm({
     super.key,
     required this.colorScheme,
     required this.username,
@@ -110,7 +110,7 @@ class LoginPasswordForm extends StatelessWidget {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(color: colorScheme.error, width: 1.5),
+        borderSide: BorderSide(color: colorScheme.error),
       ),
     );
   }

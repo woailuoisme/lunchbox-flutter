@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
-class RegisterHeader extends StatelessWidget {
-  const RegisterHeader({super.key, required this.colorScheme});
+class SignInHeader extends StatelessWidget {
+  const SignInHeader({super.key, required this.colorScheme});
 
   final ColorScheme colorScheme;
 
@@ -12,7 +12,7 @@ class RegisterHeader extends StatelessWidget {
     return Column(
       children: [
         Text(
-          t.auth.registerTitle,
+          t.auth.loginTitle,
           style: TextStyle(
             fontSize: 28.sp,
             fontWeight: FontWeight.bold,

@@ -4,20 +4,20 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/features/auth/providers/auth_provider.dart';
-import 'package:lunchbox/features/auth/widgets/register_button.dart';
-import 'package:lunchbox/features/auth/widgets/register_form.dart';
-import 'package:lunchbox/features/auth/widgets/register_header.dart';
+import 'package:lunchbox/features/auth/widgets/signup_button.dart';
+import 'package:lunchbox/features/auth/widgets/signup_form.dart';
+import 'package:lunchbox/features/auth/widgets/signup_header.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:toastification/toastification.dart';
 
-class RegisterView extends ConsumerStatefulWidget {
-  const RegisterView({super.key});
+class SignUpView extends ConsumerStatefulWidget {
+  const SignUpView({super.key});
 
   @override
-  ConsumerState<RegisterView> createState() => _RegisterViewState();
+  ConsumerState<SignUpView> createState() => _SignUpViewState();
 }
 
-class _RegisterViewState extends ConsumerState<RegisterView> {
+class _SignUpViewState extends ConsumerState<SignUpView> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool _isLoading = false;
   bool _obscurePassword = true;
@@ -26,8 +26,8 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
     setState(() => _obscurePassword = !_obscurePassword);
   }
 
-  /// 处理注册逻辑
-  Future<void> _handleRegister() async {
+  /// Handles the sign-up logic
+  Future<void> _handleSignUp() async {
     if (!(_formKey.currentState?.saveAndValidate() ?? false)) {
       return;
     }
@@ -102,31 +102,27 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children:
                           [
-                                SizedBox(height: 16.h),
-                                RegisterHeader(colorScheme: colorScheme),
-                                SizedBox(height: 32.h),
-                                RegisterForm(
+                                SizedBox(height: 24.h),
+                                SignUpHeader(colorScheme: colorScheme),
+                                SizedBox(height: 48.h),
+                                SignUpForm(
                                   colorScheme: colorScheme,
                                   obscurePassword: _obscurePassword,
                                   onTogglePasswordVisibility:
                                       _togglePasswordVisibility,
-                                  onSubmit: _handleRegister,
+                                  onSubmit: _handleSignUp,
                                 ),
                                 SizedBox(height: 32.h),
-                                RegisterButton(
+                                SignUpButton(
                                   colorScheme: colorScheme,
                                   isLoading: _isLoading,
-                                  onPressed: _handleRegister,
+                                  onPressed: _handleSignUp,
                                 ),
                                 SizedBox(height: 24.h),
                               ]
                               .animate(interval: 50.ms)
-                              .fadeIn(duration: 400.ms)
-                              .slideY(
-                                begin: 0.1,
-                                end: 0,
-                                curve: Curves.easeOutQuad,
-                              ),
+                              .fadeIn(duration: 400.ms, curve: Curves.easeOut)
+                              .slideY(begin: 0.1, end: 0, curve: Curves.easeOut),
                     ),
                   ),
                 ),

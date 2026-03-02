@@ -23,6 +23,7 @@ mixin AsyncRunnerMixin<S> {
     bool showLoading = true,
     String? errorLabel,
     S Function(S state, bool isLoading)? loadingStateUpdater,
+    void Function(Object error, StackTrace stackTrace)? onError,
   }) async {
     if (showLoading) {
       _setLoading(true, loadingStateUpdater);
@@ -33,12 +34,17 @@ mixin AsyncRunnerMixin<S> {
       return result;
     } catch (e, stack) {
       LoggerUtils.e(errorLabel ?? t.common.error, e, stack);
-      rethrow;
+      if (onError != null) {
+        onError(e, stack);
+      } else {
+        rethrow;
+      }
     } finally {
       if (showLoading) {
         _setLoading(false, loadingStateUpdater);
       }
     }
+    return null;
   }
 
   void _setLoading(

@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/features/auth/providers/login_state.dart';
+import 'package:lunchbox/features/auth/providers/signin_state.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
-class LoginTypeSelector extends StatelessWidget {
-  const LoginTypeSelector({
+class SignInTypeSelector extends StatelessWidget {
+  const SignInTypeSelector({
     super.key,
     required this.colorScheme,
     required this.tabController,
-    required this.loginType,
+    required this.signInType,
     required this.onTabTap,
   });
 
   final ColorScheme colorScheme;
   final TabController tabController;
-  final LoginType loginType;
+  final SignInType signInType;
   final ValueChanged<int> onTabTap;
 
   @override
   Widget build(BuildContext context) {
     if (!tabController.indexIsChanging) {
-      final targetIndex = loginType == LoginType.password ? 0 : 1;
+      final targetIndex = signInType == SignInType.password ? 0 : 1;
       if (tabController.index != targetIndex) {
         tabController.animateTo(targetIndex);
       }

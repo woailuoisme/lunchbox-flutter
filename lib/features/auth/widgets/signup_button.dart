@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
-class RegisterButton extends StatelessWidget {
-  const RegisterButton({
+class SignUpButton extends StatelessWidget {
+  const SignUpButton({
     super.key,
     required this.colorScheme,
     required this.isLoading,

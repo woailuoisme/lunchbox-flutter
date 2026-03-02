@@ -10,22 +10,24 @@ class ForgotPasswordForm extends StatelessWidget {
     super.key,
     required this.colorScheme,
     required this.onSubmit,
+    required this.onChanged,
   });
 
   final ColorScheme colorScheme;
   final VoidCallback onSubmit;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
     return FormBuilderTextField(
-      name: 'email',
+      name: 'identifier',
       style: TextStyle(
         fontSize: 16.sp,
         color: colorScheme.onSurface,
         fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
-        labelText: t.common.username,
+        labelText: t.auth.usernameOrEmail,
         labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
         hintText: t.auth.usernameOrEmail,
         hintStyle: TextStyle(color: colorScheme.outline),
@@ -54,6 +56,7 @@ class ForgotPasswordForm extends StatelessWidget {
       ]),
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.done,
+      onChanged: (value) => onChanged(value ?? ''),
       onSubmitted: (_) => onSubmit(),
     );
   }

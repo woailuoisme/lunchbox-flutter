@@ -84,13 +84,13 @@ class OnboardingView extends ConsumerWidget {
       onDone: () async {
         await notifier.completeOnboarding();
         if (context.mounted) {
-          context.go(AppRoutes.login);
+          context.go(AppRoutes.signin);
         }
       },
       onSkip: () async {
         await notifier.completeOnboarding();
         if (context.mounted) {
-          context.go(AppRoutes.login);
+          context.go(AppRoutes.signin);
         }
       },
       showSkipButton: true,

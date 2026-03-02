@@ -9,10 +9,12 @@ part of 'routes.dart';
 List<RouteBase> get $appRoutes => [
   $splashRoute,
   $onboardingRoute,
-  $loginRoute,
-  $complexLoginRoute,
-  $registerRoute,
+  $signInRoute,
+  $complexSignInRoute,
+  $signUpRoute,
   $forgotPasswordRoute,
+  $oTPVerificationRoute,
+  $resetPasswordRoute,
   $citySelectionRoute,
   $teamOrderingRoute,
   $communityRoute,
@@ -87,14 +89,14 @@ mixin $OnboardingRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $loginRoute =>
-    GoRouteData.$route(path: '/login', factory: $LoginRoute._fromState);
+RouteBase get $signInRoute =>
+    GoRouteData.$route(path: '/signin', factory: $SignInRoute._fromState);
 
-mixin $LoginRoute on GoRouteData {
-  static LoginRoute _fromState(GoRouterState state) => const LoginRoute();
+mixin $SignInRoute on GoRouteData {
+  static SignInRoute _fromState(GoRouterState state) => const SignInRoute();
 
   @override
-  String get location => GoRouteData.$location('/login');
+  String get location => GoRouteData.$location('/signin');
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -110,17 +112,17 @@ mixin $LoginRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $complexLoginRoute => GoRouteData.$route(
-  path: '/complex-login',
-  factory: $ComplexLoginRoute._fromState,
+RouteBase get $complexSignInRoute => GoRouteData.$route(
+  path: '/complex-signin',
+  factory: $ComplexSignInRoute._fromState,
 );
 
-mixin $ComplexLoginRoute on GoRouteData {
-  static ComplexLoginRoute _fromState(GoRouterState state) =>
-      const ComplexLoginRoute();
+mixin $ComplexSignInRoute on GoRouteData {
+  static ComplexSignInRoute _fromState(GoRouterState state) =>
+      const ComplexSignInRoute();
 
   @override
-  String get location => GoRouteData.$location('/complex-login');
+  String get location => GoRouteData.$location('/complex-signin');
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -136,14 +138,14 @@ mixin $ComplexLoginRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $registerRoute =>
-    GoRouteData.$route(path: '/register', factory: $RegisterRoute._fromState);
+RouteBase get $signUpRoute =>
+    GoRouteData.$route(path: '/signup', factory: $SignUpRoute._fromState);
 
-mixin $RegisterRoute on GoRouteData {
-  static RegisterRoute _fromState(GoRouterState state) => const RegisterRoute();
+mixin $SignUpRoute on GoRouteData {
+  static SignUpRoute _fromState(GoRouterState state) => const SignUpRoute();
 
   @override
-  String get location => GoRouteData.$location('/register');
+  String get location => GoRouteData.$location('/signup');
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -170,6 +172,58 @@ mixin $ForgotPasswordRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/forgot-password');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $oTPVerificationRoute => GoRouteData.$route(
+  path: '/otp-verification',
+  factory: $OTPVerificationRoute._fromState,
+);
+
+mixin $OTPVerificationRoute on GoRouteData {
+  static OTPVerificationRoute _fromState(GoRouterState state) =>
+      const OTPVerificationRoute();
+
+  @override
+  String get location => GoRouteData.$location('/otp-verification');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $resetPasswordRoute => GoRouteData.$route(
+  path: '/reset-password',
+  factory: $ResetPasswordRoute._fromState,
+);
+
+mixin $ResetPasswordRoute on GoRouteData {
+  static ResetPasswordRoute _fromState(GoRouterState state) =>
+      const ResetPasswordRoute();
+
+  @override
+  String get location => GoRouteData.$location('/reset-password');
 
   @override
   void go(BuildContext context) => context.go(location);
