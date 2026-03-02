@@ -41,7 +41,7 @@ jobs:
           if [ "${{ github.event.inputs.build_apk }}" == "true" ]; then TASKS+=("apk"); fi
           if [ "${{ github.event.inputs.build_appbundle }}" == "true" ]; then TASKS+=("appbundle"); fi
           if [ "${{ github.event.inputs.build_ios }}" == "true" ]; then TASKS+=("ios"); fi
-          
+
           if [ ${#TASKS[@]} -eq 0 ]; then
             echo "has_tasks=false" >> $GITHUB_OUTPUT
             echo "matrix={\"task\":[]}" >> $GITHUB_OUTPUT
@@ -78,6 +78,11 @@ jobs:
 
       - name: Get Dependencies
         run: flutter pub get
+
+      - name: Restore Environment Files
+        run: |
+          echo "${{ secrets.ENV_PROD }}" > .env.prod
+          echo "${{ secrets.ENV_DEV }}" > .env.dev
 
       - name: Build Runner
         run: flutter pub run build_runner build --delete-conflicting-outputs
