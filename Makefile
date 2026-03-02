@@ -104,16 +104,16 @@ test-widget:
 
 
 analyze:
-	flutter analyze | grep -v "info •" || true
+	./scripts/lunchbox.sh analyze
 
 analyze-strict:
-	flutter analyze
+	./scripts/lunchbox.sh analyze-strict
 
 fix:
-	dart fix --apply
+	./scripts/lunchbox.sh fix
 
 format:
-	dart format lib test
+	./scripts/lunchbox.sh format
 
 lint: analyze
 

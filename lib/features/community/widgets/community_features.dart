@@ -61,7 +61,6 @@ class CommunityFeatures extends StatelessWidget {
 }
 
 class _CommunityFeatureItem extends StatelessWidget {
-
   const _CommunityFeatureItem({
     required this.icon,
     required this.title,

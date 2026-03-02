@@ -44,7 +44,6 @@ class CommunityWhyJoin extends StatelessWidget {
 }
 
 class _WhyJoinBulletPoint extends StatelessWidget {
-
   const _WhyJoinBulletPoint({required this.text});
   final String text;
 

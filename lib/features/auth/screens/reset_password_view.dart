@@ -97,17 +97,14 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
                             ? Icons.visibility_off
                             : Icons.visibility,
                       ),
-                      onPressed:
-                          () => setState(
-                            () => _obscureNewPassword = !_obscureNewPassword,
-                          ),
+                      onPressed: () => setState(
+                        () => _obscureNewPassword = !_obscureNewPassword,
+                      ),
                     ),
                   ),
-                  onChanged:
-                      (value) =>
-                          ref
-                              .read(forgotPasswordProvider.notifier)
-                              .newPasswordChanged(value ?? ''),
+                  onChanged: (value) => ref
+                      .read(forgotPasswordProvider.notifier)
+                      .newPasswordChanged(value ?? ''),
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(errorText: t.auth.required),
                     FormBuilderValidators.minLength(
@@ -129,19 +126,15 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
                             ? Icons.visibility_off
                             : Icons.visibility,
                       ),
-                      onPressed:
-                          () => setState(
-                            () =>
-                                _obscureConfirmPassword =
-                                    !_obscureConfirmPassword,
-                          ),
+                      onPressed: () => setState(
+                        () =>
+                            _obscureConfirmPassword = !_obscureConfirmPassword,
+                      ),
                     ),
                   ),
-                  onChanged:
-                      (value) =>
-                          ref
-                              .read(forgotPasswordProvider.notifier)
-                              .confirmPasswordChanged(value ?? ''),
+                  onChanged: (value) => ref
+                      .read(forgotPasswordProvider.notifier)
+                      .confirmPasswordChanged(value ?? ''),
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(errorText: t.auth.required),
                     (value) {
@@ -157,24 +150,25 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
                 SizedBox(
                   height: 56.h,
                   child: FilledButton(
-                    onPressed: state.status.isInProgress ? null : _handleResetPassword,
+                    onPressed: state.status.isInProgress
+                        ? null
+                        : _handleResetPassword,
                     style: FilledButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.r),
                       ),
                     ),
-                    child:
-                        state.status.isInProgress
-                            ? CircularProgressIndicator(
-                              color: colorScheme.onPrimary,
-                            )
-                            : Text(
-                              t.common.confirm,
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
+                    child: state.status.isInProgress
+                        ? CircularProgressIndicator(
+                            color: colorScheme.onPrimary,
+                          )
+                        : Text(
+                            t.common.confirm,
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
                             ),
+                          ),
                   ),
                 ),
               ],

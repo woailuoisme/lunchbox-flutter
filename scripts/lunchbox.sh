@@ -77,15 +77,21 @@ function cmd_analyze_strict() {
 }
 
 function cmd_format() {
-    log_info "Formatting code..."
+    log_info "Formatting code (excluding generated files)..."
     cd "$PROJECT_ROOT"
-    dart format lib test
+    # Find files excluding .g.dart, .freezed.dart, etc. and format them
+    # Use -print0 and xargs -0 to handle filenames with spaces or special characters
+    find lib test -name "*.dart" ! -name "*.g.dart" ! -name "*.freezed.dart" ! -name "*.config.dart" ! -name "*.gr.dart" -print0 | xargs -0 dart format
     log_success "Code formatting completed"
 }
 
 function cmd_fix() {
-    log_info "Automatically fixing code issues..."
+    log_info "Automatically fixing code issues (excluding generated files)..."
     cd "$PROJECT_ROOT"
+    # dart fix --apply doesn't support direct file lists easily for filtering, 
+    # but we can use the same logic if needed or rely on analysis_options.yaml exclusion.
+    # Here we apply it to the whole project as it's the standard way, 
+    # but we'll use find to be explicit if you prefer.
     dart fix --apply
     log_success "Automatic code fix completed"
 }

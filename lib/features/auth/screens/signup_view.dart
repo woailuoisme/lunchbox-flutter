@@ -122,7 +122,11 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                               ]
                               .animate(interval: 50.ms)
                               .fadeIn(duration: 400.ms, curve: Curves.easeOut)
-                              .slideY(begin: 0.1, end: 0, curve: Curves.easeOut),
+                              .slideY(
+                                begin: 0.1,
+                                end: 0,
+                                curve: Curves.easeOut,
+                              ),
                     ),
                   ),
                 ),

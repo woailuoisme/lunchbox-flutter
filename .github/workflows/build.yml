@@ -15,7 +15,7 @@ on:
         description: 'Build Android AppBundle (AAB)'
         required: false
         type: boolean
-        default: false
+        default: true
       build_ios:
         description: 'Build iOS App'
         required: false
@@ -37,7 +37,10 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       has_tasks: ${{ steps.set-matrix.outputs.has_tasks }}
+      timestamp: ${{ steps.set-timestamp.outputs.time }}
     steps:
+      - id: set-timestamp
+        run: echo "time=$(TZ='Asia/Shanghai' date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
       - id: set-matrix
         run: |
           TASKS=()
@@ -90,40 +93,55 @@ jobs:
       - name: Build Runner
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
-      - name: Set Beijing Timestamp
-        id: timestamp
-        run: echo "time=$(TZ='Asia/Shanghai' date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
-
       - name: Build Task
         run: |
           BUILD_MODE="${{ github.event.inputs.build_mode }}"
+          TIME="${{ needs.prepare.outputs.timestamp }}"
           if [ "${{ matrix.task }}" == "apk" ]; then
             flutter build apk --$BUILD_MODE
             # Rename APK
-            mv build/app/outputs/flutter-apk/app-$BUILD_MODE.apk build/app/outputs/flutter-apk/apk-$BUILD_MODE-${{ steps.timestamp.outputs.time }}.apk
+            mv build/app/outputs/flutter-apk/app-$BUILD_MODE.apk build/app/outputs/flutter-apk/apk-$BUILD_MODE-$TIME.apk
           elif [ "${{ matrix.task }}" == "appbundle" ]; then
             flutter build appbundle --$BUILD_MODE
             # Rename AAB (Path varies by build mode)
-            # Release: build/app/outputs/bundle/release/app-release.aab
-            # Debug: build/app/outputs/bundle/debug/app-debug.aab
             if [ "$BUILD_MODE" == "release" ]; then
-              mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/aab-release-${{ steps.timestamp.outputs.time }}.aab
+              mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/aab-release-$TIME.aab
             else
-              mv build/app/outputs/bundle/debug/app-debug.aab build/app/outputs/bundle/debug/aab-debug-${{ steps.timestamp.outputs.time }}.aab
+              mv build/app/outputs/bundle/debug/app-debug.aab build/app/outputs/bundle/debug/aab-debug-$TIME.aab
             fi
           elif [ "${{ matrix.task }}" == "ios" ]; then
             flutter build ios --release --no-codesign
           fi
 
-      - name: Create Release
-        if: matrix.task != 'ios'
-        uses: softprops/action-gh-release@v2
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: build-${{ steps.timestamp.outputs.time }}
-          name: Build ${{ steps.timestamp.outputs.time }}
-          files: |
+          name: ${{ matrix.task }}-${{ github.event.inputs.build_mode }}
+          path: |
             build/app/outputs/flutter-apk/*.apk
             build/app/outputs/bundle/*/*.aab
+            build/ios/iphoneos/*.app
+            build/ios/iphoneos/*.ipa
+          compression-level: 0
+          if-no-files-found: ignore
+
+  release:
+    needs: [prepare, build]
+    name: Create Unified Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: "*-*" # Matches all matrix build names (e.g., apk-release, ios-release)
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ needs.prepare.outputs.timestamp }}
+          name: Build ${{ needs.prepare.outputs.timestamp }}
+          files: artifacts/**/*
           draft: false
           prerelease: false
           fail_on_unmatched_files: false

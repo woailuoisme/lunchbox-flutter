@@ -22,17 +22,17 @@ dependencies:
 
   # 路由与网络
   go_router: ^17.1.0
-  dio: ^5.9.1
-  dio_http2_adapter: ^2.6.0
+  dio: ^5.9.2
+  dio_http2_adapter: ^2.7.0
   retrofit: ^4.9.2
   connectivity_plus: ^7.0.0
 
   # 存储
   shared_preferences: ^2.5.4
   flutter_secure_storage: ^10.0.0
-  drift: ^2.31.0
-  drift_flutter: ^0.2.8
-  sqlite3_flutter_libs: any
+  drift: ^2.32.0
+  drift_flutter: ^0.3.0
+  sqlite3_flutter_libs: ^0.6.0+eol
 
   # 基础 UI
   flutter_screenutil: ^5.9.3
@@ -107,8 +107,7 @@ dependencies:
   talker_dio_logger: ^5.1.14
   fpdart: ^1.2.0
 
-  path:
-  # 代码生成注解
+  path: ^1.9.1
   freezed_annotation: ^3.1.0
   json_annotation: ^4.11.0
   built_value: ^8.12.4
@@ -116,7 +115,6 @@ dependencies:
   envied: ^1.3.3
 
 dev_dependencies:
-  # 测试
   flutter_test:
     sdk: flutter
   test: ^1.29.0
@@ -124,7 +122,6 @@ dev_dependencies:
   riverpod: ^3.2.1
 
   # 代码规范
-  analyzer: ^9.0.0
   flutter_lints: ^6.0.0
   riverpod_lint: ^3.1.3
 
@@ -135,7 +132,7 @@ dev_dependencies:
   injectable_generator: ^2.12.0
   freezed: ^3.2.5
   json_serializable: ^6.13.0
-  drift_dev: ^2.31.0
+  drift_dev: ^2.32.0
   envied_generator: ^1.3.3
   go_router_builder: ^4.2.0
 
@@ -143,7 +140,10 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
 # 版本覆盖
 dependency_overrides:
-  test_api: 0.7.9
+  meta: 1.18.1
+  test_api: ^0.7.10
+  analyzer: ^10.0.0
+
 
 flutter:
   uses-material-design: true
