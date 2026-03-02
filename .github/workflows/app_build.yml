@@ -112,12 +112,16 @@ jobs:
             flutter build ios --release --no-codesign
           fi
 
-      - name: Upload Artifacts
+      - name: Create Release
         if: matrix.task != 'ios'
-        uses: actions/upload-artifact@v4
+        uses: softprops/action-gh-release@v2
         with:
-          name: ${{ matrix.task }}-${{ github.event.inputs.build_mode }}-${{ steps.timestamp.outputs.time }}
-          path: |
+          tag_name: build-${{ steps.timestamp.outputs.time }}
+          name: Build ${{ steps.timestamp.outputs.time }}
+          files: |
             build/app/outputs/flutter-apk/*.apk
             build/app/outputs/bundle/*/*.aab
-          compression-level: 0
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
