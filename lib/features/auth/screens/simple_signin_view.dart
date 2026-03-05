@@ -47,11 +47,6 @@ class _SimpleSignInViewState extends ConsumerState<SimpleSignInView> {
         );
       }
     });
-
-    // Ensure sign in type is password for simple view
-    Future.microtask(() {
-      ref.read(signInProvider.notifier).setSignInType(SignInType.password);
-    });
   }
 
   @override
@@ -89,12 +84,12 @@ class _SimpleSignInViewState extends ConsumerState<SimpleSignInView> {
                   key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children:
                         [
-                              SizedBox(height: 48.h),
                               SignInHeader(colorScheme: colorScheme),
-                              SizedBox(height: 48.h),
+                              SizedBox(height: 40.h),
                               SignInPasswordForm(
                                 colorScheme: colorScheme,
                                 username: state.username,
@@ -135,14 +130,13 @@ class _SimpleSignInViewState extends ConsumerState<SimpleSignInView> {
                                         ),
                                 ),
                               ),
-                              SizedBox(height: 48.h),
+                              SizedBox(height: 40.h),
                               SignInSocialSignIn(
                                 colorScheme: colorScheme,
-                                onGoogleSignIn: () {
-                                  // TODO: Implement Google Sign In
-                                },
+                                onGoogleSignIn: () =>
+                                    ref.read(signInProvider.notifier).signIn(),
                               ),
-                              const Spacer(),
+                              SizedBox(height: 24.h),
                               SignInFooterLinks(
                                 colorScheme: colorScheme,
                                 onSignUp: () =>

@@ -20,30 +20,52 @@ class _PersonalInfoRestClient implements PersonalInfoRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<UserModel>> updateProfile(
-    Map<String, dynamic> body,
-  ) async {
+  Future<ApiResponse<ProfileUpdateData>> updateProfile(
+    String nickname,
+    String gender,
+    String telephone, {
+    File? avatar,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
-    final _options = _setStreamType<ApiResponse<UserModel>>(
-      Options(method: 'PUT', headers: _headers, extra: _extra)
+    final _data = FormData();
+    _data.fields.add(MapEntry('nickname', nickname));
+    _data.fields.add(MapEntry('gender', gender));
+    _data.fields.add(MapEntry('telephone', telephone));
+    if (avatar != null) {
+      _data.files.add(
+        MapEntry(
+          'avatar',
+          MultipartFile.fromFileSync(
+            avatar.path,
+            filename: avatar.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      );
+    }
+    final _options = _setStreamType<ApiResponse<ProfileUpdateData>>(
+      Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'multipart/form-data',
+          )
           .compose(
             _dio.options,
-            '/api/v1/user/profile',
+            '/api/v1/auth/profile_update',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<UserModel> _value;
+    late ApiResponse<ProfileUpdateData> _value;
     try {
-      _value = ApiResponse<UserModel>.fromJson(
+      _value = ApiResponse<ProfileUpdateData>.fromJson(
         _result.data!,
-        (json) => UserModel.fromJson(json as Map<String, dynamic>),
+        (json) => ProfileUpdateData.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);

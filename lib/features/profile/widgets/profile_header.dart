@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lunchbox/features/profile/widgets/profile_asset_item.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/routes.dart';
@@ -67,19 +68,16 @@ class ProfileHeader extends StatelessWidget {
                 Container(
                   width: 64.w,
                   height: 64.w,
+                  clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
+                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.1),
                     border: Border.all(
                       color: theme.colorScheme.onPrimary.withValues(alpha: 0.5),
                       width: 2,
                     ),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        avatarUrl ?? 'https://picsum.photos/seed/user/200',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
                   ),
+                  child: _buildAvatar(avatarUrl),
                 ),
                 SizedBox(width: 16.w),
                 Expanded(
@@ -157,6 +155,36 @@ class ProfileHeader extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildAvatar(String? url) {
+    if (url == null || url.isEmpty) {
+      return const Center(child: Icon(Icons.person, color: Colors.white));
+    }
+
+    final isSvg = url.toLowerCase().endsWith('.svg');
+    if (isSvg) {
+      return SvgPicture.network(
+        url,
+        fit: BoxFit.cover,
+        placeholderBuilder: (context) => const Center(
+          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+        ),
+      );
+    }
+
+    return Image.network(
+      url,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) =>
+          const Center(child: Icon(Icons.person, color: Colors.white)),
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return const Center(
+          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+        );
+      },
     );
   }
 }

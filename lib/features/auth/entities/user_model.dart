@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lunchbox/features/profile/entities/user_profile.dart';
 
 part 'user_model.freezed.dart';
 part 'user_model.g.dart';
@@ -55,6 +56,21 @@ sealed class UserModel with _$UserModel {
   /// 从JSON映射创建UserModel实例
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
+
+  /// 从 UserProfile 模型创建 UserModel 实例
+  factory UserModel.fromProfile(UserProfile profile) {
+    return UserModel(
+      id: profile.id.toString(),
+      username: profile.email ?? profile.nickname,
+      phone: profile.telephone,
+      email: profile.email,
+      nickname: profile.nickname,
+      avatar: profile.avatar,
+      gender: profile.gender,
+      points: double.tryParse(profile.integral)?.toInt() ?? 0,
+      memberLevel: profile.role,
+    );
+  }
 
   /// 检查是否为常用设备
   bool isFavoriteDevice(String deviceId) {

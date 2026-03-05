@@ -14,13 +14,10 @@ extension ForgotPasswordStatusX on ForgotPasswordStatus {
 @freezed
 abstract class ForgotPasswordState with _$ForgotPasswordState {
   const factory ForgotPasswordState({
-    @Default('') String identifier, // Email or Phone
-    @Default('') String otp,
+    @Default('') String identifier, // Email
+    @Default('') String oldPassword,
     @Default('') String newPassword,
     @Default('') String confirmPassword,
-    @Default(0) int countdown,
-    @Default(false) bool isOtpSent,
-    @Default(false) bool isOtpVerified,
     @Default(ForgotPasswordStatus.initial) ForgotPasswordStatus status,
     String? errorMessage,
   }) = _ForgotPasswordState;

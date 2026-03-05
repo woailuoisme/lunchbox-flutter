@@ -1,4 +1,3 @@
-import 'package:lunchbox/core/errors/failure.dart';
 import 'package:lunchbox/features/my_coupons/datasources/my_coupons_rest_client.dart';
 import 'package:lunchbox/features/my_coupons/entities/user_coupon_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -25,10 +24,7 @@ class MyCouponsRepository {
       type: type,
       usedType: usedType,
     );
-    if (response.success && response.data != null) {
-      return response.data!;
-    }
-    throw Failure.server(message: response.message, statusCode: response.code);
+    return response.data ?? [];
   }
 }
 

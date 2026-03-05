@@ -25,8 +25,7 @@ class _SignInViewState extends ConsumerState<SignInView>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-    _tabController.addListener(_handleTabSelection);
+    _tabController = TabController(length: 1, vsync: this);
     _signInSubscription = ref.listenManual<SignInState>(signInProvider, (
       previous,
       next,
@@ -51,19 +50,8 @@ class _SignInViewState extends ConsumerState<SignInView>
   @override
   void dispose() {
     _signInSubscription?.close();
-    _tabController.removeListener(_handleTabSelection);
     _tabController.dispose();
     super.dispose();
-  }
-
-  void _handleTabSelection() {
-    final type = _tabController.index == 0
-        ? SignInType.password
-        : SignInType.phone;
-    final currentType = ref.read(signInProvider).signInType;
-    if (currentType != type) {
-      ref.read(signInProvider.notifier).setSignInType(type);
-    }
   }
 
   void _handleSignIn() {
@@ -90,27 +78,19 @@ class _SignInViewState extends ConsumerState<SignInView>
         obscurePassword: _obscurePassword,
         onTogglePasswordVisibility: _togglePasswordVisibility,
         onSignIn: _handleSignIn,
-        canSendCode: state.canSendCode,
+        canSendCode: false,
         canSubmit: state.canSubmit,
-        onTabTap: (index) {
-          final type = index == 0 ? SignInType.password : SignInType.phone;
-          ref.read(signInProvider.notifier).setSignInType(type);
-        },
+        onTabTap: (index) {},
         onUsernameChanged: (value) =>
             ref.read(signInProvider.notifier).usernameChanged(value),
         onPasswordChanged: (value) =>
             ref.read(signInProvider.notifier).passwordChanged(value),
-        onPhoneChanged: (value) =>
-            ref.read(signInProvider.notifier).phoneNumberChanged(value),
-        onCodeChanged: (value) =>
-            ref.read(signInProvider.notifier).verificationCodeChanged(value),
-        onSendCode: () =>
-            ref.read(signInProvider.notifier).sendVerificationCode(),
+        onPhoneChanged: (_) {},
+        onCodeChanged: (_) {},
+        onSendCode: () {},
         onSignUp: () => const SignUpRoute().push<void>(context),
         onForgotPassword: () => const ForgotPasswordRoute().push<void>(context),
-        onGoogleSignIn: () {
-          // TODO: Implement Google Sign In
-        },
+        onGoogleSignIn: () => ref.read(signInProvider.notifier).signIn(),
       ),
     );
   }

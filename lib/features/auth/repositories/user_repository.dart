@@ -3,24 +3,26 @@ import 'dart:convert';
 import 'package:lunchbox/core/services/services.dart';
 import 'package:lunchbox/features/auth/datasources/auth_rest_client.dart';
 import 'package:lunchbox/features/auth/entities/user_model.dart';
+import 'package:lunchbox/features/profile/datasources/profile_rest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:lunchbox/core/errors/failure.dart';
 
 part 'user_repository.g.dart';
 
 @Riverpod(keepAlive: true)
 UserRepository userRepository(Ref ref) {
   final authDataSource = ref.watch(authRemoteDataSourceProvider);
+  final profileClient = ref.watch(profileRestClientProvider);
   final storageService = ref.watch(storageServiceProvider);
-  return UserRepository(authDataSource, storageService);
+  return UserRepository(authDataSource, profileClient, storageService);
 }
 
 /// 用户仓库类
 /// 负责处理用户相关的数据访问和业务逻辑
 class UserRepository {
-  UserRepository(this._client, this._storage);
+  UserRepository(this._client, this._profileClient, this._storage);
 
   final AuthRemoteDataSource _client;
+  final ProfileRestClient _profileClient;
   final StorageService _storage;
 
   static const String userStorageKey = 'user_info';
@@ -31,56 +33,67 @@ class UserRepository {
     required String username,
     required String password,
   }) async {
-    final response = await _client.login({'nickname': username});
+    final response = await _client.login({
+      'nickname': username,
+      'password': password,
+    });
 
     if (response.success && response.data != null) {
-      final data = response.data! as Map<String, dynamic>;
-      final token = data['token'] as String;
-      final userId = data['id'].toString();
+      final data = response.data!;
+      final token = data.token;
+      final userId = data.id.toString();
       final user = UserModel(
         id: userId,
-        username: data['telephone'] as String,
-        phone: data['telephone'] as String,
-        nickname: data['telephone'] as String,
-        registeredAt: data['created_at'] as String,
+        username: data.telephone ?? username,
+        phone: data.telephone,
+        nickname: data.telephone ?? username,
+        registeredAt: data.createdAt ?? '',
       );
 
       _saveUserInfo(user);
       _saveToken(token);
       return user;
     }
-    throw Failure.server(message: response.message, statusCode: response.code);
+    throw response.message;
   }
 
   /// 用户注册
   Future<UserModel> register({
-    required String username,
+    required String email,
     required String password,
-    required String nickname,
-    String? phone,
-    String? email,
+    required String passwordConfirmation,
   }) async {
     final registerData = {
-      'username': username,
-      'password': password,
-      'nickname': nickname,
-      'phone': phone,
       'email': email,
+      'password': password,
+      'password_confirmation': passwordConfirmation,
     };
 
     final response = await _client.register(registerData);
 
     if (response.success && response.data != null) {
-      final data = response.data! as Map<String, dynamic>;
-      return _handleAuthResponse(data);
+      final data = response.data!;
+      final token = data.token;
+      final userId = data.id.toString();
+      final user = UserModel(
+        id: userId,
+        username: data.telephone ?? email,
+        phone: data.telephone,
+        nickname: data.telephone ?? email,
+        registeredAt: data.createdAt ?? '',
+      );
+
+      _saveUserInfo(user);
+      _saveToken(token);
+      return user;
     }
-    throw Failure.server(message: response.message, statusCode: response.code);
+    throw response.message;
   }
 
   /// 用户登出
   Future<bool> logout() async {
     try {
-      await _client.logout();
+      await _profileClient.logout();
     } catch (e) {
       // Ignore API error on logout
     }
@@ -90,10 +103,9 @@ class UserRepository {
 
   /// 获取当前用户信息
   Future<UserModel?> getCurrentUser() async {
-    final response = await _client.getMe();
+    final response = await _profileClient.getProfile();
     if (response.success && response.data != null) {
-      final data = response.data! as Map<String, dynamic>;
-      final user = UserModel.fromJson(data);
+      final user = UserModel.fromProfile(response.data!);
       _saveUserInfo(user);
       return user;
     }

@@ -1,4 +1,3 @@
-import 'package:lunchbox/core/errors/failure.dart';
 import 'package:lunchbox/features/product/datasources/product_rest_client.dart';
 import 'package:lunchbox/features/product/entities/product_detail_model.dart';
 import 'package:lunchbox/features/product/entities/category_product_model.dart';
@@ -26,11 +25,8 @@ class ProductRepository {
   }
 
   /// 根据产品ID获取产品详情
-  Future<ProductDetailModel> getProductById(String productId) async {
+  Future<ProductDetailModel?> getProductById(String productId) async {
     final response = await _client.getProductDetail(productId);
-    if (response.data != null) {
-      return response.data!;
-    }
-    throw Failure.server(message: response.message, statusCode: response.code);
+    return response.data;
   }
 }

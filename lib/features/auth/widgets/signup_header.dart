@@ -9,25 +9,14 @@ class SignUpHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          t.auth.registerTitle,
-          style: TextStyle(
-            fontSize: 28.sp,
-            fontWeight: FontWeight.bold,
-            color: colorScheme.onSurface,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Text(
-          t.auth.slogan,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: colorScheme.onSurfaceVariant,
-          ),
-        ),
-      ],
+    return Text(
+      t.auth.registerTitle,
+      style: TextStyle(
+        fontSize: 28.sp,
+        fontWeight: FontWeight.bold,
+        color: colorScheme.onSurface,
+      ),
+      textAlign: TextAlign.center,
     );
   }
 }

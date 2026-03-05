@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:lunchbox/core/network/dio_provider.dart';
 import 'package:lunchbox/core/network/response/api_response.dart';
+import 'package:lunchbox/features/wallet/entities/top_up_rule_model.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -18,7 +19,7 @@ abstract class WalletRestClient {
 
   /// 获取充值规则
   @GET('/api/v1/common/top_up_rules')
-  Future<ApiResponse<List<Map<String, dynamic>>>> getTopUpRules();
+  Future<ApiResponse<List<TopUpRuleModel>>> getTopUpRules();
 
   /// 申请充值
   @POST('/api/v1/user/top_up')

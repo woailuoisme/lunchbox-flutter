@@ -26,8 +26,8 @@ sealed class PaginationMeta with _$PaginationMeta {
     @JsonKey(name: 'last_page') required int lastPage,
     @JsonKey(name: 'has_more') required bool hasMore,
     required int total,
-    required int from,
-    required int to,
+    int? from,
+    int? to,
   }) = _PaginationMeta;
 
   factory PaginationMeta.fromJson(Map<String, dynamic> json) =>

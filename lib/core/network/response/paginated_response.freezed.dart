@@ -299,7 +299,7 @@ $PaginationMetaCopyWith<$Res> get meta {
 /// @nodoc
 mixin _$PaginationMeta {
 
-@JsonKey(name: 'current_page') int get currentPage;@JsonKey(name: 'per_page') int get perPage;@JsonKey(name: 'last_page') int get lastPage;@JsonKey(name: 'has_more') bool get hasMore; int get total; int get from; int get to;
+@JsonKey(name: 'current_page') int get currentPage;@JsonKey(name: 'per_page') int get perPage;@JsonKey(name: 'last_page') int get lastPage;@JsonKey(name: 'has_more') bool get hasMore; int get total; int? get from; int? get to;
 /// Create a copy of PaginationMeta
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -332,7 +332,7 @@ abstract mixin class $PaginationMetaCopyWith<$Res>  {
   factory $PaginationMetaCopyWith(PaginationMeta value, $Res Function(PaginationMeta) _then) = _$PaginationMetaCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'current_page') int currentPage,@JsonKey(name: 'per_page') int perPage,@JsonKey(name: 'last_page') int lastPage,@JsonKey(name: 'has_more') bool hasMore, int total, int from, int to
+@JsonKey(name: 'current_page') int currentPage,@JsonKey(name: 'per_page') int perPage,@JsonKey(name: 'last_page') int lastPage,@JsonKey(name: 'has_more') bool hasMore, int total, int? from, int? to
 });
 
 
@@ -349,16 +349,16 @@ class _$PaginationMetaCopyWithImpl<$Res>
 
 /// Create a copy of PaginationMeta
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? currentPage = null,Object? perPage = null,Object? lastPage = null,Object? hasMore = null,Object? total = null,Object? from = null,Object? to = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? currentPage = null,Object? perPage = null,Object? lastPage = null,Object? hasMore = null,Object? total = null,Object? from = freezed,Object? to = freezed,}) {
   return _then(_self.copyWith(
 currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
 as int,perPage: null == perPage ? _self.perPage : perPage // ignore: cast_nullable_to_non_nullable
 as int,lastPage: null == lastPage ? _self.lastPage : lastPage // ignore: cast_nullable_to_non_nullable
 as int,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
 as bool,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
-as int,from: null == from ? _self.from : from // ignore: cast_nullable_to_non_nullable
-as int,to: null == to ? _self.to : to // ignore: cast_nullable_to_non_nullable
-as int,
+as int,from: freezed == from ? _self.from : from // ignore: cast_nullable_to_non_nullable
+as int?,to: freezed == to ? _self.to : to // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -440,7 +440,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'current_page')  int currentPage, @JsonKey(name: 'per_page')  int perPage, @JsonKey(name: 'last_page')  int lastPage, @JsonKey(name: 'has_more')  bool hasMore,  int total,  int from,  int to)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'current_page')  int currentPage, @JsonKey(name: 'per_page')  int perPage, @JsonKey(name: 'last_page')  int lastPage, @JsonKey(name: 'has_more')  bool hasMore,  int total,  int? from,  int? to)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PaginationMeta() when $default != null:
 return $default(_that.currentPage,_that.perPage,_that.lastPage,_that.hasMore,_that.total,_that.from,_that.to);case _:
@@ -461,7 +461,7 @@ return $default(_that.currentPage,_that.perPage,_that.lastPage,_that.hasMore,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'current_page')  int currentPage, @JsonKey(name: 'per_page')  int perPage, @JsonKey(name: 'last_page')  int lastPage, @JsonKey(name: 'has_more')  bool hasMore,  int total,  int from,  int to)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'current_page')  int currentPage, @JsonKey(name: 'per_page')  int perPage, @JsonKey(name: 'last_page')  int lastPage, @JsonKey(name: 'has_more')  bool hasMore,  int total,  int? from,  int? to)  $default,) {final _that = this;
 switch (_that) {
 case _PaginationMeta():
 return $default(_that.currentPage,_that.perPage,_that.lastPage,_that.hasMore,_that.total,_that.from,_that.to);}
@@ -478,7 +478,7 @@ return $default(_that.currentPage,_that.perPage,_that.lastPage,_that.hasMore,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'current_page')  int currentPage, @JsonKey(name: 'per_page')  int perPage, @JsonKey(name: 'last_page')  int lastPage, @JsonKey(name: 'has_more')  bool hasMore,  int total,  int from,  int to)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'current_page')  int currentPage, @JsonKey(name: 'per_page')  int perPage, @JsonKey(name: 'last_page')  int lastPage, @JsonKey(name: 'has_more')  bool hasMore,  int total,  int? from,  int? to)?  $default,) {final _that = this;
 switch (_that) {
 case _PaginationMeta() when $default != null:
 return $default(_that.currentPage,_that.perPage,_that.lastPage,_that.hasMore,_that.total,_that.from,_that.to);case _:
@@ -493,7 +493,7 @@ return $default(_that.currentPage,_that.perPage,_that.lastPage,_that.hasMore,_th
 @JsonSerializable()
 
 class _PaginationMeta implements PaginationMeta {
-  const _PaginationMeta({@JsonKey(name: 'current_page') required this.currentPage, @JsonKey(name: 'per_page') required this.perPage, @JsonKey(name: 'last_page') required this.lastPage, @JsonKey(name: 'has_more') required this.hasMore, required this.total, required this.from, required this.to});
+  const _PaginationMeta({@JsonKey(name: 'current_page') required this.currentPage, @JsonKey(name: 'per_page') required this.perPage, @JsonKey(name: 'last_page') required this.lastPage, @JsonKey(name: 'has_more') required this.hasMore, required this.total, this.from, this.to});
   factory _PaginationMeta.fromJson(Map<String, dynamic> json) => _$PaginationMetaFromJson(json);
 
 @override@JsonKey(name: 'current_page') final  int currentPage;
@@ -501,8 +501,8 @@ class _PaginationMeta implements PaginationMeta {
 @override@JsonKey(name: 'last_page') final  int lastPage;
 @override@JsonKey(name: 'has_more') final  bool hasMore;
 @override final  int total;
-@override final  int from;
-@override final  int to;
+@override final  int? from;
+@override final  int? to;
 
 /// Create a copy of PaginationMeta
 /// with the given fields replaced by the non-null parameter values.
@@ -537,7 +537,7 @@ abstract mixin class _$PaginationMetaCopyWith<$Res> implements $PaginationMetaCo
   factory _$PaginationMetaCopyWith(_PaginationMeta value, $Res Function(_PaginationMeta) _then) = __$PaginationMetaCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'current_page') int currentPage,@JsonKey(name: 'per_page') int perPage,@JsonKey(name: 'last_page') int lastPage,@JsonKey(name: 'has_more') bool hasMore, int total, int from, int to
+@JsonKey(name: 'current_page') int currentPage,@JsonKey(name: 'per_page') int perPage,@JsonKey(name: 'last_page') int lastPage,@JsonKey(name: 'has_more') bool hasMore, int total, int? from, int? to
 });
 
 
@@ -554,16 +554,16 @@ class __$PaginationMetaCopyWithImpl<$Res>
 
 /// Create a copy of PaginationMeta
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? currentPage = null,Object? perPage = null,Object? lastPage = null,Object? hasMore = null,Object? total = null,Object? from = null,Object? to = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? currentPage = null,Object? perPage = null,Object? lastPage = null,Object? hasMore = null,Object? total = null,Object? from = freezed,Object? to = freezed,}) {
   return _then(_PaginationMeta(
 currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
 as int,perPage: null == perPage ? _self.perPage : perPage // ignore: cast_nullable_to_non_nullable
 as int,lastPage: null == lastPage ? _self.lastPage : lastPage // ignore: cast_nullable_to_non_nullable
 as int,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
 as bool,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
-as int,from: null == from ? _self.from : from // ignore: cast_nullable_to_non_nullable
-as int,to: null == to ? _self.to : to // ignore: cast_nullable_to_non_nullable
-as int,
+as int,from: freezed == from ? _self.from : from // ignore: cast_nullable_to_non_nullable
+as int?,to: freezed == to ? _self.to : to // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

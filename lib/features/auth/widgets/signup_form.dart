@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:lunchbox/features/auth/widgets/auth_input_decoration.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -24,37 +25,21 @@ class SignUpForm extends StatelessWidget {
     return Column(
       children: [
         FormBuilderTextField(
-          name: 'username',
+          name: 'email',
           style: TextStyle(
             fontSize: 16.sp,
             color: colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
-          decoration: _buildInputDecoration(
-            label: t.common.username,
-            hint: t.auth.enterUsernameHint,
-            prefixIcon: Symbols.person,
+          decoration: AuthInputDecoration.build(
+            colorScheme: colorScheme,
+            label: t.auth.email,
+            hint: t.auth.enterEmail,
+            prefixIcon: Symbols.mail,
           ),
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.required(errorText: t.auth.required),
-          ]),
-          textInputAction: TextInputAction.next,
-        ),
-        SizedBox(height: 16.h),
-        FormBuilderTextField(
-          name: 'nickname',
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: colorScheme.onSurface,
-            fontWeight: FontWeight.w500,
-          ),
-          decoration: _buildInputDecoration(
-            label: t.auth.nickname,
-            hint: t.auth.enterNickname,
-            prefixIcon: Symbols.face,
-          ),
-          validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(errorText: t.auth.required),
+            FormBuilderValidators.email(errorText: t.auth.emailInvalid),
           ]),
           textInputAction: TextInputAction.next,
         ),
@@ -67,7 +52,8 @@ class SignUpForm extends StatelessWidget {
             color: colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
-          decoration: _buildInputDecoration(
+          decoration: AuthInputDecoration.build(
+            colorScheme: colorScheme,
             label: t.common.password,
             hint: t.auth.enterPassword,
             prefixIcon: Symbols.lock,
@@ -86,45 +72,30 @@ class SignUpForm extends StatelessWidget {
               errorText: t.auth.passwordMinLength(length: 6),
             ),
           ]),
+          textInputAction: TextInputAction.next,
+        ),
+        SizedBox(height: 16.h),
+        FormBuilderTextField(
+          name: 'password_confirmation',
+          obscureText: obscurePassword,
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
+          decoration: AuthInputDecoration.build(
+            colorScheme: colorScheme,
+            label: t.auth.confirmPassword,
+            hint: t.auth.enterConfirmPassword,
+            prefixIcon: Symbols.lock,
+          ),
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(errorText: t.auth.required),
+          ]),
           textInputAction: TextInputAction.done,
           onSubmitted: (_) => onSubmit(),
         ),
       ],
-    );
-  }
-
-  InputDecoration _buildInputDecoration({
-    required String label,
-    required String hint,
-    required IconData prefixIcon,
-    Widget? suffixIcon,
-  }) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
-      hintText: hint,
-      hintStyle: TextStyle(color: colorScheme.outline),
-      prefixIcon: Icon(prefixIcon, color: colorScheme.primary),
-      suffixIcon: suffixIcon,
-      filled: true,
-      fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.1),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide.none,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide.none,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(color: colorScheme.primary, width: 2),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-      ),
     );
   }
 }

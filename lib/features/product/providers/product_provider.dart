@@ -160,7 +160,7 @@ Future<List<ProductModel>> filteredProducts(Ref ref, String deviceId) async {
 
 /// 根据ID获取产品详情
 @riverpod
-Future<ProductDetailModel> productDetail(Ref ref, String productId) async {
+Future<ProductDetailModel?> productDetail(Ref ref, String productId) async {
   ref.keepAlive();
   final repository = ref.watch(productRepositoryProvider);
   return repository.getProductById(productId);

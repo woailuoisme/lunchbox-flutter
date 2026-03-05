@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:lunchbox/core/network/dio_provider.dart';
 import 'package:lunchbox/core/network/response/api_response.dart';
+import 'package:lunchbox/features/auth/entities/login_response_data.dart';
+import 'package:lunchbox/features/auth/entities/refresh_token_response_data.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -17,24 +19,25 @@ abstract class AuthRemoteDataSource {
   factory AuthRemoteDataSource(Dio dio, {String baseUrl}) =
       _AuthRemoteDataSource;
 
-  @POST('/api/v1/auth/test_login')
-  Future<ApiResponse<dynamic>> login(@Body() Map<String, dynamic> body);
-
-  @POST('/api/v1/auth/send_code')
-  Future<ApiResponse<dynamic>> sendCode(@Field('telephone') String phone);
-
-  @POST('/api/v1/auth/login_with_phone')
-  Future<ApiResponse<dynamic>> loginWithPhone(
-    @Field('telephone') String phone,
-    @Field('code') String code,
+  @POST('/api/v1/auth/user_login')
+  Future<ApiResponse<LoginResponseData>> login(
+    @Body() Map<String, dynamic> body,
   );
 
-  @POST('/api/auth/register')
-  Future<ApiResponse<dynamic>> register(@Body() Map<String, dynamic> body);
+  @POST('/api/v1/auth/password/reset')
+  Future<ApiResponse<void>> resetPassword(@Body() Map<String, dynamic> body);
 
-  @POST('/api/auth/logout')
-  Future<ApiResponse<void>> logout();
+  @POST('/api/v1/auth/{provider}/token')
+  Future<ApiResponse<LoginResponseData>> socialLogin(
+    @Path('provider') String provider,
+    @Body() Map<String, dynamic> body,
+  );
 
-  @GET('/api/v1/auth/me')
-  Future<ApiResponse<dynamic>> getMe();
+  @POST('/api/v1/auth/register')
+  Future<ApiResponse<LoginResponseData>> register(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST('/api/v1/auth/refresh')
+  Future<ApiResponse<RefreshTokenResponseData>> refresh();
 }

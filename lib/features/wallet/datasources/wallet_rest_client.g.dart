@@ -20,12 +20,12 @@ class _WalletRestClient implements WalletRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<List<Map<String, dynamic>>>> getTopUpRules() async {
+  Future<ApiResponse<List<TopUpRuleModel>>> getTopUpRules() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<Map<String, dynamic>>>>(
+    final _options = _setStreamType<ApiResponse<List<TopUpRuleModel>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,16 +36,14 @@ class _WalletRestClient implements WalletRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<Map<String, dynamic>>> _value;
+    late ApiResponse<List<TopUpRuleModel>> _value;
     try {
-      _value = ApiResponse<List<Map<String, dynamic>>>.fromJson(
+      _value = ApiResponse<List<TopUpRuleModel>>.fromJson(
         _result.data!,
         (json) => json is List<dynamic>
             ? json
-                  .map<Map<String, dynamic>>(
-                    (i) => Map<String, dynamic>.fromJson(
-                      i as Map<String, dynamic>,
-                    ),
+                  .map<TopUpRuleModel>(
+                    (i) => TopUpRuleModel.fromJson(i as Map<String, dynamic>),
                   )
                   .toList()
             : List.empty(),

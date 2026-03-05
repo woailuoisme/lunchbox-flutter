@@ -1,4 +1,3 @@
-import 'package:lunchbox/core/errors/failure.dart';
 import 'package:lunchbox/features/feedback/datasources/feedback_rest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,7 +13,8 @@ class FeedbackRepository {
 
   final FeedbackRestClient _client;
 
-  Future<void> submitFeedback({
+  /// 提交反馈
+  Future<bool> submitFeedback({
     required String content,
     String? contact,
     String? title,
@@ -26,11 +26,6 @@ class FeedbackRepository {
       'title': title,
       'type': type,
     });
-    if (!response.success) {
-      throw Failure.server(
-        message: response.message,
-        statusCode: response.code,
-      );
-    }
+    return response.success;
   }
 }

@@ -55,7 +55,12 @@ class PaymentProcessView extends ConsumerWidget {
                 child: Column(
                   children: [
                     // 支付金额
-                    PaymentAmountCard(amount: state.order?.totalAmount ?? 0.0),
+                    PaymentAmountCard(
+                      amount:
+                          state.paymentIntent?.amount ??
+                          state.order?.totalAmount ??
+                          0.0,
+                    ),
 
                     SizedBox(height: 48.h),
 

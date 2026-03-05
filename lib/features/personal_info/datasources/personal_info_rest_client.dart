@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:lunchbox/core/network/dio_provider.dart';
 import 'package:lunchbox/core/network/response/api_response.dart';
-import 'package:lunchbox/features/auth/entities/user_model.dart';
+import 'package:lunchbox/features/personal_info/entities/profile_update_response.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,8 +20,12 @@ abstract class PersonalInfoRestClient {
       _PersonalInfoRestClient;
 
   /// 更新用户信息
-  @PUT('/api/v1/user/profile')
-  Future<ApiResponse<UserModel>> updateProfile(
-    @Body() Map<String, dynamic> body,
-  );
+  @POST('/api/v1/auth/profile_update')
+  @MultiPart()
+  Future<ApiResponse<ProfileUpdateData>> updateProfile(
+    @Part() String nickname,
+    @Part() String gender,
+    @Part() String telephone, {
+    @Part() File? avatar,
+  });
 }

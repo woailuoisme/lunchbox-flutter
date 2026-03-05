@@ -8,7 +8,7 @@ part 'api_response.g.dart';
 sealed class ApiResponse<T> with _$ApiResponse<T> {
   const factory ApiResponse({
     required bool success,
-    required int code,
+    @Default(0) int code,
     required String message,
     T? data,
     Map<String, List<String>>? errors,

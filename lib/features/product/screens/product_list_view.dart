@@ -30,14 +30,19 @@ class ProductListView extends ConsumerWidget {
         backgroundColor: theme.scaffoldBackgroundColor,
       ),
       body: deviceAsync.when(
-        data: (device) => Column(
-          children: [
-            // 设备信息头部
-            ProductDeviceHeader(device: device),
-            // 产品列表核心内容（分类侧边栏 + 商品网格）
-            Expanded(child: ProductContent(deviceId: deviceId)),
-          ],
-        ),
+        data: (device) {
+          if (device == null) {
+            return Center(child: Text(t.common.noData));
+          }
+          return Column(
+            children: [
+              // 设备信息头部
+              ProductDeviceHeader(device: device),
+              // 产品列表核心内容（分类侧边栏 + 商品网格）
+              Expanded(child: ProductContent(deviceId: deviceId)),
+            ],
+          );
+        },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) =>
             Center(child: Text('${t.common.loadFailed}: $error')),

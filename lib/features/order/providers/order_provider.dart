@@ -1,4 +1,3 @@
-import 'package:lunchbox/core/errors/errors.dart';
 import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/features/cart/cart.dart';
@@ -30,7 +29,8 @@ class OrderNotifier extends _$OrderNotifier with AsyncRunnerMixin<OrderState> {
           perPage: pageSize,
           status: status,
         );
-        return data.items;
+        final items = data?.items ?? [];
+        return items;
       },
       showLoading: false,
       errorLabel: 'Failed to load orders page',
@@ -40,16 +40,21 @@ class OrderNotifier extends _$OrderNotifier with AsyncRunnerMixin<OrderState> {
   Future<void> loadOrders({String? status}) async {
     await runAsync(() async {
       final data = await _repository.getOrders(status: status);
-      state = state.copyWith(orders: data.items);
-      LoggerUtils.i('OrderNotifier: Loaded ${data.items.length} orders');
+      if (data != null) {
+        state = state.copyWith(orders: data.items);
+        LoggerUtils.i('OrderNotifier: Loaded ${data.items.length} orders');
+      }
     }, errorLabel: 'Failed to load orders');
   }
 
-  Future<void> loadOrderById(String orderId) async {
-    await runAsync(() async {
+  Future<OrderModel?> loadOrderById(String orderId) async {
+    return await runAsync<OrderModel?>(() async {
       final order = await _repository.getOrderDetail(orderId);
-      state = state.copyWith(selectedOrder: order);
-      LoggerUtils.i('OrderNotifier: Loaded order: ${order.id}');
+      if (order != null) {
+        state = state.copyWith(selectedOrder: order);
+        LoggerUtils.i('OrderNotifier: Loaded order: ${order.id}');
+      }
+      return order;
     }, errorLabel: 'Failed to load order');
   }
 
@@ -60,53 +65,43 @@ class OrderNotifier extends _$OrderNotifier with AsyncRunnerMixin<OrderState> {
     throw Exception('Order creation not implemented');
   }
 
-  Future<void> cancelOrder(String orderId) async {
-    try {
-      await runAsync(
-        () => _repository.cancelOrder(orderId),
-        showLoading: false,
-      );
+  Future<bool> cancelOrder(String orderId) async {
+    final success = await runAsync(
+      () => _repository.cancelOrder(orderId),
+      showLoading: false,
+    );
+    if (success == true) {
       await loadOrders(status: state.selectedStatus);
       LoggerUtils.i('OrderNotifier: Order cancelled: $orderId');
-    } catch (e) {
-      if (e is Failure) throw Exception(e.toUserMessage());
-      rethrow;
     }
+    return success ?? false;
   }
 
   Future<void> payOrder(String orderId, String paymentMethod) async {
-    try {
-      await runAsync(() => _repository.payOrder(orderId, paymentMethod));
-      await loadOrders(status: state.selectedStatus);
-      if (state.selectedOrder?.id.toString() == orderId) {
-        await loadOrderById(orderId);
-      }
-      LoggerUtils.i('OrderNotifier: Order paid: $orderId');
-    } catch (e) {
-      if (e is Failure) throw Exception(e.toUserMessage());
-      rethrow;
+    await runAsync(() => _repository.payOrder(orderId, paymentMethod));
+    await loadOrders(status: state.selectedStatus);
+    final updatedOrder = await loadOrderById(orderId);
+    if (updatedOrder != null && state.selectedOrder?.id.toString() == orderId) {
+      // state already updated in loadOrderById
     }
+    LoggerUtils.i('OrderNotifier: Order paid: $orderId');
   }
 
   Future<void> reorder(String orderId) async {
-    try {
-      await runAsync(() async {
-        final order = await _repository.getOrderDetail(orderId);
-        final cartItems = await _repository.reorder(order);
+    await runAsync(() async {
+      final order = await _repository.getOrderDetail(orderId);
+      if (order == null) return;
+      final cartItems = await _repository.reorder(order);
 
-        final cartNotifier = ref.read(cartProvider.notifier);
-        for (final item in cartItems) {
-          await cartNotifier.addCartProductToCart(
-            item.product,
-            quantity: item.quantity,
-          );
-        }
-        LoggerUtils.i('OrderNotifier: Reordered: ${order.id}');
-      });
-    } catch (e) {
-      if (e is Failure) throw Exception(e.toUserMessage());
-      rethrow;
-    }
+      final cartNotifier = ref.read(cartProvider.notifier);
+      for (final item in cartItems) {
+        await cartNotifier.addCartProductToCart(
+          item.product,
+          quantity: item.quantity,
+        );
+      }
+      LoggerUtils.i('OrderNotifier: Reordered items from order: $orderId');
+    }, errorLabel: 'Failed to reorder');
   }
 
   void filterByStatus(String status) {

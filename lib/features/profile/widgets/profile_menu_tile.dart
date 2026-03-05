@@ -10,6 +10,8 @@ class ProfileMenuTile extends StatelessWidget {
     required this.title,
     this.trailingText,
     this.trailingColor,
+    this.titleColor,
+    this.iconColor,
     this.onTap,
     this.showDivider = true,
   });
@@ -18,6 +20,8 @@ class ProfileMenuTile extends StatelessWidget {
   final String title;
   final String? trailingText;
   final Color? trailingColor;
+  final Color? titleColor;
+  final Color? iconColor;
   final VoidCallback? onTap;
   final bool showDivider;
 
@@ -38,13 +42,17 @@ class ProfileMenuTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, size: 24.sp, color: theme.colorScheme.primary),
+            Icon(
+              icon,
+              size: 24.sp,
+              color: iconColor ?? theme.colorScheme.primary,
+            ),
             SizedBox(width: 16.w),
             Text(
               title,
               style: TextStyle(
                 fontSize: 15.sp,
-                color: theme.textTheme.bodyLarge?.color,
+                color: titleColor ?? theme.textTheme.bodyLarge?.color,
               ),
             ),
             const Spacer(),

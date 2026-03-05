@@ -446,11 +446,11 @@ final deviceDetailProvider = DeviceDetailFamily._();
 final class DeviceDetailProvider
     extends
         $FunctionalProvider<
-          AsyncValue<DeviceModel>,
-          DeviceModel,
-          FutureOr<DeviceModel>
+          AsyncValue<DeviceModel?>,
+          DeviceModel?,
+          FutureOr<DeviceModel?>
         >
-    with $FutureModifier<DeviceModel>, $FutureProvider<DeviceModel> {
+    with $FutureModifier<DeviceModel?>, $FutureProvider<DeviceModel?> {
   /// 根据ID获取设备详情
   DeviceDetailProvider._({
     required DeviceDetailFamily super.from,
@@ -475,12 +475,12 @@ final class DeviceDetailProvider
 
   @$internal
   @override
-  $FutureProviderElement<DeviceModel> $createElement(
+  $FutureProviderElement<DeviceModel?> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<DeviceModel> create(Ref ref) {
+  FutureOr<DeviceModel?> create(Ref ref) {
     final argument = this.argument as String;
     return deviceDetail(ref, argument);
   }
@@ -496,12 +496,12 @@ final class DeviceDetailProvider
   }
 }
 
-String _$deviceDetailHash() => r'79272875ce3bf417c5b4289533149d8f5f13f372';
+String _$deviceDetailHash() => r'ca40ce55484c9cd58281a0a74329dd94449614a9';
 
 /// 根据ID获取设备详情
 
 final class DeviceDetailFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<DeviceModel>, String> {
+    with $FunctionalFamilyOverride<FutureOr<DeviceModel?>, String> {
   DeviceDetailFamily._()
     : super(
         retry: null,

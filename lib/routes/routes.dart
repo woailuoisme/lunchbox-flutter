@@ -104,19 +104,6 @@ class ForgotPasswordRoute extends GoRouteData with $ForgotPasswordRoute {
       );
 }
 
-@TypedGoRoute<OTPVerificationRoute>(path: AppRoutes.otpVerification)
-class OTPVerificationRoute extends GoRouteData with $OTPVerificationRoute {
-  const OTPVerificationRoute();
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) =>
-      PageTransitionPage(
-        key: state.pageKey,
-        child: const OTPVerificationView(),
-        type: PageTransitionType.rightToLeft,
-      );
-}
-
 @TypedGoRoute<ResetPasswordRoute>(path: AppRoutes.resetPassword)
 class ResetPasswordRoute extends GoRouteData with $ResetPasswordRoute {
   const ResetPasswordRoute();

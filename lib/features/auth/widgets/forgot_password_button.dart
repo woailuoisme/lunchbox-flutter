@@ -25,7 +25,7 @@ class ForgotPasswordButton extends StatelessWidget {
         disabledForegroundColor: colorScheme.onPrimary.withValues(alpha: 0.8),
         padding: EdgeInsets.symmetric(vertical: 16.h),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         elevation: 0,
       ),
@@ -41,7 +41,7 @@ class ForgotPasswordButton extends StatelessWidget {
               ),
             )
           : Text(
-              t.auth.sendResetLink,
+              t.auth.resetPasswordButton,
               style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
             ),
     );

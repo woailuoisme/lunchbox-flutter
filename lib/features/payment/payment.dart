@@ -1,6 +1,5 @@
 library;
 
-export 'entities/payment_model.dart';
 export 'providers/payment_provider.dart';
 export 'providers/payment_state.dart';
 export 'repositories/payment_repository.dart';

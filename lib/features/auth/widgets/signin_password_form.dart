@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:lunchbox/features/auth/widgets/auth_input_decoration.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -41,7 +42,8 @@ class SignInPasswordForm extends StatelessWidget {
             color: colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
-          decoration: _buildInputDecoration(
+          decoration: AuthInputDecoration.build(
+            colorScheme: colorScheme,
             label: t.common.username,
             hint: t.auth.enterUsernameHint,
             prefixIcon: Symbols.person,
@@ -60,7 +62,8 @@ class SignInPasswordForm extends StatelessWidget {
             color: colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
-          decoration: _buildInputDecoration(
+          decoration: AuthInputDecoration.build(
+            colorScheme: colorScheme,
             label: t.common.password,
             hint: t.auth.enterPassword,
             prefixIcon: Symbols.lock,
@@ -77,41 +80,6 @@ class SignInPasswordForm extends StatelessWidget {
           onSubmitted: (_) => onSubmit(),
         ),
       ],
-    );
-  }
-
-  InputDecoration _buildInputDecoration({
-    required String label,
-    required String hint,
-    required IconData prefixIcon,
-    Widget? suffixIcon,
-  }) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
-      hintText: hint,
-      hintStyle: TextStyle(color: colorScheme.outline),
-      prefixIcon: Icon(prefixIcon, color: colorScheme.primary),
-      suffixIcon: suffixIcon,
-      filled: true,
-      fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.1),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide.none,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide.none,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(color: colorScheme.primary, width: 2),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(color: colorScheme.error),
-      ),
     );
   }
 }

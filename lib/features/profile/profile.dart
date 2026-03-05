@@ -1,6 +1,5 @@
 library;
 
-export 'entities/coupon_model.dart';
 export 'providers/profile_provider.dart';
 export 'providers/profile_state.dart';
 export 'datasources/profile_rest_client.dart';

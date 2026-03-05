@@ -26,30 +26,37 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   DateTime? _selectedBirthday;
 
   Future<void> _saveProfile() async {
+    final user = ref.read(profileProvider).currentUser;
+    if (user == null) return;
+
     try {
       final repository = ref.read(personalInfoRepositoryProvider);
-      final updatedUser = await repository.updateProfile({
-        'gender': _selectedGender,
-        'birthday': _selectedBirthday?.toIso8601String(),
-      });
+      final updatedUser = await repository.updateProfile(
+        nickname: user.nickname,
+        gender: _selectedGender ?? user.gender,
+        telephone: user.telephone ?? '',
+        // birthday: _selectedBirthday?.toIso8601String(), // API 暂时不支持 birthday
+      );
 
       // Update profile state
-      // We assume ProfileNotifier can be refreshed or has a way to set user.
-      // Since it doesn't have setUser, we call loadUserInfo which fetches from repo.
-      // But repo in profile module might not have the new data if it's mocked or different.
-      // Ideally, ProfileNotifier should listen to changes or we invalidate it.
       ref.invalidate(profileProvider);
 
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(t.profile.saveSuccess)));
-        Navigator.pop(context);
+        toastification.show(
+          context: context,
+          title: Text(t.profile.saveSuccess),
+          type: ToastificationType.success,
+          autoCloseDuration: const Duration(seconds: 2),
+        );
+        context.pop();
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(t.profile.saveFailed(error: e.toString()))),
+        toastification.show(
+          context: context,
+          title: Text(t.profile.saveFailed(error: e.toString())),
+          type: ToastificationType.error,
+          autoCloseDuration: const Duration(seconds: 2),
         );
       }
     }
@@ -118,7 +125,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                             ProfileInfoTile(
                               icon: Symbols.phone_android,
                               label: t.profile.info.phone,
-                              value: _maskPhoneNumber(user.phone ?? ''),
+                              value: _maskPhoneNumber(user.telephone ?? ''),
                               isEditable: false,
                             ),
                             _buildDivider(context),

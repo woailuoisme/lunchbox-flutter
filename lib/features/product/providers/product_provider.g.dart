@@ -635,13 +635,13 @@ final productDetailProvider = ProductDetailFamily._();
 final class ProductDetailProvider
     extends
         $FunctionalProvider<
-          AsyncValue<ProductDetailModel>,
-          ProductDetailModel,
-          FutureOr<ProductDetailModel>
+          AsyncValue<ProductDetailModel?>,
+          ProductDetailModel?,
+          FutureOr<ProductDetailModel?>
         >
     with
-        $FutureModifier<ProductDetailModel>,
-        $FutureProvider<ProductDetailModel> {
+        $FutureModifier<ProductDetailModel?>,
+        $FutureProvider<ProductDetailModel?> {
   /// 根据ID获取产品详情
   ProductDetailProvider._({
     required ProductDetailFamily super.from,
@@ -666,12 +666,12 @@ final class ProductDetailProvider
 
   @$internal
   @override
-  $FutureProviderElement<ProductDetailModel> $createElement(
+  $FutureProviderElement<ProductDetailModel?> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<ProductDetailModel> create(Ref ref) {
+  FutureOr<ProductDetailModel?> create(Ref ref) {
     final argument = this.argument as String;
     return productDetail(ref, argument);
   }
@@ -687,12 +687,12 @@ final class ProductDetailProvider
   }
 }
 
-String _$productDetailHash() => r'b0b423b329fca1f9d4ecc3e57c129df55f5115eb';
+String _$productDetailHash() => r'6a8f4af27e4e11d2c4da46350ff484198b3eb620';
 
 /// 根据ID获取产品详情
 
 final class ProductDetailFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<ProductDetailModel>, String> {
+    with $FunctionalFamilyOverride<FutureOr<ProductDetailModel?>, String> {
   ProductDetailFamily._()
     : super(
         retry: null,

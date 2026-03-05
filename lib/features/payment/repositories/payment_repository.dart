@@ -1,5 +1,7 @@
-import 'package:lunchbox/core/errors/failure.dart';
 import 'package:lunchbox/features/payment/datasources/payment_rest_client.dart';
+import 'package:lunchbox/features/payment/entities/payment_intent_request.dart';
+import 'package:lunchbox/features/payment/entities/payment_intent_response.dart';
+import 'package:lunchbox/features/payment/entities/setup_intent_response.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'payment_repository.g.dart';
@@ -18,40 +20,24 @@ class PaymentRepository {
   final PaymentRestClient _client;
 
   /// 创建支付意向 (Payment Intent)
-  Future<Map<String, dynamic>> createPaymentIntent(
-    String orderId,
-    double amount,
-    String currency,
-  ) async {
-    final paymentData = {
-      'orderId': orderId,
-      'amount': (amount * 100).toInt(), // Stripe uses cents
-      'currency': currency,
-    };
+  Future<PaymentIntentResponse?> createPaymentIntent({
+    int? orderId,
+    double? amount,
+    required String currency,
+  }) async {
+    final request = PaymentIntentRequest(
+      orderId: orderId,
+      amount: amount,
+      currency: currency,
+    );
 
-    final response = await _client.createPaymentIntent(orderId, paymentData);
-    if (response.success && response.data != null) {
-      return response.data! as Map<String, dynamic>;
-    }
-    throw Failure.server(message: response.message, statusCode: response.code);
+    final response = await _client.createStripePaymentIntent(request: request);
+    return response.data;
   }
 
-  /// 查询支付状态
-  Future<String> checkPaymentStatus(String orderId, String paymentId) async {
-    final response = await _client.checkPaymentStatus(orderId, paymentId);
-    if (response.success && response.data != null) {
-      final data = response.data! as Map<String, dynamic>;
-      return data['status'] as String;
-    }
-    throw Failure.server(message: response.message, statusCode: response.code);
-  }
-
-  /// 取消支付
-  Future<bool> cancelPayment(String orderId) async {
-    final response = await _client.cancelPayment(orderId);
-    if (response.success && response.data != null) {
-      return response.data!;
-    }
-    throw Failure.server(message: response.message, statusCode: response.code);
+  /// 创建设置意向 (Setup Intent)
+  Future<SetupIntentResponse?> createSetupIntent() async {
+    final response = await _client.createStripeSetupIntent();
+    return response.data;
   }
 }

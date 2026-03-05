@@ -42,6 +42,16 @@ GoRouter goRouter(Ref ref) {
       // 如果已经初始化完成，不允许再回到 Splash 屏
       if (hasInitialized && isSplashRoute) {
         final navigationPath = ref.read(splashProvider).navigationPath;
+
+        // 确保 navigationPath 与当前的认证状态同步
+        // 避免登出后由于 SplashNotifier 中的 navigationPath 仍然是 /home 而导致的重定向错误
+        if (!isAuthenticated && navigationPath == const HomeRoute().location) {
+          return const SignInRoute().location;
+        }
+        if (isAuthenticated && navigationPath == const SignInRoute().location) {
+          return const HomeRoute().location;
+        }
+
         return navigationPath ??
             (isAuthenticated
                 ? const HomeRoute().location

@@ -9,27 +9,14 @@ class ForgotPasswordHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          t.auth.forgotPassword,
-          style: TextStyle(
-            fontSize: 28.sp,
-            fontWeight: FontWeight.bold,
-            color: colorScheme.onSurface,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: 12.h),
-        Text(
-          t.auth.resetPasswordHint,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: colorScheme.onSurfaceVariant,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
+    return Text(
+      t.auth.forgotPassword,
+      style: TextStyle(
+        fontSize: 28.sp,
+        fontWeight: FontWeight.bold,
+        color: colorScheme.onSurface,
+      ),
+      textAlign: TextAlign.center,
     );
   }
 }

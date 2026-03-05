@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SignInState {
 
- String get username; String get password; String get phoneNumber; String get verificationCode; SignInType get signInType; bool get isCodeSent; int get countdown; SignInStatus get status; String? get errorMessage;
+ String get username; String get password; SignInType get signInType; SignInStatus get status; String? get errorMessage;
 /// Create a copy of SignInState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $SignInStateCopyWith<SignInState> get copyWith => _$SignInStateCopyWithImpl<Sign
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignInState&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.verificationCode, verificationCode) || other.verificationCode == verificationCode)&&(identical(other.signInType, signInType) || other.signInType == signInType)&&(identical(other.isCodeSent, isCodeSent) || other.isCodeSent == isCodeSent)&&(identical(other.countdown, countdown) || other.countdown == countdown)&&(identical(other.status, status) || other.status == status)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignInState&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.signInType, signInType) || other.signInType == signInType)&&(identical(other.status, status) || other.status == status)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,username,password,phoneNumber,verificationCode,signInType,isCodeSent,countdown,status,errorMessage);
+int get hashCode => Object.hash(runtimeType,username,password,signInType,status,errorMessage);
 
 @override
 String toString() {
-  return 'SignInState(username: $username, password: $password, phoneNumber: $phoneNumber, verificationCode: $verificationCode, signInType: $signInType, isCodeSent: $isCodeSent, countdown: $countdown, status: $status, errorMessage: $errorMessage)';
+  return 'SignInState(username: $username, password: $password, signInType: $signInType, status: $status, errorMessage: $errorMessage)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $SignInStateCopyWith<$Res>  {
   factory $SignInStateCopyWith(SignInState value, $Res Function(SignInState) _then) = _$SignInStateCopyWithImpl;
 @useResult
 $Res call({
- String username, String password, String phoneNumber, String verificationCode, SignInType signInType, bool isCodeSent, int countdown, SignInStatus status, String? errorMessage
+ String username, String password, SignInType signInType, SignInStatus status, String? errorMessage
 });
 
 
@@ -62,16 +62,12 @@ class _$SignInStateCopyWithImpl<$Res>
 
 /// Create a copy of SignInState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? username = null,Object? password = null,Object? phoneNumber = null,Object? verificationCode = null,Object? signInType = null,Object? isCodeSent = null,Object? countdown = null,Object? status = null,Object? errorMessage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? username = null,Object? password = null,Object? signInType = null,Object? status = null,Object? errorMessage = freezed,}) {
   return _then(_self.copyWith(
 username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
-as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String,verificationCode: null == verificationCode ? _self.verificationCode : verificationCode // ignore: cast_nullable_to_non_nullable
 as String,signInType: null == signInType ? _self.signInType : signInType // ignore: cast_nullable_to_non_nullable
-as SignInType,isCodeSent: null == isCodeSent ? _self.isCodeSent : isCodeSent // ignore: cast_nullable_to_non_nullable
-as bool,countdown: null == countdown ? _self.countdown : countdown // ignore: cast_nullable_to_non_nullable
-as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as SignInType,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as SignInStatus,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -158,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String username,  String password,  String phoneNumber,  String verificationCode,  SignInType signInType,  bool isCodeSent,  int countdown,  SignInStatus status,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String username,  String password,  SignInType signInType,  SignInStatus status,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SignInState() when $default != null:
-return $default(_that.username,_that.password,_that.phoneNumber,_that.verificationCode,_that.signInType,_that.isCodeSent,_that.countdown,_that.status,_that.errorMessage);case _:
+return $default(_that.username,_that.password,_that.signInType,_that.status,_that.errorMessage);case _:
   return orElse();
 
 }
@@ -179,10 +175,10 @@ return $default(_that.username,_that.password,_that.phoneNumber,_that.verificati
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String username,  String password,  String phoneNumber,  String verificationCode,  SignInType signInType,  bool isCodeSent,  int countdown,  SignInStatus status,  String? errorMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String username,  String password,  SignInType signInType,  SignInStatus status,  String? errorMessage)  $default,) {final _that = this;
 switch (_that) {
 case _SignInState():
-return $default(_that.username,_that.password,_that.phoneNumber,_that.verificationCode,_that.signInType,_that.isCodeSent,_that.countdown,_that.status,_that.errorMessage);case _:
+return $default(_that.username,_that.password,_that.signInType,_that.status,_that.errorMessage);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +195,10 @@ return $default(_that.username,_that.password,_that.phoneNumber,_that.verificati
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String username,  String password,  String phoneNumber,  String verificationCode,  SignInType signInType,  bool isCodeSent,  int countdown,  SignInStatus status,  String? errorMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String username,  String password,  SignInType signInType,  SignInStatus status,  String? errorMessage)?  $default,) {final _that = this;
 switch (_that) {
 case _SignInState() when $default != null:
-return $default(_that.username,_that.password,_that.phoneNumber,_that.verificationCode,_that.signInType,_that.isCodeSent,_that.countdown,_that.status,_that.errorMessage);case _:
+return $default(_that.username,_that.password,_that.signInType,_that.status,_that.errorMessage);case _:
   return null;
 
 }
@@ -214,16 +210,12 @@ return $default(_that.username,_that.password,_that.phoneNumber,_that.verificati
 
 
 class _SignInState implements SignInState {
-  const _SignInState({this.username = '', this.password = '', this.phoneNumber = '', this.verificationCode = '', this.signInType = SignInType.password, this.isCodeSent = false, this.countdown = 0, this.status = SignInStatus.initial, this.errorMessage});
+  const _SignInState({this.username = '', this.password = '', this.signInType = SignInType.password, this.status = SignInStatus.initial, this.errorMessage});
   
 
 @override@JsonKey() final  String username;
 @override@JsonKey() final  String password;
-@override@JsonKey() final  String phoneNumber;
-@override@JsonKey() final  String verificationCode;
 @override@JsonKey() final  SignInType signInType;
-@override@JsonKey() final  bool isCodeSent;
-@override@JsonKey() final  int countdown;
 @override@JsonKey() final  SignInStatus status;
 @override final  String? errorMessage;
 
@@ -237,16 +229,16 @@ _$SignInStateCopyWith<_SignInState> get copyWith => __$SignInStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SignInState&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.verificationCode, verificationCode) || other.verificationCode == verificationCode)&&(identical(other.signInType, signInType) || other.signInType == signInType)&&(identical(other.isCodeSent, isCodeSent) || other.isCodeSent == isCodeSent)&&(identical(other.countdown, countdown) || other.countdown == countdown)&&(identical(other.status, status) || other.status == status)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SignInState&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.signInType, signInType) || other.signInType == signInType)&&(identical(other.status, status) || other.status == status)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,username,password,phoneNumber,verificationCode,signInType,isCodeSent,countdown,status,errorMessage);
+int get hashCode => Object.hash(runtimeType,username,password,signInType,status,errorMessage);
 
 @override
 String toString() {
-  return 'SignInState(username: $username, password: $password, phoneNumber: $phoneNumber, verificationCode: $verificationCode, signInType: $signInType, isCodeSent: $isCodeSent, countdown: $countdown, status: $status, errorMessage: $errorMessage)';
+  return 'SignInState(username: $username, password: $password, signInType: $signInType, status: $status, errorMessage: $errorMessage)';
 }
 
 
@@ -257,7 +249,7 @@ abstract mixin class _$SignInStateCopyWith<$Res> implements $SignInStateCopyWith
   factory _$SignInStateCopyWith(_SignInState value, $Res Function(_SignInState) _then) = __$SignInStateCopyWithImpl;
 @override @useResult
 $Res call({
- String username, String password, String phoneNumber, String verificationCode, SignInType signInType, bool isCodeSent, int countdown, SignInStatus status, String? errorMessage
+ String username, String password, SignInType signInType, SignInStatus status, String? errorMessage
 });
 
 
@@ -274,16 +266,12 @@ class __$SignInStateCopyWithImpl<$Res>
 
 /// Create a copy of SignInState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? username = null,Object? password = null,Object? phoneNumber = null,Object? verificationCode = null,Object? signInType = null,Object? isCodeSent = null,Object? countdown = null,Object? status = null,Object? errorMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? username = null,Object? password = null,Object? signInType = null,Object? status = null,Object? errorMessage = freezed,}) {
   return _then(_SignInState(
 username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
-as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String,verificationCode: null == verificationCode ? _self.verificationCode : verificationCode // ignore: cast_nullable_to_non_nullable
 as String,signInType: null == signInType ? _self.signInType : signInType // ignore: cast_nullable_to_non_nullable
-as SignInType,isCodeSent: null == isCodeSent ? _self.isCodeSent : isCodeSent // ignore: cast_nullable_to_non_nullable
-as bool,countdown: null == countdown ? _self.countdown : countdown // ignore: cast_nullable_to_non_nullable
-as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as SignInType,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as SignInStatus,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

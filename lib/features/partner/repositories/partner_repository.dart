@@ -1,26 +1,25 @@
-import 'package:lunchbox/features/partner/datasources/partner_rest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:lunchbox/core/errors/failure.dart';
 
 part 'partner_repository.g.dart';
 
-@Riverpod(keepAlive: true)
-PartnerRepository partnerRepository(Ref ref) {
-  return PartnerRepository(ref.watch(partnerRestClientProvider));
-}
+@riverpod
+class PartnerRepository extends _$PartnerRepository {
+  @override
+  FutureOr<void> build() {}
 
-class PartnerRepository {
-  PartnerRepository(this._client);
+  Future<bool> submitApplication({
+    required String name,
+    required String company,
+    required String phone,
+    required String intention,
+  }) async {
+    // 模拟提交申请
+    await Future<void>.delayed(const Duration(seconds: 1));
+    return true;
+  }
 
-  final PartnerRestClient _client;
-
-  Future<void> applyPartner(Map<String, dynamic> data) async {
-    final response = await _client.applyPartner(data);
-    if (!response.success) {
-      throw Failure.server(
-        message: response.message,
-        statusCode: response.code,
-      );
-    }
+  Future<Map<String, dynamic>> getPartnerConfig() async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    return {'hotline': '400-123-4567', 'email': 'partner@lunchbox.com'};
   }
 }

@@ -45,8 +45,8 @@ _PaginationMeta _$PaginationMetaFromJson(Map<String, dynamic> json) =>
           lastPage: $checkedConvert('last_page', (v) => (v as num).toInt()),
           hasMore: $checkedConvert('has_more', (v) => v as bool),
           total: $checkedConvert('total', (v) => (v as num).toInt()),
-          from: $checkedConvert('from', (v) => (v as num).toInt()),
-          to: $checkedConvert('to', (v) => (v as num).toInt()),
+          from: $checkedConvert('from', (v) => (v as num?)?.toInt()),
+          to: $checkedConvert('to', (v) => (v as num?)?.toInt()),
         );
         return val;
       },
@@ -65,6 +65,6 @@ Map<String, dynamic> _$PaginationMetaToJson(_PaginationMeta instance) =>
       'last_page': instance.lastPage,
       'has_more': instance.hasMore,
       'total': instance.total,
-      'from': instance.from,
-      'to': instance.to,
+      'from': ?instance.from,
+      'to': ?instance.to,
     };

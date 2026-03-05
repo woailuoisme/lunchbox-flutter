@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/features/profile/providers/profile_provider.dart';
+import 'package:lunchbox/core/services/dialog_service.dart';
 import 'package:lunchbox/features/profile/widgets/profile_header.dart';
 import 'package:lunchbox/features/profile/widgets/profile_menu_tile.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
@@ -14,6 +16,9 @@ class ProfileView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final profileState = ref.watch(profileProvider);
+    final user = profileState.currentUser;
+
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: CustomScrollView(
@@ -21,18 +26,19 @@ class ProfileView extends ConsumerWidget {
           // 红色渐变背景头部
           SliverToBoxAdapter(
             child: ProfileHeader(
-              username: '166****2309',
-              walletBalance: '999962.07',
-              points: '300',
-              coupons: '9',
-              onLogout: () {
-                // TODO: Implement logout
-              },
+              username: user?.nickname ?? '...',
+              walletBalance: user?.balance ?? '0.00',
+              points: user?.integral ?? '0',
+              coupons: user?.userCouponCount.toString() ?? '0',
+              avatarUrl: user?.avatar,
+              onLogout: () => _handleLogout(context, ref),
             ),
           ),
 
           // 功能列表菜单
-          SliverToBoxAdapter(child: _buildMenuSection(context)),
+          SliverToBoxAdapter(
+            child: _buildMenuSection(context, ref, user?.balance),
+          ),
 
           SliverToBoxAdapter(child: SizedBox(height: 40.h)),
         ],
@@ -41,7 +47,11 @@ class ProfileView extends ConsumerWidget {
   }
 
   /// 构建功能列表菜单
-  Widget _buildMenuSection(BuildContext context) {
+  Widget _buildMenuSection(
+    BuildContext context,
+    WidgetRef ref,
+    String? balance,
+  ) {
     final theme = Theme.of(context);
     return ColoredBox(
       color: theme.cardColor,
@@ -51,7 +61,7 @@ class ProfileView extends ConsumerWidget {
           ProfileMenuTile(
             icon: Symbols.account_balance_wallet,
             title: t.profile.wallet,
-            trailingText: '999962.07',
+            trailingText: balance ?? '0.00',
             trailingColor: theme.colorScheme.primary,
             onTap: () => const WalletRoute().push<void>(context),
           ),
@@ -90,10 +100,39 @@ class ProfileView extends ConsumerWidget {
             icon: Symbols.settings,
             title: t.profile.settings,
             onTap: () => const SettingsRoute().push<void>(context),
+          ),
+
+          // 登出
+          ProfileMenuTile(
+            icon: Symbols.logout,
+            title: t.profile.logout,
+            titleColor: theme.colorScheme.error,
+            iconColor: theme.colorScheme.error,
             showDivider: false,
+            onTap: () => _handleLogout(context, ref),
           ),
         ],
       ),
     );
+  }
+
+  /// 处理登出逻辑
+  Future<void> _handleLogout(BuildContext context, WidgetRef ref) async {
+    final confirmed = await ref
+        .read(dialogServiceProvider)
+        .showConfirm(
+          title: t.profile.confirmLogout,
+          message: t.profile.confirmLogoutContent,
+          context: context,
+        );
+
+    if (confirmed == true) {
+      await ref.read(profileProvider.notifier).logout();
+      // GoRouter 会根据 AuthProvider 的状态自动重定向到登录页
+      // 但为了保险起见，如果还在当前页，可以手动跳转
+      if (context.mounted) {
+        const SignInRoute().go(context);
+      }
+    }
   }
 }

@@ -6,7 +6,10 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lunchbox/features/auth/providers/forgot_password_provider.dart';
 import 'package:lunchbox/features/auth/providers/forgot_password_state.dart';
+import 'package:lunchbox/features/auth/widgets/auth_input_decoration.dart';
+import 'package:lunchbox/features/auth/widgets/reset_password_header.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
 
 class ResetPasswordView extends ConsumerStatefulWidget {
@@ -75,27 +78,28 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: 48.h),
-                Text(
-                  t.auth.forgotPasswordTitle,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.onSurface,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 48.h),
+                SizedBox(height: 32.h),
+                ResetPasswordHeader(colorScheme: colorScheme),
+                SizedBox(height: 40.h),
                 FormBuilderTextField(
                   name: 'newPassword',
                   obscureText: _obscureNewPassword,
-                  decoration: InputDecoration(
-                    labelText: t.auth.enterPassword,
-                    prefixIcon: const Icon(Icons.lock_outline),
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  decoration: AuthInputDecoration.build(
+                    colorScheme: colorScheme,
+                    label: t.auth.enterPassword,
+                    hint: t.auth.enterPassword,
+                    prefixIcon: Symbols.lock,
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureNewPassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                            ? Symbols.visibility
+                            : Symbols.visibility_off,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                       onPressed: () => setState(
                         () => _obscureNewPassword = !_obscureNewPassword,
@@ -113,18 +117,26 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
                     ),
                   ]),
                 ),
-                SizedBox(height: 24.h),
+                SizedBox(height: 16.h),
                 FormBuilderTextField(
                   name: 'confirmPassword',
                   obscureText: _obscureConfirmPassword,
-                  decoration: InputDecoration(
-                    labelText: t.auth.enterPassword, // confirm password label
-                    prefixIcon: const Icon(Icons.lock_reset),
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  decoration: AuthInputDecoration.build(
+                    colorScheme: colorScheme,
+                    label: t.auth.enterPassword, // confirm password label
+                    hint: t.auth.enterPassword,
+                    prefixIcon: Symbols.lock_reset,
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureConfirmPassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                            ? Symbols.visibility
+                            : Symbols.visibility_off,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                       onPressed: () => setState(
                         () =>
@@ -146,7 +158,7 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
                     },
                   ]),
                 ),
-                SizedBox(height: 48.h),
+                SizedBox(height: 32.h),
                 SizedBox(
                   height: 56.h,
                   child: FilledButton(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:lunchbox/features/auth/widgets/auth_input_decoration.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -10,54 +11,117 @@ class ForgotPasswordForm extends StatelessWidget {
     super.key,
     required this.colorScheme,
     required this.onSubmit,
-    required this.onChanged,
+    required this.onIdentifierChanged,
+    required this.onOldPasswordChanged,
+    required this.onNewPasswordChanged,
+    required this.onConfirmPasswordChanged,
   });
 
   final ColorScheme colorScheme;
   final VoidCallback onSubmit;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String> onIdentifierChanged;
+  final ValueChanged<String> onOldPasswordChanged;
+  final ValueChanged<String> onNewPasswordChanged;
+  final ValueChanged<String> onConfirmPasswordChanged;
 
   @override
   Widget build(BuildContext context) {
-    return FormBuilderTextField(
-      name: 'identifier',
-      style: TextStyle(
-        fontSize: 16.sp,
-        color: colorScheme.onSurface,
-        fontWeight: FontWeight.w500,
-      ),
-      decoration: InputDecoration(
-        labelText: t.auth.usernameOrEmail,
-        labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
-        hintText: t.auth.usernameOrEmail,
-        hintStyle: TextStyle(color: colorScheme.outline),
-        prefixIcon: Icon(Symbols.person, color: colorScheme.primary),
-        filled: true,
-        fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide.none,
+    return Column(
+      children: [
+        FormBuilderTextField(
+          name: 'identifier',
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
+          decoration: AuthInputDecoration.build(
+            colorScheme: colorScheme,
+            label: t.auth.email,
+            hint: t.auth.enterEmail,
+            prefixIcon: Symbols.mail,
+          ),
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(errorText: t.auth.required),
+            FormBuilderValidators.email(errorText: t.auth.emailInvalid),
+          ]),
+          keyboardType: TextInputType.emailAddress,
+          textInputAction: TextInputAction.next,
+          onChanged: (value) => onIdentifierChanged(value ?? ''),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide.none,
+        SizedBox(height: 16.h),
+        FormBuilderTextField(
+          name: 'old_password',
+          obscureText: true,
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
+          decoration: AuthInputDecoration.build(
+            colorScheme: colorScheme,
+            label: t.auth.oldPassword,
+            hint: t.auth.enterOldPassword,
+            prefixIcon: Symbols.lock_open,
+          ),
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(errorText: t.auth.required),
+          ]),
+          textInputAction: TextInputAction.next,
+          onChanged: (value) => onOldPasswordChanged(value ?? ''),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: colorScheme.primary, width: 2),
+        SizedBox(height: 16.h),
+        FormBuilderTextField(
+          name: 'new_password',
+          obscureText: true,
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
+          decoration: AuthInputDecoration.build(
+            colorScheme: colorScheme,
+            label: t.auth.newPassword,
+            hint: t.auth.enterNewPassword,
+            prefixIcon: Symbols.lock,
+          ),
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(errorText: t.auth.required),
+            FormBuilderValidators.minLength(
+              6,
+              errorText: t.auth.passwordMinLength(length: 6),
+            ),
+          ]),
+          textInputAction: TextInputAction.next,
+          onChanged: (value) => onNewPasswordChanged(value ?? ''),
         ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
+        SizedBox(height: 16.h),
+        FormBuilderTextField(
+          name: 'confirm_password',
+          obscureText: true,
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
+          decoration: AuthInputDecoration.build(
+            colorScheme: colorScheme,
+            label: t.auth.confirmPassword,
+            hint: t.auth.enterConfirmPassword,
+            prefixIcon: Symbols.lock,
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return t.auth.required;
+            }
+            // We'll handle the match check in the provider/view or use a controller
+            return null;
+          },
+          textInputAction: TextInputAction.done,
+          onChanged: (value) => onConfirmPasswordChanged(value ?? ''),
+          onSubmitted: (_) => onSubmit(),
         ),
-      ),
-      validator: FormBuilderValidators.compose([
-        FormBuilderValidators.required(errorText: t.auth.required),
-      ]),
-      keyboardType: TextInputType.emailAddress,
-      textInputAction: TextInputAction.done,
-      onChanged: (value) => onChanged(value ?? ''),
-      onSubmitted: (_) => onSubmit(),
+      ],
     );
   }
 }

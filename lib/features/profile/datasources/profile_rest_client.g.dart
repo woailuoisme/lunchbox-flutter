@@ -20,12 +20,12 @@ class _ProfileRestClient implements ProfileRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<UserModel>> getProfile() async {
+  Future<ApiResponse<UserProfile>> getProfile() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<UserModel>>(
+    final _options = _setStreamType<ApiResponse<UserProfile>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,11 +36,11 @@ class _ProfileRestClient implements ProfileRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<UserModel> _value;
+    late ApiResponse<UserProfile> _value;
     try {
-      _value = ApiResponse<UserModel>.fromJson(
+      _value = ApiResponse<UserProfile>.fromJson(
         _result.data!,
-        (json) => UserModel.fromJson(json as Map<String, dynamic>),
+        (json) => UserProfile.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);

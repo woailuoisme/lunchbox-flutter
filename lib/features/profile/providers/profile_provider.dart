@@ -1,6 +1,6 @@
 import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
-import 'package:lunchbox/features/auth/repositories/auth_repository.dart';
+import 'package:lunchbox/features/auth/auth.dart';
 import 'package:lunchbox/features/profile/providers/profile_state.dart';
 import 'package:lunchbox/features/profile/repositories/profile_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -27,7 +27,7 @@ class ProfileNotifier extends _$ProfileNotifier
   Future<void> loadUserInfo() async {
     await runAsync(() async {
       LoggerUtils.i(
-        'ProfileNotifier: Loading user info from Mock Repository (v2)',
+        'ProfileNotifier: Loading user info from Profile Repository',
       );
       final repository = ref.read(profileRepositoryProvider.notifier);
       final user = await repository.getUserInfo();
@@ -66,8 +66,9 @@ class ProfileNotifier extends _$ProfileNotifier
   /// 登出
   Future<void> logout() async {
     await runAsync(() async {
-      final authRepository = ref.read(authRepositoryProvider);
-      await authRepository.logout();
+      // 1. 调用 AuthProvider 的登出逻辑（API 登出 + 清除本地存储）
+      await ref.read(authProvider.notifier).logout();
+      // 2. 清除个人资料状态
       state = state.copyWith(currentUser: null);
       LoggerUtils.i('ProfileNotifier: User logged out');
     }, errorLabel: '登出失败');

@@ -25,7 +25,7 @@ class SignUpButton extends StatelessWidget {
         disabledForegroundColor: colorScheme.onPrimary.withValues(alpha: 0.8),
         padding: EdgeInsets.symmetric(vertical: 16.h),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         elevation: 0,
       ),

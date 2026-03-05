@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PaymentState {
 
- OrderModel? get order; bool get isLoading; int get countdown; bool get isPaymentSheetReady; bool get isPaymentSuccessful; String? get errorMessage;
+ OrderModel? get order; PaymentIntentResponse? get paymentIntent; bool get isLoading; int get countdown; bool get isPaymentSheetReady; bool get isPaymentSuccessful; String? get errorMessage;
 /// Create a copy of PaymentState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $PaymentStateCopyWith<PaymentState> get copyWith => _$PaymentStateCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentState&&(identical(other.order, order) || other.order == order)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.countdown, countdown) || other.countdown == countdown)&&(identical(other.isPaymentSheetReady, isPaymentSheetReady) || other.isPaymentSheetReady == isPaymentSheetReady)&&(identical(other.isPaymentSuccessful, isPaymentSuccessful) || other.isPaymentSuccessful == isPaymentSuccessful)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentState&&(identical(other.order, order) || other.order == order)&&(identical(other.paymentIntent, paymentIntent) || other.paymentIntent == paymentIntent)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.countdown, countdown) || other.countdown == countdown)&&(identical(other.isPaymentSheetReady, isPaymentSheetReady) || other.isPaymentSheetReady == isPaymentSheetReady)&&(identical(other.isPaymentSuccessful, isPaymentSuccessful) || other.isPaymentSuccessful == isPaymentSuccessful)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,order,isLoading,countdown,isPaymentSheetReady,isPaymentSuccessful,errorMessage);
+int get hashCode => Object.hash(runtimeType,order,paymentIntent,isLoading,countdown,isPaymentSheetReady,isPaymentSuccessful,errorMessage);
 
 @override
 String toString() {
-  return 'PaymentState(order: $order, isLoading: $isLoading, countdown: $countdown, isPaymentSheetReady: $isPaymentSheetReady, isPaymentSuccessful: $isPaymentSuccessful, errorMessage: $errorMessage)';
+  return 'PaymentState(order: $order, paymentIntent: $paymentIntent, isLoading: $isLoading, countdown: $countdown, isPaymentSheetReady: $isPaymentSheetReady, isPaymentSuccessful: $isPaymentSuccessful, errorMessage: $errorMessage)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $PaymentStateCopyWith<$Res>  {
   factory $PaymentStateCopyWith(PaymentState value, $Res Function(PaymentState) _then) = _$PaymentStateCopyWithImpl;
 @useResult
 $Res call({
- OrderModel? order, bool isLoading, int countdown, bool isPaymentSheetReady, bool isPaymentSuccessful, String? errorMessage
+ OrderModel? order, PaymentIntentResponse? paymentIntent, bool isLoading, int countdown, bool isPaymentSheetReady, bool isPaymentSuccessful, String? errorMessage
 });
 
 
-$OrderModelCopyWith<$Res>? get order;
+$OrderModelCopyWith<$Res>? get order;$PaymentIntentResponseCopyWith<$Res>? get paymentIntent;
 
 }
 /// @nodoc
@@ -62,10 +62,11 @@ class _$PaymentStateCopyWithImpl<$Res>
 
 /// Create a copy of PaymentState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? order = freezed,Object? isLoading = null,Object? countdown = null,Object? isPaymentSheetReady = null,Object? isPaymentSuccessful = null,Object? errorMessage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? order = freezed,Object? paymentIntent = freezed,Object? isLoading = null,Object? countdown = null,Object? isPaymentSheetReady = null,Object? isPaymentSuccessful = null,Object? errorMessage = freezed,}) {
   return _then(_self.copyWith(
 order: freezed == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
-as OrderModel?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as OrderModel?,paymentIntent: freezed == paymentIntent ? _self.paymentIntent : paymentIntent // ignore: cast_nullable_to_non_nullable
+as PaymentIntentResponse?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,countdown: null == countdown ? _self.countdown : countdown // ignore: cast_nullable_to_non_nullable
 as int,isPaymentSheetReady: null == isPaymentSheetReady ? _self.isPaymentSheetReady : isPaymentSheetReady // ignore: cast_nullable_to_non_nullable
 as bool,isPaymentSuccessful: null == isPaymentSuccessful ? _self.isPaymentSuccessful : isPaymentSuccessful // ignore: cast_nullable_to_non_nullable
@@ -84,6 +85,18 @@ $OrderModelCopyWith<$Res>? get order {
 
   return $OrderModelCopyWith<$Res>(_self.order!, (value) {
     return _then(_self.copyWith(order: value));
+  });
+}/// Create a copy of PaymentState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PaymentIntentResponseCopyWith<$Res>? get paymentIntent {
+    if (_self.paymentIntent == null) {
+    return null;
+  }
+
+  return $PaymentIntentResponseCopyWith<$Res>(_self.paymentIntent!, (value) {
+    return _then(_self.copyWith(paymentIntent: value));
   });
 }
 }
@@ -167,10 +180,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( OrderModel? order,  bool isLoading,  int countdown,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( OrderModel? order,  PaymentIntentResponse? paymentIntent,  bool isLoading,  int countdown,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PaymentState() when $default != null:
-return $default(_that.order,_that.isLoading,_that.countdown,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.errorMessage);case _:
+return $default(_that.order,_that.paymentIntent,_that.isLoading,_that.countdown,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.errorMessage);case _:
   return orElse();
 
 }
@@ -188,10 +201,10 @@ return $default(_that.order,_that.isLoading,_that.countdown,_that.isPaymentSheet
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( OrderModel? order,  bool isLoading,  int countdown,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  String? errorMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( OrderModel? order,  PaymentIntentResponse? paymentIntent,  bool isLoading,  int countdown,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  String? errorMessage)  $default,) {final _that = this;
 switch (_that) {
 case _PaymentState():
-return $default(_that.order,_that.isLoading,_that.countdown,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.errorMessage);case _:
+return $default(_that.order,_that.paymentIntent,_that.isLoading,_that.countdown,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.errorMessage);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +221,10 @@ return $default(_that.order,_that.isLoading,_that.countdown,_that.isPaymentSheet
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( OrderModel? order,  bool isLoading,  int countdown,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  String? errorMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( OrderModel? order,  PaymentIntentResponse? paymentIntent,  bool isLoading,  int countdown,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  String? errorMessage)?  $default,) {final _that = this;
 switch (_that) {
 case _PaymentState() when $default != null:
-return $default(_that.order,_that.isLoading,_that.countdown,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.errorMessage);case _:
+return $default(_that.order,_that.paymentIntent,_that.isLoading,_that.countdown,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.errorMessage);case _:
   return null;
 
 }
@@ -223,10 +236,11 @@ return $default(_that.order,_that.isLoading,_that.countdown,_that.isPaymentSheet
 
 
 class _PaymentState implements PaymentState {
-  const _PaymentState({this.order, this.isLoading = false, this.countdown = 300, this.isPaymentSheetReady = false, this.isPaymentSuccessful = false, this.errorMessage});
+  const _PaymentState({this.order, this.paymentIntent, this.isLoading = false, this.countdown = 300, this.isPaymentSheetReady = false, this.isPaymentSuccessful = false, this.errorMessage});
   
 
 @override final  OrderModel? order;
+@override final  PaymentIntentResponse? paymentIntent;
 @override@JsonKey() final  bool isLoading;
 @override@JsonKey() final  int countdown;
 @override@JsonKey() final  bool isPaymentSheetReady;
@@ -243,16 +257,16 @@ _$PaymentStateCopyWith<_PaymentState> get copyWith => __$PaymentStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentState&&(identical(other.order, order) || other.order == order)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.countdown, countdown) || other.countdown == countdown)&&(identical(other.isPaymentSheetReady, isPaymentSheetReady) || other.isPaymentSheetReady == isPaymentSheetReady)&&(identical(other.isPaymentSuccessful, isPaymentSuccessful) || other.isPaymentSuccessful == isPaymentSuccessful)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentState&&(identical(other.order, order) || other.order == order)&&(identical(other.paymentIntent, paymentIntent) || other.paymentIntent == paymentIntent)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.countdown, countdown) || other.countdown == countdown)&&(identical(other.isPaymentSheetReady, isPaymentSheetReady) || other.isPaymentSheetReady == isPaymentSheetReady)&&(identical(other.isPaymentSuccessful, isPaymentSuccessful) || other.isPaymentSuccessful == isPaymentSuccessful)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,order,isLoading,countdown,isPaymentSheetReady,isPaymentSuccessful,errorMessage);
+int get hashCode => Object.hash(runtimeType,order,paymentIntent,isLoading,countdown,isPaymentSheetReady,isPaymentSuccessful,errorMessage);
 
 @override
 String toString() {
-  return 'PaymentState(order: $order, isLoading: $isLoading, countdown: $countdown, isPaymentSheetReady: $isPaymentSheetReady, isPaymentSuccessful: $isPaymentSuccessful, errorMessage: $errorMessage)';
+  return 'PaymentState(order: $order, paymentIntent: $paymentIntent, isLoading: $isLoading, countdown: $countdown, isPaymentSheetReady: $isPaymentSheetReady, isPaymentSuccessful: $isPaymentSuccessful, errorMessage: $errorMessage)';
 }
 
 
@@ -263,11 +277,11 @@ abstract mixin class _$PaymentStateCopyWith<$Res> implements $PaymentStateCopyWi
   factory _$PaymentStateCopyWith(_PaymentState value, $Res Function(_PaymentState) _then) = __$PaymentStateCopyWithImpl;
 @override @useResult
 $Res call({
- OrderModel? order, bool isLoading, int countdown, bool isPaymentSheetReady, bool isPaymentSuccessful, String? errorMessage
+ OrderModel? order, PaymentIntentResponse? paymentIntent, bool isLoading, int countdown, bool isPaymentSheetReady, bool isPaymentSuccessful, String? errorMessage
 });
 
 
-@override $OrderModelCopyWith<$Res>? get order;
+@override $OrderModelCopyWith<$Res>? get order;@override $PaymentIntentResponseCopyWith<$Res>? get paymentIntent;
 
 }
 /// @nodoc
@@ -280,10 +294,11 @@ class __$PaymentStateCopyWithImpl<$Res>
 
 /// Create a copy of PaymentState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? order = freezed,Object? isLoading = null,Object? countdown = null,Object? isPaymentSheetReady = null,Object? isPaymentSuccessful = null,Object? errorMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? order = freezed,Object? paymentIntent = freezed,Object? isLoading = null,Object? countdown = null,Object? isPaymentSheetReady = null,Object? isPaymentSuccessful = null,Object? errorMessage = freezed,}) {
   return _then(_PaymentState(
 order: freezed == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
-as OrderModel?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as OrderModel?,paymentIntent: freezed == paymentIntent ? _self.paymentIntent : paymentIntent // ignore: cast_nullable_to_non_nullable
+as PaymentIntentResponse?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,countdown: null == countdown ? _self.countdown : countdown // ignore: cast_nullable_to_non_nullable
 as int,isPaymentSheetReady: null == isPaymentSheetReady ? _self.isPaymentSheetReady : isPaymentSheetReady // ignore: cast_nullable_to_non_nullable
 as bool,isPaymentSuccessful: null == isPaymentSuccessful ? _self.isPaymentSuccessful : isPaymentSuccessful // ignore: cast_nullable_to_non_nullable
@@ -303,6 +318,18 @@ $OrderModelCopyWith<$Res>? get order {
 
   return $OrderModelCopyWith<$Res>(_self.order!, (value) {
     return _then(_self.copyWith(order: value));
+  });
+}/// Create a copy of PaymentState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PaymentIntentResponseCopyWith<$Res>? get paymentIntent {
+    if (_self.paymentIntent == null) {
+    return null;
+  }
+
+  return $PaymentIntentResponseCopyWith<$Res>(_self.paymentIntent!, (value) {
+    return _then(_self.copyWith(paymentIntent: value));
   });
 }
 }

@@ -1,4 +1,5 @@
-import 'package:lunchbox/features/auth/entities/user_model.dart';
+import 'package:lunchbox/features/profile/datasources/profile_rest_client.dart';
+import 'package:lunchbox/features/profile/entities/user_profile.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'profile_repository.g.dart';
@@ -8,41 +9,34 @@ class ProfileRepository extends _$ProfileRepository {
   @override
   FutureOr<void> build() {}
 
-  Future<UserModel> getUserInfo() async {
-    // 模拟API调用
-    await Future<void>.delayed(const Duration(milliseconds: 500));
+  ProfileRestClient get _client => ref.read(profileRestClientProvider);
 
-    return UserModel(
-      id: 'mock_user_123',
-      username: 'mock_user',
-      phone: '13800138000',
-      email: 'mock@example.com',
-      nickname: '测试用户',
-      avatar: 'https://picsum.photos/seed/user/200',
-      gender: 'male',
-      birthday: DateTime(1990, 1, 1).toIso8601String(),
-      points: 100,
-      memberLevel: 'gold',
-      isVerified: true,
-      registeredAt: DateTime(2023, 1, 1).toIso8601String(),
-    );
+  /// 获取用户个人资料
+  Future<UserProfile> getUserInfo() async {
+    final response = await _client.getProfile();
+    if (response.success && response.data != null) {
+      return response.data!;
+    }
+    throw response.message;
   }
 
-  Future<UserModel> updateUserInfo({
-    required UserModel currentUser,
+  /// 更新用户个人资料
+  Future<UserProfile> updateUserInfo({
+    required UserProfile currentUser,
     String? nickname,
     String? avatar,
     String? gender,
     DateTime? birthday,
   }) async {
-    // 模拟API调用
+    // 这里如果 API 还没有更新接口，暂时保持原样或抛出未实现
+    // 如果 profile_rest_client.dart 有更新接口可以调用
     await Future<void>.delayed(const Duration(milliseconds: 500));
 
     return currentUser.copyWith(
       nickname: nickname ?? currentUser.nickname,
       avatar: avatar ?? currentUser.avatar,
       gender: gender ?? currentUser.gender,
-      birthday: birthday?.toIso8601String() ?? currentUser.birthday,
+      // UserProfile 目前没有 birthday 字段，如果需要可以添加
     );
   }
 }

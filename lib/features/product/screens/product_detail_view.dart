@@ -31,6 +31,9 @@ class ProductDetailView extends ConsumerWidget {
       backgroundColor: theme.scaffoldBackgroundColor,
       body: productAsync.when(
         data: (product) {
+          if (product == null) {
+            return Center(child: Text(t.common.noData));
+          }
           debugPrint(
             'ProductDetailView: Data received, productId=${product.id}',
           );

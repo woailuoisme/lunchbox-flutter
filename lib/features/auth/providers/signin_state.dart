@@ -4,7 +4,7 @@ part 'signin_state.freezed.dart';
 
 enum SignInStatus { initial, inProgress, success, failure }
 
-enum SignInType { password, phone }
+enum SignInType { password }
 
 extension SignInStatusX on SignInStatus {
   bool get isInitial => this == SignInStatus.initial;
@@ -14,22 +14,13 @@ extension SignInStatusX on SignInStatus {
 }
 
 extension SignInStateX on SignInState {
-  bool get canSendCode =>
-      phoneNumber.isNotEmpty && countdown <= 0 && !status.isInProgress;
-
   bool get canSignInWithPassword =>
       signInType == SignInType.password &&
       username.isNotEmpty &&
       password.isNotEmpty &&
       !status.isInProgress;
 
-  bool get canSignInWithPhone =>
-      signInType == SignInType.phone &&
-      phoneNumber.isNotEmpty &&
-      verificationCode.isNotEmpty &&
-      !status.isInProgress;
-
-  bool get canSubmit => canSignInWithPassword || canSignInWithPhone;
+  bool get canSubmit => canSignInWithPassword;
 
   bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;
 }
@@ -39,11 +30,7 @@ abstract class SignInState with _$SignInState {
   const factory SignInState({
     @Default('') String username,
     @Default('') String password,
-    @Default('') String phoneNumber,
-    @Default('') String verificationCode,
     @Default(SignInType.password) SignInType signInType,
-    @Default(false) bool isCodeSent,
-    @Default(0) int countdown,
     @Default(SignInStatus.initial) SignInStatus status,
     String? errorMessage,
   }) = _SignInState;

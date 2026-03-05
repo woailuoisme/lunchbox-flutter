@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:lunchbox/core/network/dio_provider.dart';
 import 'package:lunchbox/core/network/response/api_response.dart';
-import 'package:lunchbox/features/auth/entities/user_model.dart';
+import 'package:lunchbox/features/profile/entities/user_profile.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,7 +19,7 @@ abstract class ProfileRestClient {
 
   /// 获取用户个人信息
   @GET('/api/v1/auth/me')
-  Future<ApiResponse<UserModel>> getProfile();
+  Future<ApiResponse<UserProfile>> getProfile();
 
   /// 用户登出
   @POST('/api/v1/auth/logout')

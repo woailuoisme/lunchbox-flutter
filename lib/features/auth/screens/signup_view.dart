@@ -33,16 +33,32 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
     }
 
     final values = _formKey.currentState!.value;
-    final username = values['username'] as String;
+    final email = values['email'] as String;
     final password = values['password'] as String;
-    final nickname = values['nickname'] as String;
+    final passwordConfirmation = values['password_confirmation'] as String;
+
+    if (password != passwordConfirmation) {
+      toastification.show(
+        context: context,
+        type: ToastificationType.error,
+        style: ToastificationStyle.fillColored,
+        title: Text(t.auth.passwordNotMatch),
+        alignment: Alignment.topCenter,
+        autoCloseDuration: const Duration(seconds: 3),
+      );
+      return;
+    }
 
     setState(() => _isLoading = true);
 
     try {
       await ref
           .read(authProvider.notifier)
-          .register(username.trim(), password, nickname.trim());
+          .register(
+            email: email.trim(),
+            password: password,
+            passwordConfirmation: passwordConfirmation,
+          );
       if (mounted) {
         toastification.show(
           context: context,
@@ -81,7 +97,6 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text(t.auth.registerTitle),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -94,40 +109,34 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: IntrinsicHeight(
-                  child: FormBuilder(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children:
-                          [
-                                SizedBox(height: 24.h),
-                                SignUpHeader(colorScheme: colorScheme),
-                                SizedBox(height: 48.h),
-                                SignUpForm(
-                                  colorScheme: colorScheme,
-                                  obscurePassword: _obscurePassword,
-                                  onTogglePasswordVisibility:
-                                      _togglePasswordVisibility,
-                                  onSubmit: _handleSignUp,
-                                ),
-                                SizedBox(height: 32.h),
-                                SignUpButton(
-                                  colorScheme: colorScheme,
-                                  isLoading: _isLoading,
-                                  onPressed: _handleSignUp,
-                                ),
-                                SizedBox(height: 24.h),
-                              ]
-                              .animate(interval: 50.ms)
-                              .fadeIn(duration: 400.ms, curve: Curves.easeOut)
-                              .slideY(
-                                begin: 0.1,
-                                end: 0,
-                                curve: Curves.easeOut,
+                child: FormBuilder(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children:
+                        [
+                              SignUpHeader(colorScheme: colorScheme),
+                              SizedBox(height: 40.h),
+                              SignUpForm(
+                                colorScheme: colorScheme,
+                                obscurePassword: _obscurePassword,
+                                onTogglePasswordVisibility:
+                                    _togglePasswordVisibility,
+                                onSubmit: _handleSignUp,
                               ),
-                    ),
+                              SizedBox(height: 32.h),
+                              SignUpButton(
+                                colorScheme: colorScheme,
+                                isLoading: _isLoading,
+                                onPressed: _handleSignUp,
+                              ),
+                              SizedBox(height: 24.h),
+                            ]
+                            .animate(interval: 50.ms)
+                            .fadeIn(duration: 400.ms, curve: Curves.easeOut)
+                            .slideY(begin: 0.1, end: 0, curve: Curves.easeOut),
                   ),
                 ),
               ),

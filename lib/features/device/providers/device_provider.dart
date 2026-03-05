@@ -1,4 +1,3 @@
-import 'package:lunchbox/core/errors/errors.dart';
 import 'package:lunchbox/core/services/location_service.dart';
 import 'package:lunchbox/features/device/device.dart';
 import 'package:lunchbox/features/product/product.dart';
@@ -150,7 +149,7 @@ class SelectedDevice extends _$SelectedDevice {
 
 /// 根据ID获取设备详情
 @riverpod
-Future<DeviceModel> deviceDetail(Ref ref, String deviceId) async {
+Future<DeviceModel?> deviceDetail(Ref ref, String deviceId) async {
   ref.keepAlive();
 
   // 1. 先从当前选中设备缓存获取，这是最快且最常见的路径
@@ -175,7 +174,7 @@ Future<DeviceModel> deviceDetail(Ref ref, String deviceId) async {
   );
   if (matchedFrequent != null) return matchedFrequent;
 
-  throw const Failure.server(message: 'Device not found', statusCode: 404);
+  return null;
 }
 
 /// 获取指定设备的产品列表

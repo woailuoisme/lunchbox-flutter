@@ -17,23 +17,17 @@ class Auth extends _$Auth {
     _setAuthenticated(true);
   }
 
-  Future<void> register(
-    String username,
-    String password,
-    String nickname,
-  ) async {
+  Future<void> register({
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
     final repo = ref.read(authRepositoryProvider);
     await repo.register(
-      username: username,
+      email: email,
       password: password,
-      nickname: nickname,
+      passwordConfirmation: passwordConfirmation,
     );
-    _setAuthenticated(true);
-  }
-
-  Future<void> loginWithPhone(String phone, String code) async {
-    final repo = ref.read(authRepositoryProvider);
-    await repo.loginWithPhone(phone: phone, code: code);
     _setAuthenticated(true);
   }
 

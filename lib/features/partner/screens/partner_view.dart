@@ -52,15 +52,14 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
     });
 
     try {
-      // partnerRepositoryProvider provides PartnerRepository, which has applyPartner method.
-      // It does NOT have a notifier or return bool success directly (it returns Future<void>).
-      // We should wrap it in try-catch.
-      await ref.read(partnerRepositoryProvider).applyPartner({
-        'name': name,
-        'company': company,
-        'phone': phone,
-        'intention': intention,
-      });
+      await ref
+          .read(partnerRepositoryProvider.notifier)
+          .submitApplication(
+            name: name,
+            company: company,
+            phone: phone,
+            intention: intention,
+          );
 
       if (mounted) {
         ScaffoldMessenger.of(

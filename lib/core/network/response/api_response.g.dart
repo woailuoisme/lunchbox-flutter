@@ -12,7 +12,7 @@ _ApiResponse<T> _$ApiResponseFromJson<T>(
 ) => $checkedCreate('_ApiResponse', json, ($checkedConvert) {
   final val = _ApiResponse<T>(
     success: $checkedConvert('success', (v) => v as bool),
-    code: $checkedConvert('code', (v) => (v as num).toInt()),
+    code: $checkedConvert('code', (v) => (v as num?)?.toInt() ?? 0),
     message: $checkedConvert('message', (v) => v as String),
     data: $checkedConvert(
       'data',

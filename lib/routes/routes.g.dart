@@ -13,7 +13,6 @@ List<RouteBase> get $appRoutes => [
   $complexSignInRoute,
   $signUpRoute,
   $forgotPasswordRoute,
-  $oTPVerificationRoute,
   $resetPasswordRoute,
   $citySelectionRoute,
   $teamOrderingRoute,
@@ -172,32 +171,6 @@ mixin $ForgotPasswordRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/forgot-password');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
-
-RouteBase get $oTPVerificationRoute => GoRouteData.$route(
-  path: '/otp-verification',
-  factory: $OTPVerificationRoute._fromState,
-);
-
-mixin $OTPVerificationRoute on GoRouteData {
-  static OTPVerificationRoute _fromState(GoRouterState state) =>
-      const OTPVerificationRoute();
-
-  @override
-  String get location => GoRouteData.$location('/otp-verification');
 
   @override
   void go(BuildContext context) => context.go(location);

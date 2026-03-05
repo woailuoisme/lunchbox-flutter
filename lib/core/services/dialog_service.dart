@@ -136,6 +136,11 @@ class DialogService {
         }
       },
       onDismissCallback: (type) {
+        // 如果是通过按钮点击触发的关闭，我们让按钮的回调去完成 Completer
+        if (type == DismissType.btnOk || type == DismissType.btnCancel) {
+          return;
+        }
+
         if (!completer.isCompleted) {
           completer.complete(null);
         }

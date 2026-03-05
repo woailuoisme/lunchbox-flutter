@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileState {
 
- UserModel? get currentUser; bool get isLoading;
+ UserProfile? get currentUser; bool get isLoading;
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,11 +45,11 @@ abstract mixin class $ProfileStateCopyWith<$Res>  {
   factory $ProfileStateCopyWith(ProfileState value, $Res Function(ProfileState) _then) = _$ProfileStateCopyWithImpl;
 @useResult
 $Res call({
- UserModel? currentUser, bool isLoading
+ UserProfile? currentUser, bool isLoading
 });
 
 
-$UserModelCopyWith<$Res>? get currentUser;
+$UserProfileCopyWith<$Res>? get currentUser;
 
 }
 /// @nodoc
@@ -65,7 +65,7 @@ class _$ProfileStateCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? currentUser = freezed,Object? isLoading = null,}) {
   return _then(_self.copyWith(
 currentUser: freezed == currentUser ? _self.currentUser : currentUser // ignore: cast_nullable_to_non_nullable
-as UserModel?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as UserProfile?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -73,12 +73,12 @@ as bool,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$UserModelCopyWith<$Res>? get currentUser {
+$UserProfileCopyWith<$Res>? get currentUser {
     if (_self.currentUser == null) {
     return null;
   }
 
-  return $UserModelCopyWith<$Res>(_self.currentUser!, (value) {
+  return $UserProfileCopyWith<$Res>(_self.currentUser!, (value) {
     return _then(_self.copyWith(currentUser: value));
   });
 }
@@ -163,7 +163,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserModel? currentUser,  bool isLoading)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserProfile? currentUser,  bool isLoading)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
 return $default(_that.currentUser,_that.isLoading);case _:
@@ -184,7 +184,7 @@ return $default(_that.currentUser,_that.isLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserModel? currentUser,  bool isLoading)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserProfile? currentUser,  bool isLoading)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState():
 return $default(_that.currentUser,_that.isLoading);case _:
@@ -204,7 +204,7 @@ return $default(_that.currentUser,_that.isLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserModel? currentUser,  bool isLoading)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserProfile? currentUser,  bool isLoading)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
 return $default(_that.currentUser,_that.isLoading);case _:
@@ -222,7 +222,7 @@ class _ProfileState implements ProfileState {
   const _ProfileState({this.currentUser, this.isLoading = false});
   
 
-@override final  UserModel? currentUser;
+@override final  UserProfile? currentUser;
 @override@JsonKey() final  bool isLoading;
 
 /// Create a copy of ProfileState
@@ -255,11 +255,11 @@ abstract mixin class _$ProfileStateCopyWith<$Res> implements $ProfileStateCopyWi
   factory _$ProfileStateCopyWith(_ProfileState value, $Res Function(_ProfileState) _then) = __$ProfileStateCopyWithImpl;
 @override @useResult
 $Res call({
- UserModel? currentUser, bool isLoading
+ UserProfile? currentUser, bool isLoading
 });
 
 
-@override $UserModelCopyWith<$Res>? get currentUser;
+@override $UserProfileCopyWith<$Res>? get currentUser;
 
 }
 /// @nodoc
@@ -275,7 +275,7 @@ class __$ProfileStateCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? currentUser = freezed,Object? isLoading = null,}) {
   return _then(_ProfileState(
 currentUser: freezed == currentUser ? _self.currentUser : currentUser // ignore: cast_nullable_to_non_nullable
-as UserModel?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as UserProfile?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -284,12 +284,12 @@ as bool,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$UserModelCopyWith<$Res>? get currentUser {
+$UserProfileCopyWith<$Res>? get currentUser {
     if (_self.currentUser == null) {
     return null;
   }
 
-  return $UserModelCopyWith<$Res>(_self.currentUser!, (value) {
+  return $UserProfileCopyWith<$Res>(_self.currentUser!, (value) {
     return _then(_self.copyWith(currentUser: value));
   });
 }
