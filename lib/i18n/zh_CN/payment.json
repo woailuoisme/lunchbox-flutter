@@ -9,5 +9,10 @@
   "continuePay": "继续支付",
   "cancelPay": "取消支付",
   "amount": "支付金额",
-  "remainingTime": "支付剩余时间"
+  "remainingTime": "支付剩余时间",
+  "addCard": "添加银行卡",
+  "paymentMethods": "支付方式",
+  "setupSuccess": "添加银行卡成功",
+  "setupFailed": "添加银行卡失败",
+  "noCards": "暂无已保存的银行卡"
 }

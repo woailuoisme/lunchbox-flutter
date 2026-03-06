@@ -270,13 +270,13 @@ class OrderDetailRoute extends GoRouteData with $OrderDetailRoute {
 // 支付
 @TypedGoRoute<PaymentRoute>(path: AppRoutes.payment)
 class PaymentRoute extends GoRouteData with $PaymentRoute {
-  const PaymentRoute({this.$extra});
+  const PaymentRoute({required this.$extra});
 
-  final OrderModel? $extra;
+  final List<CartItemModel> $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      PaymentView(order: $extra);
+      PaymentView(items: $extra);
 }
 
 // 个人资料相关

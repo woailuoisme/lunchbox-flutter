@@ -21,15 +21,10 @@ class PaymentRepository {
 
   /// 创建支付意向 (Payment Intent)
   Future<PaymentIntentResponse?> createPaymentIntent({
-    int? orderId,
-    double? amount,
+    required double amount,
     required String currency,
   }) async {
-    final request = PaymentIntentRequest(
-      orderId: orderId,
-      amount: amount,
-      currency: currency,
-    );
+    final request = PaymentIntentRequest(amount: amount, currency: currency);
 
     final response = await _client.createStripePaymentIntent(request: request);
     return response.data;

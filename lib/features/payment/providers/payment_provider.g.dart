@@ -16,7 +16,7 @@ final class PaymentNotifierProvider
     extends $NotifierProvider<PaymentNotifier, PaymentState> {
   PaymentNotifierProvider._({
     required PaymentNotifierFamily super.from,
-    required OrderModel super.argument,
+    required double super.argument,
   }) : super(
          retry: null,
          name: r'paymentProvider',
@@ -58,7 +58,7 @@ final class PaymentNotifierProvider
   }
 }
 
-String _$paymentNotifierHash() => r'4c2cbbb8b6262b7af32daaa2001b898a4ab41c78';
+String _$paymentNotifierHash() => r'd1d5cbdcabb0946f5c0c54dc5afe3155bbd770e6';
 
 final class PaymentNotifierFamily extends $Family
     with
@@ -67,7 +67,7 @@ final class PaymentNotifierFamily extends $Family
           PaymentState,
           PaymentState,
           PaymentState,
-          OrderModel
+          double
         > {
   PaymentNotifierFamily._()
     : super(
@@ -78,18 +78,18 @@ final class PaymentNotifierFamily extends $Family
         isAutoDispose: true,
       );
 
-  PaymentNotifierProvider call(OrderModel order) =>
-      PaymentNotifierProvider._(argument: order, from: this);
+  PaymentNotifierProvider call(double amount) =>
+      PaymentNotifierProvider._(argument: amount, from: this);
 
   @override
   String toString() => r'paymentProvider';
 }
 
 abstract class _$PaymentNotifier extends $Notifier<PaymentState> {
-  late final _$args = ref.$arg as OrderModel;
-  OrderModel get order => _$args;
+  late final _$args = ref.$arg as double;
+  double get amount => _$args;
 
-  PaymentState build(OrderModel order);
+  PaymentState build(double amount);
   @$mustCallSuper
   @override
   void runBuild() {

@@ -16,7 +16,7 @@ HomeRestClient homeRestClient(Ref ref) {
 }
 
 @RestApi()
-abstract class HomeRestClient {
+sealed class HomeRestClient {
   factory HomeRestClient(Dio dio, {String baseUrl}) = _HomeRestClient;
 
   @GET('/api/v1/home/carousels')

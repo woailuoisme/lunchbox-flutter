@@ -575,7 +575,7 @@ RouteBase get $paymentRoute =>
 
 mixin $PaymentRoute on GoRouteData {
   static PaymentRoute _fromState(GoRouterState state) =>
-      PaymentRoute($extra: state.extra as OrderModel?);
+      PaymentRoute($extra: state.extra as List<CartItemModel>);
 
   PaymentRoute get _self => this as PaymentRoute;
 

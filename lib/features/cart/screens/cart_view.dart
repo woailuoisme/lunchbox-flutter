@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
 import 'package:lunchbox/features/cart/providers/cart_provider.dart';
 import 'package:lunchbox/features/cart/providers/cart_state.dart';
@@ -10,7 +9,7 @@ import 'package:lunchbox/features/cart/widgets/cart_empty_state.dart';
 import 'package:lunchbox/features/cart/widgets/cart_item_card.dart';
 import 'package:lunchbox/features/cart/widgets/cart_selection_bottom_bar.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:lunchbox/routes/app_routes.dart';
+import 'package:lunchbox/routes/routes.dart';
 
 /// 购物车视图
 class CartView extends ConsumerStatefulWidget {
@@ -162,7 +161,14 @@ class _CartViewState extends ConsumerState<CartView> {
                     totalQuantity: state.totalQuantity,
                     totalAmount: state.totalAmount,
                     isEmpty: state.isEmpty,
-                    onCheckout: () => context.push(AppRoutes.payment),
+                    onCheckout: () {
+                      final selectedItems = state.cartItems
+                          .where((item) => item.isSelected)
+                          .toList();
+                      if (selectedItems.isNotEmpty) {
+                        PaymentRoute($extra: selectedItems).push<void>(context);
+                      }
+                    },
                   ),
               ],
             );

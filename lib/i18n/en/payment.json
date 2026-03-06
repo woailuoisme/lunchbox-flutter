@@ -9,5 +9,10 @@
   "continuePay": "Continue Payment",
   "cancelPay": "Cancel Payment",
   "amount": "Payment Amount",
-  "remainingTime": "Time Remaining"
+  "remainingTime": "Time Remaining",
+  "addCard": "Add Card",
+  "paymentMethods": "Payment Methods",
+  "setupSuccess": "Card added successfully",
+  "setupFailed": "Failed to add card",
+  "noCards": "No saved cards"
 }

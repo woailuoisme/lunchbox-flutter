@@ -22,7 +22,19 @@
 		<string>????</string>
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
-		<key>LSApplicationQueriesSchemes</key>
+<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>stripe-redirect</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>lunchbox</string>
+        </array>
+    </dict>
+</array>		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>iosamap</string>
 			<string>baidumap</string>
@@ -52,6 +64,19 @@
 		<true/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>stripe-redirect</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>lunchbox</string>
+				</array>
+			</dict>
+		</array>
 		<key>NSCameraUsageDescription</key>
 		<string>我们需要相机权限来拍照和扫描二维码</string>
 		<key>NSPhotoLibraryUsageDescription</key>
