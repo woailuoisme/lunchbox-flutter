@@ -11,8 +11,7 @@ abstract class HomeState with _$HomeState {
     NearestDeviceModel? nearestDevice,
     @Default([]) List<BannerModel> banners,
     @Default([]) List<RecommendProductModel> recommendProducts,
-    @Default(false) bool isLoading,
-    @Default(0) int selectedTabIndex,
-    String? errorMessage,
   }) = _HomeState;
+
+  const HomeState._();
 }

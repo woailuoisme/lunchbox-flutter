@@ -85,51 +85,21 @@ Future<List<DeviceModel>> filteredFrequentDevices(Ref ref) async {
 List<DeviceModel> _applyFilters(Ref ref, List<DeviceModel> devices) {
   final sort = ref.watch(deviceSortProvider);
   final onlineOnly = ref.watch(deviceFilterOnlineProvider);
-  final searchQuery = ref.watch(deviceSearchQueryProvider);
+  final searchQuery = ref.watch(deviceSearchQueryProvider).toLowerCase();
 
-  var filtered = List<DeviceModel>.from(devices);
-
-  // 过滤：在线状态
-  if (onlineOnly) {
-    filtered = filtered.where((d) => d.isEnabled).toList();
-  }
-
-  // 过滤：搜索关键词
-  if (searchQuery.isNotEmpty) {
-    final keyword = searchQuery.toLowerCase();
-    filtered = filtered
-        .where(
-          (d) =>
-              d.name.toLowerCase().contains(keyword) ||
-              d.fullAddress.toLowerCase().contains(keyword) ||
-              d.streetAddress.toLowerCase().contains(keyword),
-        )
-        .toList();
-  }
+  final filtered = devices.where((d) {
+    if (onlineOnly && !d.isEnabled) return false;
+    if (searchQuery.isNotEmpty) {
+      return d.name.toLowerCase().contains(searchQuery) ||
+          d.fullAddress.toLowerCase().contains(searchQuery) ||
+          d.streetAddress.toLowerCase().contains(searchQuery);
+    }
+    return true;
+  }).toList();
 
   // 排序
   if (sort == 'distance') {
-    double parseDistance(DeviceModel device) {
-      final kmText = device.distanceKm ?? device.distance;
-      if (kmText == null || kmText.isEmpty) {
-        return double.infinity;
-      }
-      final match = RegExp(r'[\d.]+').firstMatch(kmText);
-      if (match == null) {
-        return double.infinity;
-      }
-      final value = double.tryParse(match.group(0) ?? '');
-      if (value == null) {
-        return double.infinity;
-      }
-      if (kmText.toLowerCase().contains('m') &&
-          !kmText.toLowerCase().contains('km')) {
-        return value / 1000;
-      }
-      return value;
-    }
-
-    filtered.sort((a, b) => parseDistance(a).compareTo(parseDistance(b)));
+    filtered.sort((a, b) => a.numericalDistance.compareTo(b.numericalDistance));
   } else if (sort == 'name') {
     filtered.sort((a, b) => a.name.compareTo(b.name));
   }

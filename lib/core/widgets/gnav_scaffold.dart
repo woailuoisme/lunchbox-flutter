@@ -9,7 +9,7 @@ import 'package:material_symbols_icons/symbols.dart';
 ///
 /// 用于 StatefulShellRoute，提供底部导航栏和页面切换功能
 class GNavScaffold extends StatelessWidget {
-  const GNavScaffold({required this.navigationShell, super.key});
+  const GNavScaffold({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
 

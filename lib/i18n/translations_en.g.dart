@@ -892,6 +892,8 @@ class _TranslationsNavigationEn extends TranslationsNavigationZhCn {
   @override
   String get device => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? 'Device';
   @override
+  String get cart => TranslationOverrides.string(_root.$meta, 'navigation.cart', {}) ?? 'Cart';
+  @override
   String get orders => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? 'Orders';
   @override
   String get profile => TranslationOverrides.string(_root.$meta, 'navigation.profile', {}) ?? 'Profile';
@@ -1261,6 +1263,18 @@ class _TranslationsPaymentEn extends TranslationsPaymentZhCn {
   String get amount => TranslationOverrides.string(_root.$meta, 'payment.amount', {}) ?? 'Payment Amount';
   @override
   String get remainingTime => TranslationOverrides.string(_root.$meta, 'payment.remainingTime', {}) ?? 'Time Remaining';
+  @override
+  String get addCard => TranslationOverrides.string(_root.$meta, 'payment.addCard', {}) ?? 'Add Card';
+  @override
+  String get paymentMethods =>
+      TranslationOverrides.string(_root.$meta, 'payment.paymentMethods', {}) ?? 'Payment Methods';
+  @override
+  String get setupSuccess =>
+      TranslationOverrides.string(_root.$meta, 'payment.setupSuccess', {}) ?? 'Card added successfully';
+  @override
+  String get setupFailed => TranslationOverrides.string(_root.$meta, 'payment.setupFailed', {}) ?? 'Failed to add card';
+  @override
+  String get noCards => TranslationOverrides.string(_root.$meta, 'payment.noCards', {}) ?? 'No saved cards';
 }
 
 // Path: points
@@ -2959,6 +2973,7 @@ extension on TranslationsEn {
                 'You can view invitation records in \'My Achievements\'.',
           'navigation.home' => TranslationOverrides.string(_root.$meta, 'navigation.home', {}) ?? 'Home',
           'navigation.device' => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? 'Device',
+          'navigation.cart' => TranslationOverrides.string(_root.$meta, 'navigation.cart', {}) ?? 'Cart',
           'navigation.orders' => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? 'Orders',
           'navigation.profile' => TranslationOverrides.string(_root.$meta, 'navigation.profile', {}) ?? 'Profile',
           'network.errors.connectionTimeout' =>
@@ -3254,6 +3269,14 @@ extension on TranslationsEn {
           'payment.amount' => TranslationOverrides.string(_root.$meta, 'payment.amount', {}) ?? 'Payment Amount',
           'payment.remainingTime' =>
             TranslationOverrides.string(_root.$meta, 'payment.remainingTime', {}) ?? 'Time Remaining',
+          'payment.addCard' => TranslationOverrides.string(_root.$meta, 'payment.addCard', {}) ?? 'Add Card',
+          'payment.paymentMethods' =>
+            TranslationOverrides.string(_root.$meta, 'payment.paymentMethods', {}) ?? 'Payment Methods',
+          'payment.setupSuccess' =>
+            TranslationOverrides.string(_root.$meta, 'payment.setupSuccess', {}) ?? 'Card added successfully',
+          'payment.setupFailed' =>
+            TranslationOverrides.string(_root.$meta, 'payment.setupFailed', {}) ?? 'Failed to add card',
+          'payment.noCards' => TranslationOverrides.string(_root.$meta, 'payment.noCards', {}) ?? 'No saved cards',
           'points.title' => TranslationOverrides.string(_root.$meta, 'points.title', {}) ?? 'My Points',
           'points.unit' => TranslationOverrides.string(_root.$meta, 'points.unit', {}) ?? 'Points',
           'points.mall' => TranslationOverrides.string(_root.$meta, 'points.mall', {}) ?? 'Point Mall',
@@ -3283,6 +3306,9 @@ extension on TranslationsEn {
             ({required Object points}) =>
                 TranslationOverrides.string(_root.$meta, 'points.cost', {'points': points}) ?? '${points} Points',
           'points.exchangeNow' => TranslationOverrides.string(_root.$meta, 'points.exchangeNow', {}) ?? 'Exchange Now',
+          _ => null,
+        } ??
+        switch (path) {
           'points.insufficientPoints' =>
             TranslationOverrides.string(_root.$meta, 'points.insufficientPoints', {}) ?? 'Insufficient balance',
           'product.title' => TranslationOverrides.string(_root.$meta, 'product.title', {}) ?? 'Product List',
@@ -3293,9 +3319,6 @@ extension on TranslationsEn {
             ({required Object percent}) =>
                 TranslationOverrides.string(_root.$meta, 'product.discountOff', {'percent': percent}) ??
                 '${percent}% OFF',
-          _ => null,
-        } ??
-        switch (path) {
           'product.stockFull' => TranslationOverrides.string(_root.$meta, 'product.stockFull', {}) ?? 'In Stock',
           'product.stockEmpty' => TranslationOverrides.string(_root.$meta, 'product.stockEmpty', {}) ?? 'Out of Stock',
           'product.addToCart' => TranslationOverrides.string(_root.$meta, 'product.addToCart', {}) ?? 'Add to Cart',

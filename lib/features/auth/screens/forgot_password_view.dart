@@ -55,7 +55,7 @@ class _ForgotPasswordViewState extends ConsumerState<ForgotPasswordView> {
     // Listen for state changes
     ref.listen(forgotPasswordProvider, (previous, next) {
       // Handle success
-      if (next.status.isSuccess && !(previous?.status.isSuccess ?? false)) {
+      if (next.isSuccess && !(previous?.isSuccess ?? false)) {
         toastification.show(
           context: context,
           type: ToastificationType.success,
@@ -68,7 +68,7 @@ class _ForgotPasswordViewState extends ConsumerState<ForgotPasswordView> {
       }
 
       // Handle errors
-      if (next.status.isFailure && next.errorMessage != null) {
+      if (next.isFailure && next.errorMessage != null) {
         toastification.show(
           context: context,
           type: ToastificationType.error,

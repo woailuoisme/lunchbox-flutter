@@ -8,6 +8,7 @@ import 'package:lunchbox/features/profile/widgets/profile_menu_tile.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/routes.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 /// 用户中心视图 (我的)
 class ProfileView extends ConsumerWidget {
@@ -17,31 +18,38 @@ class ProfileView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final profileState = ref.watch(profileProvider);
-    final user = profileState.currentUser;
+    final user = profileState.value?.currentUser;
+    final isLoading = profileState.isLoading;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: CustomScrollView(
-        slivers: [
-          // 红色渐变背景头部
-          SliverToBoxAdapter(
-            child: ProfileHeader(
-              username: user?.nickname ?? '...',
-              walletBalance: user?.balance ?? '0.00',
-              points: user?.integral ?? '0',
-              coupons: user?.userCouponCount.toString() ?? '0',
-              avatarUrl: user?.avatar,
-              onLogout: () => _handleLogout(context, ref),
+      body: RefreshIndicator(
+        onRefresh: () => ref.read(profileProvider.notifier).loadUserInfo(),
+        child: CustomScrollView(
+          slivers: [
+            // 红色渐变背景头部
+            SliverToBoxAdapter(
+              child: Skeletonizer(
+                enabled: isLoading,
+                child: ProfileHeader(
+                  username: user?.nickname ?? '...',
+                  walletBalance: user?.balance ?? '0.00',
+                  points: user?.integral ?? '0',
+                  coupons: user?.userCouponCount.toString() ?? '0',
+                  avatarUrl: user?.avatar,
+                  onLogout: () => _handleLogout(context, ref),
+                ),
+              ),
             ),
-          ),
 
-          // 功能列表菜单
-          SliverToBoxAdapter(
-            child: _buildMenuSection(context, ref, user?.balance),
-          ),
+            // 功能列表菜单
+            SliverToBoxAdapter(
+              child: _buildMenuSection(context, ref, user?.balance),
+            ),
 
-          SliverToBoxAdapter(child: SizedBox(height: 40.h)),
-        ],
+            SliverToBoxAdapter(child: SizedBox(height: 40.h)),
+          ],
+        ),
       ),
     );
   }
@@ -100,16 +108,7 @@ class ProfileView extends ConsumerWidget {
             icon: Symbols.settings,
             title: t.profile.settings,
             onTap: () => const SettingsRoute().push<void>(context),
-          ),
-
-          // 登出
-          ProfileMenuTile(
-            icon: Symbols.logout,
-            title: t.profile.logout,
-            titleColor: theme.colorScheme.error,
-            iconColor: theme.colorScheme.error,
             showDivider: false,
-            onTap: () => _handleLogout(context, ref),
           ),
         ],
       ),

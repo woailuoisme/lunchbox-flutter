@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
+import 'package:lunchbox/features/order/entities/order_product_model.dart';
 import 'package:lunchbox/features/order/providers/order_provider.dart';
 import 'package:lunchbox/features/order/widgets/order_action_button.dart';
 import 'package:lunchbox/features/order/widgets/order_detail_bottom_bar.dart';
@@ -103,13 +104,13 @@ class OrderDetailView extends ConsumerWidget {
 
     final state = ref.watch(orderProvider);
     // 优先使用传入的订单对象，除非 state 中有更新的版本
-    var order = orderFromExtra ?? state.selectedOrder;
+    var order = orderFromExtra ?? state.value?.selectedOrder;
 
     // 如果 state 中有相同的订单且已加载，使用 state 中的版本（可能更新）
-    if (state.selectedOrder != null &&
+    if (state.value?.selectedOrder != null &&
         order != null &&
-        state.selectedOrder!.id == order.id) {
-      order = state.selectedOrder;
+        state.value!.selectedOrder!.id == order.id) {
+      order = state.value!.selectedOrder;
     }
 
     return Scaffold(
@@ -160,7 +161,8 @@ class OrderDetailView extends ConsumerWidget {
                                 margin: EdgeInsets.symmetric(horizontal: 16.w),
                                 children: [
                                   ...order.products.map(
-                                    (item) => OrderProductItem(product: item),
+                                    (OrderProductModel item) =>
+                                        OrderProductItem(product: item),
                                   ),
                                   Divider(height: 1, color: theme.dividerColor),
                                   OrderPriceSummary(

@@ -1,4 +1,3 @@
-import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
@@ -9,10 +8,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'order_provider.g.dart';
 
 @riverpod
-class OrderNotifier extends _$OrderNotifier with AsyncRunnerMixin<OrderState> {
+class OrderNotifier extends _$OrderNotifier {
   @override
-  OrderState build() {
-    return const OrderState();
+  FutureOr<OrderState> build() async {
+    // 默认加载全部订单
+    final orders = await _repository.getOrders(status: 'all');
+    return OrderState(orders: orders?.items ?? []);
   }
 
   OrderRepository get _repository => ref.read(orderRepositoryProvider);
@@ -22,100 +23,117 @@ class OrderNotifier extends _$OrderNotifier with AsyncRunnerMixin<OrderState> {
     int pageSize = 10,
     String? status,
   }) async {
-    return runAsync(
-      () async {
-        final data = await _repository.getOrders(
-          page: page,
-          perPage: pageSize,
-          status: status,
-        );
-        final items = data?.items ?? [];
-        return items;
-      },
-      showLoading: false,
-      errorLabel: 'Failed to load orders page',
-    ).then((value) => value ?? []);
+    try {
+      final data = await _repository.getOrders(
+        page: page,
+        perPage: pageSize,
+        status: status,
+      );
+      return data?.items ?? [];
+    } catch (e, stack) {
+      LoggerUtils.e('OrderNotifier: Failed to fetch orders page', e, stack);
+      return [];
+    }
   }
 
   Future<void> loadOrders({String? status}) async {
-    await runAsync(() async {
-      final data = await _repository.getOrders(status: status);
-      if (data != null) {
-        state = state.copyWith(orders: data.items);
-        LoggerUtils.i('OrderNotifier: Loaded ${data.items.length} orders');
-      }
-    }, errorLabel: 'Failed to load orders');
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      final effectiveStatus = status ?? state.value?.selectedStatus ?? 'all';
+      final data = await _repository.getOrders(status: effectiveStatus);
+      return (state.value ?? const OrderState()).copyWith(
+        orders: data?.items ?? [],
+        selectedStatus: effectiveStatus,
+      );
+    });
   }
 
   Future<OrderModel?> loadOrderById(String orderId) async {
-    return await runAsync<OrderModel?>(() async {
+    try {
       final order = await _repository.getOrderDetail(orderId);
       if (order != null) {
-        state = state.copyWith(selectedOrder: order);
-        LoggerUtils.i('OrderNotifier: Loaded order: ${order.id}');
+        state = await AsyncValue.guard(() async {
+          return state.value!.copyWith(selectedOrder: order);
+        });
       }
       return order;
-    }, errorLabel: 'Failed to load order');
+    } catch (e, stack) {
+      LoggerUtils.e('OrderNotifier: Failed to load order', e, stack);
+      return null;
+    }
   }
 
   Future<OrderModel?> createOrder(String deviceId) async {
     final cartState = ref.read(cartProvider);
-    if (cartState.cartItems.isEmpty) return null;
+    final cartItems = cartState.value?.cartItems ?? [];
+    if (cartItems.isEmpty) return null;
 
+    // TODO: 实现创建订单逻辑
     throw Exception('Order creation not implemented');
   }
 
   Future<bool> cancelOrder(String orderId) async {
-    final success = await runAsync(
-      () => _repository.cancelOrder(orderId),
-      showLoading: false,
-    );
-    if (success == true) {
-      await loadOrders(status: state.selectedStatus);
-      LoggerUtils.i('OrderNotifier: Order cancelled: $orderId');
+    try {
+      final success = await _repository.cancelOrder(orderId);
+      if (success == true) {
+        await loadOrders(status: state.value?.selectedStatus);
+        LoggerUtils.i('OrderNotifier: Order cancelled: $orderId');
+        return true;
+      }
+    } catch (e, stack) {
+      LoggerUtils.e('OrderNotifier: Failed to cancel order', e, stack);
     }
-    return success ?? false;
+    return false;
   }
 
   Future<void> payOrder(String orderId, String paymentMethod) async {
-    await runAsync(() => _repository.payOrder(orderId, paymentMethod));
-    await loadOrders(status: state.selectedStatus);
-    final updatedOrder = await loadOrderById(orderId);
-    if (updatedOrder != null && state.selectedOrder?.id.toString() == orderId) {
-      // state already updated in loadOrderById
-    }
-    LoggerUtils.i('OrderNotifier: Order paid: $orderId');
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      await _repository.payOrder(orderId, paymentMethod);
+      final data = await _repository.getOrders(
+        status: state.value?.selectedStatus,
+      );
+      final order = await _repository.getOrderDetail(orderId);
+      LoggerUtils.i('OrderNotifier: Order paid: $orderId');
+      return state.value!.copyWith(
+        orders: data?.items ?? [],
+        selectedOrder: order,
+      );
+    });
   }
 
   Future<void> reorder(String orderId) async {
-    await runAsync(() async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
       final order = await _repository.getOrderDetail(orderId);
-      if (order == null) return;
-      final cartItems = await _repository.reorder(order);
-
-      final cartNotifier = ref.read(cartProvider.notifier);
-      for (final item in cartItems) {
-        await cartNotifier.addCartProductToCart(
-          item.product,
-          quantity: item.quantity,
-        );
+      if (order != null) {
+        final cartItems = await _repository.reorder(order);
+        final cartNotifier = ref.read(cartProvider.notifier);
+        for (final item in cartItems) {
+          await cartNotifier.addCartProductToCart(
+            item.product,
+            quantity: item.quantity,
+          );
+        }
+        LoggerUtils.i('OrderNotifier: Reordered items from order: $orderId');
       }
-      LoggerUtils.i('OrderNotifier: Reordered items from order: $orderId');
-    }, errorLabel: 'Failed to reorder');
+      return state.value!;
+    });
   }
 
   void filterByStatus(String status) {
-    state = state.copyWith(selectedStatus: status);
     loadOrders(status: status);
   }
 
-  void refreshOrders() => loadOrders(status: state.selectedStatus);
+  void refreshOrders() => loadOrders(status: state.value?.selectedStatus);
 
   void selectPaymentMethod(String method) {
-    state = state.copyWith(selectedPaymentMethod: method);
+    if (state.value == null) return;
+    state = AsyncData(state.value!.copyWith(selectedPaymentMethod: method));
   }
 
   void updateOrderTotal(double total) {
-    state = state.copyWith(orderTotal: total);
+    if (state.value == null) return;
+    state = AsyncData(state.value!.copyWith(orderTotal: total));
   }
 }

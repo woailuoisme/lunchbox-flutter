@@ -91,7 +91,7 @@ class _CartViewState extends ConsumerState<CartView> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(cartProvider);
+    final cartState = ref.watch(cartProvider);
     final notifier = ref.read(cartProvider.notifier);
     final theme = Theme.of(context);
 
@@ -107,13 +107,22 @@ class _CartViewState extends ConsumerState<CartView> {
       },
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
-        appBar: _buildAppBar(context, state, notifier, theme),
-        body: Builder(
-          builder: (context) {
-            if (state.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
+        appBar: _buildAppBar(context, cartState.value, notifier, theme),
+        body: cartState.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('加载购物车失败: $error'),
+                TextButton(
+                  onPressed: () => ref.refresh(cartProvider),
+                  child: const Text('重试'),
+                ),
+              ],
+            ),
+          ),
+          data: (state) {
             if (state.cartItems.isEmpty) {
               return const CartEmptyState();
             }
@@ -180,7 +189,7 @@ class _CartViewState extends ConsumerState<CartView> {
 
   PreferredSizeWidget _buildAppBar(
     BuildContext context,
-    CartState state,
+    CartState? state,
     CartNotifier notifier,
     ThemeData theme,
   ) {
@@ -203,18 +212,19 @@ class _CartViewState extends ConsumerState<CartView> {
           },
         ),
         actions: [
-          TextButton(
-            onPressed: () => _selectAll(state.cartItems),
-            child: Text(
-              _selectedItemIds.length == state.cartItems.length
-                  ? t.common.deselectAll
-                  : t.common.selectAll,
-              style: TextStyle(
-                color: theme.colorScheme.primary,
-                fontWeight: FontWeight.w600,
+          if (state != null)
+            TextButton(
+              onPressed: () => _selectAll(state.cartItems),
+              child: Text(
+                _selectedItemIds.length == state.cartItems.length
+                    ? t.common.deselectAll
+                    : t.common.selectAll,
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-          ),
         ],
       );
     }
@@ -225,7 +235,7 @@ class _CartViewState extends ConsumerState<CartView> {
       backgroundColor: theme.colorScheme.surface,
       elevation: 0,
       actions: [
-        if (state.cartItems.isNotEmpty)
+        if (state != null && state.cartItems.isNotEmpty)
           TextButton(
             onPressed: () => _showClearCartDialog(context, notifier),
             child: Text(

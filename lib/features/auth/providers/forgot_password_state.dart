@@ -11,6 +11,12 @@ extension ForgotPasswordStatusX on ForgotPasswordStatus {
   bool get isFailure => this == ForgotPasswordStatus.failure;
 }
 
+extension ForgotPasswordStateX on ForgotPasswordState {
+  bool get isLoading => status == ForgotPasswordStatus.inProgress;
+  bool get isSuccess => status == ForgotPasswordStatus.success;
+  bool get isFailure => status == ForgotPasswordStatus.failure;
+}
+
 @freezed
 abstract class ForgotPasswordState with _$ForgotPasswordState {
   const factory ForgotPasswordState({

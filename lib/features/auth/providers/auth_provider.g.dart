@@ -12,7 +12,7 @@ part of 'auth_provider.dart';
 @ProviderFor(Auth)
 final authProvider = AuthProvider._();
 
-final class AuthProvider extends $NotifierProvider<Auth, bool> {
+final class AuthProvider extends $AsyncNotifierProvider<Auth, bool> {
   AuthProvider._()
     : super(
         from: null,
@@ -30,29 +30,21 @@ final class AuthProvider extends $NotifierProvider<Auth, bool> {
   @$internal
   @override
   Auth create() => Auth();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(bool value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<bool>(value),
-    );
-  }
 }
 
-String _$authHash() => r'd84f0a37865c83fb8a64f2ac817f83b5f31057cb';
+String _$authHash() => r'b814492ac91db2828bffd36336a702656319ec99';
 
-abstract class _$Auth extends $Notifier<bool> {
-  bool build();
+abstract class _$Auth extends $AsyncNotifier<bool> {
+  FutureOr<bool> build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<bool, bool>;
+    final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<bool, bool>,
-              bool,
+              AnyNotifier<AsyncValue<bool>, bool>,
+              AsyncValue<bool>,
               Object?,
               Object?
             >;

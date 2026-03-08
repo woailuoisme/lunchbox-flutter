@@ -36,11 +36,10 @@ class SignInNotifier extends _$SignInNotifier {
   }
 
   Future<void> signIn() async {
-    if (state.status == SignInStatus.inProgress) {
-      return;
-    }
+    if (state.isLoading) return;
 
-    state = state.copyWith(status: SignInStatus.inProgress);
+    state = state.copyWith(status: SignInStatus.inProgress, errorMessage: null);
+
     try {
       if (state.signInType == SignInType.password) {
         await ref

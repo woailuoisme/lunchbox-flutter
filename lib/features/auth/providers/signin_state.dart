@@ -23,6 +23,9 @@ extension SignInStateX on SignInState {
   bool get canSubmit => canSignInWithPassword;
 
   bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;
+  bool get isLoading => status == SignInStatus.inProgress;
+  bool get isSuccess => status == SignInStatus.success;
+  bool get isFailure => status == SignInStatus.failure;
 }
 
 @freezed

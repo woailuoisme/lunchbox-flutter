@@ -13,7 +13,7 @@ part of 'payment_provider.dart';
 final paymentProvider = PaymentNotifierFamily._();
 
 final class PaymentNotifierProvider
-    extends $NotifierProvider<PaymentNotifier, PaymentState> {
+    extends $AsyncNotifierProvider<PaymentNotifier, PaymentState> {
   PaymentNotifierProvider._({
     required PaymentNotifierFamily super.from,
     required double super.argument,
@@ -39,14 +39,6 @@ final class PaymentNotifierProvider
   @override
   PaymentNotifier create() => PaymentNotifier();
 
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(PaymentState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<PaymentState>(value),
-    );
-  }
-
   @override
   bool operator ==(Object other) {
     return other is PaymentNotifierProvider && other.argument == argument;
@@ -58,15 +50,15 @@ final class PaymentNotifierProvider
   }
 }
 
-String _$paymentNotifierHash() => r'd1d5cbdcabb0946f5c0c54dc5afe3155bbd770e6';
+String _$paymentNotifierHash() => r'79155b8a4a1b7800a5291be9f08ef76007e2ed61';
 
 final class PaymentNotifierFamily extends $Family
     with
         $ClassFamilyOverride<
           PaymentNotifier,
+          AsyncValue<PaymentState>,
           PaymentState,
-          PaymentState,
-          PaymentState,
+          FutureOr<PaymentState>,
           double
         > {
   PaymentNotifierFamily._()
@@ -85,20 +77,20 @@ final class PaymentNotifierFamily extends $Family
   String toString() => r'paymentProvider';
 }
 
-abstract class _$PaymentNotifier extends $Notifier<PaymentState> {
+abstract class _$PaymentNotifier extends $AsyncNotifier<PaymentState> {
   late final _$args = ref.$arg as double;
   double get amount => _$args;
 
-  PaymentState build(double amount);
+  FutureOr<PaymentState> build(double amount);
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<PaymentState, PaymentState>;
+    final ref = this.ref as $Ref<AsyncValue<PaymentState>, PaymentState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<PaymentState, PaymentState>,
-              PaymentState,
+              AnyNotifier<AsyncValue<PaymentState>, PaymentState>,
+              AsyncValue<PaymentState>,
               Object?,
               Object?
             >;

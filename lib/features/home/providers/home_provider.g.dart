@@ -8,12 +8,18 @@ part of 'home_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// 首页数据管理器
+/// 职责：聚合首页所需的所有并发加载数据，并利用 AsyncValue 处理加载/错误状态
 
 @ProviderFor(HomeNotifier)
 final homeProvider = HomeNotifierProvider._();
 
+/// 首页数据管理器
+/// 职责：聚合首页所需的所有并发加载数据，并利用 AsyncValue 处理加载/错误状态
 final class HomeNotifierProvider
-    extends $NotifierProvider<HomeNotifier, HomeState> {
+    extends $AsyncNotifierProvider<HomeNotifier, HomeState> {
+  /// 首页数据管理器
+  /// 职责：聚合首页所需的所有并发加载数据，并利用 AsyncValue 处理加载/错误状态
   HomeNotifierProvider._()
     : super(
         from: null,
@@ -31,29 +37,24 @@ final class HomeNotifierProvider
   @$internal
   @override
   HomeNotifier create() => HomeNotifier();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(HomeState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<HomeState>(value),
-    );
-  }
 }
 
-String _$homeNotifierHash() => r'23465c00c8610db7ab1c4f32851f210a5592bb8e';
+String _$homeNotifierHash() => r'6ae3aaa7076e9a1432d44a16f73eaacb47c87291';
 
-abstract class _$HomeNotifier extends $Notifier<HomeState> {
-  HomeState build();
+/// 首页数据管理器
+/// 职责：聚合首页所需的所有并发加载数据，并利用 AsyncValue 处理加载/错误状态
+
+abstract class _$HomeNotifier extends $AsyncNotifier<HomeState> {
+  FutureOr<HomeState> build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<HomeState, HomeState>;
+    final ref = this.ref as $Ref<AsyncValue<HomeState>, HomeState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<HomeState, HomeState>,
-              HomeState,
+              AnyNotifier<AsyncValue<HomeState>, HomeState>,
+              AsyncValue<HomeState>,
               Object?,
               Object?
             >;

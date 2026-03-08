@@ -13,7 +13,7 @@ part of 'lottery_provider.dart';
 final lotteryProvider = LotteryNotifierProvider._();
 
 final class LotteryNotifierProvider
-    extends $NotifierProvider<LotteryNotifier, LotteryState> {
+    extends $AsyncNotifierProvider<LotteryNotifier, LotteryState> {
   LotteryNotifierProvider._()
     : super(
         from: null,
@@ -31,29 +31,21 @@ final class LotteryNotifierProvider
   @$internal
   @override
   LotteryNotifier create() => LotteryNotifier();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(LotteryState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<LotteryState>(value),
-    );
-  }
 }
 
-String _$lotteryNotifierHash() => r'36f5df2a56521d36bfcaf418c41b1ede0b099d3d';
+String _$lotteryNotifierHash() => r'e704ad2a416b686145a8c05b915562267361ce7c';
 
-abstract class _$LotteryNotifier extends $Notifier<LotteryState> {
-  LotteryState build();
+abstract class _$LotteryNotifier extends $AsyncNotifier<LotteryState> {
+  FutureOr<LotteryState> build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<LotteryState, LotteryState>;
+    final ref = this.ref as $Ref<AsyncValue<LotteryState>, LotteryState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<LotteryState, LotteryState>,
-              LotteryState,
+              AnyNotifier<AsyncValue<LotteryState>, LotteryState>,
+              AsyncValue<LotteryState>,
               Object?,
               Object?
             >;

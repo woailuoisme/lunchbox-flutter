@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/payment/providers/payment_provider.dart';
+import 'package:lunchbox/features/payment/providers/payment_state.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/features/payment/widgets/confirmation_bottom_bar.dart';
 import 'package:lunchbox/features/payment/widgets/order_amount_card.dart';
@@ -31,24 +32,24 @@ class PaymentView extends ConsumerWidget {
 
     // 监听支付结果
     ref.listen(paymentProvider(totalAmount), (previous, next) {
-      if (next.isPaymentSuccessful) {
+      if (next.value?.isPaymentSuccessful ?? false) {
         if (context.mounted) {
           context.go('/orders'); // 支付成功跳转订单列表
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(t.payment.success)));
         }
-      } else if (next.isPaymentCanceled) {
+      } else if (next.value?.isPaymentCanceled ?? false) {
         if (context.mounted) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(t.payment.cancelPay)));
         }
-      } else if (next.errorMessage != null && !next.isLoading) {
+      } else if (next.hasError && !next.isLoading) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(next.errorMessage!),
+              content: Text(next.error.toString()),
               backgroundColor: theme.colorScheme.error,
             ),
           );
@@ -90,7 +91,18 @@ class PaymentView extends ConsumerWidget {
                       // 商品列表
                       OrderProductList(cartItems: items),
 
-                      SizedBox(height: 8.h),
+                      SizedBox(height: 16.h),
+
+                      // 支付方式选择
+                      _buildPaymentMethodSelector(
+                        context,
+                        ref,
+                        paymentState.value?.selectedMethod ??
+                            PaymentMethod.stripe,
+                        paymentNotifier,
+                      ),
+
+                      SizedBox(height: 16.h),
 
                       // 订单金额
                       OrderAmountCard(totalAmount: totalAmount),
@@ -103,16 +115,7 @@ class PaymentView extends ConsumerWidget {
               ConfirmationBottomBar(
                 totalAmount: totalAmount,
                 isLoading: paymentState.isLoading,
-                onSubmit: () {
-                  // 直接调用 Stripe 支付
-                  if (paymentState.isPaymentSheetReady) {
-                    paymentNotifier.presentPaymentSheet();
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('正在准备支付环境，请稍后...')),
-                    );
-                  }
-                },
+                onSubmit: () => paymentNotifier.submitPayment(),
               ),
             ],
           ),
@@ -123,6 +126,136 @@ class PaymentView extends ConsumerWidget {
               child: const Center(child: CircularProgressIndicator()),
             ),
         ],
+      ),
+    );
+  }
+
+  /// 构建支付方式选择器
+  Widget _buildPaymentMethodSelector(
+    BuildContext context,
+    WidgetRef ref,
+    PaymentMethod selectedMethod,
+    PaymentNotifier paymentNotifier,
+  ) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            t.payment.paymentMethods,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: theme.textTheme.titleLarge?.color,
+            ),
+          ),
+          SizedBox(height: 12.h),
+          _buildMethodCard(
+            context,
+            icon: Icons.account_balance_wallet,
+            title: '余额支付',
+            subtitle: '余额支付，安全便捷',
+            isSelected: selectedMethod == PaymentMethod.balance,
+            onTap: () =>
+                paymentNotifier.selectPaymentMethod(PaymentMethod.balance),
+          ),
+          SizedBox(height: 12.h),
+          _buildMethodCard(
+            context,
+            icon: Icons.credit_card,
+            title: 'Stripe 支付',
+            subtitle: '支持信用卡/支付宝/微信',
+            isSelected: selectedMethod == PaymentMethod.stripe,
+            onTap: () =>
+                paymentNotifier.selectPaymentMethod(PaymentMethod.stripe),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMethodCard(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    final theme = Theme.of(context);
+    final primaryColor = theme.colorScheme.primary;
+    final borderColor = isSelected
+        ? primaryColor
+        : theme.dividerColor.withValues(alpha: 0.5);
+    final backgroundColor = isSelected
+        ? primaryColor.withValues(alpha: 0.05)
+        : theme.cardColor;
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12.r),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(color: borderColor, width: isSelected ? 2 : 1),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(10.w),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? primaryColor.withValues(alpha: 0.1)
+                    : theme.scaffoldBackgroundColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                color: isSelected ? primaryColor : Colors.grey,
+                size: 24.sp,
+              ),
+            ),
+            SizedBox(width: 16.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: theme.textTheme.titleLarge?.color,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: theme.textTheme.bodyMedium?.color?.withValues(
+                        alpha: 0.7,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (isSelected)
+              Icon(Icons.check_circle, color: primaryColor, size: 24.sp)
+            else
+              Icon(
+                Icons.radio_button_unchecked,
+                color: Colors.grey.shade400,
+                size: 24.sp,
+              ),
+          ],
+        ),
       ),
     );
   }

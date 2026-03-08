@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_prize.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_state.dart';
 import 'package:lunchbox/features/lottery/providers/lottery_provider.dart';
 import 'package:lunchbox/features/lottery/widgets/prize_list_tab_content.dart';
 import 'package:lunchbox/features/lottery/widgets/prize_stats_card.dart';
@@ -35,7 +37,10 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
 
   @override
   Widget build(BuildContext context) {
-    final lotteryState = ref.watch(lotteryProvider);
+    final lotteryAsync = ref.watch(lotteryProvider);
+    final lotteryState =
+        lotteryAsync.value ??
+        const LotteryState(remainingSpins: 3, prizes: <LotteryPrize>[]);
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -52,9 +57,11 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
         children: [
           PrizeStatsCard(
                 totalCount: lotteryState.prizes.length,
-                usedCount: lotteryState.prizes.where((p) => p.isUsed).length,
+                usedCount: lotteryState.prizes
+                    .where((LotteryPrize p) => p.isUsed)
+                    .length,
                 availableCount: lotteryState.prizes
-                    .where((p) => !p.isUsed)
+                    .where((LotteryPrize p) => !p.isUsed)
                     .length,
               )
               .animate()
@@ -69,10 +76,14 @@ class _MyPrizesViewState extends ConsumerState<MyPrizesView>
               children: [
                 PrizeListContent(prizes: lotteryState.prizes),
                 PrizeListContent(
-                  prizes: lotteryState.prizes.where((p) => !p.isUsed).toList(),
+                  prizes: lotteryState.prizes
+                      .where((LotteryPrize p) => !p.isUsed)
+                      .toList(),
                 ), // 可用
                 PrizeListContent(
-                  prizes: lotteryState.prizes.where((p) => p.isUsed).toList(),
+                  prizes: lotteryState.prizes
+                      .where((LotteryPrize p) => p.isUsed)
+                      .toList(),
                 ), // 已使用
                 const PrizeListContent(prizes: []), // 已过期
               ],

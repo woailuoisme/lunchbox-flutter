@@ -730,6 +730,8 @@ class _TranslationsNavigationZhTw extends TranslationsNavigationZhCn {
   @override
   String get device => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? '設備';
   @override
+  String get cart => TranslationOverrides.string(_root.$meta, 'navigation.cart', {}) ?? '購物車';
+  @override
   String get orders => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? '訂單';
   @override
   String get profile => TranslationOverrides.string(_root.$meta, 'navigation.profile', {}) ?? '個人中心';
@@ -2031,6 +2033,7 @@ extension on TranslationsZhTw {
             TranslationOverrides.string(_root.$meta, 'home.status.mobilePayment', {}) ?? '支援行動支付',
           'navigation.home' => TranslationOverrides.string(_root.$meta, 'navigation.home', {}) ?? '首頁',
           'navigation.device' => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? '設備',
+          'navigation.cart' => TranslationOverrides.string(_root.$meta, 'navigation.cart', {}) ?? '購物車',
           'navigation.orders' => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? '訂單',
           'navigation.profile' => TranslationOverrides.string(_root.$meta, 'navigation.profile', {}) ?? '個人中心',
           'onboarding.welcomeTitle' =>
@@ -2340,11 +2343,11 @@ extension on TranslationsZhTw {
           'welcome_gift.card.tag' => TranslationOverrides.string(_root.$meta, 'welcome_gift.card.tag', {}) ?? '禮包',
           'welcome_gift.card.status.received' =>
             TranslationOverrides.string(_root.$meta, 'welcome_gift.card.status.received', {}) ?? '已領取',
-          'welcome_gift.card.button.claim' =>
-            TranslationOverrides.string(_root.$meta, 'welcome_gift.card.button.claim', {}) ?? '領取',
           _ => null,
         } ??
         switch (path) {
+          'welcome_gift.card.button.claim' =>
+            TranslationOverrides.string(_root.$meta, 'welcome_gift.card.button.claim', {}) ?? '領取',
           'welcome_gift.card.button.received' =>
             TranslationOverrides.string(_root.$meta, 'welcome_gift.card.button.received', {}) ?? '已領取',
           _ => null,

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileState {
 
- UserProfile? get currentUser; bool get isLoading;
+ UserProfile? get currentUser;
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ProfileStateCopyWith<ProfileState> get copyWith => _$ProfileStateCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.currentUser, currentUser) || other.currentUser == currentUser)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.currentUser, currentUser) || other.currentUser == currentUser));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentUser,isLoading);
+int get hashCode => Object.hash(runtimeType,currentUser);
 
 @override
 String toString() {
-  return 'ProfileState(currentUser: $currentUser, isLoading: $isLoading)';
+  return 'ProfileState(currentUser: $currentUser)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ProfileStateCopyWith<$Res>  {
   factory $ProfileStateCopyWith(ProfileState value, $Res Function(ProfileState) _then) = _$ProfileStateCopyWithImpl;
 @useResult
 $Res call({
- UserProfile? currentUser, bool isLoading
+ UserProfile? currentUser
 });
 
 
@@ -62,11 +62,10 @@ class _$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? currentUser = freezed,Object? isLoading = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? currentUser = freezed,}) {
   return _then(_self.copyWith(
 currentUser: freezed == currentUser ? _self.currentUser : currentUser // ignore: cast_nullable_to_non_nullable
-as UserProfile?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,
+as UserProfile?,
   ));
 }
 /// Create a copy of ProfileState
@@ -163,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserProfile? currentUser,  bool isLoading)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserProfile? currentUser)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.currentUser,_that.isLoading);case _:
+return $default(_that.currentUser);case _:
   return orElse();
 
 }
@@ -184,10 +183,10 @@ return $default(_that.currentUser,_that.isLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserProfile? currentUser,  bool isLoading)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserProfile? currentUser)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState():
-return $default(_that.currentUser,_that.isLoading);case _:
+return $default(_that.currentUser);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -204,10 +203,10 @@ return $default(_that.currentUser,_that.isLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserProfile? currentUser,  bool isLoading)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserProfile? currentUser)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.currentUser,_that.isLoading);case _:
+return $default(_that.currentUser);case _:
   return null;
 
 }
@@ -218,12 +217,11 @@ return $default(_that.currentUser,_that.isLoading);case _:
 /// @nodoc
 
 
-class _ProfileState implements ProfileState {
-  const _ProfileState({this.currentUser, this.isLoading = false});
+class _ProfileState extends ProfileState {
+  const _ProfileState({this.currentUser}): super._();
   
 
 @override final  UserProfile? currentUser;
-@override@JsonKey() final  bool isLoading;
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +233,16 @@ _$ProfileStateCopyWith<_ProfileState> get copyWith => __$ProfileStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.currentUser, currentUser) || other.currentUser == currentUser)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.currentUser, currentUser) || other.currentUser == currentUser));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentUser,isLoading);
+int get hashCode => Object.hash(runtimeType,currentUser);
 
 @override
 String toString() {
-  return 'ProfileState(currentUser: $currentUser, isLoading: $isLoading)';
+  return 'ProfileState(currentUser: $currentUser)';
 }
 
 
@@ -255,7 +253,7 @@ abstract mixin class _$ProfileStateCopyWith<$Res> implements $ProfileStateCopyWi
   factory _$ProfileStateCopyWith(_ProfileState value, $Res Function(_ProfileState) _then) = __$ProfileStateCopyWithImpl;
 @override @useResult
 $Res call({
- UserProfile? currentUser, bool isLoading
+ UserProfile? currentUser
 });
 
 
@@ -272,11 +270,10 @@ class __$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? currentUser = freezed,Object? isLoading = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? currentUser = freezed,}) {
   return _then(_ProfileState(
 currentUser: freezed == currentUser ? _self.currentUser : currentUser // ignore: cast_nullable_to_non_nullable
-as UserProfile?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,
+as UserProfile?,
   ));
 }
 

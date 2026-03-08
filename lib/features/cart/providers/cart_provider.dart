@@ -1,4 +1,5 @@
-import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
+import 'dart:async';
+
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
 import 'package:lunchbox/features/cart/entities/cart_product_model.dart';
@@ -10,20 +11,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'cart_provider.g.dart';
 
 @riverpod
-class CartNotifier extends _$CartNotifier with AsyncRunnerMixin<CartState> {
+class CartNotifier extends _$CartNotifier {
   @override
-  CartState build() {
-    // Initial load
-    Future.microtask(loadCart);
-    return const CartState();
-  }
-
-  Future<void> loadCart() async {
-    await runAsync(() async {
-      final repository = ref.read(cartRepositoryProvider);
-      final items = await repository.getCartItems();
-      state = state.copyWith(cartItems: items);
-    }, errorLabel: '加载购物车失败');
+  FutureOr<CartState> build() async {
+    final repository = ref.watch(cartRepositoryProvider);
+    final items = await repository.getCartItems();
+    return CartState(cartItems: items);
   }
 
   Future<void> addToCart(ProductModel product, {int quantity = 1}) async {
@@ -35,39 +28,37 @@ class CartNotifier extends _$CartNotifier with AsyncRunnerMixin<CartState> {
     CartProductModel product, {
     int quantity = 1,
   }) async {
-    await runAsync(() async {
-      await ref
-          .read(cartRepositoryProvider)
-          .addToCart(product, quantity: quantity);
-      await loadCart();
+    state = const AsyncLoading<CartState>();
+    state = await AsyncValue.guard(() async {
+      final repository = ref.read(cartRepositoryProvider);
+      await repository.addToCart(product, quantity: quantity);
+      final items = await repository.getCartItems();
       LoggerUtils.i('CartNotifier: Added ${product.name} to cart');
-    }, errorLabel: '添加商品到购物车失败');
+      return CartState(cartItems: items);
+    });
   }
 
   Future<void> updateQuantity(CartItemModel item, int quantity) async {
-    await runAsync(() async {
-      await ref
-          .read(cartRepositoryProvider)
-          .updateCartItemQuantity(item.id, quantity);
-      await loadCart();
+    state = const AsyncLoading<CartState>();
+    state = await AsyncValue.guard(() async {
+      final repository = ref.read(cartRepositoryProvider);
+      await repository.updateCartItemQuantity(item.id, quantity);
+      final items = await repository.getCartItems();
       LoggerUtils.i(
         'CartNotifier: Updated quantity for ${item.product.name} to $quantity',
       );
-    }, errorLabel: '更新商品数量失败');
+      return CartState(cartItems: items);
+    });
   }
 
   /// 切换商品选中状态
   Future<void> toggleSelection(String itemId, bool isSelected) async {
-    await runAsync(
-      () async {
-        await ref
-            .read(cartRepositoryProvider)
-            .toggleItemSelected(itemId, isSelected);
-        await loadCart();
-      },
-      showLoading: false,
-      errorLabel: '切换选中状态失败',
-    );
+    state = await AsyncValue.guard(() async {
+      final repository = ref.read(cartRepositoryProvider);
+      await repository.toggleItemSelected(itemId, isSelected);
+      final items = await repository.getCartItems();
+      return CartState(cartItems: items);
+    });
   }
 
   Future<void> increaseQuantity(CartItemModel item) async {
@@ -87,26 +78,35 @@ class CartNotifier extends _$CartNotifier with AsyncRunnerMixin<CartState> {
   }
 
   Future<void> removeItem(String itemId) async {
-    await runAsync(() async {
-      await ref.read(cartRepositoryProvider).removeFromCart(itemId);
-      await loadCart();
+    state = const AsyncLoading<CartState>();
+    state = await AsyncValue.guard(() async {
+      final repository = ref.read(cartRepositoryProvider);
+      await repository.removeFromCart(itemId);
+      final items = await repository.getCartItems();
       LoggerUtils.i('CartNotifier: Removed item $itemId');
-    }, errorLabel: '移除商品失败');
+      return CartState(cartItems: items);
+    });
   }
 
   Future<void> removeItems(List<String> itemIds) async {
-    await runAsync(() async {
-      await ref.read(cartRepositoryProvider).removeItems(itemIds);
-      await loadCart();
+    state = const AsyncLoading<CartState>();
+    state = await AsyncValue.guard(() async {
+      final repository = ref.read(cartRepositoryProvider);
+      await repository.removeItems(itemIds);
+      final items = await repository.getCartItems();
       LoggerUtils.i('CartNotifier: Removed items $itemIds');
-    }, errorLabel: '移除多个商品失败');
+      return CartState(cartItems: items);
+    });
   }
 
   Future<void> clearCart() async {
-    await runAsync(() async {
-      await ref.read(cartRepositoryProvider).clearCart();
-      await loadCart();
+    state = const AsyncLoading<CartState>();
+    state = await AsyncValue.guard(() async {
+      final repository = ref.read(cartRepositoryProvider);
+      await repository.clearCart();
+      final items = await repository.getCartItems();
       LoggerUtils.i('CartNotifier: Cleared cart');
-    }, errorLabel: '清空购物车失败');
+      return CartState(cartItems: items);
+    });
   }
 }

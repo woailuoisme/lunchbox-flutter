@@ -1070,6 +1070,9 @@ class TranslationsNavigationZhCn {
   /// zh-CN: '设备'
   String get device => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? '设备';
 
+  /// zh-CN: '购物车'
+  String get cart => TranslationOverrides.string(_root.$meta, 'navigation.cart', {}) ?? '购物车';
+
   /// zh-CN: '订单'
   String get orders => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? '订单';
 
@@ -1498,6 +1501,21 @@ class TranslationsPaymentZhCn {
 
   /// zh-CN: '支付剩余时间'
   String get remainingTime => TranslationOverrides.string(_root.$meta, 'payment.remainingTime', {}) ?? '支付剩余时间';
+
+  /// zh-CN: '添加银行卡'
+  String get addCard => TranslationOverrides.string(_root.$meta, 'payment.addCard', {}) ?? '添加银行卡';
+
+  /// zh-CN: '支付方式'
+  String get paymentMethods => TranslationOverrides.string(_root.$meta, 'payment.paymentMethods', {}) ?? '支付方式';
+
+  /// zh-CN: '添加银行卡成功'
+  String get setupSuccess => TranslationOverrides.string(_root.$meta, 'payment.setupSuccess', {}) ?? '添加银行卡成功';
+
+  /// zh-CN: '添加银行卡失败'
+  String get setupFailed => TranslationOverrides.string(_root.$meta, 'payment.setupFailed', {}) ?? '添加银行卡失败';
+
+  /// zh-CN: '暂无已保存的银行卡'
+  String get noCards => TranslationOverrides.string(_root.$meta, 'payment.noCards', {}) ?? '暂无已保存的银行卡';
 }
 
 // Path: points
@@ -3315,6 +3333,7 @@ extension on Translations {
             TranslationOverrides.string(_root.$meta, 'invite.rules.process5', {}) ?? '可在“我的成就”中查看邀请记录',
           'navigation.home' => TranslationOverrides.string(_root.$meta, 'navigation.home', {}) ?? '首页',
           'navigation.device' => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? '设备',
+          'navigation.cart' => TranslationOverrides.string(_root.$meta, 'navigation.cart', {}) ?? '购物车',
           'navigation.orders' => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? '订单',
           'navigation.profile' => TranslationOverrides.string(_root.$meta, 'navigation.profile', {}) ?? '个人中心',
           'network.errors.connectionTimeout' =>
@@ -3542,6 +3561,11 @@ extension on Translations {
           'payment.cancelPay' => TranslationOverrides.string(_root.$meta, 'payment.cancelPay', {}) ?? '取消支付',
           'payment.amount' => TranslationOverrides.string(_root.$meta, 'payment.amount', {}) ?? '支付金额',
           'payment.remainingTime' => TranslationOverrides.string(_root.$meta, 'payment.remainingTime', {}) ?? '支付剩余时间',
+          'payment.addCard' => TranslationOverrides.string(_root.$meta, 'payment.addCard', {}) ?? '添加银行卡',
+          'payment.paymentMethods' => TranslationOverrides.string(_root.$meta, 'payment.paymentMethods', {}) ?? '支付方式',
+          'payment.setupSuccess' => TranslationOverrides.string(_root.$meta, 'payment.setupSuccess', {}) ?? '添加银行卡成功',
+          'payment.setupFailed' => TranslationOverrides.string(_root.$meta, 'payment.setupFailed', {}) ?? '添加银行卡失败',
+          'payment.noCards' => TranslationOverrides.string(_root.$meta, 'payment.noCards', {}) ?? '暂无已保存的银行卡',
           'points.title' => TranslationOverrides.string(_root.$meta, 'points.title', {}) ?? '我的积分',
           'points.unit' => TranslationOverrides.string(_root.$meta, 'points.unit', {}) ?? '积分',
           'points.mall' => TranslationOverrides.string(_root.$meta, 'points.mall', {}) ?? '积分商城',
@@ -3550,15 +3574,15 @@ extension on Translations {
           'points.rule1' => TranslationOverrides.string(_root.$meta, 'points.rule1', {}) ?? '积分永久有效',
           'points.rule2' => TranslationOverrides.string(_root.$meta, 'points.rule2', {}) ?? '抽奖可获得额外积分',
           'points.records' => TranslationOverrides.string(_root.$meta, 'points.records', {}) ?? '积分记录',
+          _ => null,
+        } ??
+        switch (path) {
           'points.all' => TranslationOverrides.string(_root.$meta, 'points.all', {}) ?? '全部',
           'points.earned' => TranslationOverrides.string(_root.$meta, 'points.earned', {}) ?? '获得',
           'points.used' => TranslationOverrides.string(_root.$meta, 'points.used', {}) ?? '使用',
           'points.noRecords' => TranslationOverrides.string(_root.$meta, 'points.noRecords', {}) ?? '暂无积分记录',
           'points.back' => TranslationOverrides.string(_root.$meta, 'points.back', {}) ?? '返回',
           'points.goLottery' => TranslationOverrides.string(_root.$meta, 'points.goLottery', {}) ?? '去抽奖',
-          _ => null,
-        } ??
-        switch (path) {
           'points.balance' => TranslationOverrides.string(_root.$meta, 'points.balance', {}) ?? '余额',
           'points.coupon' => TranslationOverrides.string(_root.$meta, 'points.coupon', {}) ?? '优惠券',
           'points.noMoreProducts' => TranslationOverrides.string(_root.$meta, 'points.noMoreProducts', {}) ?? '没有更多商品了',

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderState {
 
- List<OrderModel> get orders; OrderModel? get selectedOrder; bool get isLoading; String get selectedStatus;// all, pending, paid, completed, cancelled
+ List<OrderModel> get orders; OrderModel? get selectedOrder; String get selectedStatus;// all, pending, paid, completed, cancelled
  String get selectedPaymentMethod;// stripe
  double get orderTotal;
 /// Create a copy of OrderState
@@ -27,16 +27,16 @@ $OrderStateCopyWith<OrderState> get copyWith => _$OrderStateCopyWithImpl<OrderSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderState&&const DeepCollectionEquality().equals(other.orders, orders)&&(identical(other.selectedOrder, selectedOrder) || other.selectedOrder == selectedOrder)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.selectedStatus, selectedStatus) || other.selectedStatus == selectedStatus)&&(identical(other.selectedPaymentMethod, selectedPaymentMethod) || other.selectedPaymentMethod == selectedPaymentMethod)&&(identical(other.orderTotal, orderTotal) || other.orderTotal == orderTotal));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderState&&const DeepCollectionEquality().equals(other.orders, orders)&&(identical(other.selectedOrder, selectedOrder) || other.selectedOrder == selectedOrder)&&(identical(other.selectedStatus, selectedStatus) || other.selectedStatus == selectedStatus)&&(identical(other.selectedPaymentMethod, selectedPaymentMethod) || other.selectedPaymentMethod == selectedPaymentMethod)&&(identical(other.orderTotal, orderTotal) || other.orderTotal == orderTotal));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(orders),selectedOrder,isLoading,selectedStatus,selectedPaymentMethod,orderTotal);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(orders),selectedOrder,selectedStatus,selectedPaymentMethod,orderTotal);
 
 @override
 String toString() {
-  return 'OrderState(orders: $orders, selectedOrder: $selectedOrder, isLoading: $isLoading, selectedStatus: $selectedStatus, selectedPaymentMethod: $selectedPaymentMethod, orderTotal: $orderTotal)';
+  return 'OrderState(orders: $orders, selectedOrder: $selectedOrder, selectedStatus: $selectedStatus, selectedPaymentMethod: $selectedPaymentMethod, orderTotal: $orderTotal)';
 }
 
 
@@ -47,7 +47,7 @@ abstract mixin class $OrderStateCopyWith<$Res>  {
   factory $OrderStateCopyWith(OrderState value, $Res Function(OrderState) _then) = _$OrderStateCopyWithImpl;
 @useResult
 $Res call({
- List<OrderModel> orders, OrderModel? selectedOrder, bool isLoading, String selectedStatus, String selectedPaymentMethod, double orderTotal
+ List<OrderModel> orders, OrderModel? selectedOrder, String selectedStatus, String selectedPaymentMethod, double orderTotal
 });
 
 
@@ -64,12 +64,11 @@ class _$OrderStateCopyWithImpl<$Res>
 
 /// Create a copy of OrderState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? orders = null,Object? selectedOrder = freezed,Object? isLoading = null,Object? selectedStatus = null,Object? selectedPaymentMethod = null,Object? orderTotal = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? orders = null,Object? selectedOrder = freezed,Object? selectedStatus = null,Object? selectedPaymentMethod = null,Object? orderTotal = null,}) {
   return _then(_self.copyWith(
 orders: null == orders ? _self.orders : orders // ignore: cast_nullable_to_non_nullable
 as List<OrderModel>,selectedOrder: freezed == selectedOrder ? _self.selectedOrder : selectedOrder // ignore: cast_nullable_to_non_nullable
-as OrderModel?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,selectedStatus: null == selectedStatus ? _self.selectedStatus : selectedStatus // ignore: cast_nullable_to_non_nullable
+as OrderModel?,selectedStatus: null == selectedStatus ? _self.selectedStatus : selectedStatus // ignore: cast_nullable_to_non_nullable
 as String,selectedPaymentMethod: null == selectedPaymentMethod ? _self.selectedPaymentMethod : selectedPaymentMethod // ignore: cast_nullable_to_non_nullable
 as String,orderTotal: null == orderTotal ? _self.orderTotal : orderTotal // ignore: cast_nullable_to_non_nullable
 as double,
@@ -169,10 +168,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<OrderModel> orders,  OrderModel? selectedOrder,  bool isLoading,  String selectedStatus,  String selectedPaymentMethod,  double orderTotal)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<OrderModel> orders,  OrderModel? selectedOrder,  String selectedStatus,  String selectedPaymentMethod,  double orderTotal)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderState() when $default != null:
-return $default(_that.orders,_that.selectedOrder,_that.isLoading,_that.selectedStatus,_that.selectedPaymentMethod,_that.orderTotal);case _:
+return $default(_that.orders,_that.selectedOrder,_that.selectedStatus,_that.selectedPaymentMethod,_that.orderTotal);case _:
   return orElse();
 
 }
@@ -190,10 +189,10 @@ return $default(_that.orders,_that.selectedOrder,_that.isLoading,_that.selectedS
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<OrderModel> orders,  OrderModel? selectedOrder,  bool isLoading,  String selectedStatus,  String selectedPaymentMethod,  double orderTotal)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<OrderModel> orders,  OrderModel? selectedOrder,  String selectedStatus,  String selectedPaymentMethod,  double orderTotal)  $default,) {final _that = this;
 switch (_that) {
 case _OrderState():
-return $default(_that.orders,_that.selectedOrder,_that.isLoading,_that.selectedStatus,_that.selectedPaymentMethod,_that.orderTotal);case _:
+return $default(_that.orders,_that.selectedOrder,_that.selectedStatus,_that.selectedPaymentMethod,_that.orderTotal);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -210,10 +209,10 @@ return $default(_that.orders,_that.selectedOrder,_that.isLoading,_that.selectedS
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<OrderModel> orders,  OrderModel? selectedOrder,  bool isLoading,  String selectedStatus,  String selectedPaymentMethod,  double orderTotal)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<OrderModel> orders,  OrderModel? selectedOrder,  String selectedStatus,  String selectedPaymentMethod,  double orderTotal)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderState() when $default != null:
-return $default(_that.orders,_that.selectedOrder,_that.isLoading,_that.selectedStatus,_that.selectedPaymentMethod,_that.orderTotal);case _:
+return $default(_that.orders,_that.selectedOrder,_that.selectedStatus,_that.selectedPaymentMethod,_that.orderTotal);case _:
   return null;
 
 }
@@ -224,8 +223,8 @@ return $default(_that.orders,_that.selectedOrder,_that.isLoading,_that.selectedS
 /// @nodoc
 
 
-class _OrderState implements OrderState {
-  const _OrderState({final  List<OrderModel> orders = const [], this.selectedOrder, this.isLoading = false, this.selectedStatus = 'all', this.selectedPaymentMethod = 'stripe', this.orderTotal = 0.0}): _orders = orders;
+class _OrderState extends OrderState {
+  const _OrderState({final  List<OrderModel> orders = const [], this.selectedOrder, this.selectedStatus = 'all', this.selectedPaymentMethod = 'stripe', this.orderTotal = 0.0}): _orders = orders,super._();
   
 
  final  List<OrderModel> _orders;
@@ -236,7 +235,6 @@ class _OrderState implements OrderState {
 }
 
 @override final  OrderModel? selectedOrder;
-@override@JsonKey() final  bool isLoading;
 @override@JsonKey() final  String selectedStatus;
 // all, pending, paid, completed, cancelled
 @override@JsonKey() final  String selectedPaymentMethod;
@@ -253,16 +251,16 @@ _$OrderStateCopyWith<_OrderState> get copyWith => __$OrderStateCopyWithImpl<_Ord
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderState&&const DeepCollectionEquality().equals(other._orders, _orders)&&(identical(other.selectedOrder, selectedOrder) || other.selectedOrder == selectedOrder)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.selectedStatus, selectedStatus) || other.selectedStatus == selectedStatus)&&(identical(other.selectedPaymentMethod, selectedPaymentMethod) || other.selectedPaymentMethod == selectedPaymentMethod)&&(identical(other.orderTotal, orderTotal) || other.orderTotal == orderTotal));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderState&&const DeepCollectionEquality().equals(other._orders, _orders)&&(identical(other.selectedOrder, selectedOrder) || other.selectedOrder == selectedOrder)&&(identical(other.selectedStatus, selectedStatus) || other.selectedStatus == selectedStatus)&&(identical(other.selectedPaymentMethod, selectedPaymentMethod) || other.selectedPaymentMethod == selectedPaymentMethod)&&(identical(other.orderTotal, orderTotal) || other.orderTotal == orderTotal));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_orders),selectedOrder,isLoading,selectedStatus,selectedPaymentMethod,orderTotal);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_orders),selectedOrder,selectedStatus,selectedPaymentMethod,orderTotal);
 
 @override
 String toString() {
-  return 'OrderState(orders: $orders, selectedOrder: $selectedOrder, isLoading: $isLoading, selectedStatus: $selectedStatus, selectedPaymentMethod: $selectedPaymentMethod, orderTotal: $orderTotal)';
+  return 'OrderState(orders: $orders, selectedOrder: $selectedOrder, selectedStatus: $selectedStatus, selectedPaymentMethod: $selectedPaymentMethod, orderTotal: $orderTotal)';
 }
 
 
@@ -273,7 +271,7 @@ abstract mixin class _$OrderStateCopyWith<$Res> implements $OrderStateCopyWith<$
   factory _$OrderStateCopyWith(_OrderState value, $Res Function(_OrderState) _then) = __$OrderStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<OrderModel> orders, OrderModel? selectedOrder, bool isLoading, String selectedStatus, String selectedPaymentMethod, double orderTotal
+ List<OrderModel> orders, OrderModel? selectedOrder, String selectedStatus, String selectedPaymentMethod, double orderTotal
 });
 
 
@@ -290,12 +288,11 @@ class __$OrderStateCopyWithImpl<$Res>
 
 /// Create a copy of OrderState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? orders = null,Object? selectedOrder = freezed,Object? isLoading = null,Object? selectedStatus = null,Object? selectedPaymentMethod = null,Object? orderTotal = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? orders = null,Object? selectedOrder = freezed,Object? selectedStatus = null,Object? selectedPaymentMethod = null,Object? orderTotal = null,}) {
   return _then(_OrderState(
 orders: null == orders ? _self._orders : orders // ignore: cast_nullable_to_non_nullable
 as List<OrderModel>,selectedOrder: freezed == selectedOrder ? _self.selectedOrder : selectedOrder // ignore: cast_nullable_to_non_nullable
-as OrderModel?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,selectedStatus: null == selectedStatus ? _self.selectedStatus : selectedStatus // ignore: cast_nullable_to_non_nullable
+as OrderModel?,selectedStatus: null == selectedStatus ? _self.selectedStatus : selectedStatus // ignore: cast_nullable_to_non_nullable
 as String,selectedPaymentMethod: null == selectedPaymentMethod ? _self.selectedPaymentMethod : selectedPaymentMethod // ignore: cast_nullable_to_non_nullable
 as String,orderTotal: null == orderTotal ? _self.orderTotal : orderTotal // ignore: cast_nullable_to_non_nullable
 as double,

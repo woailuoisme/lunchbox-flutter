@@ -5,10 +5,8 @@ part 'cart_state.freezed.dart';
 
 @freezed
 abstract class CartState with _$CartState {
-  const factory CartState({
-    @Default([]) List<CartItemModel> cartItems,
-    @Default(false) bool isLoading,
-  }) = _CartState;
+  const factory CartState({@Default([]) List<CartItemModel> cartItems}) =
+      _CartState;
   const CartState._();
 
   double get totalAmount => cartItems

@@ -23,8 +23,11 @@ GoRouter goRouter(Ref ref) {
   final rootNavigatorKey = ref.watch(navigatorKeyProvider);
 
   // 监听认证状态变化以触发路由重定向
-  final isAuthenticated = ref.watch(authProvider);
-  final hasInitialized = ref.watch(splashProvider).hasInitialized;
+  final authState = ref.watch(authProvider);
+  final isLoggedIn = authState.value ?? false;
+  final splashAsync = ref.watch(splashProvider);
+  final splashState = splashAsync.value;
+  final hasInitialized = splashState?.hasInitialized ?? false;
   final analytics = ref.watch(firebaseAnalyticsProvider);
 
   return GoRouter(
@@ -41,19 +44,19 @@ GoRouter goRouter(Ref ref) {
 
       // 如果已经初始化完成，不允许再回到 Splash 屏
       if (hasInitialized && isSplashRoute) {
-        final navigationPath = ref.read(splashProvider).navigationPath;
+        final navigationPath = splashState?.navigationPath;
 
         // 确保 navigationPath 与当前的认证状态同步
         // 避免登出后由于 SplashNotifier 中的 navigationPath 仍然是 /home 而导致的重定向错误
-        if (!isAuthenticated && navigationPath == const HomeRoute().location) {
+        if (!isLoggedIn && navigationPath == const HomeRoute().location) {
           return const SignInRoute().location;
         }
-        if (isAuthenticated && navigationPath == const SignInRoute().location) {
+        if (isLoggedIn && navigationPath == const SignInRoute().location) {
           return const HomeRoute().location;
         }
 
         return navigationPath ??
-            (isAuthenticated
+            (isLoggedIn
                 ? const HomeRoute().location
                 : const SignInRoute().location);
       }
@@ -66,13 +69,12 @@ GoRouter goRouter(Ref ref) {
           state.matchedLocation == const OnboardingRoute().location;
 
       // 如果用户未认证且不在认证相关页面，重定向到登录页
-      if (!isAuthenticated && !isAuthRoute) {
+      if (!isLoggedIn && !isAuthRoute) {
         return const SignInRoute().location;
       }
 
       // 如果用户已认证且在登录页，重定向到首页
-      if (isAuthenticated &&
-          state.matchedLocation == const SignInRoute().location) {
+      if (isLoggedIn && state.matchedLocation == const SignInRoute().location) {
         return const HomeRoute().location;
       }
 

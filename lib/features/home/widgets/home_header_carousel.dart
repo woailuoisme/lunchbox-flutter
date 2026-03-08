@@ -25,10 +25,9 @@ class _HomeHeaderCarouselState extends ConsumerState<HomeHeaderCarousel> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final banners = ref.watch(homeProvider.select((state) => state.banners));
-    final isLoading = ref.watch(
-      homeProvider.select((state) => state.isLoading),
-    );
+    final homeState = ref.watch(homeProvider);
+    final banners = homeState.value?.banners ?? [];
+    final isLoading = homeState.isLoading;
 
     var displayBanners = banners;
     if (displayBanners.isEmpty && isLoading) {
@@ -69,7 +68,7 @@ class _HomeHeaderCarouselState extends ConsumerState<HomeHeaderCarousel> {
                 });
               },
             ),
-            items: displayBanners.map((banner) {
+            items: displayBanners.map((BannerModel banner) {
               return Builder(
                 builder: (BuildContext context) {
                   return Container(

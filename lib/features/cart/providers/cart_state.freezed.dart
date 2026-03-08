@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CartState {
 
- List<CartItemModel> get cartItems; bool get isLoading;
+ List<CartItemModel> get cartItems;
 /// Create a copy of CartState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $CartStateCopyWith<CartState> get copyWith => _$CartStateCopyWithImpl<CartState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CartState&&const DeepCollectionEquality().equals(other.cartItems, cartItems)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CartState&&const DeepCollectionEquality().equals(other.cartItems, cartItems));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(cartItems),isLoading);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(cartItems));
 
 @override
 String toString() {
-  return 'CartState(cartItems: $cartItems, isLoading: $isLoading)';
+  return 'CartState(cartItems: $cartItems)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $CartStateCopyWith<$Res>  {
   factory $CartStateCopyWith(CartState value, $Res Function(CartState) _then) = _$CartStateCopyWithImpl;
 @useResult
 $Res call({
- List<CartItemModel> cartItems, bool isLoading
+ List<CartItemModel> cartItems
 });
 
 
@@ -62,11 +62,10 @@ class _$CartStateCopyWithImpl<$Res>
 
 /// Create a copy of CartState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? cartItems = null,Object? isLoading = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? cartItems = null,}) {
   return _then(_self.copyWith(
 cartItems: null == cartItems ? _self.cartItems : cartItems // ignore: cast_nullable_to_non_nullable
-as List<CartItemModel>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,
+as List<CartItemModel>,
   ));
 }
 
@@ -151,10 +150,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<CartItemModel> cartItems,  bool isLoading)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<CartItemModel> cartItems)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CartState() when $default != null:
-return $default(_that.cartItems,_that.isLoading);case _:
+return $default(_that.cartItems);case _:
   return orElse();
 
 }
@@ -172,10 +171,10 @@ return $default(_that.cartItems,_that.isLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<CartItemModel> cartItems,  bool isLoading)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<CartItemModel> cartItems)  $default,) {final _that = this;
 switch (_that) {
 case _CartState():
-return $default(_that.cartItems,_that.isLoading);case _:
+return $default(_that.cartItems);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -192,10 +191,10 @@ return $default(_that.cartItems,_that.isLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<CartItemModel> cartItems,  bool isLoading)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<CartItemModel> cartItems)?  $default,) {final _that = this;
 switch (_that) {
 case _CartState() when $default != null:
-return $default(_that.cartItems,_that.isLoading);case _:
+return $default(_that.cartItems);case _:
   return null;
 
 }
@@ -207,7 +206,7 @@ return $default(_that.cartItems,_that.isLoading);case _:
 
 
 class _CartState extends CartState {
-  const _CartState({final  List<CartItemModel> cartItems = const [], this.isLoading = false}): _cartItems = cartItems,super._();
+  const _CartState({final  List<CartItemModel> cartItems = const []}): _cartItems = cartItems,super._();
   
 
  final  List<CartItemModel> _cartItems;
@@ -217,7 +216,6 @@ class _CartState extends CartState {
   return EqualUnmodifiableListView(_cartItems);
 }
 
-@override@JsonKey() final  bool isLoading;
 
 /// Create a copy of CartState
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +227,16 @@ _$CartStateCopyWith<_CartState> get copyWith => __$CartStateCopyWithImpl<_CartSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CartState&&const DeepCollectionEquality().equals(other._cartItems, _cartItems)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CartState&&const DeepCollectionEquality().equals(other._cartItems, _cartItems));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_cartItems),isLoading);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_cartItems));
 
 @override
 String toString() {
-  return 'CartState(cartItems: $cartItems, isLoading: $isLoading)';
+  return 'CartState(cartItems: $cartItems)';
 }
 
 
@@ -249,7 +247,7 @@ abstract mixin class _$CartStateCopyWith<$Res> implements $CartStateCopyWith<$Re
   factory _$CartStateCopyWith(_CartState value, $Res Function(_CartState) _then) = __$CartStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<CartItemModel> cartItems, bool isLoading
+ List<CartItemModel> cartItems
 });
 
 
@@ -266,11 +264,10 @@ class __$CartStateCopyWithImpl<$Res>
 
 /// Create a copy of CartState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? cartItems = null,Object? isLoading = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? cartItems = null,}) {
   return _then(_CartState(
 cartItems: null == cartItems ? _self._cartItems : cartItems // ignore: cast_nullable_to_non_nullable
-as List<CartItemModel>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,
+as List<CartItemModel>,
   ));
 }
 

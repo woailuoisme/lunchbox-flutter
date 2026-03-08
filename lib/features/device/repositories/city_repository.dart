@@ -22,10 +22,18 @@ class CityRepository {
   final DeviceRestClient _client;
   final StorageService _storageService;
 
+  // 内存缓存
+  List<CityModel>? _cachedCities;
+
   /// 获取所有城市列表
-  Future<List<CityModel>> getAllCities() async {
+  Future<List<CityModel>> getAllCities({bool forceRefresh = false}) async {
+    if (!forceRefresh && _cachedCities != null) {
+      return _cachedCities!;
+    }
+
     final response = await _client.getEnableCities();
-    return response.data ?? [];
+    _cachedCities = response.data ?? [];
+    return _cachedCities!;
   }
 
   /// 获取热门城市列表
@@ -34,24 +42,6 @@ class CityRepository {
     final sorted = List<CityModel>.from(cities)
       ..sort((a, b) => b.count.compareTo(a.count));
     return sorted.take(6).toList();
-  }
-
-  /// 根据城市首字母获取城市列表
-  Future<Map<String, List<CityModel>>> getCitiesByInitial() async {
-    final cities = await getAllCities();
-    final Map<String, List<CityModel>> result = {};
-    for (final city in cities) {
-      final initial = city.name.isNotEmpty ? city.name[0].toUpperCase() : '#';
-      result.putIfAbsent(initial, () => []).add(city);
-    }
-
-    final sortedKeys = result.keys.toList()..sort();
-    final Map<String, List<CityModel>> sortedResult = {};
-    for (final key in sortedKeys) {
-      sortedResult[key] = result[key]!;
-    }
-
-    return sortedResult;
   }
 
   /// 获取已选择的城市
@@ -76,36 +66,15 @@ class CityRepository {
   /// 根据城市ID获取城市信息
   Future<CityModel?> getCityById(String cityId) async {
     final cities = await getAllCities();
-    try {
-      return cities.firstWhere(
-        (city) => city.code == cityId || city.city == cityId,
-      );
-    } catch (_) {
-      return null;
+    for (final city in cities) {
+      if (city.code == cityId || city.city == cityId) {
+        return city;
+      }
     }
+    return null;
   }
 
-  /// 搜索城市
-  Future<List<CityModel>> searchCities(String keyword) async {
-    if (keyword.isEmpty) {
-      return [];
-    }
-
-    final cities = await getAllCities();
-    final lowercaseKeyword = keyword.toLowerCase();
-
-    return cities
-        .where(
-          (city) =>
-              city.name.toLowerCase().contains(lowercaseKeyword) ||
-              city.code.toLowerCase().contains(lowercaseKeyword) ||
-              city.province.toLowerCase().contains(lowercaseKeyword) ||
-              city.city.toLowerCase().contains(lowercaseKeyword),
-        )
-        .toList();
-  }
-
-  /// 获取用户当前位置附近的城市
+  /// 获取用户当前位置附近的城市 (Mock)
   Future<CityModel?> getNearbyCity(double latitude, double longitude) async {
     final cities = await getAllCities();
     return cities.isEmpty ? null : cities.first;

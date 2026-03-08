@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PaymentState {
 
- PaymentIntentResponse? get paymentIntent; bool get isLoading; bool get isPaymentSheetReady; bool get isPaymentSuccessful; bool get isPaymentCanceled; String? get errorMessage;
+ PaymentIntentResponse? get paymentIntent; bool get isPaymentSheetReady; bool get isPaymentSuccessful; bool get isPaymentCanceled; PaymentMethod get selectedMethod;
 /// Create a copy of PaymentState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $PaymentStateCopyWith<PaymentState> get copyWith => _$PaymentStateCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentState&&(identical(other.paymentIntent, paymentIntent) || other.paymentIntent == paymentIntent)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isPaymentSheetReady, isPaymentSheetReady) || other.isPaymentSheetReady == isPaymentSheetReady)&&(identical(other.isPaymentSuccessful, isPaymentSuccessful) || other.isPaymentSuccessful == isPaymentSuccessful)&&(identical(other.isPaymentCanceled, isPaymentCanceled) || other.isPaymentCanceled == isPaymentCanceled)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentState&&(identical(other.paymentIntent, paymentIntent) || other.paymentIntent == paymentIntent)&&(identical(other.isPaymentSheetReady, isPaymentSheetReady) || other.isPaymentSheetReady == isPaymentSheetReady)&&(identical(other.isPaymentSuccessful, isPaymentSuccessful) || other.isPaymentSuccessful == isPaymentSuccessful)&&(identical(other.isPaymentCanceled, isPaymentCanceled) || other.isPaymentCanceled == isPaymentCanceled)&&(identical(other.selectedMethod, selectedMethod) || other.selectedMethod == selectedMethod));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,paymentIntent,isLoading,isPaymentSheetReady,isPaymentSuccessful,isPaymentCanceled,errorMessage);
+int get hashCode => Object.hash(runtimeType,paymentIntent,isPaymentSheetReady,isPaymentSuccessful,isPaymentCanceled,selectedMethod);
 
 @override
 String toString() {
-  return 'PaymentState(paymentIntent: $paymentIntent, isLoading: $isLoading, isPaymentSheetReady: $isPaymentSheetReady, isPaymentSuccessful: $isPaymentSuccessful, isPaymentCanceled: $isPaymentCanceled, errorMessage: $errorMessage)';
+  return 'PaymentState(paymentIntent: $paymentIntent, isPaymentSheetReady: $isPaymentSheetReady, isPaymentSuccessful: $isPaymentSuccessful, isPaymentCanceled: $isPaymentCanceled, selectedMethod: $selectedMethod)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $PaymentStateCopyWith<$Res>  {
   factory $PaymentStateCopyWith(PaymentState value, $Res Function(PaymentState) _then) = _$PaymentStateCopyWithImpl;
 @useResult
 $Res call({
- PaymentIntentResponse? paymentIntent, bool isLoading, bool isPaymentSheetReady, bool isPaymentSuccessful, bool isPaymentCanceled, String? errorMessage
+ PaymentIntentResponse? paymentIntent, bool isPaymentSheetReady, bool isPaymentSuccessful, bool isPaymentCanceled, PaymentMethod selectedMethod
 });
 
 
@@ -62,15 +62,14 @@ class _$PaymentStateCopyWithImpl<$Res>
 
 /// Create a copy of PaymentState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? paymentIntent = freezed,Object? isLoading = null,Object? isPaymentSheetReady = null,Object? isPaymentSuccessful = null,Object? isPaymentCanceled = null,Object? errorMessage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? paymentIntent = freezed,Object? isPaymentSheetReady = null,Object? isPaymentSuccessful = null,Object? isPaymentCanceled = null,Object? selectedMethod = null,}) {
   return _then(_self.copyWith(
 paymentIntent: freezed == paymentIntent ? _self.paymentIntent : paymentIntent // ignore: cast_nullable_to_non_nullable
-as PaymentIntentResponse?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,isPaymentSheetReady: null == isPaymentSheetReady ? _self.isPaymentSheetReady : isPaymentSheetReady // ignore: cast_nullable_to_non_nullable
+as PaymentIntentResponse?,isPaymentSheetReady: null == isPaymentSheetReady ? _self.isPaymentSheetReady : isPaymentSheetReady // ignore: cast_nullable_to_non_nullable
 as bool,isPaymentSuccessful: null == isPaymentSuccessful ? _self.isPaymentSuccessful : isPaymentSuccessful // ignore: cast_nullable_to_non_nullable
 as bool,isPaymentCanceled: null == isPaymentCanceled ? _self.isPaymentCanceled : isPaymentCanceled // ignore: cast_nullable_to_non_nullable
-as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
-as String?,
+as bool,selectedMethod: null == selectedMethod ? _self.selectedMethod : selectedMethod // ignore: cast_nullable_to_non_nullable
+as PaymentMethod,
   ));
 }
 /// Create a copy of PaymentState
@@ -167,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( PaymentIntentResponse? paymentIntent,  bool isLoading,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  bool isPaymentCanceled,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( PaymentIntentResponse? paymentIntent,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  bool isPaymentCanceled,  PaymentMethod selectedMethod)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PaymentState() when $default != null:
-return $default(_that.paymentIntent,_that.isLoading,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.isPaymentCanceled,_that.errorMessage);case _:
+return $default(_that.paymentIntent,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.isPaymentCanceled,_that.selectedMethod);case _:
   return orElse();
 
 }
@@ -188,10 +187,10 @@ return $default(_that.paymentIntent,_that.isLoading,_that.isPaymentSheetReady,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( PaymentIntentResponse? paymentIntent,  bool isLoading,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  bool isPaymentCanceled,  String? errorMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( PaymentIntentResponse? paymentIntent,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  bool isPaymentCanceled,  PaymentMethod selectedMethod)  $default,) {final _that = this;
 switch (_that) {
 case _PaymentState():
-return $default(_that.paymentIntent,_that.isLoading,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.isPaymentCanceled,_that.errorMessage);case _:
+return $default(_that.paymentIntent,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.isPaymentCanceled,_that.selectedMethod);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +207,10 @@ return $default(_that.paymentIntent,_that.isLoading,_that.isPaymentSheetReady,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( PaymentIntentResponse? paymentIntent,  bool isLoading,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  bool isPaymentCanceled,  String? errorMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( PaymentIntentResponse? paymentIntent,  bool isPaymentSheetReady,  bool isPaymentSuccessful,  bool isPaymentCanceled,  PaymentMethod selectedMethod)?  $default,) {final _that = this;
 switch (_that) {
 case _PaymentState() when $default != null:
-return $default(_that.paymentIntent,_that.isLoading,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.isPaymentCanceled,_that.errorMessage);case _:
+return $default(_that.paymentIntent,_that.isPaymentSheetReady,_that.isPaymentSuccessful,_that.isPaymentCanceled,_that.selectedMethod);case _:
   return null;
 
 }
@@ -222,16 +221,15 @@ return $default(_that.paymentIntent,_that.isLoading,_that.isPaymentSheetReady,_t
 /// @nodoc
 
 
-class _PaymentState implements PaymentState {
-  const _PaymentState({this.paymentIntent, this.isLoading = false, this.isPaymentSheetReady = false, this.isPaymentSuccessful = false, this.isPaymentCanceled = false, this.errorMessage});
+class _PaymentState extends PaymentState {
+  const _PaymentState({this.paymentIntent, this.isPaymentSheetReady = false, this.isPaymentSuccessful = false, this.isPaymentCanceled = false, this.selectedMethod = PaymentMethod.stripe}): super._();
   
 
 @override final  PaymentIntentResponse? paymentIntent;
-@override@JsonKey() final  bool isLoading;
 @override@JsonKey() final  bool isPaymentSheetReady;
 @override@JsonKey() final  bool isPaymentSuccessful;
 @override@JsonKey() final  bool isPaymentCanceled;
-@override final  String? errorMessage;
+@override@JsonKey() final  PaymentMethod selectedMethod;
 
 /// Create a copy of PaymentState
 /// with the given fields replaced by the non-null parameter values.
@@ -243,16 +241,16 @@ _$PaymentStateCopyWith<_PaymentState> get copyWith => __$PaymentStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentState&&(identical(other.paymentIntent, paymentIntent) || other.paymentIntent == paymentIntent)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isPaymentSheetReady, isPaymentSheetReady) || other.isPaymentSheetReady == isPaymentSheetReady)&&(identical(other.isPaymentSuccessful, isPaymentSuccessful) || other.isPaymentSuccessful == isPaymentSuccessful)&&(identical(other.isPaymentCanceled, isPaymentCanceled) || other.isPaymentCanceled == isPaymentCanceled)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentState&&(identical(other.paymentIntent, paymentIntent) || other.paymentIntent == paymentIntent)&&(identical(other.isPaymentSheetReady, isPaymentSheetReady) || other.isPaymentSheetReady == isPaymentSheetReady)&&(identical(other.isPaymentSuccessful, isPaymentSuccessful) || other.isPaymentSuccessful == isPaymentSuccessful)&&(identical(other.isPaymentCanceled, isPaymentCanceled) || other.isPaymentCanceled == isPaymentCanceled)&&(identical(other.selectedMethod, selectedMethod) || other.selectedMethod == selectedMethod));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,paymentIntent,isLoading,isPaymentSheetReady,isPaymentSuccessful,isPaymentCanceled,errorMessage);
+int get hashCode => Object.hash(runtimeType,paymentIntent,isPaymentSheetReady,isPaymentSuccessful,isPaymentCanceled,selectedMethod);
 
 @override
 String toString() {
-  return 'PaymentState(paymentIntent: $paymentIntent, isLoading: $isLoading, isPaymentSheetReady: $isPaymentSheetReady, isPaymentSuccessful: $isPaymentSuccessful, isPaymentCanceled: $isPaymentCanceled, errorMessage: $errorMessage)';
+  return 'PaymentState(paymentIntent: $paymentIntent, isPaymentSheetReady: $isPaymentSheetReady, isPaymentSuccessful: $isPaymentSuccessful, isPaymentCanceled: $isPaymentCanceled, selectedMethod: $selectedMethod)';
 }
 
 
@@ -263,7 +261,7 @@ abstract mixin class _$PaymentStateCopyWith<$Res> implements $PaymentStateCopyWi
   factory _$PaymentStateCopyWith(_PaymentState value, $Res Function(_PaymentState) _then) = __$PaymentStateCopyWithImpl;
 @override @useResult
 $Res call({
- PaymentIntentResponse? paymentIntent, bool isLoading, bool isPaymentSheetReady, bool isPaymentSuccessful, bool isPaymentCanceled, String? errorMessage
+ PaymentIntentResponse? paymentIntent, bool isPaymentSheetReady, bool isPaymentSuccessful, bool isPaymentCanceled, PaymentMethod selectedMethod
 });
 
 
@@ -280,15 +278,14 @@ class __$PaymentStateCopyWithImpl<$Res>
 
 /// Create a copy of PaymentState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? paymentIntent = freezed,Object? isLoading = null,Object? isPaymentSheetReady = null,Object? isPaymentSuccessful = null,Object? isPaymentCanceled = null,Object? errorMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? paymentIntent = freezed,Object? isPaymentSheetReady = null,Object? isPaymentSuccessful = null,Object? isPaymentCanceled = null,Object? selectedMethod = null,}) {
   return _then(_PaymentState(
 paymentIntent: freezed == paymentIntent ? _self.paymentIntent : paymentIntent // ignore: cast_nullable_to_non_nullable
-as PaymentIntentResponse?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,isPaymentSheetReady: null == isPaymentSheetReady ? _self.isPaymentSheetReady : isPaymentSheetReady // ignore: cast_nullable_to_non_nullable
+as PaymentIntentResponse?,isPaymentSheetReady: null == isPaymentSheetReady ? _self.isPaymentSheetReady : isPaymentSheetReady // ignore: cast_nullable_to_non_nullable
 as bool,isPaymentSuccessful: null == isPaymentSuccessful ? _self.isPaymentSuccessful : isPaymentSuccessful // ignore: cast_nullable_to_non_nullable
 as bool,isPaymentCanceled: null == isPaymentCanceled ? _self.isPaymentCanceled : isPaymentCanceled // ignore: cast_nullable_to_non_nullable
-as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
-as String?,
+as bool,selectedMethod: null == selectedMethod ? _self.selectedMethod : selectedMethod // ignore: cast_nullable_to_non_nullable
+as PaymentMethod,
   ));
 }
 

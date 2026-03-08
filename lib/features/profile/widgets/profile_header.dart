@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:lunchbox/features/profile/widgets/profile_asset_item.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/routes.dart';
@@ -159,26 +159,18 @@ class ProfileHeader extends StatelessWidget {
   }
 
   Widget _buildAvatar(String? url) {
-    if (url == null || url.isEmpty) {
-      return const Center(child: Icon(Icons.person, color: Colors.white));
+    if (url == null || url.trim().isEmpty) {
+      return const Center(child: Icon(Symbols.person, color: Colors.white));
     }
 
-    final isSvg = url.toLowerCase().endsWith('.svg');
-    if (isSvg) {
-      return SvgPicture.network(
-        url,
-        fit: BoxFit.cover,
-        placeholderBuilder: (context) => const Center(
-          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-        ),
-      );
-    }
-
+    final cleanUrl = url.trim();
+    // 不再使用 SvgPicture 渲染 SVG，如果 URL 包含 .svg 也会尝试通过 Image.network 加载
+    // 如果加载失败（由于格式不支持），会回退到 Symbols.person 图标
     return Image.network(
-      url,
+      cleanUrl,
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) =>
-          const Center(child: Icon(Icons.person, color: Colors.white)),
+          const Center(child: Icon(Symbols.person, color: Colors.white)),
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
         return const Center(

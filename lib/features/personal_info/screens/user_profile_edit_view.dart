@@ -26,7 +26,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   DateTime? _selectedBirthday;
 
   Future<void> _saveProfile() async {
-    final user = ref.read(profileProvider).currentUser;
+    final user = ref.read(profileProvider).value?.currentUser;
     if (user == null) return;
 
     try {
@@ -65,7 +65,7 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(profileProvider);
-    final user = state.currentUser;
+    final user = state.value?.currentUser;
     final theme = Theme.of(context);
 
     // 初始化本地状态（如果未初始化）

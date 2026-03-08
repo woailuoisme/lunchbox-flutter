@@ -8,10 +8,11 @@ abstract class OrderState with _$OrderState {
   const factory OrderState({
     @Default([]) List<OrderModel> orders,
     OrderModel? selectedOrder,
-    @Default(false) bool isLoading,
     @Default('all')
     String selectedStatus, // all, pending, paid, completed, cancelled
     @Default('stripe') String selectedPaymentMethod, // stripe
     @Default(0.0) double orderTotal,
   }) = _OrderState;
+
+  const OrderState._();
 }

@@ -19,7 +19,6 @@ class SignUpView extends ConsumerStatefulWidget {
 
 class _SignUpViewState extends ConsumerState<SignUpView> {
   final _formKey = GlobalKey<FormBuilderState>();
-  bool _isLoading = false;
   bool _obscurePassword = true;
 
   void _togglePasswordVisibility() {
@@ -33,7 +32,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
     }
 
     final values = _formKey.currentState!.value;
-    final email = values['email'] as String;
+    final email = (values['email'] as String).trim();
     final password = values['password'] as String;
     final passwordConfirmation = values['password_confirmation'] as String;
 
@@ -49,17 +48,39 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
       return;
     }
 
-    setState(() => _isLoading = true);
+    await ref
+        .read(authProvider.notifier)
+        .register(
+          email: email,
+          password: password,
+          passwordConfirmation: passwordConfirmation,
+        );
+  }
 
-    try {
-      await ref
-          .read(authProvider.notifier)
-          .register(
-            email: email.trim(),
-            password: password,
-            passwordConfirmation: passwordConfirmation,
-          );
-      if (mounted) {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final authState = ref.watch(authProvider);
+
+    // Get loading status from AsyncValue
+    final isLoading = authState.isLoading;
+
+    // Listen for state changes (success/failure)
+    ref.listen(authProvider, (previous, next) {
+      if (next.hasError && !next.isLoading) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.error,
+          style: ToastificationStyle.fillColored,
+          title: Text(t.auth.registerFailed),
+          description: Text(next.error.toString()),
+          alignment: Alignment.topCenter,
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+      } else if (next.hasValue &&
+          next.value == true &&
+          !(previous?.value ?? false)) {
         toastification.show(
           context: context,
           type: ToastificationType.success,
@@ -70,29 +91,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
         );
         Navigator.pop(context);
       }
-    } catch (e) {
-      if (mounted) {
-        toastification.show(
-          context: context,
-          type: ToastificationType.error,
-          style: ToastificationStyle.fillColored,
-          title: Text(t.auth.registerFailed),
-          description: Text(e.toString()),
-          alignment: Alignment.topCenter,
-          autoCloseDuration: const Duration(seconds: 3),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    });
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -129,7 +128,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                               SizedBox(height: 32.h),
                               SignUpButton(
                                 colorScheme: colorScheme,
-                                isLoading: _isLoading,
+                                isLoading: isLoading,
                                 onPressed: _handleSignUp,
                               ),
                               SizedBox(height: 24.h),

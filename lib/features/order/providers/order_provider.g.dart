@@ -13,7 +13,7 @@ part of 'order_provider.dart';
 final orderProvider = OrderNotifierProvider._();
 
 final class OrderNotifierProvider
-    extends $NotifierProvider<OrderNotifier, OrderState> {
+    extends $AsyncNotifierProvider<OrderNotifier, OrderState> {
   OrderNotifierProvider._()
     : super(
         from: null,
@@ -31,29 +31,21 @@ final class OrderNotifierProvider
   @$internal
   @override
   OrderNotifier create() => OrderNotifier();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(OrderState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<OrderState>(value),
-    );
-  }
 }
 
-String _$orderNotifierHash() => r'86bd9bd5a834245ba06ec798cdf2f3edb950d633';
+String _$orderNotifierHash() => r'8fd6f7bff15a06aef9a93bcaec65ff7dbc052cbf';
 
-abstract class _$OrderNotifier extends $Notifier<OrderState> {
-  OrderState build();
+abstract class _$OrderNotifier extends $AsyncNotifier<OrderState> {
+  FutureOr<OrderState> build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<OrderState, OrderState>;
+    final ref = this.ref as $Ref<AsyncValue<OrderState>, OrderState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<OrderState, OrderState>,
-              OrderState,
+              AnyNotifier<AsyncValue<OrderState>, OrderState>,
+              AsyncValue<OrderState>,
               Object?,
               Object?
             >;

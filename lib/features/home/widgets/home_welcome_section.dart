@@ -17,12 +17,9 @@ class HomeWelcomeSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final nearestDevice = ref.watch(
-      homeProvider.select((state) => state.nearestDevice),
-    );
-    final isLoading = ref.watch(
-      homeProvider.select((state) => state.isLoading),
-    );
+    final homeState = ref.watch(homeProvider);
+    final nearestDevice = homeState.value?.nearestDevice;
+    final isLoading = homeState.isLoading;
 
     return Skeletonizer(
       enabled: isLoading,

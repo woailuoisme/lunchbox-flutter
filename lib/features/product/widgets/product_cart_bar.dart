@@ -15,8 +15,9 @@ class ProductCartBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cartState = ref.watch(cartProvider);
     final theme = Theme.of(context);
+    final cartValue = cartState.value;
 
-    if (cartState.isEmpty) return const SizedBox.shrink();
+    if (cartValue == null || cartValue.isEmpty) return const SizedBox.shrink();
 
     return Positioned(
       left: 20.w,
@@ -47,7 +48,7 @@ class ProductCartBar extends ConsumerWidget {
                         children: [
                           Badge(
                                 label: Text(
-                                  cartState.totalQuantity.toString(),
+                                  (cartValue.totalQuantity).toString(),
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -63,7 +64,7 @@ class ProductCartBar extends ConsumerWidget {
                                 ),
                               )
                               .animate(
-                                target: cartState.totalQuantity > 0 ? 1 : 0,
+                                target: cartValue.totalQuantity > 0 ? 1 : 0,
                               )
                               .scale(
                                 begin: const Offset(1, 1),
@@ -90,7 +91,7 @@ class ProductCartBar extends ConsumerWidget {
                                 ),
                               ),
                               Text(
-                                '¥${cartState.totalAmount.toStringAsFixed(2)}',
+                                '¥${cartValue.totalAmount.toStringAsFixed(2)}',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20.sp,

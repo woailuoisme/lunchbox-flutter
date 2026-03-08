@@ -28,12 +28,14 @@ class _SplashViewState extends ConsumerState<SplashView> {
   Widget build(BuildContext context) {
     // Listen for navigation events
     ref.listen(splashProvider, (previous, next) {
-      if (next.navigationPath != null) {
-        context.go(next.navigationPath!);
+      final path = next.value?.navigationPath;
+      if (path != null) {
+        context.go(path);
       }
     });
 
-    final state = ref.watch(splashProvider);
+    final splashAsync = ref.watch(splashProvider);
+    final state = splashAsync.value ?? const SplashState();
     final controller = ref.read(splashProvider.notifier);
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -43,8 +45,13 @@ class _SplashViewState extends ConsumerState<SplashView> {
       body: SafeArea(
         child: Builder(
           builder: (context) {
-            if (state.errorMessage != null) {
-              return _buildErrorView(context, state, controller);
+            if (splashAsync.hasError) {
+              return _buildErrorView(
+                context,
+                state,
+                splashAsync.error.toString(),
+                controller,
+              );
             }
             return _buildSplashView(context, state);
           },
@@ -175,6 +182,7 @@ class _SplashViewState extends ConsumerState<SplashView> {
   Widget _buildErrorView(
     BuildContext context,
     SplashState state,
+    String errorMessage,
     SplashNotifier controller,
   ) {
     final theme = Theme.of(context);
@@ -197,7 +205,7 @@ class _SplashViewState extends ConsumerState<SplashView> {
             ),
             SizedBox(height: 16.h),
             Text(
-              state.errorMessage ?? t.common.unknownError,
+              errorMessage,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontSize: 14.sp,

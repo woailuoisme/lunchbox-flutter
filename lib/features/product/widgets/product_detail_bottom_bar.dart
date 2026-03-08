@@ -18,6 +18,7 @@ class ProductDetailBottomBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final cartState = ref.watch(cartProvider);
+    final totalQuantity = cartState.value?.totalQuantity ?? 0;
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -42,10 +43,10 @@ class ProductDetailBottomBar extends ConsumerWidget {
           // 购物车图标（带角标）
           Badge(
             label: Text(
-              cartState.totalQuantity.toString(),
+              totalQuantity.toString(),
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
             ),
-            isLabelVisible: cartState.totalQuantity > 0,
+            isLabelVisible: totalQuantity > 0,
             backgroundColor: theme.colorScheme.error,
             padding: EdgeInsets.symmetric(horizontal: 6.w),
             offset: const Offset(4, -4),

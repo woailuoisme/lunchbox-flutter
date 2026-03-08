@@ -1,11 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/core/services/storage_service.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/core/constants/app_constants.dart';
 import 'package:lunchbox/features/auth/repositories/auth_repository.dart';
 import 'package:lunchbox/features/profile/repositories/profile_repository.dart';
-import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -24,10 +22,9 @@ sealed class SplashState with _$SplashState {
 }
 
 @Riverpod(keepAlive: true)
-class SplashNotifier extends _$SplashNotifier
-    with AsyncRunnerMixin<SplashState> {
+class SplashNotifier extends _$SplashNotifier {
   @override
-  SplashState build() {
+  FutureOr<SplashState> build() {
     Future.microtask(_initializeApp);
     return const SplashState();
   }
@@ -36,7 +33,8 @@ class SplashNotifier extends _$SplashNotifier
   ///
   /// 负责检查服务状态、加载本地配置、验证认证状态以及预加载必要的数据。
   Future<void> _initializeApp() async {
-    await runAsync(() async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
       final authRepository = ref.read(authRepositoryProvider);
       final storageService = ref.read(storageServiceProvider);
 
@@ -60,16 +58,20 @@ class SplashNotifier extends _$SplashNotifier
       await _updateProgress(1.0);
       await Future<void>.delayed(const Duration(milliseconds: 300));
 
-      state = state.copyWith(hasInitialized: true);
-      _determineNavigationPath(isLoggedIn, storageService);
+      final finalState = state.value!.copyWith(hasInitialized: true);
+      _determineNavigationPath(isLoggedIn, storageService, finalState);
 
       LoggerUtils.i('SplashNotifier: Initialization successful');
-    }, errorLabel: t.splash.failed);
+      return state.value!.copyWith(hasInitialized: true);
+    });
   }
 
   /// 更新初始化进度
   Future<void> _updateProgress(double progress) async {
-    state = state.copyWith(initializationProgress: progress);
+    final current = state.value;
+    if (current != null) {
+      state = AsyncData(current.copyWith(initializationProgress: progress));
+    }
     LoggerUtils.d('SplashNotifier: Progress ${(progress * 100).toInt()}%');
   }
 
@@ -106,19 +108,20 @@ class SplashNotifier extends _$SplashNotifier
   void _determineNavigationPath(
     bool isLoggedIn,
     StorageService storageService,
+    SplashState currentState,
   ) {
     final isFirstLaunch =
         storageService.read<bool>(AppConstants.keyIsFirstLaunch) ?? true;
 
+    String targetPath;
     if (isFirstLaunch) {
-      state = state.copyWith(navigationPath: AppRoutes.onboarding);
+      targetPath = AppRoutes.onboarding;
     } else {
-      state = state.copyWith(
-        navigationPath: isLoggedIn ? AppRoutes.home : AppRoutes.signin,
-      );
+      targetPath = isLoggedIn ? AppRoutes.home : AppRoutes.signin;
     }
 
-    LoggerUtils.i('SplashNotifier: Target path -> ${state.navigationPath}');
+    state = AsyncData(currentState.copyWith(navigationPath: targetPath));
+    LoggerUtils.i('SplashNotifier: Target path -> $targetPath');
   }
 
   /// 重试初始化流程
@@ -126,6 +129,9 @@ class SplashNotifier extends _$SplashNotifier
 
   /// 跳过错误并进入登录页
   void skipError() {
-    state = state.copyWith(navigationPath: AppRoutes.signin);
+    final current = state.value;
+    if (current != null) {
+      state = AsyncData(current.copyWith(navigationPath: AppRoutes.signin));
+    }
   }
 }

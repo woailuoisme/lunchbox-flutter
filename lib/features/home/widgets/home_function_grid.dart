@@ -16,9 +16,8 @@ class HomeFunctionGrid extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isLoading = ref.watch(
-      homeProvider.select((state) => state.isLoading),
-    );
+    final homeState = ref.watch(homeProvider);
+    final isLoading = homeState.isLoading;
 
     final items = [
       {

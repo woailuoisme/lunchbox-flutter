@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeState {
 
- NearestDeviceModel? get nearestDevice; List<BannerModel> get banners; List<RecommendProductModel> get recommendProducts; bool get isLoading; int get selectedTabIndex; String? get errorMessage;
+ NearestDeviceModel? get nearestDevice; List<BannerModel> get banners; List<RecommendProductModel> get recommendProducts;
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $HomeStateCopyWith<HomeState> get copyWith => _$HomeStateCopyWithImpl<HomeState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&(identical(other.nearestDevice, nearestDevice) || other.nearestDevice == nearestDevice)&&const DeepCollectionEquality().equals(other.banners, banners)&&const DeepCollectionEquality().equals(other.recommendProducts, recommendProducts)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.selectedTabIndex, selectedTabIndex) || other.selectedTabIndex == selectedTabIndex)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&(identical(other.nearestDevice, nearestDevice) || other.nearestDevice == nearestDevice)&&const DeepCollectionEquality().equals(other.banners, banners)&&const DeepCollectionEquality().equals(other.recommendProducts, recommendProducts));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,nearestDevice,const DeepCollectionEquality().hash(banners),const DeepCollectionEquality().hash(recommendProducts),isLoading,selectedTabIndex,errorMessage);
+int get hashCode => Object.hash(runtimeType,nearestDevice,const DeepCollectionEquality().hash(banners),const DeepCollectionEquality().hash(recommendProducts));
 
 @override
 String toString() {
-  return 'HomeState(nearestDevice: $nearestDevice, banners: $banners, recommendProducts: $recommendProducts, isLoading: $isLoading, selectedTabIndex: $selectedTabIndex, errorMessage: $errorMessage)';
+  return 'HomeState(nearestDevice: $nearestDevice, banners: $banners, recommendProducts: $recommendProducts)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $HomeStateCopyWith<$Res>  {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) _then) = _$HomeStateCopyWithImpl;
 @useResult
 $Res call({
- NearestDeviceModel? nearestDevice, List<BannerModel> banners, List<RecommendProductModel> recommendProducts, bool isLoading, int selectedTabIndex, String? errorMessage
+ NearestDeviceModel? nearestDevice, List<BannerModel> banners, List<RecommendProductModel> recommendProducts
 });
 
 
@@ -62,15 +62,12 @@ class _$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? nearestDevice = freezed,Object? banners = null,Object? recommendProducts = null,Object? isLoading = null,Object? selectedTabIndex = null,Object? errorMessage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? nearestDevice = freezed,Object? banners = null,Object? recommendProducts = null,}) {
   return _then(_self.copyWith(
 nearestDevice: freezed == nearestDevice ? _self.nearestDevice : nearestDevice // ignore: cast_nullable_to_non_nullable
 as NearestDeviceModel?,banners: null == banners ? _self.banners : banners // ignore: cast_nullable_to_non_nullable
 as List<BannerModel>,recommendProducts: null == recommendProducts ? _self.recommendProducts : recommendProducts // ignore: cast_nullable_to_non_nullable
-as List<RecommendProductModel>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,selectedTabIndex: null == selectedTabIndex ? _self.selectedTabIndex : selectedTabIndex // ignore: cast_nullable_to_non_nullable
-as int,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
-as String?,
+as List<RecommendProductModel>,
   ));
 }
 /// Create a copy of HomeState
@@ -167,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NearestDeviceModel? nearestDevice,  List<BannerModel> banners,  List<RecommendProductModel> recommendProducts,  bool isLoading,  int selectedTabIndex,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NearestDeviceModel? nearestDevice,  List<BannerModel> banners,  List<RecommendProductModel> recommendProducts)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.nearestDevice,_that.banners,_that.recommendProducts,_that.isLoading,_that.selectedTabIndex,_that.errorMessage);case _:
+return $default(_that.nearestDevice,_that.banners,_that.recommendProducts);case _:
   return orElse();
 
 }
@@ -188,10 +185,10 @@ return $default(_that.nearestDevice,_that.banners,_that.recommendProducts,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NearestDeviceModel? nearestDevice,  List<BannerModel> banners,  List<RecommendProductModel> recommendProducts,  bool isLoading,  int selectedTabIndex,  String? errorMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NearestDeviceModel? nearestDevice,  List<BannerModel> banners,  List<RecommendProductModel> recommendProducts)  $default,) {final _that = this;
 switch (_that) {
 case _HomeState():
-return $default(_that.nearestDevice,_that.banners,_that.recommendProducts,_that.isLoading,_that.selectedTabIndex,_that.errorMessage);case _:
+return $default(_that.nearestDevice,_that.banners,_that.recommendProducts);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +205,10 @@ return $default(_that.nearestDevice,_that.banners,_that.recommendProducts,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NearestDeviceModel? nearestDevice,  List<BannerModel> banners,  List<RecommendProductModel> recommendProducts,  bool isLoading,  int selectedTabIndex,  String? errorMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NearestDeviceModel? nearestDevice,  List<BannerModel> banners,  List<RecommendProductModel> recommendProducts)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.nearestDevice,_that.banners,_that.recommendProducts,_that.isLoading,_that.selectedTabIndex,_that.errorMessage);case _:
+return $default(_that.nearestDevice,_that.banners,_that.recommendProducts);case _:
   return null;
 
 }
@@ -222,8 +219,8 @@ return $default(_that.nearestDevice,_that.banners,_that.recommendProducts,_that.
 /// @nodoc
 
 
-class _HomeState implements HomeState {
-  const _HomeState({this.nearestDevice, final  List<BannerModel> banners = const [], final  List<RecommendProductModel> recommendProducts = const [], this.isLoading = false, this.selectedTabIndex = 0, this.errorMessage}): _banners = banners,_recommendProducts = recommendProducts;
+class _HomeState extends HomeState {
+  const _HomeState({this.nearestDevice, final  List<BannerModel> banners = const [], final  List<RecommendProductModel> recommendProducts = const []}): _banners = banners,_recommendProducts = recommendProducts,super._();
   
 
 @override final  NearestDeviceModel? nearestDevice;
@@ -241,9 +238,6 @@ class _HomeState implements HomeState {
   return EqualUnmodifiableListView(_recommendProducts);
 }
 
-@override@JsonKey() final  bool isLoading;
-@override@JsonKey() final  int selectedTabIndex;
-@override final  String? errorMessage;
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
@@ -255,16 +249,16 @@ _$HomeStateCopyWith<_HomeState> get copyWith => __$HomeStateCopyWithImpl<_HomeSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&(identical(other.nearestDevice, nearestDevice) || other.nearestDevice == nearestDevice)&&const DeepCollectionEquality().equals(other._banners, _banners)&&const DeepCollectionEquality().equals(other._recommendProducts, _recommendProducts)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.selectedTabIndex, selectedTabIndex) || other.selectedTabIndex == selectedTabIndex)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&(identical(other.nearestDevice, nearestDevice) || other.nearestDevice == nearestDevice)&&const DeepCollectionEquality().equals(other._banners, _banners)&&const DeepCollectionEquality().equals(other._recommendProducts, _recommendProducts));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,nearestDevice,const DeepCollectionEquality().hash(_banners),const DeepCollectionEquality().hash(_recommendProducts),isLoading,selectedTabIndex,errorMessage);
+int get hashCode => Object.hash(runtimeType,nearestDevice,const DeepCollectionEquality().hash(_banners),const DeepCollectionEquality().hash(_recommendProducts));
 
 @override
 String toString() {
-  return 'HomeState(nearestDevice: $nearestDevice, banners: $banners, recommendProducts: $recommendProducts, isLoading: $isLoading, selectedTabIndex: $selectedTabIndex, errorMessage: $errorMessage)';
+  return 'HomeState(nearestDevice: $nearestDevice, banners: $banners, recommendProducts: $recommendProducts)';
 }
 
 
@@ -275,7 +269,7 @@ abstract mixin class _$HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Re
   factory _$HomeStateCopyWith(_HomeState value, $Res Function(_HomeState) _then) = __$HomeStateCopyWithImpl;
 @override @useResult
 $Res call({
- NearestDeviceModel? nearestDevice, List<BannerModel> banners, List<RecommendProductModel> recommendProducts, bool isLoading, int selectedTabIndex, String? errorMessage
+ NearestDeviceModel? nearestDevice, List<BannerModel> banners, List<RecommendProductModel> recommendProducts
 });
 
 
@@ -292,15 +286,12 @@ class __$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? nearestDevice = freezed,Object? banners = null,Object? recommendProducts = null,Object? isLoading = null,Object? selectedTabIndex = null,Object? errorMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? nearestDevice = freezed,Object? banners = null,Object? recommendProducts = null,}) {
   return _then(_HomeState(
 nearestDevice: freezed == nearestDevice ? _self.nearestDevice : nearestDevice // ignore: cast_nullable_to_non_nullable
 as NearestDeviceModel?,banners: null == banners ? _self._banners : banners // ignore: cast_nullable_to_non_nullable
 as List<BannerModel>,recommendProducts: null == recommendProducts ? _self._recommendProducts : recommendProducts // ignore: cast_nullable_to_non_nullable
-as List<RecommendProductModel>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,selectedTabIndex: null == selectedTabIndex ? _self.selectedTabIndex : selectedTabIndex // ignore: cast_nullable_to_non_nullable
-as int,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
-as String?,
+as List<RecommendProductModel>,
   ));
 }
 

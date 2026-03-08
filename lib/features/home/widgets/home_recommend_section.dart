@@ -17,12 +17,9 @@ class HomeRecommendSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final products = ref.watch(
-      homeProvider.select((state) => state.recommendProducts),
-    );
-    final isLoading = ref.watch(
-      homeProvider.select((state) => state.isLoading),
-    );
+    final homeState = ref.watch(homeProvider);
+    final products = homeState.value?.recommendProducts ?? [];
+    final isLoading = homeState.isLoading;
 
     var displayProducts = products;
     if (displayProducts.isEmpty && isLoading) {

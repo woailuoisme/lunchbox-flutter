@@ -51,6 +51,39 @@ sealed class DeviceModel with _$DeviceModel {
       _$DeviceModelFromJson(json);
 }
 
+extension DeviceModelX on DeviceModel {
+  /// 获取数值型距离（用于排序）
+  double get numericalDistance {
+    final kmText = distanceKm ?? distance;
+    if (kmText == null || kmText.isEmpty) {
+      return double.infinity;
+    }
+
+    final match = RegExp(r'[\d.]+').firstMatch(kmText);
+    if (match == null) {
+      return double.infinity;
+    }
+
+    final valueString = match.group(0);
+    if (valueString == null) {
+      return double.infinity;
+    }
+
+    final value = double.tryParse(valueString);
+    if (value == null) {
+      return double.infinity;
+    }
+
+    // 如果单位是 m，则转换为 km
+    if (kmText.toLowerCase().contains('m') &&
+        !kmText.toLowerCase().contains('km')) {
+      return value / 1000;
+    }
+
+    return value;
+  }
+}
+
 /// 设备所属城市简要模型
 @freezed
 sealed class DeviceCityModel with _$DeviceCityModel {

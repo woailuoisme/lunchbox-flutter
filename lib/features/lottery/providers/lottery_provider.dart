@@ -1,4 +1,3 @@
-import 'package:lunchbox/core/mixins/async_runner_mixin.dart';
 import 'package:lunchbox/features/lottery/entities/lottery_prize.dart';
 import 'package:lunchbox/features/lottery/entities/lottery_state.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
@@ -7,10 +6,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'lottery_provider.g.dart';
 
 @riverpod
-class LotteryNotifier extends _$LotteryNotifier
-    with AsyncRunnerMixin<LotteryState> {
+class LotteryNotifier extends _$LotteryNotifier {
   @override
-  LotteryState build() {
+  FutureOr<LotteryState> build() {
     return LotteryState(remainingSpins: 3, prizes: _mockPrizes());
   }
 
@@ -27,41 +25,43 @@ class LotteryNotifier extends _$LotteryNotifier
   /// 开始抽奖
   /// 返回中奖索引，如果无法抽奖则返回 null
   Future<int?> spin() async {
-    if (state.isSpinning || state.remainingSpins <= 0) {
+    final current = state.value;
+    if (current == null || current.isSpinning || current.remainingSpins <= 0) {
       return null;
     }
 
     int? winIndex;
 
-    await runAsync(
-      () async {
-        state = state.copyWith(isSpinning: true);
+    state = await AsyncValue.guard(() async {
+      state = AsyncData(current.copyWith(isSpinning: true));
 
-        // 模拟网络请求延迟
-        await Future<void>.delayed(const Duration(milliseconds: 500));
+      // 模拟网络请求延迟
+      await Future<void>.delayed(const Duration(milliseconds: 500));
 
-        // 随机生成中奖索引 (0-5)
-        winIndex = DateTime.now().millisecondsSinceEpoch % wheelItems.length;
+      // 随机生成中奖索引 (0-5)
+      winIndex = DateTime.now().millisecondsSinceEpoch % wheelItems.length;
 
-        // 注意：实际状态更新应在动画结束后进行，但为了简化流程，这里先预扣次数
-        state = state.copyWith(
-          isSpinning: true, // 保持旋转状态，直到UI动画结束调用 completeSpin
-          remainingSpins: state.remainingSpins - 1,
-        );
-      },
-      showLoading: false,
-      errorLabel: '抽奖失败',
-    );
+      // 注意：实际状态更新应在动画结束后进行，但为了简化流程，这里先预扣次数
+      return state.value!.copyWith(
+        isSpinning: true, // 保持旋转状态，直到UI动画结束调用 completeSpin
+        remainingSpins: state.value!.remainingSpins - 1,
+      );
+    });
 
     return winIndex;
   }
 
   /// 完成抽奖动画
   void completeSpin(LotteryPrize prize) {
-    state = state.copyWith(
-      isSpinning: false,
-      prizes: [prize, ...state.prizes],
-      lastWonPrize: prize,
+    final current = state.value;
+    if (current == null) return;
+
+    state = AsyncData(
+      current.copyWith(
+        isSpinning: false,
+        prizes: [prize, ...current.prizes],
+        lastWonPrize: prize,
+      ),
     );
   }
 

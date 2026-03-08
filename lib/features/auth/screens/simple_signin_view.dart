@@ -22,37 +22,11 @@ class SimpleSignInView extends ConsumerStatefulWidget {
 
 class _SimpleSignInViewState extends ConsumerState<SimpleSignInView> {
   final _formKey = GlobalKey<FormBuilderState>();
-  ProviderSubscription<SignInState>? _signInSubscription;
   bool _obscurePassword = true;
 
   @override
   void initState() {
     super.initState();
-    _signInSubscription = ref.listenManual<SignInState>(signInProvider, (
-      previous,
-      next,
-    ) {
-      if (previous?.status == next.status) {
-        return;
-      }
-      if (next.status.isFailure) {
-        toastification.show(
-          context: context,
-          type: ToastificationType.error,
-          style: ToastificationStyle.fillColored,
-          title: Text(t.auth.loginFailed),
-          description: Text(next.errorMessage ?? t.common.error),
-          alignment: Alignment.topCenter,
-          autoCloseDuration: const Duration(seconds: 3),
-        );
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _signInSubscription?.close();
-    super.dispose();
   }
 
   void _handleSignIn() {
@@ -70,6 +44,20 @@ class _SimpleSignInViewState extends ConsumerState<SimpleSignInView> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final state = ref.watch(signInProvider);
+
+    ref.listen(signInProvider, (previous, next) {
+      if (next.isFailure && next.errorMessage != null) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.error,
+          style: ToastificationStyle.fillColored,
+          title: Text(t.auth.loginFailed),
+          description: Text(next.errorMessage ?? t.common.error),
+          alignment: Alignment.topCenter,
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+      }
+    });
 
     return Scaffold(
       backgroundColor: colorScheme.surface,

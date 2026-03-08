@@ -19,10 +19,11 @@ class ProductItemCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final cartState = ref.watch(cartProvider);
+    final cartItems = cartState.value?.cartItems ?? [];
 
     // 在购物车中查找该商品以获取数量
-    final cartItem = cartState.cartItems
-        .where((item) => item.productId == product.id.toString())
+    final cartItem = cartItems
+        .where((CartItemModel item) => item.productId == product.id.toString())
         .firstOrNull;
     final quantity = cartItem?.quantity ?? 0;
 

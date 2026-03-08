@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_prize.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_state.dart';
 import 'package:lunchbox/features/lottery/providers/lottery_provider.dart';
 import 'package:lunchbox/features/lottery/widgets/lottery_bottom_buttons.dart';
 import 'package:lunchbox/features/lottery/widgets/lottery_header.dart';
@@ -109,7 +111,10 @@ class _LotteryViewState extends ConsumerState<LotteryView>
 
   @override
   Widget build(BuildContext context) {
-    final lotteryState = ref.watch(lotteryProvider);
+    final lotteryAsync = ref.watch(lotteryProvider);
+    final lotteryState =
+        lotteryAsync.value ??
+        const LotteryState(remainingSpins: 3, prizes: <LotteryPrize>[]);
     final lotteryNotifier = ref.read(lotteryProvider.notifier);
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
