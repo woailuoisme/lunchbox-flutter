@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/features/my_coupons/repositories/my_coupons_repository.dart';
+import 'package:lunchbox/features/my_coupons/providers/user_coupons_provider.dart';
 import 'package:lunchbox/features/my_coupons/widgets/coupon_card.dart';
 import 'package:lunchbox/features/my_coupons/widgets/coupon_empty_state.dart';
 import 'package:lunchbox/i18n/translations.g.dart';

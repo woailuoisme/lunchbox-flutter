@@ -9,17 +9,6 @@ CouponsRepository couponsRepository(Ref ref) {
   return CouponsRepository(ref.watch(couponsRestClientProvider));
 }
 
-@riverpod
-Future<List<CouponModel>> coupons(
-  Ref ref, {
-  String? category,
-  String? type,
-}) async {
-  return ref
-      .watch(couponsRepositoryProvider)
-      .getCoupons(category: category, type: type);
-}
-
 class CouponsRepository {
   CouponsRepository(this._client);
 
@@ -32,5 +21,12 @@ class CouponsRepository {
   Future<List<CouponModel>> getCoupons({String? category, String? type}) async {
     final response = await _client.getCoupons(category: category, type: type);
     return response.data ?? [];
+  }
+
+  /// 领取优惠券
+  ///
+  /// [couponId] 优惠券ID
+  Future<void> catchCoupon({required int couponId}) async {
+    await _client.catchCoupon(couponId: couponId);
   }
 }

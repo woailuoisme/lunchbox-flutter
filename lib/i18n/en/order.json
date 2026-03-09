@@ -11,6 +11,7 @@
     "completed": "Completed",
     "cancelled": "Cancelled",
     "refunded": "Refunded",
+    "refunding": "Refunding",
     "failed": "Failed"
   },
   "pickupCode": "Pickup Code",
@@ -61,5 +62,16 @@
   "serviceNotAvailable": "Service not available yet",
   "paymentStripe": "Stripe (Credit Card)",
   "paymentWechat": "WeChat Pay",
-  "paymentAlipay": "Alipay"
+  "paymentAlipay": "Alipay",
+  "paymentBalance": "Balance",
+  "paymentCash": "Cash",
+  "statusDesc": {
+    "pending": "Please pay as soon as possible, the order will be cancelled if timeout",
+    "paid": "Order paid, please pick up with the code",
+    "completed": "Order completed, wish you a happy life",
+    "used": "Order picked up, enjoy your meal",
+    "cancelled": "Order cancelled, refund will be returned soon",
+    "refund": "Refunding your order",
+    "failed": "Payment failed, please try again"
+  }
 }

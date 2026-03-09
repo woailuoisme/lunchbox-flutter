@@ -8,8 +8,11 @@
     "cannotUse": "不可使用"
   },
   "unit": "¥",
+  "discountUnit": "折",
   "condition": "满减券\n满${amount}元可用",
+  "conditionThreshold": "满${amount}元可用",
   "conditionNoThreshold": "满减券\n满0元可用",
+  "noThreshold": "无门槛",
   "validForever": "长期有效",
   "btnReceive": "立即领取",
   "btnReceived": "已领取",

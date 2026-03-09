@@ -222,23 +222,23 @@ return $default(_that.id,_that.name,_that.category,_that.thumb,_that.description
 @JsonSerializable()
 
 class _OrderProductModel extends OrderProductModel {
-  const _OrderProductModel({required this.id, required this.name, required this.category, required this.thumb, required this.description, @JsonKey(name: 'sale_price') required this.salePrice, required this.quantity}): super._();
+  const _OrderProductModel({required this.id, this.name = '', this.category = '', this.thumb = '', this.description = '', @JsonKey(name: 'sale_price') this.salePrice = '', this.quantity = 0}): super._();
   factory _OrderProductModel.fromJson(Map<String, dynamic> json) => _$OrderProductModelFromJson(json);
 
 /// 产品ID
 @override final  int id;
 /// 产品名称
-@override final  String name;
+@override@JsonKey() final  String name;
 /// 产品分类
-@override final  String category;
+@override@JsonKey() final  String category;
 /// 产品缩略图
-@override final  String thumb;
+@override@JsonKey() final  String thumb;
 /// 产品描述
-@override final  String description;
+@override@JsonKey() final  String description;
 /// 销售价格 (API 返回的是 String)
 @override@JsonKey(name: 'sale_price') final  String salePrice;
 /// 购买数量
-@override final  int quantity;
+@override@JsonKey() final  int quantity;
 
 /// Create a copy of OrderProductModel
 /// with the given fields replaced by the non-null parameter values.

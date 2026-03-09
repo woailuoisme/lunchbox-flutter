@@ -53,6 +53,18 @@ class OrderDetailView extends ConsumerWidget {
             ).showSnackBar(SnackBar(content: Text(t.order.paySuccess)));
           }
           break;
+        case 'confirm':
+          await notifier.confirmOrder(order.id.toString());
+          if (context.mounted) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(t.order.confirmOrder)));
+            // 刷新订单状态
+            await ref
+                .read(orderProvider.notifier)
+                .loadOrderById(order.id.toString());
+          }
+          break;
         case 'reorder':
           await notifier.reorder(order.id.toString());
           if (context.mounted) {
@@ -145,90 +157,74 @@ class OrderDetailView extends ConsumerWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                        [
-                              // 订单状态
-                              OrderDetailHeader(order: order),
+                    children: [
+                      // 订单状态
+                      OrderDetailHeader(order: order),
 
-                              // 取货码/取餐提示（如果已支付）
-                              if (order.status == OrderStatus.paid ||
-                                  order.status == OrderStatus.completed)
-                                OrderPickupInfo(order: order),
+                      // 取货码/取餐提示（仅在已支付状态下显示）
+                      if (order.status == OrderStatus.paid)
+                        OrderPickupInfo(order: order),
 
-                              // 商品列表
-                              OrderInfoSection(
-                                title: t.order.productInfo,
-                                margin: EdgeInsets.symmetric(horizontal: 16.w),
-                                children: [
-                                  ...order.products.map(
-                                    (OrderProductModel item) =>
-                                        OrderProductItem(product: item),
-                                  ),
-                                  Divider(height: 1, color: theme.dividerColor),
-                                  OrderPriceSummary(
-                                    label: t.order.summary(
-                                      count: order.products.length,
-                                    ),
-                                    amount: order.totalAmount.toString(),
-                                  ),
-                                ],
-                              ),
-
-                              // 订单信息
-                              OrderInfoSection(
-                                title: t.order.info,
-                                margin: EdgeInsets.all(16.w),
-                                children: [
-                                  OrderInfoRow(
-                                    label: t.order.id,
-                                    value: order.id.toString(),
-                                  ),
-                                  OrderInfoRow(
-                                    label: t.order.createdAt,
-                                    value: DateFormat(
-                                      'yyyy-MM-dd HH:mm:ss',
-                                    ).format(order.createdAtDateTime),
-                                  ),
-                                  if (order.payType != null)
-                                    OrderInfoRow(
-                                      label: t.order.paymentMethod,
-                                      value: _getPaymentMethodText(
-                                        order.payType!,
-                                      ),
-                                    ),
-                                  if (order.device != null)
-                                    OrderInfoRow(
-                                      label: t.order.device,
-                                      value: order.device!.sn,
-                                    ),
-                                ],
-                              ),
-
-                              SizedBox(height: 20.h),
-                            ]
-                            .animate(interval: 50.ms)
-                            .fadeIn(duration: 300.ms)
-                            .slideY(
-                              begin: 0.1,
-                              end: 0,
-                              duration: 300.ms,
-                              curve: Curves.easeOutQuad,
+                      // 商品列表
+                      OrderInfoSection(
+                        title: t.order.productInfo,
+                        margin: EdgeInsets.symmetric(horizontal: 16.w),
+                        children: [
+                          ...order.products.map(
+                            (OrderProductModel item) =>
+                                OrderProductItem(product: item),
+                          ),
+                          Divider(height: 1, color: theme.dividerColor),
+                          OrderPriceSummary(
+                            label: t.order.summary(
+                              count: order.products.length,
                             ),
+                            amount: order.totalAmount.toString(),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 16.h),
+
+                      // 订单信息
+                      OrderInfoSection(
+                        title: t.order.info,
+                        margin: EdgeInsets.symmetric(horizontal: 16.w),
+                        children: [
+                          OrderInfoRow(
+                            label: t.order.id,
+                            value: order.sn,
+                            isCopyable: true,
+                          ),
+                          OrderInfoRow(
+                            label: t.order.createdAt,
+                            value: DateFormat(
+                              'yyyy-MM-dd HH:mm:ss',
+                            ).format(order.createdAtDateTime),
+                          ),
+                          if (order.payType != null)
+                            OrderInfoRow(
+                              label: t.order.paymentMethod,
+                              value: order.payTypeText,
+                            ),
+                          if (order.device != null)
+                            OrderInfoRow(
+                              label: t.order.device,
+                              value: order.device!.sn,
+                              isCopyable: true,
+                            ),
+                        ],
+                      ),
+
+                      SizedBox(height: 32.h),
+                    ].animate(interval: 50.ms).fadeIn(duration: 400.ms),
                   ),
                 ),
               ),
               // 底部操作栏
               OrderDetailBottomBar(
-                    children: _buildActionButtons(context, ref, order),
-                  )
-                  .animate()
-                  .fadeIn(duration: 300.ms, delay: 200.ms)
-                  .slideY(
-                    begin: 1,
-                    end: 0,
-                    duration: 300.ms,
-                    curve: Curves.easeOutQuad,
-                  ),
+                children: _buildActionButtons(context, ref, order),
+              ).animate().fadeIn(duration: 300.ms, delay: 300.ms),
             ],
           );
         },
@@ -262,15 +258,17 @@ class OrderDetailView extends ConsumerWidget {
         ),
       ];
     } else if (order.status == OrderStatus.cancelled ||
-        order.status == OrderStatus.refund) {
+        order.status == OrderStatus.refund ||
+        order.status == OrderStatus.completed) {
       buttons = [
-        OrderActionButton(
-          text: t.order.deleteOrder,
-          textColor: theme.hintColor,
-          borderColor: theme.dividerColor,
-          onTap: () => _handleAction(order, 'delete', context, ref),
-        ),
-        SizedBox(width: 12.w),
+        if (order.status != OrderStatus.completed)
+          OrderActionButton(
+            text: t.order.deleteOrder,
+            textColor: theme.hintColor,
+            borderColor: theme.dividerColor,
+            onTap: () => _handleAction(order, 'delete', context, ref),
+          ),
+        if (order.status != OrderStatus.completed) SizedBox(width: 12.w),
         OrderActionButton(
           text: t.order.reorder,
           textColor: theme.colorScheme.primary,
@@ -296,18 +294,5 @@ class OrderDetailView extends ConsumerWidget {
       ];
     }
     return buttons;
-  }
-
-  String _getPaymentMethodText(PaymentMethod method) {
-    switch (method) {
-      case PaymentMethod.stripe:
-        return t.order.paymentStripe;
-      case PaymentMethod.wechat:
-        return t.order.paymentWechat;
-      case PaymentMethod.alipay:
-        return t.order.paymentAlipay;
-      default:
-        return t.order.unknown;
-    }
   }
 }

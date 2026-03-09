@@ -19,4 +19,7 @@ final class _ProdEnv {
       'https://1246d3e8c39b70919447f701f457887e@o4505111003136000.ingest.us.sentry.io/4510961133813760';
 
   static const bool _debug = false;
+
+  static const String _googleServerClientId =
+      '543085523947-fkkrbe1d4c2b98h59j210r5r5p5g57m5.apps.googleusercontent.com';
 }

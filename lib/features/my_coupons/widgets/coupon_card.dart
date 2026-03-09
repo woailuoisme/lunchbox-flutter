@@ -16,6 +16,77 @@ class CouponCard extends StatelessWidget {
   final UserCouponModel coupon;
   final bool isAvailable;
 
+  /// 根据优惠券类型获取显示的数值
+  String _getCouponValue() {
+    if (coupon.type == 'discount') {
+      return coupon.rule.discountRate?.toString() ?? '0';
+    }
+    return coupon.rule.reduceAmount?.toString() ?? '0';
+  }
+
+  /// 获取面额部分的符号和单位组合
+  Widget _buildValueArea(Color contentColor) {
+    if (coupon.type == 'discount') {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: [
+          Text(
+            _getCouponValue(),
+            style: TextStyle(
+              color: contentColor,
+              fontSize: 32.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(width: 4.w),
+          Text(
+            t.coupon.discountUnit,
+            style: TextStyle(
+              color: contentColor,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      );
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        Text(
+          t.coupon.unit,
+          style: TextStyle(
+            color: contentColor,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(width: 4.w),
+        Text(
+          _getCouponValue(),
+          style: TextStyle(
+            color: contentColor,
+            fontSize: 32.sp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// 获取使用门槛文本
+  String _getThresholdText() {
+    final minAmount = coupon.rule.minAmount ?? coupon.rule.minSpendAmount;
+    if (minAmount != null && minAmount > 0) {
+      return t.coupon.conditionThreshold(amount: minAmount);
+    }
+    return t.coupon.noThreshold;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -48,37 +119,10 @@ class CouponCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: [
-                    Text(
-                      t.coupon.unit,
-                      style: TextStyle(
-                        color: contentColor,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: 4.w),
-                    Text(
-                      coupon.rule.reduceAmount?.toString() ??
-                          coupon.rule.discountRate?.toString() ??
-                          '0',
-                      style: TextStyle(
-                        color: contentColor,
-                        fontSize: 32.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                _buildValueArea(contentColor),
                 SizedBox(height: 4.h),
                 Text(
-                  coupon.rule.minSpendAmount != null
-                      ? '满${coupon.rule.minSpendAmount}元可用'
-                      : '无门槛',
+                  _getThresholdText(),
                   style: TextStyle(
                     color: contentColor.withValues(alpha: 0.8),
                     fontSize: 12.sp,
@@ -107,7 +151,7 @@ class CouponCard extends StatelessWidget {
                   Text(
                     coupon.endAt != null
                         ? '${t.coupon.expiryPrefix}${DateFormat('yyyy-MM-dd').format(DateTime.parse(coupon.endAt!))}'
-                        : '永久有效',
+                        : t.coupon.validForever,
                     style: TextStyle(
                       color: contentColor.withValues(alpha: 0.8),
                       fontSize: 12.sp,

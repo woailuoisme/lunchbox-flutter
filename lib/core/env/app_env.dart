@@ -7,6 +7,7 @@ abstract class AppEnv {
   String get stripePublishableKey;
 
   String get sentryDsn;
+  String get googleServerClientId;
   bool get debug;
 }
 

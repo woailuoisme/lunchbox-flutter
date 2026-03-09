@@ -10,8 +10,8 @@ _OrderUserModel _$OrderUserModelFromJson(Map<String, dynamic> json) =>
     $checkedCreate('_OrderUserModel', json, ($checkedConvert) {
       final val = _OrderUserModel(
         id: $checkedConvert('id', (v) => (v as num).toInt()),
-        nickname: $checkedConvert('nickname', (v) => v as String),
-        telephone: $checkedConvert('telephone', (v) => v as String),
+        nickname: $checkedConvert('nickname', (v) => v as String? ?? ''),
+        telephone: $checkedConvert('telephone', (v) => v as String? ?? ''),
       );
       return val;
     });
@@ -27,7 +27,7 @@ _OrderDeviceModel _$OrderDeviceModelFromJson(Map<String, dynamic> json) =>
     $checkedCreate('_OrderDeviceModel', json, ($checkedConvert) {
       final val = _OrderDeviceModel(
         id: $checkedConvert('id', (v) => (v as num).toInt()),
-        sn: $checkedConvert('sn', (v) => v as String),
+        sn: $checkedConvert('sn', (v) => v as String? ?? ''),
       );
       return val;
     });
@@ -43,19 +43,27 @@ _OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => $checkedCreate(
       id: $checkedConvert('id', (v) => (v as num).toInt()),
       user: $checkedConvert(
         'user',
-        (v) => OrderUserModel.fromJson(v as Map<String, dynamic>),
+        (v) => v == null
+            ? const OrderUserModel(id: 0)
+            : OrderUserModel.fromJson(v as Map<String, dynamic>),
       ),
-      sn: $checkedConvert('sn', (v) => v as String),
+      sn: $checkedConvert('sn', (v) => v as String? ?? ''),
       device: $checkedConvert(
         'device',
         (v) => v == null
             ? null
             : OrderDeviceModel.fromJson(v as Map<String, dynamic>),
       ),
-      orderStatusAmount: $checkedConvert('order_status', (v) => v as String),
-      nominalAmount: $checkedConvert('nominal_amount', (v) => v as String),
-      payAmount: $checkedConvert('pay_amount', (v) => v as String),
-      couponAmount: $checkedConvert('coupon_amount', (v) => v as String),
+      orderStatusAmount: $checkedConvert(
+        'order_status',
+        (v) => v as String? ?? '',
+      ),
+      nominalAmount: $checkedConvert(
+        'nominal_amount',
+        (v) => v as String? ?? '',
+      ),
+      payAmount: $checkedConvert('pay_amount', (v) => v as String? ?? ''),
+      couponAmount: $checkedConvert('coupon_amount', (v) => v as String? ?? ''),
       paySn: $checkedConvert('pay_sn', (v) => v as String?),
       payExternalSn: $checkedConvert('pay_external_sn', (v) => v as String?),
       payType: $checkedConvert(
@@ -68,20 +76,28 @@ _OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => $checkedCreate(
       ),
       userCommentsCount: $checkedConvert(
         'user_comments_count',
-        (v) => (v as num).toInt(),
+        (v) => (v as num?)?.toInt() ?? 0,
       ),
-      userHasComments: $checkedConvert('user_has_comments', (v) => v as bool),
+      userHasComments: $checkedConvert(
+        'user_has_comments',
+        (v) => v as bool? ?? false,
+      ),
       status: $checkedConvert(
         'status',
-        (v) => $enumDecode(_$OrderStatusEnumMap, v),
+        (v) =>
+            $enumDecodeNullable(_$OrderStatusEnumMap, v) ?? OrderStatus.pending,
       ),
       qrCodeImage: $checkedConvert('qr_code_image', (v) => v as String?),
-      createdAt: $checkedConvert('created_at', (v) => v as String),
+      createdAt: $checkedConvert('created_at', (v) => v as String? ?? ''),
       products: $checkedConvert(
         'products',
-        (v) => (v as List<dynamic>)
-            .map((e) => OrderProductModel.fromJson(e as Map<String, dynamic>))
-            .toList(),
+        (v) =>
+            (v as List<dynamic>?)
+                ?.map(
+                  (e) => OrderProductModel.fromJson(e as Map<String, dynamic>),
+                )
+                .toList() ??
+            const [],
       ),
     );
     return val;

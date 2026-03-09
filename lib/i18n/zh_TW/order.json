@@ -11,6 +11,7 @@
     "completed": "已完成",
     "cancelled": "已取消",
     "refunded": "已退款",
+    "refunding": "退款中",
     "failed": "支付失敗"
   },
   "pickupCode": "取貨碼",
@@ -37,5 +38,19 @@
   "actualAmount": "實付金額",
   "totalLabel": "合計: ",
   "submitOrder": "提交訂單",
-  "createFailed": "建立訂單失敗: ${error}"
+  "createFailed": "建立訂單失敗: ${error}",
+  "paymentStripe": "Stripe (信用卡)",
+  "paymentWechat": "微信支付",
+  "paymentAlipay": "支付寶",
+  "paymentBalance": "餘額支付",
+  "paymentCash": "現金支付",
+  "statusDesc": {
+    "pending": "請儘快支付，逾時訂單將取消",
+    "paid": "訂單已支付，請憑碼取貨",
+    "completed": "訂單已完成，祝您生活愉快",
+    "used": "訂單已展示，請及時取貨",
+    "cancelled": "訂單已取消，款項原路返回",
+    "refund": "正在為您處理退款",
+    "failed": "支付失敗，請嘗試重新下單"
+  }
 }

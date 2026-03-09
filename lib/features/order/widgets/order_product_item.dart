@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/core/widgets/app_image.dart';
 import 'package:lunchbox/features/order/entities/order_product_model.dart';
 
 /// 订单商品子项组件
@@ -25,20 +26,11 @@ class OrderProductItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.r),
-            child: Image.network(
-              product.thumb,
-              width: imageSize.w,
-              height: imageSize.w,
-              fit: BoxFit.cover,
-              errorBuilder: (_, _, _) => Container(
-                width: imageSize.w,
-                height: imageSize.w,
-                color: theme.disabledColor,
-                child: const Icon(Icons.image_not_supported),
-              ),
-            ),
+          AppImage(
+            imageUrl: product.thumb,
+            width: imageSize.w,
+            height: imageSize.w,
+            radius: 8,
           ),
           SizedBox(width: 12.w),
           Expanded(

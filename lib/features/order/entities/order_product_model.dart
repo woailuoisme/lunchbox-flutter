@@ -13,22 +13,22 @@ abstract class OrderProductModel with _$OrderProductModel {
     required int id,
 
     /// 产品名称
-    required String name,
+    @Default('') String name,
 
     /// 产品分类
-    required String category,
+    @Default('') String category,
 
     /// 产品缩略图
-    required String thumb,
+    @Default('') String thumb,
 
     /// 产品描述
-    required String description,
+    @Default('') String description,
 
     /// 销售价格 (API 返回的是 String)
-    @JsonKey(name: 'sale_price') required String salePrice,
+    @JsonKey(name: 'sale_price') @Default('') String salePrice,
 
     /// 购买数量
-    required int quantity,
+    @Default(0) int quantity,
   }) = _OrderProductModel;
 
   const OrderProductModel._();

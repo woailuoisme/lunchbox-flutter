@@ -12,6 +12,7 @@
     "completed": "已完成",
     "cancelled": "已取消",
     "refunded": "退款",
+    "refunding": "退款中",
     "failed": "支付失败"
   },
   "expiryHint": "订单将于今晚10点30分过期",
@@ -33,7 +34,6 @@
   "cancelOrder": "取消订单",
   "contactService": "联系客服",
   "applyRefund": "申请退款",
-  "paymentStripe": "Stripe 支付",
   "paymentWechat": "微信支付",
   "paymentAlipay": "支付宝",
   "viewDetail": "查看详情",
@@ -63,8 +63,17 @@
   "storeInfo": "门店信息",
   "productInfo": "商品信息",
   "device": "取餐设备",
-  "applyRefund": "申请退款",
-  "contactService": "联系客服",
   "serviceNotAvailable": "客服功能暂未开放",
-  "paymentStripe": "Stripe (信用卡)"
+  "paymentStripe": "Stripe (信用卡)",
+  "paymentBalance": "余额支付",
+  "paymentCash": "现金支付",
+  "statusDesc": {
+    "pending": "请尽快支付，过时订单将取消",
+    "paid": "订单已支付，请凭码取货",
+    "completed": "订单已完成，祝您生活愉快",
+    "used": "订单已展示，请及时取货",
+    "cancelled": "订单已取消，款项原路返回",
+    "refund": "正在为您处理退款",
+    "failed": "支付失败，请尝试重新下单"
+  }
 }

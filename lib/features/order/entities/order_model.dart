@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lunchbox/features/order/entities/order_product_model.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
@@ -56,8 +57,8 @@ enum PaymentMethod {
 abstract class OrderUserModel with _$OrderUserModel {
   const factory OrderUserModel({
     required int id,
-    required String nickname,
-    required String telephone,
+    @Default('') String nickname,
+    @Default('') String telephone,
   }) = _OrderUserModel;
 
   factory OrderUserModel.fromJson(Map<String, dynamic> json) =>
@@ -67,7 +68,7 @@ abstract class OrderUserModel with _$OrderUserModel {
 /// 订单中的设备信息
 @freezed
 abstract class OrderDeviceModel with _$OrderDeviceModel {
-  const factory OrderDeviceModel({required int id, required String sn}) =
+  const factory OrderDeviceModel({required int id, @Default('') String sn}) =
       _OrderDeviceModel;
 
   factory OrderDeviceModel.fromJson(Map<String, dynamic> json) =>
@@ -83,25 +84,25 @@ abstract class OrderModel with _$OrderModel {
     required int id,
 
     /// 用户信息
-    required OrderUserModel user,
+    @Default(OrderUserModel(id: 0)) OrderUserModel user,
 
     /// 订单流水号
-    required String sn,
+    @Default('') String sn,
 
     /// 设备信息
     OrderDeviceModel? device,
 
     /// 订单金额状态 (String)
-    @JsonKey(name: 'order_status') required String orderStatusAmount,
+    @JsonKey(name: 'order_status') @Default('') String orderStatusAmount,
 
     /// 标称金额
-    @JsonKey(name: 'nominal_amount') required String nominalAmount,
+    @JsonKey(name: 'nominal_amount') @Default('') String nominalAmount,
 
     /// 支付金额
-    @JsonKey(name: 'pay_amount') required String payAmount,
+    @JsonKey(name: 'pay_amount') @Default('') String payAmount,
 
     /// 优惠金额
-    @JsonKey(name: 'coupon_amount') required String couponAmount,
+    @JsonKey(name: 'coupon_amount') @Default('') String couponAmount,
 
     /// 支付流水号
     @JsonKey(name: 'pay_sn') String? paySn,
@@ -116,22 +117,22 @@ abstract class OrderModel with _$OrderModel {
     @JsonKey(name: 'pay_status') PayStatus? payStatus,
 
     /// 用户评论数
-    @JsonKey(name: 'user_comments_count') required int userCommentsCount,
+    @JsonKey(name: 'user_comments_count') @Default(0) int userCommentsCount,
 
     /// 用户是否已评价
-    @JsonKey(name: 'user_has_comments') required bool userHasComments,
+    @JsonKey(name: 'user_has_comments') @Default(false) bool userHasComments,
 
     /// 订单状态
-    required OrderStatus status,
+    @Default(OrderStatus.pending) OrderStatus status,
 
     /// 取餐二维码图片 (Base64 or URL)
     @JsonKey(name: 'qr_code_image') String? qrCodeImage,
 
     /// 订单创建时间
-    @JsonKey(name: 'created_at') required String createdAt,
+    @JsonKey(name: 'created_at') @Default('') String createdAt,
 
     /// 订单包含的商品列表
-    required List<OrderProductModel> products,
+    @Default([]) List<OrderProductModel> products,
   }) = _OrderModel;
 
   const OrderModel._();
@@ -157,22 +158,22 @@ abstract class OrderModel with _$OrderModel {
   DateTime get createdAtDateTime =>
       DateTime.tryParse(createdAt) ?? DateTime.now();
 
-  /// 获取支付方式的中文描述
-  String? get payTypeText {
+  /// 获取支付方式的描述
+  String get payTypeText {
     if (payType == null) {
-      return null;
+      return t.order.unknown;
     }
     switch (payType!) {
       case PaymentMethod.wechat:
-        return '微信支付';
+        return t.order.paymentWechat;
       case PaymentMethod.alipay:
-        return '支付宝';
+        return t.order.paymentAlipay;
       case PaymentMethod.balance:
-        return '余额支付';
+        return t.order.paymentBalance;
       case PaymentMethod.cash:
-        return '现金支付';
+        return t.order.paymentCash;
       case PaymentMethod.stripe:
-        return 'Stripe支付';
+        return t.order.paymentStripe;
     }
   }
 }
@@ -185,11 +186,11 @@ extension OrderStatusX on OrderStatus {
       case OrderStatus.paid:
         return t.order.status.paid;
       case OrderStatus.used:
-        return '已使用'; // TODO: add to translation
+        return t.order.status.used;
       case OrderStatus.cancelled:
         return t.order.status.cancelled;
       case OrderStatus.refund:
-        return '退款中'; // TODO: add to translation
+        return t.order.status.refunding;
       case OrderStatus.completed:
         return t.order.status.completed;
       case OrderStatus.failed:
@@ -219,19 +220,19 @@ extension OrderStatusX on OrderStatus {
   IconData get icon {
     switch (this) {
       case OrderStatus.pending:
-        return Icons.access_time_filled;
+        return Symbols.schedule;
       case OrderStatus.paid:
-        return Icons.check_circle;
+        return Symbols.check_circle;
       case OrderStatus.used:
-        return Icons.task_alt;
+        return Symbols.task_alt;
       case OrderStatus.cancelled:
-        return Icons.cancel;
+        return Symbols.cancel;
       case OrderStatus.refund:
-        return Icons.remove_circle;
+        return Symbols.remove_circle;
       case OrderStatus.completed:
-        return Icons.task_alt;
+        return Symbols.task_alt;
       case OrderStatus.failed:
-        return Icons.error;
+        return Symbols.error;
     }
   }
 }

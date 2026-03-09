@@ -48,7 +48,7 @@ class OrderListItem extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        '${t.order.orderIdLabel}${order.id.toString().substring(order.id.toString().length > 8 ? order.id.toString().length - 8 : 0)}',
+                        order.sn,
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: theme.hintColor,

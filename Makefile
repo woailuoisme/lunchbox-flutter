@@ -43,6 +43,9 @@ help:
 	@echo "  其他:"
 	@echo "  make doctor        - 环境检查"
 	@echo "  make clean-all     - 深度清理"
+	@echo "  make sha-debug     - 查看调试版 SHA 签名 (Google登录/Firebase)"
+	@echo "  make sha-release   - 查看发布版 SHA 签名 (需提供 KEYSTORE 参数)"
+	@echo "  make gen-key       - 生成新的签名文件 (upload-keystore.jks)"
 
 deps:
 	flutter pub get --no-example
@@ -161,3 +164,28 @@ build-apk-split:
 
 build-all:
 	./scripts/lunchbox.sh build:all
+
+# 签名与 Keytool 相关
+sha-debug:
+	keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+
+sha-release:
+	@if [ -z "$(KEYSTORE)" ]; then \
+		echo "错误: 请提供 KEYSTORE 路径, 例如: make sha-release KEYSTORE=android/app/your-key.jks"; \
+		exit 1; \
+	fi
+	keytool -list -v -keystore $(KEYSTORE)
+
+gen-key:
+	@if [ -f android/app/upload-keystore.jks ]; then \
+		echo "错误: android/app/upload-keystore.jks 已存在，请手动备份或删除后再生成！"; \
+		exit 1; \
+	fi
+	keytool -genkey -v -keystore android/app/upload-keystore.jks \
+		-keyalg RSA -keysize 2048 -validity 10000 \
+		-alias upload
+	@echo "------------------------------------------------------------"
+	@echo "成功: 签名文件已生成到 android/app/upload-keystore.jks"
+	@echo "请注意: 请务必备份此文件并妥善保管密码！"
+	@echo "下一步: 请复制 android/key.properties.example 为 android/key.properties 并填写正确信息"
+	@echo "------------------------------------------------------------"

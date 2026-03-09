@@ -455,11 +455,18 @@ class _TranslationsCouponZhTw extends TranslationsCouponZhCn {
   @override
   String get unit => TranslationOverrides.string(_root.$meta, 'coupon.unit', {}) ?? 'NT\$';
   @override
+  String get discountUnit => TranslationOverrides.string(_root.$meta, 'coupon.discountUnit', {}) ?? '折';
+  @override
   String condition({required Object amount}) =>
       TranslationOverrides.string(_root.$meta, 'coupon.condition', {'amount': amount}) ?? '滿減券\n滿${amount}元可用';
   @override
+  String conditionThreshold({required Object amount}) =>
+      TranslationOverrides.string(_root.$meta, 'coupon.conditionThreshold', {'amount': amount}) ?? '滿${amount}元可用';
+  @override
   String get conditionNoThreshold =>
       TranslationOverrides.string(_root.$meta, 'coupon.conditionNoThreshold', {}) ?? '滿減券\n滿0元可用';
+  @override
+  String get noThreshold => TranslationOverrides.string(_root.$meta, 'coupon.noThreshold', {}) ?? '無門檻';
   @override
   String get validForever => TranslationOverrides.string(_root.$meta, 'coupon.validForever', {}) ?? '長期有效';
   @override
@@ -730,8 +737,6 @@ class _TranslationsNavigationZhTw extends TranslationsNavigationZhCn {
   @override
   String get device => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? '設備';
   @override
-  String get cart => TranslationOverrides.string(_root.$meta, 'navigation.cart', {}) ?? '購物車';
-  @override
   String get orders => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? '訂單';
   @override
   String get profile => TranslationOverrides.string(_root.$meta, 'navigation.profile', {}) ?? '個人中心';
@@ -834,6 +839,18 @@ class _TranslationsOrderZhTw extends TranslationsOrderZhCn {
   @override
   String createFailed({required Object error}) =>
       TranslationOverrides.string(_root.$meta, 'order.createFailed', {'error': error}) ?? '建立訂單失敗: ${error}';
+  @override
+  String get paymentStripe => TranslationOverrides.string(_root.$meta, 'order.paymentStripe', {}) ?? 'Stripe (信用卡)';
+  @override
+  String get paymentWechat => TranslationOverrides.string(_root.$meta, 'order.paymentWechat', {}) ?? '微信支付';
+  @override
+  String get paymentAlipay => TranslationOverrides.string(_root.$meta, 'order.paymentAlipay', {}) ?? '支付寶';
+  @override
+  String get paymentBalance => TranslationOverrides.string(_root.$meta, 'order.paymentBalance', {}) ?? '餘額支付';
+  @override
+  String get paymentCash => TranslationOverrides.string(_root.$meta, 'order.paymentCash', {}) ?? '現金支付';
+  @override
+  late final _TranslationsOrderStatusDescZhTw statusDesc = _TranslationsOrderStatusDescZhTw._(_root);
 }
 
 // Path: partner
@@ -1436,7 +1453,32 @@ class _TranslationsOrderStatusZhTw extends TranslationsOrderStatusZhCn {
   @override
   String get refunded => TranslationOverrides.string(_root.$meta, 'order.status.refunded', {}) ?? '已退款';
   @override
+  String get refunding => TranslationOverrides.string(_root.$meta, 'order.status.refunding', {}) ?? '退款中';
+  @override
   String get failed => TranslationOverrides.string(_root.$meta, 'order.status.failed', {}) ?? '支付失敗';
+}
+
+// Path: order.statusDesc
+class _TranslationsOrderStatusDescZhTw extends TranslationsOrderStatusDescZhCn {
+  _TranslationsOrderStatusDescZhTw._(TranslationsZhTw root) : this._root = root, super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get pending => TranslationOverrides.string(_root.$meta, 'order.statusDesc.pending', {}) ?? '請儘快支付，逾時訂單將取消';
+  @override
+  String get paid => TranslationOverrides.string(_root.$meta, 'order.statusDesc.paid', {}) ?? '訂單已支付，請憑碼取貨';
+  @override
+  String get completed => TranslationOverrides.string(_root.$meta, 'order.statusDesc.completed', {}) ?? '訂單已完成，祝您生活愉快';
+  @override
+  String get used => TranslationOverrides.string(_root.$meta, 'order.statusDesc.used', {}) ?? '訂單已展示，請及時取貨';
+  @override
+  String get cancelled => TranslationOverrides.string(_root.$meta, 'order.statusDesc.cancelled', {}) ?? '訂單已取消，款項原路返回';
+  @override
+  String get refund => TranslationOverrides.string(_root.$meta, 'order.statusDesc.refund', {}) ?? '正在為您處理退款';
+  @override
+  String get failed => TranslationOverrides.string(_root.$meta, 'order.statusDesc.failed', {}) ?? '支付失敗，請嘗試重新下單';
 }
 
 // Path: profile.gender
@@ -1841,12 +1883,18 @@ extension on TranslationsZhTw {
           'coupon.tabs.canUse' => TranslationOverrides.string(_root.$meta, 'coupon.tabs.canUse', {}) ?? '可使用',
           'coupon.tabs.cannotUse' => TranslationOverrides.string(_root.$meta, 'coupon.tabs.cannotUse', {}) ?? '不可使用',
           'coupon.unit' => TranslationOverrides.string(_root.$meta, 'coupon.unit', {}) ?? 'NT\$',
+          'coupon.discountUnit' => TranslationOverrides.string(_root.$meta, 'coupon.discountUnit', {}) ?? '折',
           'coupon.condition' =>
             ({required Object amount}) =>
                 TranslationOverrides.string(_root.$meta, 'coupon.condition', {'amount': amount}) ??
                 '滿減券\n滿${amount}元可用',
+          'coupon.conditionThreshold' =>
+            ({required Object amount}) =>
+                TranslationOverrides.string(_root.$meta, 'coupon.conditionThreshold', {'amount': amount}) ??
+                '滿${amount}元可用',
           'coupon.conditionNoThreshold' =>
             TranslationOverrides.string(_root.$meta, 'coupon.conditionNoThreshold', {}) ?? '滿減券\n滿0元可用',
+          'coupon.noThreshold' => TranslationOverrides.string(_root.$meta, 'coupon.noThreshold', {}) ?? '無門檻',
           'coupon.validForever' => TranslationOverrides.string(_root.$meta, 'coupon.validForever', {}) ?? '長期有效',
           'coupon.btnReceive' => TranslationOverrides.string(_root.$meta, 'coupon.btnReceive', {}) ?? '立即領取',
           'coupon.btnReceived' => TranslationOverrides.string(_root.$meta, 'coupon.btnReceived', {}) ?? '已領取',
@@ -2033,7 +2081,6 @@ extension on TranslationsZhTw {
             TranslationOverrides.string(_root.$meta, 'home.status.mobilePayment', {}) ?? '支援行動支付',
           'navigation.home' => TranslationOverrides.string(_root.$meta, 'navigation.home', {}) ?? '首頁',
           'navigation.device' => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? '設備',
-          'navigation.cart' => TranslationOverrides.string(_root.$meta, 'navigation.cart', {}) ?? '購物車',
           'navigation.orders' => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? '訂單',
           'navigation.profile' => TranslationOverrides.string(_root.$meta, 'navigation.profile', {}) ?? '個人中心',
           'onboarding.welcomeTitle' =>
@@ -2060,6 +2107,7 @@ extension on TranslationsZhTw {
           'order.status.completed' => TranslationOverrides.string(_root.$meta, 'order.status.completed', {}) ?? '已完成',
           'order.status.cancelled' => TranslationOverrides.string(_root.$meta, 'order.status.cancelled', {}) ?? '已取消',
           'order.status.refunded' => TranslationOverrides.string(_root.$meta, 'order.status.refunded', {}) ?? '已退款',
+          'order.status.refunding' => TranslationOverrides.string(_root.$meta, 'order.status.refunding', {}) ?? '退款中',
           'order.status.failed' => TranslationOverrides.string(_root.$meta, 'order.status.failed', {}) ?? '支付失敗',
           'order.pickupCode' => TranslationOverrides.string(_root.$meta, 'order.pickupCode', {}) ?? '取貨碼',
           'order.pickupHint' => TranslationOverrides.string(_root.$meta, 'order.pickupHint', {}) ?? '請在設備上輸入取貨碼取貨',
@@ -2092,6 +2140,26 @@ extension on TranslationsZhTw {
           'order.createFailed' =>
             ({required Object error}) =>
                 TranslationOverrides.string(_root.$meta, 'order.createFailed', {'error': error}) ?? '建立訂單失敗: ${error}',
+          'order.paymentStripe' =>
+            TranslationOverrides.string(_root.$meta, 'order.paymentStripe', {}) ?? 'Stripe (信用卡)',
+          'order.paymentWechat' => TranslationOverrides.string(_root.$meta, 'order.paymentWechat', {}) ?? '微信支付',
+          'order.paymentAlipay' => TranslationOverrides.string(_root.$meta, 'order.paymentAlipay', {}) ?? '支付寶',
+          'order.paymentBalance' => TranslationOverrides.string(_root.$meta, 'order.paymentBalance', {}) ?? '餘額支付',
+          'order.paymentCash' => TranslationOverrides.string(_root.$meta, 'order.paymentCash', {}) ?? '現金支付',
+          'order.statusDesc.pending' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.pending', {}) ?? '請儘快支付，逾時訂單將取消',
+          'order.statusDesc.paid' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.paid', {}) ?? '訂單已支付，請憑碼取貨',
+          'order.statusDesc.completed' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.completed', {}) ?? '訂單已完成，祝您生活愉快',
+          'order.statusDesc.used' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.used', {}) ?? '訂單已展示，請及時取貨',
+          'order.statusDesc.cancelled' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.cancelled', {}) ?? '訂單已取消，款項原路返回',
+          'order.statusDesc.refund' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.refund', {}) ?? '正在為您處理退款',
+          'order.statusDesc.failed' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.failed', {}) ?? '支付失敗，請嘗試重新下單',
           'partner.title' => TranslationOverrides.string(_root.$meta, 'partner.title', {}) ?? '合作商加盟',
           'partner.subtitle' => TranslationOverrides.string(_root.$meta, 'partner.subtitle', {}) ?? '攜手共創美好未來',
           'partner.advantages' => TranslationOverrides.string(_root.$meta, 'partner.advantages', {}) ?? '合作優勢',
@@ -2318,6 +2386,9 @@ extension on TranslationsZhTw {
           'splash.starting' => TranslationOverrides.string(_root.$meta, 'splash.starting', {}) ?? '正在啟動...',
           'splash.checkingServices' =>
             TranslationOverrides.string(_root.$meta, 'splash.checkingServices', {}) ?? '檢查服務狀態...',
+          _ => null,
+        } ??
+        switch (path) {
           'splash.loadingConfig' => TranslationOverrides.string(_root.$meta, 'splash.loadingConfig', {}) ?? '載入配置...',
           'splash.checkingAuth' => TranslationOverrides.string(_root.$meta, 'splash.checkingAuth', {}) ?? '檢查登入狀態...',
           'splash.preparingData' => TranslationOverrides.string(_root.$meta, 'splash.preparingData', {}) ?? '準備數據...',
@@ -2343,9 +2414,6 @@ extension on TranslationsZhTw {
           'welcome_gift.card.tag' => TranslationOverrides.string(_root.$meta, 'welcome_gift.card.tag', {}) ?? '禮包',
           'welcome_gift.card.status.received' =>
             TranslationOverrides.string(_root.$meta, 'welcome_gift.card.status.received', {}) ?? '已領取',
-          _ => null,
-        } ??
-        switch (path) {
           'welcome_gift.card.button.claim' =>
             TranslationOverrides.string(_root.$meta, 'welcome_gift.card.button.claim', {}) ?? '領取',
           'welcome_gift.card.button.received' =>

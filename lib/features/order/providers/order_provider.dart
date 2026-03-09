@@ -10,10 +10,9 @@ part 'order_provider.g.dart';
 @riverpod
 class OrderNotifier extends _$OrderNotifier {
   @override
-  FutureOr<OrderState> build() async {
-    // 默认加载全部订单
-    final orders = await _repository.getOrders(status: 'all');
-    return OrderState(orders: orders?.items ?? []);
+  FutureOr<OrderState> build() {
+    // 初始状态为空，由 UI 的 PagingController 驱动加载
+    return const OrderState();
   }
 
   OrderRepository get _repository => ref.read(orderRepositoryProvider);
@@ -40,7 +39,9 @@ class OrderNotifier extends _$OrderNotifier {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final effectiveStatus = status ?? state.value?.selectedStatus ?? 'all';
-      final data = await _repository.getOrders(status: effectiveStatus);
+      final data = await _repository.getOrders(
+        status: effectiveStatus == 'all' ? null : effectiveStatus,
+      );
       return (state.value ?? const OrderState()).copyWith(
         orders: data?.items ?? [],
         selectedStatus: effectiveStatus,
@@ -63,15 +64,6 @@ class OrderNotifier extends _$OrderNotifier {
     }
   }
 
-  Future<OrderModel?> createOrder(String deviceId) async {
-    final cartState = ref.read(cartProvider);
-    final cartItems = cartState.value?.cartItems ?? [];
-    if (cartItems.isEmpty) return null;
-
-    // TODO: 实现创建订单逻辑
-    throw Exception('Order creation not implemented');
-  }
-
   Future<bool> cancelOrder(String orderId) async {
     try {
       final success = await _repository.cancelOrder(orderId);
@@ -82,6 +74,20 @@ class OrderNotifier extends _$OrderNotifier {
       }
     } catch (e, stack) {
       LoggerUtils.e('OrderNotifier: Failed to cancel order', e, stack);
+    }
+    return false;
+  }
+
+  Future<bool> confirmOrder(String orderId) async {
+    try {
+      final success = await _repository.confirmOrder(orderId);
+      if (success == true) {
+        await loadOrders(status: state.value?.selectedStatus);
+        LoggerUtils.i('OrderNotifier: Order confirmed: $orderId');
+        return true;
+      }
+    } catch (e, stack) {
+      LoggerUtils.e('OrderNotifier: Failed to confirm order', e, stack);
     }
     return false;
   }

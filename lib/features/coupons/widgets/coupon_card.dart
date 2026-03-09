@@ -10,10 +10,12 @@ class CouponCard extends StatelessWidget {
     required this.coupon,
     required this.viewType,
     this.onActionPressed,
+    this.isLoading = false,
   });
   final CouponModel coupon;
   final String viewType; // 'available', 'received', 'expired'
   final VoidCallback? onActionPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +55,44 @@ class CouponCard extends StatelessWidget {
       btnTextColor = colorScheme.primary;
     }
 
-    if (isExpired) {
+    // 本地时间有效性校验
+    final now = DateTime.now();
+    bool isNotStarted = false;
+    if (coupon.startAt != null) {
+      final start = DateTime.tryParse(coupon.startAt!);
+      if (start != null && now.isBefore(start)) {
+        isNotStarted = true;
+      }
+    }
+
+    bool localExpired = false;
+    if (coupon.endAt != null) {
+      final end = DateTime.tryParse(coupon.endAt!);
+      if (end != null && now.isAfter(end)) {
+        localExpired = true;
+      }
+    }
+
+    final actualExpired = isExpired || localExpired;
+
+    if (actualExpired) {
       primaryColor = colorScheme.outline;
       btnBgColor = Colors.transparent;
       btnTextColor = colorScheme.outline;
+    }
+
+    // 生成有效期显示文本
+    String validTimeText;
+    final startDate = coupon.startAt?.split(' ').first;
+    final endDate = coupon.endAt?.split(' ').first;
+    if (startDate != null && endDate != null) {
+      validTimeText = '$startDate 至 $endDate';
+    } else if (startDate != null) {
+      validTimeText = '$startDate 起有效';
+    } else if (endDate != null) {
+      validTimeText = '有效期至 $endDate';
+    } else {
+      validTimeText = t.coupon.validForever; // 都不存在则展示'长期有效/不限制时间'
     }
 
     return Container(
@@ -148,7 +184,7 @@ class CouponCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
-                            color: isExpired
+                            color: actualExpired
                                 ? colorScheme.outline
                                 : colorScheme.onSurface,
                           ),
@@ -162,7 +198,7 @@ class CouponCard extends StatelessWidget {
                             vertical: 2.h,
                           ),
                           decoration: BoxDecoration(
-                            color: isExpired
+                            color: actualExpired
                                 ? colorScheme.outline.withValues(alpha: 0.1)
                                 : colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(4.r),
@@ -170,7 +206,7 @@ class CouponCard extends StatelessWidget {
                           child: Text(
                             '满减',
                             style: TextStyle(
-                              color: isExpired
+                              color: actualExpired
                                   ? colorScheme.outline
                                   : colorScheme.primary,
                               fontSize: 10.sp,
@@ -192,19 +228,19 @@ class CouponCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        coupon.endAt != null
-                            ? '有效期至 ${coupon.endAt!.split(' ').first}'
-                            : t.coupon.validForever,
+                        validTimeText,
                         style: TextStyle(
                           fontSize: 11.sp,
                           color: colorScheme.outline,
                         ),
                       ),
-                      if (!isExpired)
+                      if (!actualExpired)
                         SizedBox(
                           height: 28.h,
                           child: ElevatedButton(
-                            onPressed: isReceived ? null : onActionPressed,
+                            onPressed: (isReceived || isLoading || isNotStarted)
+                                ? null
+                                : onActionPressed,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: isReceived
                                   ? colorScheme.surface
@@ -221,15 +257,28 @@ class CouponCard extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(14.r),
                               ),
                             ),
-                            child: Text(
-                              isReceived ? '已领取' : '立即领取',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                color: isReceived
-                                    ? colorScheme.outline
-                                    : colorScheme.onPrimary,
-                              ),
-                            ),
+                            child: isLoading
+                                ? SizedBox(
+                                    width: 16.w,
+                                    height: 16.w,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: isReceived
+                                          ? colorScheme.outline
+                                          : colorScheme.onPrimary,
+                                    ),
+                                  )
+                                : Text(
+                                    isReceived
+                                        ? '已领取'
+                                        : (isNotStarted ? '未开始' : '立即领取'),
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: isReceived
+                                          ? colorScheme.outline
+                                          : colorScheme.onPrimary,
+                                    ),
+                                  ),
                           ),
                         )
                       else

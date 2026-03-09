@@ -49,7 +49,14 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Android keystore and keys
+android/app/*.jks
+android/app/*.keystore
+android/key.properties
+
 # Envied
 .env*
-!.env.example
-!lib/env/.env* # If you want to commit example env files
+.env.prod
+.env.dev
+.env.test
+! .env.example

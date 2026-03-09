@@ -211,12 +211,12 @@ return $default(_that.id,_that.nickname,_that.telephone);case _:
 @JsonSerializable()
 
 class _OrderUserModel implements OrderUserModel {
-  const _OrderUserModel({required this.id, required this.nickname, required this.telephone});
+  const _OrderUserModel({required this.id, this.nickname = '', this.telephone = ''});
   factory _OrderUserModel.fromJson(Map<String, dynamic> json) => _$OrderUserModelFromJson(json);
 
 @override final  int id;
-@override final  String nickname;
-@override final  String telephone;
+@override@JsonKey() final  String nickname;
+@override@JsonKey() final  String telephone;
 
 /// Create a copy of OrderUserModel
 /// with the given fields replaced by the non-null parameter values.
@@ -479,11 +479,11 @@ return $default(_that.id,_that.sn);case _:
 @JsonSerializable()
 
 class _OrderDeviceModel implements OrderDeviceModel {
-  const _OrderDeviceModel({required this.id, required this.sn});
+  const _OrderDeviceModel({required this.id, this.sn = ''});
   factory _OrderDeviceModel.fromJson(Map<String, dynamic> json) => _$OrderDeviceModelFromJson(json);
 
 @override final  int id;
-@override final  String sn;
+@override@JsonKey() final  String sn;
 
 /// Create a copy of OrderDeviceModel
 /// with the given fields replaced by the non-null parameter values.
@@ -800,15 +800,15 @@ return $default(_that.id,_that.user,_that.sn,_that.device,_that.orderStatusAmoun
 @JsonSerializable()
 
 class _OrderModel extends OrderModel {
-  const _OrderModel({required this.id, required this.user, required this.sn, this.device, @JsonKey(name: 'order_status') required this.orderStatusAmount, @JsonKey(name: 'nominal_amount') required this.nominalAmount, @JsonKey(name: 'pay_amount') required this.payAmount, @JsonKey(name: 'coupon_amount') required this.couponAmount, @JsonKey(name: 'pay_sn') this.paySn, @JsonKey(name: 'pay_external_sn') this.payExternalSn, @JsonKey(name: 'pay_type') this.payType, @JsonKey(name: 'pay_status') this.payStatus, @JsonKey(name: 'user_comments_count') required this.userCommentsCount, @JsonKey(name: 'user_has_comments') required this.userHasComments, required this.status, @JsonKey(name: 'qr_code_image') this.qrCodeImage, @JsonKey(name: 'created_at') required this.createdAt, required final  List<OrderProductModel> products}): _products = products,super._();
+  const _OrderModel({required this.id, this.user = const OrderUserModel(id: 0), this.sn = '', this.device, @JsonKey(name: 'order_status') this.orderStatusAmount = '', @JsonKey(name: 'nominal_amount') this.nominalAmount = '', @JsonKey(name: 'pay_amount') this.payAmount = '', @JsonKey(name: 'coupon_amount') this.couponAmount = '', @JsonKey(name: 'pay_sn') this.paySn, @JsonKey(name: 'pay_external_sn') this.payExternalSn, @JsonKey(name: 'pay_type') this.payType, @JsonKey(name: 'pay_status') this.payStatus, @JsonKey(name: 'user_comments_count') this.userCommentsCount = 0, @JsonKey(name: 'user_has_comments') this.userHasComments = false, this.status = OrderStatus.pending, @JsonKey(name: 'qr_code_image') this.qrCodeImage, @JsonKey(name: 'created_at') this.createdAt = '', final  List<OrderProductModel> products = const []}): _products = products,super._();
   factory _OrderModel.fromJson(Map<String, dynamic> json) => _$OrderModelFromJson(json);
 
 /// 订单ID
 @override final  int id;
 /// 用户信息
-@override final  OrderUserModel user;
+@override@JsonKey() final  OrderUserModel user;
 /// 订单流水号
-@override final  String sn;
+@override@JsonKey() final  String sn;
 /// 设备信息
 @override final  OrderDeviceModel? device;
 /// 订单金额状态 (String)
@@ -832,7 +832,7 @@ class _OrderModel extends OrderModel {
 /// 用户是否已评价
 @override@JsonKey(name: 'user_has_comments') final  bool userHasComments;
 /// 订单状态
-@override final  OrderStatus status;
+@override@JsonKey() final  OrderStatus status;
 /// 取餐二维码图片 (Base64 or URL)
 @override@JsonKey(name: 'qr_code_image') final  String? qrCodeImage;
 /// 订单创建时间
@@ -840,7 +840,7 @@ class _OrderModel extends OrderModel {
 /// 订单包含的商品列表
  final  List<OrderProductModel> _products;
 /// 订单包含的商品列表
-@override List<OrderProductModel> get products {
+@override@JsonKey() List<OrderProductModel> get products {
   if (_products is EqualUnmodifiableListView) return _products;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_products);

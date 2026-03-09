@@ -8,8 +8,11 @@
     "cannotUse": "Unavailable"
   },
   "unit": "$",
+  "discountUnit": "% off",
   "condition": "Coupon\nOver ${amount}",
+  "conditionThreshold": "Over ${amount}",
   "conditionNoThreshold": "Coupon\nNo threshold",
+  "noThreshold": "No threshold",
   "validForever": "Valid Forever",
   "btnReceive": "Receive",
   "btnReceived": "Received",

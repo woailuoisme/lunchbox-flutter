@@ -14,6 +14,7 @@ class MyCouponsRepository {
 
   final MyCouponsRestClient _client;
 
+  /// 根据筛选条件获取用户的优惠券列表
   Future<List<UserCouponModel>> getUserCoupons({
     String? category,
     String? type,
@@ -26,16 +27,4 @@ class MyCouponsRepository {
     );
     return response.data ?? [];
   }
-}
-
-@riverpod
-Future<List<UserCouponModel>> userCoupons(
-  Ref ref, {
-  String? category,
-  String? type,
-  String? usedType,
-}) {
-  return ref
-      .watch(myCouponsRepositoryProvider)
-      .getUserCoupons(category: category, type: type, usedType: usedType);
 }

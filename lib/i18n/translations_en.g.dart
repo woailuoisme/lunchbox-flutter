@@ -527,11 +527,18 @@ class _TranslationsCouponEn extends TranslationsCouponZhCn {
   @override
   String get unit => TranslationOverrides.string(_root.$meta, 'coupon.unit', {}) ?? '\$';
   @override
+  String get discountUnit => TranslationOverrides.string(_root.$meta, 'coupon.discountUnit', {}) ?? '% off';
+  @override
   String condition({required Object amount}) =>
       TranslationOverrides.string(_root.$meta, 'coupon.condition', {'amount': amount}) ?? 'Coupon\nOver ${amount}';
   @override
+  String conditionThreshold({required Object amount}) =>
+      TranslationOverrides.string(_root.$meta, 'coupon.conditionThreshold', {'amount': amount}) ?? 'Over ${amount}';
+  @override
   String get conditionNoThreshold =>
       TranslationOverrides.string(_root.$meta, 'coupon.conditionNoThreshold', {}) ?? 'Coupon\nNo threshold';
+  @override
+  String get noThreshold => TranslationOverrides.string(_root.$meta, 'coupon.noThreshold', {}) ?? 'No threshold';
   @override
   String get validForever => TranslationOverrides.string(_root.$meta, 'coupon.validForever', {}) ?? 'Valid Forever';
   @override
@@ -892,8 +899,6 @@ class _TranslationsNavigationEn extends TranslationsNavigationZhCn {
   @override
   String get device => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? 'Device';
   @override
-  String get cart => TranslationOverrides.string(_root.$meta, 'navigation.cart', {}) ?? 'Cart';
-  @override
   String get orders => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? 'Orders';
   @override
   String get profile => TranslationOverrides.string(_root.$meta, 'navigation.profile', {}) ?? 'Profile';
@@ -1081,6 +1086,12 @@ class _TranslationsOrderEn extends TranslationsOrderZhCn {
   String get paymentWechat => TranslationOverrides.string(_root.$meta, 'order.paymentWechat', {}) ?? 'WeChat Pay';
   @override
   String get paymentAlipay => TranslationOverrides.string(_root.$meta, 'order.paymentAlipay', {}) ?? 'Alipay';
+  @override
+  String get paymentBalance => TranslationOverrides.string(_root.$meta, 'order.paymentBalance', {}) ?? 'Balance';
+  @override
+  String get paymentCash => TranslationOverrides.string(_root.$meta, 'order.paymentCash', {}) ?? 'Cash';
+  @override
+  late final _TranslationsOrderStatusDescEn statusDesc = _TranslationsOrderStatusDescEn._(_root);
 }
 
 // Path: partner
@@ -1992,7 +2003,43 @@ class _TranslationsOrderStatusEn extends TranslationsOrderStatusZhCn {
   @override
   String get refunded => TranslationOverrides.string(_root.$meta, 'order.status.refunded', {}) ?? 'Refunded';
   @override
+  String get refunding => TranslationOverrides.string(_root.$meta, 'order.status.refunding', {}) ?? 'Refunding';
+  @override
   String get failed => TranslationOverrides.string(_root.$meta, 'order.status.failed', {}) ?? 'Failed';
+}
+
+// Path: order.statusDesc
+class _TranslationsOrderStatusDescEn extends TranslationsOrderStatusDescZhCn {
+  _TranslationsOrderStatusDescEn._(TranslationsEn root) : this._root = root, super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get pending =>
+      TranslationOverrides.string(_root.$meta, 'order.statusDesc.pending', {}) ??
+      'Please pay as soon as possible, the order will be cancelled if timeout';
+  @override
+  String get paid =>
+      TranslationOverrides.string(_root.$meta, 'order.statusDesc.paid', {}) ??
+      'Order paid, please pick up with the code';
+  @override
+  String get completed =>
+      TranslationOverrides.string(_root.$meta, 'order.statusDesc.completed', {}) ??
+      'Order completed, wish you a happy life';
+  @override
+  String get used =>
+      TranslationOverrides.string(_root.$meta, 'order.statusDesc.used', {}) ?? 'Order picked up, enjoy your meal';
+  @override
+  String get cancelled =>
+      TranslationOverrides.string(_root.$meta, 'order.statusDesc.cancelled', {}) ??
+      'Order cancelled, refund will be returned soon';
+  @override
+  String get refund =>
+      TranslationOverrides.string(_root.$meta, 'order.statusDesc.refund', {}) ?? 'Refunding your order';
+  @override
+  String get failed =>
+      TranslationOverrides.string(_root.$meta, 'order.statusDesc.failed', {}) ?? 'Payment failed, please try again';
 }
 
 // Path: profile.gender
@@ -2640,12 +2687,18 @@ extension on TranslationsEn {
           'coupon.tabs.cannotUse' =>
             TranslationOverrides.string(_root.$meta, 'coupon.tabs.cannotUse', {}) ?? 'Unavailable',
           'coupon.unit' => TranslationOverrides.string(_root.$meta, 'coupon.unit', {}) ?? '\$',
+          'coupon.discountUnit' => TranslationOverrides.string(_root.$meta, 'coupon.discountUnit', {}) ?? '% off',
           'coupon.condition' =>
             ({required Object amount}) =>
                 TranslationOverrides.string(_root.$meta, 'coupon.condition', {'amount': amount}) ??
                 'Coupon\nOver ${amount}',
+          'coupon.conditionThreshold' =>
+            ({required Object amount}) =>
+                TranslationOverrides.string(_root.$meta, 'coupon.conditionThreshold', {'amount': amount}) ??
+                'Over ${amount}',
           'coupon.conditionNoThreshold' =>
             TranslationOverrides.string(_root.$meta, 'coupon.conditionNoThreshold', {}) ?? 'Coupon\nNo threshold',
+          'coupon.noThreshold' => TranslationOverrides.string(_root.$meta, 'coupon.noThreshold', {}) ?? 'No threshold',
           'coupon.validForever' =>
             TranslationOverrides.string(_root.$meta, 'coupon.validForever', {}) ?? 'Valid Forever',
           'coupon.btnReceive' => TranslationOverrides.string(_root.$meta, 'coupon.btnReceive', {}) ?? 'Receive',
@@ -2973,7 +3026,6 @@ extension on TranslationsEn {
                 'You can view invitation records in \'My Achievements\'.',
           'navigation.home' => TranslationOverrides.string(_root.$meta, 'navigation.home', {}) ?? 'Home',
           'navigation.device' => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? 'Device',
-          'navigation.cart' => TranslationOverrides.string(_root.$meta, 'navigation.cart', {}) ?? 'Cart',
           'navigation.orders' => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? 'Orders',
           'navigation.profile' => TranslationOverrides.string(_root.$meta, 'navigation.profile', {}) ?? 'Profile',
           'network.errors.connectionTimeout' =>
@@ -3067,6 +3119,8 @@ extension on TranslationsEn {
             TranslationOverrides.string(_root.$meta, 'order.status.cancelled', {}) ?? 'Cancelled',
           'order.status.refunded' =>
             TranslationOverrides.string(_root.$meta, 'order.status.refunded', {}) ?? 'Refunded',
+          'order.status.refunding' =>
+            TranslationOverrides.string(_root.$meta, 'order.status.refunding', {}) ?? 'Refunding',
           'order.status.failed' => TranslationOverrides.string(_root.$meta, 'order.status.failed', {}) ?? 'Failed',
           'order.pickupCode' => TranslationOverrides.string(_root.$meta, 'order.pickupCode', {}) ?? 'Pickup Code',
           'order.pickupHint' =>
@@ -3149,6 +3203,27 @@ extension on TranslationsEn {
             TranslationOverrides.string(_root.$meta, 'order.paymentStripe', {}) ?? 'Stripe (Credit Card)',
           'order.paymentWechat' => TranslationOverrides.string(_root.$meta, 'order.paymentWechat', {}) ?? 'WeChat Pay',
           'order.paymentAlipay' => TranslationOverrides.string(_root.$meta, 'order.paymentAlipay', {}) ?? 'Alipay',
+          'order.paymentBalance' => TranslationOverrides.string(_root.$meta, 'order.paymentBalance', {}) ?? 'Balance',
+          'order.paymentCash' => TranslationOverrides.string(_root.$meta, 'order.paymentCash', {}) ?? 'Cash',
+          'order.statusDesc.pending' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.pending', {}) ??
+                'Please pay as soon as possible, the order will be cancelled if timeout',
+          'order.statusDesc.paid' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.paid', {}) ??
+                'Order paid, please pick up with the code',
+          'order.statusDesc.completed' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.completed', {}) ??
+                'Order completed, wish you a happy life',
+          'order.statusDesc.used' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.used', {}) ?? 'Order picked up, enjoy your meal',
+          'order.statusDesc.cancelled' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.cancelled', {}) ??
+                'Order cancelled, refund will be returned soon',
+          'order.statusDesc.refund' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.refund', {}) ?? 'Refunding your order',
+          'order.statusDesc.failed' =>
+            TranslationOverrides.string(_root.$meta, 'order.statusDesc.failed', {}) ??
+                'Payment failed, please try again',
           'partner.title' => TranslationOverrides.string(_root.$meta, 'partner.title', {}) ?? 'Partner Cooperation',
           'partner.subtitle' =>
             TranslationOverrides.string(_root.$meta, 'partner.subtitle', {}) ?? 'Join hands to create a better future',
@@ -3288,6 +3363,9 @@ extension on TranslationsEn {
             TranslationOverrides.string(_root.$meta, 'points.rule2', {}) ?? 'Extra points can be obtained by lottery',
           'points.records' => TranslationOverrides.string(_root.$meta, 'points.records', {}) ?? 'Point Records',
           'points.all' => TranslationOverrides.string(_root.$meta, 'points.all', {}) ?? 'All',
+          _ => null,
+        } ??
+        switch (path) {
           'points.earned' => TranslationOverrides.string(_root.$meta, 'points.earned', {}) ?? 'Earned',
           'points.used' => TranslationOverrides.string(_root.$meta, 'points.used', {}) ?? 'Used',
           'points.noRecords' => TranslationOverrides.string(_root.$meta, 'points.noRecords', {}) ?? 'No point records',
@@ -3306,9 +3384,6 @@ extension on TranslationsEn {
             ({required Object points}) =>
                 TranslationOverrides.string(_root.$meta, 'points.cost', {'points': points}) ?? '${points} Points',
           'points.exchangeNow' => TranslationOverrides.string(_root.$meta, 'points.exchangeNow', {}) ?? 'Exchange Now',
-          _ => null,
-        } ??
-        switch (path) {
           'points.insufficientPoints' =>
             TranslationOverrides.string(_root.$meta, 'points.insufficientPoints', {}) ?? 'Insufficient balance',
           'product.title' => TranslationOverrides.string(_root.$meta, 'product.title', {}) ?? 'Product List',

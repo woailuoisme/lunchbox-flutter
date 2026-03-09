@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
+import 'package:lunchbox/features/order/entities/order_product_model.dart';
 import 'package:lunchbox/features/order/widgets/order_action_button.dart';
 import 'package:lunchbox/features/order/widgets/order_empty_state.dart';
 import 'package:lunchbox/features/order/widgets/order_list_item.dart';
@@ -241,11 +243,52 @@ class _OrderListViewState extends ConsumerState<OrderListView>
               ),
               noItemsFoundIndicatorBuilder: (context) =>
                   const OrderEmptyState(),
-              firstPageProgressIndicatorBuilder: (context) =>
-                  const Center(child: CircularProgressIndicator()),
-              newPageProgressIndicatorBuilder: (context) => const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Center(child: CircularProgressIndicator()),
+              firstPageProgressIndicatorBuilder: (context) => Skeletonizer(
+                enabled: true,
+                child: Column(
+                  children: List.generate(
+                    5,
+                    (index) => OrderListItem(
+                      order: OrderModel(
+                        id: index,
+                        sn: 'ORD202403090001',
+                        status: OrderStatus.paid,
+                        payAmount: '99.00',
+                        products: const [
+                          OrderProductModel(
+                            id: 1,
+                            name: 'Placeholder Product Name',
+                            quantity: 1,
+                            salePrice: '99.00',
+                          ),
+                        ],
+                      ),
+                      onTap: () {},
+                      actionButtons: const [],
+                    ),
+                  ),
+                ),
+              ),
+              newPageProgressIndicatorBuilder: (context) => Skeletonizer(
+                enabled: true,
+                child: OrderListItem(
+                  order: const OrderModel(
+                    id: 0,
+                    sn: 'ORD202403090001',
+                    status: OrderStatus.paid,
+                    payAmount: '99.00',
+                    products: [
+                      OrderProductModel(
+                        id: 1,
+                        name: 'Placeholder Product Name',
+                        quantity: 1,
+                        salePrice: '99.00',
+                      ),
+                    ],
+                  ),
+                  onTap: () {},
+                  actionButtons: const [],
+                ),
               ),
             ),
           );
@@ -260,23 +303,15 @@ class _OrderListViewState extends ConsumerState<OrderListView>
 
   Widget _buildOrderCard(OrderModel order) {
     return OrderListItem(
-          order: order,
-          onTap: () {
-            context.push(
-              '${AppRoutes.orderDetail}/${order.id}',
-              extra: {'order': order},
-            );
-          },
-          actionButtons: _buildActionButtons(context, order),
-        )
-        .animate()
-        .fadeIn(duration: 300.ms)
-        .slideY(
-          begin: 0.1,
-          end: 0,
-          curve: Curves.easeOutQuad,
-          duration: 300.ms,
+      order: order,
+      onTap: () {
+        context.push(
+          '${AppRoutes.orderDetail}/${order.id}',
+          extra: {'order': order},
         );
+      },
+      actionButtons: _buildActionButtons(context, order),
+    ).animate().fadeIn(duration: 300.ms);
   }
 
   List<Widget> _buildActionButtons(BuildContext context, OrderModel order) {

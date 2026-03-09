@@ -17,6 +17,9 @@ class DevEnv implements AppEnv {
   @EnviedField(varName: 'DEBUG')
   static const bool _debug = _DevEnv._debug;
 
+  @EnviedField(varName: 'GOOGLE_SERVER_CLIENT_ID')
+  static const String _googleServerClientId = _DevEnv._googleServerClientId;
+
   @override
   String get baseUrl => _baseUrl;
 
@@ -28,4 +31,7 @@ class DevEnv implements AppEnv {
 
   @override
   bool get debug => _debug;
+
+  @override
+  String get googleServerClientId => _googleServerClientId;
 }

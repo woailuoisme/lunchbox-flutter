@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/features/coupons/repositories/coupons_repository.dart';
+import 'package:lunchbox/features/coupons/entities/coupon_model.dart';
+import 'package:lunchbox/features/coupons/providers/coupon_provider.dart';
 import 'package:lunchbox/features/coupons/widgets/coupon_card.dart';
 import 'package:lunchbox/features/coupons/widgets/coupon_empty_state.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:toastification/toastification.dart';
 
 /// 优惠券页面
 class CouponsView extends ConsumerStatefulWidget {
@@ -22,7 +24,7 @@ class _CouponsViewState extends ConsumerState<CouponsView>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -52,7 +54,6 @@ class _CouponsViewState extends ConsumerState<CouponsView>
           indicatorSize: TabBarIndicatorSize.label,
           tabs: [
             Tab(text: t.coupon.tabs.available),
-            Tab(text: t.coupon.tabs.received),
             Tab(text: t.coupon.tabs.expired),
           ],
         ),
@@ -64,7 +65,6 @@ class _CouponsViewState extends ConsumerState<CouponsView>
         controller: _tabController,
         children: [
           _buildCouponList(type: 'available'),
-          _buildCouponList(type: 'received'),
           _buildCouponList(type: 'expired'),
         ],
       ),
@@ -72,31 +72,43 @@ class _CouponsViewState extends ConsumerState<CouponsView>
   }
 
   Widget _buildCouponList({required String type}) {
-    // 根据 Tab 类型确定接口参数
-    // type: available(待领取), received(已领取), expired(已过期)
-    final category = type == 'available' ? 'shop' : null; // 假设商城券在待领取
-    final couponType = type == 'expired' ? 'discount' : null; // 仅示例
-
-    final couponsAsync = ref.watch(
-      couponsProvider(category: category, type: couponType),
-    );
+    // 统一获取所有优惠券，不使用任何查询参数
+    final couponsAsync = ref.watch(couponsProvider());
 
     return couponsAsync.when(
       data: (coupons) {
-        if (coupons.isEmpty) {
+        final now = DateTime.now();
+
+        // 根据返回结果在本地进行 Tab 过滤分类
+        final filteredCoupons = coupons.where((coupon) {
+          bool isExpired = false;
+          if (coupon.endAt != null) {
+            final end = DateTime.tryParse(coupon.endAt!);
+            if (end != null && now.isAfter(end)) {
+              isExpired = true;
+            }
+          }
+
+          if (type == 'expired') {
+            return isExpired;
+          } else {
+            // available
+            return !isExpired;
+          }
+        }).toList();
+
+        if (filteredCoupons.isEmpty) {
           return const CouponEmptyState();
         }
 
         return ListView.builder(
           padding: EdgeInsets.all(16.w),
-          itemCount: coupons.length,
+          itemCount: filteredCoupons.length,
           itemBuilder: (context, index) {
-            return CouponCard(
-              coupon: coupons[index],
+            return _CouponItemCard(
+              key: ValueKey(filteredCoupons[index].id),
+              coupon: filteredCoupons[index],
               viewType: type,
-              onActionPressed: () {
-                // TODO: 实现领取逻辑
-              },
             );
           },
         );
@@ -108,14 +120,58 @@ class _CouponsViewState extends ConsumerState<CouponsView>
           children: [
             Text('加载失败: $error'),
             TextButton(
-              onPressed: () => ref.refresh(
-                couponsProvider(category: category, type: couponType),
-              ),
+              onPressed: () => ref.refresh(couponsProvider()),
               child: const Text('重试'),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _CouponItemCard extends ConsumerWidget {
+  const _CouponItemCard({
+    super.key,
+    required this.coupon,
+    required this.viewType,
+  });
+
+  final CouponModel coupon;
+  final String viewType;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // 监听领取操作的状态变化 （侧作用/Side Effects)
+    ref.listen(catchCouponProvider(coupon.id), (previous, next) {
+      if (next.hasError && !next.isLoading) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.error,
+          title: Text('领取失败: ${next.error}'),
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+      } else if (!next.isLoading &&
+          next.hasValue &&
+          previous?.isLoading == true) {
+        toastification.show(
+          context: context,
+          type: ToastificationType.success,
+          title: const Text('领取成功'),
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+      }
+    });
+
+    final catchState = ref.watch(catchCouponProvider(coupon.id));
+
+    return CouponCard(
+      coupon: coupon,
+      viewType: viewType,
+      isLoading: catchState.isLoading,
+      onActionPressed: () {
+        ref.read(catchCouponProvider(coupon.id).notifier).submit();
+      },
     );
   }
 }
