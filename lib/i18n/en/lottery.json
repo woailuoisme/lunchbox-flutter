@@ -1,0 +1,37 @@
+{
+  "title": "Lucky Draw",
+  "prizes": "My Prizes",
+  "rules": "Activity Rules",
+  "subtitle": "Join the draw, win great prizes",
+  "remaining": "Remaining: ${count}",
+  "spin": "Spin",
+  "spinning": "...",
+  "congratulations": "Congratulations",
+  "accept": "Accept",
+  "thankYou": "Thank you for participating",
+  "thanksForParticipating": "Thank you for participating",
+  "prizeListTitle": "Prize List",
+  "prizeStats": {
+    "total": "Total",
+    "win": "Won",
+    "distributed": "Distributed",
+    "viewAll": "View all your prizes"
+  },
+  "tabs": {
+    "all": "All",
+    "win": "Won",
+    "lose": "Lost"
+  },
+  "prizeCard": {
+    "reward": "Reward",
+    "id": "ID: ${id}",
+    "getTime": "Got at: ${time}",
+    "obtained": "Obtained",
+    "notWon": "Did not win"
+  },
+  "rulesList": [
+    "Free draws daily, complete tasks for more",
+    "Coupons valid for 48h, Points added automatically",
+    "Platform reserves all rights"
+  ]
+}

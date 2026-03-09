@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:lunchbox/core/network/dio_provider.dart';
 import 'package:lunchbox/core/network/response/api_response.dart';
-import 'package:lunchbox/features/lottery/entities/lottery_prize_model.dart';
-import 'package:lunchbox/features/lottery/entities/lottery_record_model.dart';
-import 'package:lunchbox/features/lottery/entities/lottery_statistics_model.dart';
+import 'package:lunchbox/core/network/response/paginated_response.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_draw_response.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_prize_response.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_record_response.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_statistics_response.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -21,26 +23,24 @@ abstract class LotteryRestClient {
 
   /// 获取抽奖商品列表
   @GET('/api/v1/lottery/prizes')
-  Future<ApiResponse<List<LotteryPrizeModel>>> getLotteryPrizes();
+  Future<ApiResponse<List<LotteryPrizeResponse>>> getLotteryPrizes();
 
   /// 执行抽奖
   @POST('/api/v1/lottery/draw')
-  Future<ApiResponse<LotteryPrizeModel>> drawLottery();
+  Future<ApiResponse<LotteryDrawResponse>> drawLottery();
 
   /// 获取用户抽奖记录
   @GET('/api/v1/lottery/records')
-  Future<ApiResponse<List<LotteryRecordModel>>> getLotteryRecords({
-    @Query('page') int? page,
-    @Query('size') int? size,
-  });
+  Future<ApiResponse<PaginatedResponse<LotteryRecordResponse>>>
+  getLotteryRecords({@Query('page') int? page, @Query('size') int? size});
 
   /// 获取用户抽奖统计
   @GET('/api/v1/lottery/statistics')
-  Future<ApiResponse<LotteryStatisticsModel>> getLotteryStatistics();
+  Future<ApiResponse<LotteryStatisticsResponse>> getLotteryStatistics();
 
   /// 获取单个抽奖记录详情
   @GET('/api/v1/lottery/records/{record_id}')
-  Future<ApiResponse<LotteryRecordModel>> getLotteryRecordDetail(
-    @Path('record_id') String recordId,
+  Future<ApiResponse<LotteryRecordResponse>> getLotteryRecordDetail(
+    @Path('record_id') int recordId,
   );
 }

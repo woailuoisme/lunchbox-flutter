@@ -11,40 +11,6 @@
     "lottery": "Lucky Draw",
     "invite": "Invite Friends"
   },
-  "lottery": {
-    "title": "Lucky Draw",
-    "prizes": "My Prizes",
-    "rules": "Activity Rules",
-    "subtitle": "Join the draw, win great prizes",
-    "remaining": "Remaining: ${count}",
-    "spin": "Spin",
-    "spinning": "...",
-    "congratulations": "Congratulations",
-    "accept": "Accept",
-    "rule1": "Free draws daily, complete tasks for more",
-    "rule2": "Coupons valid for 48h, Points added automatically",
-    "rule3": "Platform reserves all rights",
-    "prizeUnit": "Points",
-    "prizeList": "Prize List",
-    "back": "Back",
-    "prizeStats": {
-      "total": "Total",
-      "used": "Used",
-      "available": "Available"
-    },
-    "tabs": {
-      "all": "All",
-      "available": "Available",
-      "used": "Used",
-      "expired": "Expired"
-    },
-    "prizeCard": {
-      "source": "Point rewards, can be used in Point Mall",
-      "getTime": "Got at: ${time}",
-      "expiryTime": "Expiry: ${time}",
-      "statusExpired": "Expired"
-    }
-  },
   "status": {
     "open": "Open",
     "closed": "Closed",

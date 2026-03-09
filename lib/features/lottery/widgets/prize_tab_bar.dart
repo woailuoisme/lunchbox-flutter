@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 
-/// 奖品分类 TabBar
-///
-/// 用于在“我的奖品”页面中切换不同状态的奖品列表
+/// 奖品分类 TabBar（3 个 Tab：全部 / 已中奖 / 未中奖）
 class PrizeTabBar extends StatelessWidget {
-  /// 构造函数
   const PrizeTabBar({super.key, required this.controller});
 
-  /// Tab 控制器
   final TabController controller;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
@@ -42,11 +38,10 @@ class PrizeTabBar extends StatelessWidget {
           fontWeight: FontWeight.w500,
           fontSize: 14.sp,
         ),
-        tabs: const [
-          Tab(text: '全部'),
-          Tab(text: '可用'),
-          Tab(text: '已使用'),
-          Tab(text: '已过期'),
+        tabs: [
+          Tab(text: t.lottery.tabs.all),
+          Tab(text: t.lottery.tabs.win),
+          Tab(text: t.lottery.tabs.lose),
         ],
       ),
     );

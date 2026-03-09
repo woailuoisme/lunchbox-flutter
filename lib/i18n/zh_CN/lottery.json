@@ -1,0 +1,37 @@
+{
+  "title": "幸运抽奖",
+  "prizes": "我的奖品",
+  "rules": "活动规则",
+  "subtitle": "参与抽奖，赢取好礼",
+  "remaining": "剩余次数: ${count}",
+  "spin": "抽奖",
+  "spinning": "...",
+  "congratulations": "恭喜获得",
+  "accept": "开心收下",
+  "thankYou": "谢谢参与",
+  "thanksForParticipating": "感谢参与",
+  "prizeListTitle": "奖品一览",
+  "prizeStats": {
+    "total": "总奖品",
+    "win": "已抽中",
+    "distributed": "已发放",
+    "viewAll": "查看您获得的所有奖品"
+  },
+  "tabs": {
+    "all": "全部",
+    "win": "已中奖",
+    "lose": "未中奖"
+  },
+  "prizeCard": {
+    "reward": "奖励",
+    "id": "ID: ${id}",
+    "getTime": "获得时间: ${time}",
+    "obtained": "已获得",
+    "notWon": "未中奖"
+  },
+  "rulesList": [
+    "每日有免费抽奖次数，次数用完后可领取任务获得",
+    "优惠券48小时内有效，积分自动到账",
+    "活动最终解释权归平台所有"
+  ]
+}

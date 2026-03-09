@@ -1,11 +1,11 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-/// 抽奖转盘组件
-/// 包含转盘旋转动画、中奖逻辑和中心按钮
-class LotteryWheel extends StatefulWidget {
+/// 抽奖转盘组件（纯展示，无内部状态）
+class LotteryWheel extends StatelessWidget {
   const LotteryWheel({
     required this.items,
     required this.isSpinning,
@@ -19,11 +19,15 @@ class LotteryWheel extends StatefulWidget {
   final VoidCallback onSpin;
   final double rotation;
 
-  @override
-  State<LotteryWheel> createState() => _LotteryWheelState();
-}
+  static const List<Color> _sectorColors = [
+    Color(0xFFFF8A80),
+    Color(0xFFFFFFFF),
+    Color(0xFFFFD180),
+    Color(0xFFFFFFFF),
+    Color(0xFF80D8FF),
+    Color(0xFFFFFFFF),
+  ];
 
-class _LotteryWheelState extends State<LotteryWheel> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -33,9 +37,7 @@ class _LotteryWheelState extends State<LotteryWheel> {
         alignment: Alignment.center,
         children: [
           // 外圈装饰
-          Container(
-            width: 320.w,
-            height: 320.w,
+          DecoratedBox(
             decoration: BoxDecoration(
               color: const Color(0xFFFFE0B2),
               shape: BoxShape.circle,
@@ -47,25 +49,16 @@ class _LotteryWheelState extends State<LotteryWheel> {
                 ),
               ],
             ),
+            child: SizedBox(width: 320.w, height: 320.w),
           ),
-          // 旋转的转盘
+          // 旋转转盘
           Transform.rotate(
-            angle: widget.rotation,
+            angle: rotation,
             child: SizedBox(
               width: 300.w,
               height: 300.w,
               child: CustomPaint(
-                painter: WheelPainter(
-                  items: widget.items,
-                  colors: const [
-                    Color(0xFFFF8A80), // Red
-                    Color(0xFFFFFFFF), // White
-                    Color(0xFFFFD180), // Orange
-                    Color(0xFFFFFFFF), // White
-                    Color(0xFF80D8FF), // Blue
-                    Color(0xFFFFFFFF), // White
-                  ],
-                ),
+                painter: _WheelPainter(items: items, colors: _sectorColors),
               ),
             ),
           ),
@@ -79,34 +72,11 @@ class _LotteryWheelState extends State<LotteryWheel> {
               fill: 1.0,
             ),
           ),
-          // 中心按钮
-          GestureDetector(
-            onTap: widget.isSpinning ? null : widget.onSpin,
-            child: Container(
-              width: 80.w,
-              height: 80.w,
-              decoration: BoxDecoration(
-                color: colorScheme.primary,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 4),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.2),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                widget.isSpinning ? '...' : '抽奖',
-                style: TextStyle(
-                  color: colorScheme.onPrimary,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+          // 中心触发按钮
+          _SpinButton(
+            isSpinning: isSpinning,
+            onTap: isSpinning ? null : onSpin,
+            colorScheme: colorScheme,
           ),
         ],
       ),
@@ -114,9 +84,56 @@ class _LotteryWheelState extends State<LotteryWheel> {
   }
 }
 
-/// 转盘绘制器
-class WheelPainter extends CustomPainter {
-  WheelPainter({required this.items, required this.colors});
+/// 中心"抽奖"按钮
+class _SpinButton extends StatelessWidget {
+  const _SpinButton({
+    required this.isSpinning,
+    required this.onTap,
+    required this.colorScheme,
+  });
+
+  final bool isSpinning;
+  final VoidCallback? onTap;
+  final ColorScheme colorScheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 80.w,
+        height: 80.w,
+        decoration: BoxDecoration(
+          color: isSpinning
+              ? colorScheme.primary.withValues(alpha: 0.5)
+              : colorScheme.primary,
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.white, width: 4),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          isSpinning ? '...' : '抽奖',
+          style: TextStyle(
+            color: colorScheme.onPrimary,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// 转盘绘制器（private，仅供 LotteryWheel 使用）
+class _WheelPainter extends CustomPainter {
+  const _WheelPainter({required this.items, required this.colors});
 
   final List<String> items;
   final List<Color> colors;
@@ -127,28 +144,19 @@ class WheelPainter extends CustomPainter {
     final radius = size.width / 2;
     final sectorAngle = 2 * math.pi / items.length;
 
-    // 绘制扇区
     for (int i = 0; i < items.length; i++) {
-      final paint = Paint()
-        ..color = colors[i % colors.length]
-        ..style = PaintingStyle.fill;
-
-      // 这里的逻辑：我们希望 index 0 在顶部。
-      // drawArc 0度在右边 (3点钟)。
-      // 顶部是 -pi/2.
-      // 所以扇区 i 的起始角度是 -pi/2 + i * sectorAngle
-      final startAngle =
-          -math.pi / 2 + i * sectorAngle - (sectorAngle / 2); // 居中
+      final startAngle = -math.pi / 2 + i * sectorAngle - sectorAngle / 2;
 
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius),
         startAngle,
         sectorAngle,
         true,
-        paint,
+        Paint()
+          ..color = colors[i % colors.length]
+          ..style = PaintingStyle.fill,
       );
 
-      // 绘制文字
       _drawText(canvas, center, radius, startAngle + sectorAngle / 2, items[i]);
     }
   }
@@ -160,32 +168,29 @@ class WheelPainter extends CustomPainter {
     double angle,
     String text,
   ) {
-    canvas
-      ..save()
-      ..translate(center.dx, center.dy)
-      ..rotate(angle + math.pi / 2); // 旋转使得文字垂直向外
-
-    final textSpan = TextSpan(
-      text: text,
-      style: TextStyle(
-        color: Colors.black87,
-        fontSize: 14.sp,
-        fontWeight: FontWeight.bold,
-      ),
-    );
-
     final textPainter = TextPainter(
-      text: textSpan,
+      text: TextSpan(
+        text: text,
+        style: TextStyle(
+          color: Colors.black87,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       textDirection: TextDirection.ltr,
     )..layout();
 
-    // 文字绘制在半径的 2/3 处
-    final offset = Offset(-textPainter.width / 2, -radius * 0.75);
-    textPainter.paint(canvas, offset);
+    canvas
+      ..save()
+      ..translate(center.dx, center.dy)
+      ..rotate(angle + math.pi / 2)
+      ..drawPath(Path(), Paint());
 
+    textPainter.paint(canvas, Offset(-textPainter.width / 2, -radius * 0.75));
     canvas.restore();
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(_WheelPainter old) =>
+      old.items != items || old.colors != colors;
 }

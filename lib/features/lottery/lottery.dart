@@ -1,5 +1,8 @@
-export 'entities/lottery_prize.dart';
+export 'entities/lottery_draw_response.dart';
+export 'entities/lottery_prize_response.dart';
+export 'entities/lottery_record_response.dart';
 export 'entities/lottery_state.dart';
+export 'entities/lottery_statistics_response.dart';
 export 'providers/lottery_provider.dart';
 export 'repositories/lottery_repository.dart';
 export 'screens/lottery_view.dart';

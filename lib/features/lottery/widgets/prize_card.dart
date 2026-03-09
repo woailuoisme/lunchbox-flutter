@@ -1,41 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:lunchbox/features/lottery/entities/lottery_prize.dart';
+import 'package:lunchbox/features/lottery/entities/lottery_record_response.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
-/// 奖品卡片组件
-/// 展示奖品名称、数量、状态及有效期
+/// 奖品记录卡片
+///
+/// 展示单条抽奖记录：奖品名称、价值、时间、中奖状态
 class PrizeCard extends StatelessWidget {
-  const PrizeCard({required this.prize, super.key});
+  const PrizeCard({required this.record, super.key});
 
-  final LotteryPrize prize;
+  final LotteryRecordResponse record;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isExpired =
-        prize.expiredAt != null && prize.expiredAt!.isBefore(DateTime.now());
-    final isUsed = prize.isUsed;
-
-    // 状态标签配置
-    Color statusColor;
-    String statusText;
-    IconData statusIcon;
-
-    if (isUsed) {
-      statusColor = colorScheme.outline;
-      statusText = '已使用';
-      statusIcon = Symbols.check_circle;
-    } else if (isExpired) {
-      statusColor = colorScheme.error;
-      statusText = '已过期';
-      statusIcon = Symbols.cancel;
-    } else {
-      statusColor = Colors.green;
-      statusText = '可使用';
-      statusIcon = Symbols.check_circle;
-    }
+    final isWin = record.result == 'win';
+    final prizeName =
+        record.prize?.name ??
+        (isWin ? t.lottery.prizeCard.reward : t.lottery.thankYou);
+    final createdStr = record.createdAt != null
+        ? record.createdAt.toString().substring(0, 16)
+        : '';
 
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -57,25 +43,7 @@ class PrizeCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                width: 56.w,
-                height: 56.w,
-                decoration: BoxDecoration(
-                  color: isUsed || isExpired
-                      ? colorScheme.surfaceContainerHighest
-                      : Colors.amber.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                ),
-                alignment: Alignment.center,
-                child: Icon(
-                  Symbols.star,
-                  color: isUsed || isExpired
-                      ? colorScheme.outline
-                      : Colors.amber,
-                  size: 32.w,
-                  fill: 1.0,
-                ),
-              ),
+              _PrizeIcon(isWin: isWin, colorScheme: colorScheme),
               SizedBox(width: 16.w),
               Expanded(
                 child: Column(
@@ -84,46 +52,27 @@ class PrizeCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '${prize.amount.toInt()} ${t.points.unit}',
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                            color: isUsed || isExpired
-                                ? colorScheme.onSurfaceVariant
-                                : colorScheme.onSurface,
+                        Expanded(
+                          child: Text(
+                            prizeName,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.bold,
+                              color: isWin
+                                  ? colorScheme.onSurface
+                                  : colorScheme.onSurfaceVariant,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8.w,
-                            vertical: 4.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: statusColor.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(statusIcon, size: 14.w, color: statusColor),
-                              SizedBox(width: 4.w),
-                              Text(
-                                statusText,
-                                style: TextStyle(
-                                  fontSize: 11.sp,
-                                  color: statusColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        SizedBox(width: 8.w),
+                        _StatusBadge(isWin: isWin, colorScheme: colorScheme),
                       ],
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      '可在${t.points.mall}兑换商品',
+                      '${t.lottery.prizes}: ${record.prizeValue} ${record.prizeType}',
                       style: TextStyle(
                         fontSize: 13.sp,
                         color: colorScheme.onSurfaceVariant,
@@ -135,7 +84,7 @@ class PrizeCard extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 12.h),
+            padding: EdgeInsets.symmetric(vertical: 10.h),
             child: Divider(
               height: 1,
               color: colorScheme.outlineVariant.withValues(alpha: 0.3),
@@ -145,15 +94,82 @@ class PrizeCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '获得时间: ${prize.createdAt.toString().substring(0, 16)}',
+                t.lottery.prizeCard.id(id: record.id.toString()),
                 style: TextStyle(fontSize: 11.sp, color: colorScheme.outline),
               ),
-              if (prize.expiredAt != null)
+              if (createdStr.isNotEmpty)
                 Text(
-                  '有效期至: ${prize.expiredAt.toString().substring(0, 16)}',
+                  t.lottery.prizeCard.getTime(time: createdStr),
                   style: TextStyle(fontSize: 11.sp, color: colorScheme.outline),
                 ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PrizeIcon extends StatelessWidget {
+  const _PrizeIcon({required this.isWin, required this.colorScheme});
+
+  final bool isWin;
+  final ColorScheme colorScheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 52.w,
+      height: 52.w,
+      decoration: BoxDecoration(
+        color: isWin
+            ? Colors.amber.withValues(alpha: 0.1)
+            : colorScheme.surfaceContainerHighest,
+        shape: BoxShape.circle,
+      ),
+      alignment: Alignment.center,
+      child: Icon(
+        isWin ? Symbols.star : Symbols.sentiment_dissatisfied,
+        color: isWin ? Colors.amber : colorScheme.outline,
+        size: 28.w,
+        fill: 1.0,
+      ),
+    );
+  }
+}
+
+class _StatusBadge extends StatelessWidget {
+  const _StatusBadge({required this.isWin, required this.colorScheme});
+
+  final bool isWin;
+  final ColorScheme colorScheme;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isWin ? Colors.green : colorScheme.outline;
+    final icon = isWin ? Symbols.check_circle : Symbols.cancel;
+    final label = isWin
+        ? t.lottery.prizeCard.obtained
+        : t.lottery.prizeCard.notWon;
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 12.w, color: color),
+          SizedBox(width: 3.w),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11.sp,
+              color: color,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),

@@ -15,6 +15,7 @@ import 'package:lunchbox/features/order/widgets/order_info_section.dart';
 import 'package:lunchbox/features/order/widgets/order_pickup_info.dart';
 import 'package:lunchbox/features/order/widgets/order_price_summary.dart';
 import 'package:lunchbox/features/order/widgets/order_product_item.dart';
+import 'package:lunchbox/core/services/toast_service.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 
@@ -35,9 +36,9 @@ class OrderDetailView extends ConsumerWidget {
         case 'cancel':
           await notifier.cancelOrder(order.id.toString());
           if (context.mounted) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(t.order.orderCancelled)));
+            ref
+                .read(toastServiceProvider)
+                .showSuccess(t.order.orderCancelled, context: context);
             // 刷新订单状态
             await ref
                 .read(orderProvider.notifier)
@@ -48,17 +49,17 @@ class OrderDetailView extends ConsumerWidget {
           // 使用 Stripe 支付
           await notifier.payOrder(order.id.toString(), 'stripe');
           if (context.mounted) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(t.order.paySuccess)));
+            ref
+                .read(toastServiceProvider)
+                .showSuccess(t.order.paySuccess, context: context);
           }
           break;
         case 'confirm':
           await notifier.confirmOrder(order.id.toString());
           if (context.mounted) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(t.order.confirmOrder)));
+            ref
+                .read(toastServiceProvider)
+                .showSuccess(t.order.confirmOrder, context: context);
             // 刷新订单状态
             await ref
                 .read(orderProvider.notifier)
@@ -68,9 +69,9 @@ class OrderDetailView extends ConsumerWidget {
         case 'reorder':
           await notifier.reorder(order.id.toString());
           if (context.mounted) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(t.order.reorderSuccess)));
+            ref
+                .read(toastServiceProvider)
+                .showSuccess(t.order.reorderSuccess, context: context);
             // Navigate to cart
             if (context.mounted) {
               await context.push(AppRoutes.cart);
@@ -79,31 +80,34 @@ class OrderDetailView extends ConsumerWidget {
           break;
         case 'refund':
           if (context.mounted) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(t.order.refundNotAvailable)));
+            ref
+                .read(toastServiceProvider)
+                .showInfo(t.order.refundNotAvailable, context: context);
           }
           break;
         case 'delete':
           if (context.mounted) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(t.order.deleteNotAvailable)));
+            ref
+                .read(toastServiceProvider)
+                .showInfo(t.order.deleteNotAvailable, context: context);
           }
           break;
         case 'contact_service':
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(t.order.serviceNotAvailable)),
-            );
+            ref
+                .read(toastServiceProvider)
+                .showInfo(t.order.serviceNotAvailable, context: context);
           }
           break;
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(t.order.operationFailed(error: e.toString()))),
-        );
+        ref
+            .read(toastServiceProvider)
+            .showError(
+              t.order.operationFailed(error: e.toString()),
+              context: context,
+            );
       }
     }
   }

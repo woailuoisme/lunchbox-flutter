@@ -73,6 +73,8 @@ class TranslationsZhTw extends Translations with BaseTranslations<AppLocale, Tra
   @override
   late final _TranslationsHomeZhTw home = _TranslationsHomeZhTw._(_root);
   @override
+  late final _TranslationsLotteryZhTw lottery = _TranslationsLotteryZhTw._(_root);
+  @override
   late final _TranslationsNavigationZhTw navigation = _TranslationsNavigationZhTw._(_root);
   @override
   late final _TranslationsOnboardingZhTw onboarding = _TranslationsOnboardingZhTw._(_root);
@@ -720,9 +722,52 @@ class _TranslationsHomeZhTw extends TranslationsHomeZhCn {
   @override
   late final _TranslationsHomeGridZhTw grid = _TranslationsHomeGridZhTw._(_root);
   @override
-  late final _TranslationsHomeLotteryZhTw lottery = _TranslationsHomeLotteryZhTw._(_root);
-  @override
   late final _TranslationsHomeStatusZhTw status = _TranslationsHomeStatusZhTw._(_root);
+}
+
+// Path: lottery
+class _TranslationsLotteryZhTw extends TranslationsLotteryZhCn {
+  _TranslationsLotteryZhTw._(TranslationsZhTw root) : this._root = root, super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title => TranslationOverrides.string(_root.$meta, 'lottery.title', {}) ?? '幸運抽獎';
+  @override
+  String get prizes => TranslationOverrides.string(_root.$meta, 'lottery.prizes', {}) ?? '我的獎品';
+  @override
+  String get rules => TranslationOverrides.string(_root.$meta, 'lottery.rules', {}) ?? '活動規則';
+  @override
+  String get subtitle => TranslationOverrides.string(_root.$meta, 'lottery.subtitle', {}) ?? '參與抽獎，贏取好禮';
+  @override
+  String remaining({required Object count}) =>
+      TranslationOverrides.string(_root.$meta, 'lottery.remaining', {'count': count}) ?? '剩餘次數: ${count}';
+  @override
+  String get spin => TranslationOverrides.string(_root.$meta, 'lottery.spin', {}) ?? '抽獎';
+  @override
+  String get spinning => TranslationOverrides.string(_root.$meta, 'lottery.spinning', {}) ?? '...';
+  @override
+  String get congratulations => TranslationOverrides.string(_root.$meta, 'lottery.congratulations', {}) ?? '恭喜獲得';
+  @override
+  String get accept => TranslationOverrides.string(_root.$meta, 'lottery.accept', {}) ?? '開心收下';
+  @override
+  String get thankYou => TranslationOverrides.string(_root.$meta, 'lottery.thankYou', {}) ?? '謝謝參與';
+  @override
+  String get thanksForParticipating =>
+      TranslationOverrides.string(_root.$meta, 'lottery.thanksForParticipating', {}) ?? '感謝參與';
+  @override
+  String get prizeListTitle => TranslationOverrides.string(_root.$meta, 'lottery.prizeListTitle', {}) ?? '獎品一覽';
+  @override
+  late final _TranslationsLotteryPrizeStatsZhTw prizeStats = _TranslationsLotteryPrizeStatsZhTw._(_root);
+  @override
+  late final _TranslationsLotteryTabsZhTw tabs = _TranslationsLotteryTabsZhTw._(_root);
+  @override
+  late final _TranslationsLotteryPrizeCardZhTw prizeCard = _TranslationsLotteryPrizeCardZhTw._(_root);
+  @override
+  List<String> get rulesList =>
+      TranslationOverrides.list(_root.$meta, 'lottery.rulesList') ??
+      ['每日有免費抽獎次數，次數用完後可領取任務獲得', '優惠券48小時內有效，積分自動到帳', '活動最終解釋權歸平台所有'];
 }
 
 // Path: navigation
@@ -1372,52 +1417,6 @@ class _TranslationsHomeGridZhTw extends TranslationsHomeGridZhCn {
   String get invite => TranslationOverrides.string(_root.$meta, 'home.grid.invite', {}) ?? '邀請好友';
 }
 
-// Path: home.lottery
-class _TranslationsHomeLotteryZhTw extends TranslationsHomeLotteryZhCn {
-  _TranslationsHomeLotteryZhTw._(TranslationsZhTw root) : this._root = root, super.internal(root);
-
-  final TranslationsZhTw _root; // ignore: unused_field
-
-  // Translations
-  @override
-  String get title => TranslationOverrides.string(_root.$meta, 'home.lottery.title', {}) ?? '幸運抽獎';
-  @override
-  String get prizes => TranslationOverrides.string(_root.$meta, 'home.lottery.prizes', {}) ?? '我的獎品';
-  @override
-  String get rules => TranslationOverrides.string(_root.$meta, 'home.lottery.rules', {}) ?? '活動規則';
-  @override
-  String get subtitle => TranslationOverrides.string(_root.$meta, 'home.lottery.subtitle', {}) ?? '參與抽獎，贏取好禮';
-  @override
-  String remaining({required Object count}) =>
-      TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {'count': count}) ?? '剩餘次數: ${count}';
-  @override
-  String get spin => TranslationOverrides.string(_root.$meta, 'home.lottery.spin', {}) ?? '抽獎';
-  @override
-  String get spinning => TranslationOverrides.string(_root.$meta, 'home.lottery.spinning', {}) ?? '...';
-  @override
-  String get congratulations => TranslationOverrides.string(_root.$meta, 'home.lottery.congratulations', {}) ?? '恭喜獲得';
-  @override
-  String get accept => TranslationOverrides.string(_root.$meta, 'home.lottery.accept', {}) ?? '開心收下';
-  @override
-  String get rule1 => TranslationOverrides.string(_root.$meta, 'home.lottery.rule1', {}) ?? '每日有免費抽獎次數，次數用完後可領取任務獲得';
-  @override
-  String get rule2 => TranslationOverrides.string(_root.$meta, 'home.lottery.rule2', {}) ?? '優惠券48小時內有效，積分自動到帳';
-  @override
-  String get rule3 => TranslationOverrides.string(_root.$meta, 'home.lottery.rule3', {}) ?? '活動最終解釋權歸平台所有';
-  @override
-  String get prizeUnit => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeUnit', {}) ?? '積分';
-  @override
-  String get prizeList => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeList', {}) ?? '獎品說明';
-  @override
-  String get back => TranslationOverrides.string(_root.$meta, 'home.lottery.back', {}) ?? '返回';
-  @override
-  late final _TranslationsHomeLotteryPrizeStatsZhTw prizeStats = _TranslationsHomeLotteryPrizeStatsZhTw._(_root);
-  @override
-  late final _TranslationsHomeLotteryTabsZhTw tabs = _TranslationsHomeLotteryTabsZhTw._(_root);
-  @override
-  late final _TranslationsHomeLotteryPrizeCardZhTw prizeCard = _TranslationsHomeLotteryPrizeCardZhTw._(_root);
-}
-
 // Path: home.status
 class _TranslationsHomeStatusZhTw extends TranslationsHomeStatusZhCn {
   _TranslationsHomeStatusZhTw._(TranslationsZhTw root) : this._root = root, super.internal(root);
@@ -1431,6 +1430,59 @@ class _TranslationsHomeStatusZhTw extends TranslationsHomeStatusZhCn {
   String get closed => TranslationOverrides.string(_root.$meta, 'home.status.closed', {}) ?? '休息中';
   @override
   String get mobilePayment => TranslationOverrides.string(_root.$meta, 'home.status.mobilePayment', {}) ?? '支援行動支付';
+}
+
+// Path: lottery.prizeStats
+class _TranslationsLotteryPrizeStatsZhTw extends TranslationsLotteryPrizeStatsZhCn {
+  _TranslationsLotteryPrizeStatsZhTw._(TranslationsZhTw root) : this._root = root, super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get total => TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.total', {}) ?? '總獎品';
+  @override
+  String get win => TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.win', {}) ?? '已抽中';
+  @override
+  String get distributed => TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.distributed', {}) ?? '已發放';
+  @override
+  String get viewAll => TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.viewAll', {}) ?? '查看您獲得的所有獎品';
+}
+
+// Path: lottery.tabs
+class _TranslationsLotteryTabsZhTw extends TranslationsLotteryTabsZhCn {
+  _TranslationsLotteryTabsZhTw._(TranslationsZhTw root) : this._root = root, super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get all => TranslationOverrides.string(_root.$meta, 'lottery.tabs.all', {}) ?? '全部';
+  @override
+  String get win => TranslationOverrides.string(_root.$meta, 'lottery.tabs.win', {}) ?? '已中獎';
+  @override
+  String get lose => TranslationOverrides.string(_root.$meta, 'lottery.tabs.lose', {}) ?? '未中獎';
+}
+
+// Path: lottery.prizeCard
+class _TranslationsLotteryPrizeCardZhTw extends TranslationsLotteryPrizeCardZhCn {
+  _TranslationsLotteryPrizeCardZhTw._(TranslationsZhTw root) : this._root = root, super.internal(root);
+
+  final TranslationsZhTw _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get reward => TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.reward', {}) ?? '獎勵';
+  @override
+  String id({required Object id}) =>
+      TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.id', {'id': id}) ?? 'ID: ${id}';
+  @override
+  String getTime({required Object time}) =>
+      TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.getTime', {'time': time}) ?? '獲得時間: ${time}';
+  @override
+  String get obtained => TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.obtained', {}) ?? '已獲得';
+  @override
+  String get notWon => TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.notWon', {}) ?? '未中獎';
 }
 
 // Path: order.status
@@ -1578,58 +1630,6 @@ class _TranslationsWelcomeGiftCardZhTw extends TranslationsWelcomeGiftCardZhCn {
   late final _TranslationsWelcomeGiftCardStatusZhTw status = _TranslationsWelcomeGiftCardStatusZhTw._(_root);
   @override
   late final _TranslationsWelcomeGiftCardButtonZhTw button = _TranslationsWelcomeGiftCardButtonZhTw._(_root);
-}
-
-// Path: home.lottery.prizeStats
-class _TranslationsHomeLotteryPrizeStatsZhTw extends TranslationsHomeLotteryPrizeStatsZhCn {
-  _TranslationsHomeLotteryPrizeStatsZhTw._(TranslationsZhTw root) : this._root = root, super.internal(root);
-
-  final TranslationsZhTw _root; // ignore: unused_field
-
-  // Translations
-  @override
-  String get total => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.total', {}) ?? '總獎品';
-  @override
-  String get used => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.used', {}) ?? '已使用';
-  @override
-  String get available => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.available', {}) ?? '可用';
-}
-
-// Path: home.lottery.tabs
-class _TranslationsHomeLotteryTabsZhTw extends TranslationsHomeLotteryTabsZhCn {
-  _TranslationsHomeLotteryTabsZhTw._(TranslationsZhTw root) : this._root = root, super.internal(root);
-
-  final TranslationsZhTw _root; // ignore: unused_field
-
-  // Translations
-  @override
-  String get all => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.all', {}) ?? '全部';
-  @override
-  String get available => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.available', {}) ?? '可用';
-  @override
-  String get used => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.used', {}) ?? '已使用';
-  @override
-  String get expired => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.expired', {}) ?? '已過期';
-}
-
-// Path: home.lottery.prizeCard
-class _TranslationsHomeLotteryPrizeCardZhTw extends TranslationsHomeLotteryPrizeCardZhCn {
-  _TranslationsHomeLotteryPrizeCardZhTw._(TranslationsZhTw root) : this._root = root, super.internal(root);
-
-  final TranslationsZhTw _root; // ignore: unused_field
-
-  // Translations
-  @override
-  String get source => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.source', {}) ?? '積分獎勵，可在積分商城使用';
-  @override
-  String getTime({required Object time}) =>
-      TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.getTime', {'time': time}) ?? '獲得時間: ${time}';
-  @override
-  String expiryTime({required Object time}) =>
-      TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.expiryTime', {'time': time}) ?? '有效期至: ${time}';
-  @override
-  String get statusExpired =>
-      TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.statusExpired', {}) ?? '已過期';
 }
 
 // Path: welcome_gift.card.status
@@ -2029,56 +2029,55 @@ extension on TranslationsZhTw {
           'home.grid.coupon' => TranslationOverrides.string(_root.$meta, 'home.grid.coupon', {}) ?? '領優惠券',
           'home.grid.lottery' => TranslationOverrides.string(_root.$meta, 'home.grid.lottery', {}) ?? '幸運抽獎',
           'home.grid.invite' => TranslationOverrides.string(_root.$meta, 'home.grid.invite', {}) ?? '邀請好友',
-          'home.lottery.title' => TranslationOverrides.string(_root.$meta, 'home.lottery.title', {}) ?? '幸運抽獎',
-          'home.lottery.prizes' => TranslationOverrides.string(_root.$meta, 'home.lottery.prizes', {}) ?? '我的獎品',
-          'home.lottery.rules' => TranslationOverrides.string(_root.$meta, 'home.lottery.rules', {}) ?? '活動規則',
-          'home.lottery.subtitle' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.subtitle', {}) ?? '參與抽獎，贏取好禮',
-          'home.lottery.remaining' =>
-            ({required Object count}) =>
-                TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {'count': count}) ??
-                '剩餘次數: ${count}',
-          'home.lottery.spin' => TranslationOverrides.string(_root.$meta, 'home.lottery.spin', {}) ?? '抽獎',
-          'home.lottery.spinning' => TranslationOverrides.string(_root.$meta, 'home.lottery.spinning', {}) ?? '...',
-          'home.lottery.congratulations' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.congratulations', {}) ?? '恭喜獲得',
-          'home.lottery.accept' => TranslationOverrides.string(_root.$meta, 'home.lottery.accept', {}) ?? '開心收下',
-          'home.lottery.rule1' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.rule1', {}) ?? '每日有免費抽獎次數，次數用完後可領取任務獲得',
-          'home.lottery.rule2' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.rule2', {}) ?? '優惠券48小時內有效，積分自動到帳',
-          'home.lottery.rule3' => TranslationOverrides.string(_root.$meta, 'home.lottery.rule3', {}) ?? '活動最終解釋權歸平台所有',
-          'home.lottery.prizeUnit' => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeUnit', {}) ?? '積分',
-          'home.lottery.prizeList' => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeList', {}) ?? '獎品說明',
-          'home.lottery.back' => TranslationOverrides.string(_root.$meta, 'home.lottery.back', {}) ?? '返回',
-          'home.lottery.prizeStats.total' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.total', {}) ?? '總獎品',
-          'home.lottery.prizeStats.used' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.used', {}) ?? '已使用',
-          'home.lottery.prizeStats.available' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.available', {}) ?? '可用',
-          'home.lottery.tabs.all' => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.all', {}) ?? '全部',
-          'home.lottery.tabs.available' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.available', {}) ?? '可用',
-          'home.lottery.tabs.used' => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.used', {}) ?? '已使用',
-          'home.lottery.tabs.expired' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.expired', {}) ?? '已過期',
-          'home.lottery.prizeCard.source' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.source', {}) ?? '積分獎勵，可在積分商城使用',
-          'home.lottery.prizeCard.getTime' =>
-            ({required Object time}) =>
-                TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.getTime', {'time': time}) ??
-                '獲得時間: ${time}',
-          'home.lottery.prizeCard.expiryTime' =>
-            ({required Object time}) =>
-                TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.expiryTime', {'time': time}) ??
-                '有效期至: ${time}',
-          'home.lottery.prizeCard.statusExpired' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.statusExpired', {}) ?? '已過期',
           'home.status.open' => TranslationOverrides.string(_root.$meta, 'home.status.open', {}) ?? '營業中',
           'home.status.closed' => TranslationOverrides.string(_root.$meta, 'home.status.closed', {}) ?? '休息中',
           'home.status.mobilePayment' =>
             TranslationOverrides.string(_root.$meta, 'home.status.mobilePayment', {}) ?? '支援行動支付',
+          'lottery.title' => TranslationOverrides.string(_root.$meta, 'lottery.title', {}) ?? '幸運抽獎',
+          'lottery.prizes' => TranslationOverrides.string(_root.$meta, 'lottery.prizes', {}) ?? '我的獎品',
+          'lottery.rules' => TranslationOverrides.string(_root.$meta, 'lottery.rules', {}) ?? '活動規則',
+          'lottery.subtitle' => TranslationOverrides.string(_root.$meta, 'lottery.subtitle', {}) ?? '參與抽獎，贏取好禮',
+          'lottery.remaining' =>
+            ({required Object count}) =>
+                TranslationOverrides.string(_root.$meta, 'lottery.remaining', {'count': count}) ?? '剩餘次數: ${count}',
+          'lottery.spin' => TranslationOverrides.string(_root.$meta, 'lottery.spin', {}) ?? '抽獎',
+          'lottery.spinning' => TranslationOverrides.string(_root.$meta, 'lottery.spinning', {}) ?? '...',
+          'lottery.congratulations' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.congratulations', {}) ?? '恭喜獲得',
+          'lottery.accept' => TranslationOverrides.string(_root.$meta, 'lottery.accept', {}) ?? '開心收下',
+          'lottery.thankYou' => TranslationOverrides.string(_root.$meta, 'lottery.thankYou', {}) ?? '謝謝參與',
+          'lottery.thanksForParticipating' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.thanksForParticipating', {}) ?? '感謝參與',
+          'lottery.prizeListTitle' => TranslationOverrides.string(_root.$meta, 'lottery.prizeListTitle', {}) ?? '獎品一覽',
+          'lottery.prizeStats.total' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.total', {}) ?? '總獎品',
+          'lottery.prizeStats.win' => TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.win', {}) ?? '已抽中',
+          'lottery.prizeStats.distributed' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.distributed', {}) ?? '已發放',
+          'lottery.prizeStats.viewAll' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.viewAll', {}) ?? '查看您獲得的所有獎品',
+          'lottery.tabs.all' => TranslationOverrides.string(_root.$meta, 'lottery.tabs.all', {}) ?? '全部',
+          'lottery.tabs.win' => TranslationOverrides.string(_root.$meta, 'lottery.tabs.win', {}) ?? '已中獎',
+          'lottery.tabs.lose' => TranslationOverrides.string(_root.$meta, 'lottery.tabs.lose', {}) ?? '未中獎',
+          'lottery.prizeCard.reward' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.reward', {}) ?? '獎勵',
+          'lottery.prizeCard.id' =>
+            ({required Object id}) =>
+                TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.id', {'id': id}) ?? 'ID: ${id}',
+          'lottery.prizeCard.getTime' =>
+            ({required Object time}) =>
+                TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.getTime', {'time': time}) ??
+                '獲得時間: ${time}',
+          'lottery.prizeCard.obtained' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.obtained', {}) ?? '已獲得',
+          'lottery.prizeCard.notWon' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.notWon', {}) ?? '未中獎',
+          'lottery.rulesList.0' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.rulesList.0', {}) ?? '每日有免費抽獎次數，次數用完後可領取任務獲得',
+          'lottery.rulesList.1' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.rulesList.1', {}) ?? '優惠券48小時內有效，積分自動到帳',
+          'lottery.rulesList.2' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.rulesList.2', {}) ?? '活動最終解釋權歸平台所有',
           'navigation.home' => TranslationOverrides.string(_root.$meta, 'navigation.home', {}) ?? '首頁',
           'navigation.device' => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? '設備',
           'navigation.orders' => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? '訂單',
@@ -2384,11 +2383,11 @@ extension on TranslationsZhTw {
           'settings.copyright' =>
             TranslationOverrides.string(_root.$meta, 'settings.copyright', {}) ?? '© 2024 Lunchbox Team',
           'splash.starting' => TranslationOverrides.string(_root.$meta, 'splash.starting', {}) ?? '正在啟動...',
-          'splash.checkingServices' =>
-            TranslationOverrides.string(_root.$meta, 'splash.checkingServices', {}) ?? '檢查服務狀態...',
           _ => null,
         } ??
         switch (path) {
+          'splash.checkingServices' =>
+            TranslationOverrides.string(_root.$meta, 'splash.checkingServices', {}) ?? '檢查服務狀態...',
           'splash.loadingConfig' => TranslationOverrides.string(_root.$meta, 'splash.loadingConfig', {}) ?? '載入配置...',
           'splash.checkingAuth' => TranslationOverrides.string(_root.$meta, 'splash.checkingAuth', {}) ?? '檢查登入狀態...',
           'splash.preparingData' => TranslationOverrides.string(_root.$meta, 'splash.preparingData', {}) ?? '準備數據...',

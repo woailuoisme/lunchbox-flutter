@@ -26,11 +26,6 @@ class HomeFunctionGrid extends ConsumerWidget {
         'color': colorScheme.primary,
       },
       {
-        'icon': Symbols.headset_mic,
-        'label': t.home.grid.service,
-        'color': colorScheme.primary,
-      },
-      {
         'icon': Symbols.confirmation_number,
         'label': t.home.grid.coupon,
         'color': colorScheme.primary,

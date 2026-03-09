@@ -100,8 +100,8 @@ dependencies:
   # 逻辑工具与日志
   intl: ^0.20.2
   lpinyin: ^2.0.3
-  talker_flutter: ^5.1.14
-  talker_dio_logger: ^5.1.14
+  talker_flutter: ^5.1.15
+  talker_dio_logger: ^5.1.15
   fpdart: ^1.2.0
 
   path: ^1.9.1

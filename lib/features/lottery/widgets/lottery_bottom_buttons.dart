@@ -35,7 +35,7 @@ class LotteryBottomButtons extends StatelessWidget {
             elevation: 2,
           ),
           icon: const Icon(Symbols.card_giftcard, size: 20),
-          label: Text(t.home.lottery.prizes),
+          label: Text(t.lottery.prizes),
         ),
       ),
     );

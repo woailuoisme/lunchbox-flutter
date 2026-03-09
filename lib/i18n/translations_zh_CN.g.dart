@@ -61,6 +61,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
   late final TranslationsHelpZhCn help = TranslationsHelpZhCn.internal(_root);
   late final TranslationsHomeZhCn home = TranslationsHomeZhCn.internal(_root);
   late final TranslationsInviteZhCn invite = TranslationsInviteZhCn.internal(_root);
+  late final TranslationsLotteryZhCn lottery = TranslationsLotteryZhCn.internal(_root);
   late final TranslationsNavigationZhCn navigation = TranslationsNavigationZhCn.internal(_root);
   late final TranslationsNetworkZhCn network = TranslationsNetworkZhCn.internal(_root);
   late final TranslationsOnboardingZhCn onboarding = TranslationsOnboardingZhCn.internal(_root);
@@ -991,7 +992,6 @@ class TranslationsHomeZhCn {
   String get recommendTitle => TranslationOverrides.string(_root.$meta, 'home.recommendTitle', {}) ?? '为我推荐';
 
   late final TranslationsHomeGridZhCn grid = TranslationsHomeGridZhCn.internal(_root);
-  late final TranslationsHomeLotteryZhCn lottery = TranslationsHomeLotteryZhCn.internal(_root);
   late final TranslationsHomeStatusZhCn status = TranslationsHomeStatusZhCn.internal(_root);
 }
 
@@ -1064,6 +1064,60 @@ class TranslationsInviteZhCn {
   String get rewardAmount => TranslationOverrides.string(_root.$meta, 'invite.rewardAmount', {}) ?? '已获得奖励(元)';
 
   late final TranslationsInviteRulesZhCn rules = TranslationsInviteRulesZhCn.internal(_root);
+}
+
+// Path: lottery
+class TranslationsLotteryZhCn {
+  TranslationsLotteryZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '幸运抽奖'
+  String get title => TranslationOverrides.string(_root.$meta, 'lottery.title', {}) ?? '幸运抽奖';
+
+  /// zh-CN: '我的奖品'
+  String get prizes => TranslationOverrides.string(_root.$meta, 'lottery.prizes', {}) ?? '我的奖品';
+
+  /// zh-CN: '活动规则'
+  String get rules => TranslationOverrides.string(_root.$meta, 'lottery.rules', {}) ?? '活动规则';
+
+  /// zh-CN: '参与抽奖，赢取好礼'
+  String get subtitle => TranslationOverrides.string(_root.$meta, 'lottery.subtitle', {}) ?? '参与抽奖，赢取好礼';
+
+  /// zh-CN: '剩余次数: ${count}'
+  String remaining({required Object count}) =>
+      TranslationOverrides.string(_root.$meta, 'lottery.remaining', {'count': count}) ?? '剩余次数: ${count}';
+
+  /// zh-CN: '抽奖'
+  String get spin => TranslationOverrides.string(_root.$meta, 'lottery.spin', {}) ?? '抽奖';
+
+  /// zh-CN: '...'
+  String get spinning => TranslationOverrides.string(_root.$meta, 'lottery.spinning', {}) ?? '...';
+
+  /// zh-CN: '恭喜获得'
+  String get congratulations => TranslationOverrides.string(_root.$meta, 'lottery.congratulations', {}) ?? '恭喜获得';
+
+  /// zh-CN: '开心收下'
+  String get accept => TranslationOverrides.string(_root.$meta, 'lottery.accept', {}) ?? '开心收下';
+
+  /// zh-CN: '谢谢参与'
+  String get thankYou => TranslationOverrides.string(_root.$meta, 'lottery.thankYou', {}) ?? '谢谢参与';
+
+  /// zh-CN: '感谢参与'
+  String get thanksForParticipating =>
+      TranslationOverrides.string(_root.$meta, 'lottery.thanksForParticipating', {}) ?? '感谢参与';
+
+  /// zh-CN: '奖品一览'
+  String get prizeListTitle => TranslationOverrides.string(_root.$meta, 'lottery.prizeListTitle', {}) ?? '奖品一览';
+
+  late final TranslationsLotteryPrizeStatsZhCn prizeStats = TranslationsLotteryPrizeStatsZhCn.internal(_root);
+  late final TranslationsLotteryTabsZhCn tabs = TranslationsLotteryTabsZhCn.internal(_root);
+  late final TranslationsLotteryPrizeCardZhCn prizeCard = TranslationsLotteryPrizeCardZhCn.internal(_root);
+  List<String> get rulesList =>
+      TranslationOverrides.list(_root.$meta, 'lottery.rulesList') ??
+      ['每日有免费抽奖次数，次数用完后可领取任务获得', '优惠券48小时内有效，积分自动到账', '活动最终解释权归平台所有'];
 }
 
 // Path: navigation
@@ -2112,65 +2166,6 @@ class TranslationsHomeGridZhCn {
   String get inviteHint => TranslationOverrides.string(_root.$meta, 'home.grid.inviteHint', {}) ?? '邀请好友得现金';
 }
 
-// Path: home.lottery
-class TranslationsHomeLotteryZhCn {
-  TranslationsHomeLotteryZhCn.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// zh-CN: '幸运抽奖'
-  String get title => TranslationOverrides.string(_root.$meta, 'home.lottery.title', {}) ?? '幸运抽奖';
-
-  /// zh-CN: '我的奖品'
-  String get prizes => TranslationOverrides.string(_root.$meta, 'home.lottery.prizes', {}) ?? '我的奖品';
-
-  /// zh-CN: '活动规则'
-  String get rules => TranslationOverrides.string(_root.$meta, 'home.lottery.rules', {}) ?? '活动规则';
-
-  /// zh-CN: '参与抽奖，赢取好礼'
-  String get subtitle => TranslationOverrides.string(_root.$meta, 'home.lottery.subtitle', {}) ?? '参与抽奖，赢取好礼';
-
-  /// zh-CN: '剩余次数: ${count}'
-  String remaining({required Object count}) =>
-      TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {'count': count}) ?? '剩余次数: ${count}';
-
-  /// zh-CN: '抽奖'
-  String get spin => TranslationOverrides.string(_root.$meta, 'home.lottery.spin', {}) ?? '抽奖';
-
-  /// zh-CN: '...'
-  String get spinning => TranslationOverrides.string(_root.$meta, 'home.lottery.spinning', {}) ?? '...';
-
-  /// zh-CN: '恭喜获得'
-  String get congratulations => TranslationOverrides.string(_root.$meta, 'home.lottery.congratulations', {}) ?? '恭喜获得';
-
-  /// zh-CN: '开心收下'
-  String get accept => TranslationOverrides.string(_root.$meta, 'home.lottery.accept', {}) ?? '开心收下';
-
-  /// zh-CN: '每日有免费抽奖次数，次数用完后可领取任务获得'
-  String get rule1 => TranslationOverrides.string(_root.$meta, 'home.lottery.rule1', {}) ?? '每日有免费抽奖次数，次数用完后可领取任务获得';
-
-  /// zh-CN: '优惠券48小时内有效，积分自动到账'
-  String get rule2 => TranslationOverrides.string(_root.$meta, 'home.lottery.rule2', {}) ?? '优惠券48小时内有效，积分自动到账';
-
-  /// zh-CN: '活动最终解释权归平台所有'
-  String get rule3 => TranslationOverrides.string(_root.$meta, 'home.lottery.rule3', {}) ?? '活动最终解释权归平台所有';
-
-  /// zh-CN: '积分'
-  String get prizeUnit => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeUnit', {}) ?? '积分';
-
-  /// zh-CN: '奖品说明'
-  String get prizeList => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeList', {}) ?? '奖品说明';
-
-  /// zh-CN: '返回'
-  String get back => TranslationOverrides.string(_root.$meta, 'home.lottery.back', {}) ?? '返回';
-
-  late final TranslationsHomeLotteryPrizeStatsZhCn prizeStats = TranslationsHomeLotteryPrizeStatsZhCn.internal(_root);
-  late final TranslationsHomeLotteryTabsZhCn tabs = TranslationsHomeLotteryTabsZhCn.internal(_root);
-  late final TranslationsHomeLotteryPrizeCardZhCn prizeCard = TranslationsHomeLotteryPrizeCardZhCn.internal(_root);
-}
-
 // Path: home.status
 class TranslationsHomeStatusZhCn {
   TranslationsHomeStatusZhCn.internal(this._root);
@@ -2271,6 +2266,71 @@ class TranslationsInviteRulesZhCn {
 
   /// zh-CN: '可在“我的成就”中查看邀请记录'
   String get process5 => TranslationOverrides.string(_root.$meta, 'invite.rules.process5', {}) ?? '可在“我的成就”中查看邀请记录';
+}
+
+// Path: lottery.prizeStats
+class TranslationsLotteryPrizeStatsZhCn {
+  TranslationsLotteryPrizeStatsZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '总奖品'
+  String get total => TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.total', {}) ?? '总奖品';
+
+  /// zh-CN: '已抽中'
+  String get win => TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.win', {}) ?? '已抽中';
+
+  /// zh-CN: '已发放'
+  String get distributed => TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.distributed', {}) ?? '已发放';
+
+  /// zh-CN: '查看您获得的所有奖品'
+  String get viewAll => TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.viewAll', {}) ?? '查看您获得的所有奖品';
+}
+
+// Path: lottery.tabs
+class TranslationsLotteryTabsZhCn {
+  TranslationsLotteryTabsZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '全部'
+  String get all => TranslationOverrides.string(_root.$meta, 'lottery.tabs.all', {}) ?? '全部';
+
+  /// zh-CN: '已中奖'
+  String get win => TranslationOverrides.string(_root.$meta, 'lottery.tabs.win', {}) ?? '已中奖';
+
+  /// zh-CN: '未中奖'
+  String get lose => TranslationOverrides.string(_root.$meta, 'lottery.tabs.lose', {}) ?? '未中奖';
+}
+
+// Path: lottery.prizeCard
+class TranslationsLotteryPrizeCardZhCn {
+  TranslationsLotteryPrizeCardZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '奖励'
+  String get reward => TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.reward', {}) ?? '奖励';
+
+  /// zh-CN: 'ID: ${id}'
+  String id({required Object id}) =>
+      TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.id', {'id': id}) ?? 'ID: ${id}';
+
+  /// zh-CN: '获得时间: ${time}'
+  String getTime({required Object time}) =>
+      TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.getTime', {'time': time}) ?? '获得时间: ${time}';
+
+  /// zh-CN: '已获得'
+  String get obtained => TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.obtained', {}) ?? '已获得';
+
+  /// zh-CN: '未中奖'
+  String get notWon => TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.notWon', {}) ?? '未中奖';
 }
 
 // Path: network.errors
@@ -2718,69 +2778,6 @@ class TranslationsWelcomeGiftCardZhCn {
 
   late final TranslationsWelcomeGiftCardStatusZhCn status = TranslationsWelcomeGiftCardStatusZhCn.internal(_root);
   late final TranslationsWelcomeGiftCardButtonZhCn button = TranslationsWelcomeGiftCardButtonZhCn.internal(_root);
-}
-
-// Path: home.lottery.prizeStats
-class TranslationsHomeLotteryPrizeStatsZhCn {
-  TranslationsHomeLotteryPrizeStatsZhCn.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// zh-CN: '总奖品'
-  String get total => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.total', {}) ?? '总奖品';
-
-  /// zh-CN: '已使用'
-  String get used => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.used', {}) ?? '已使用';
-
-  /// zh-CN: '可用'
-  String get available => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.available', {}) ?? '可用';
-}
-
-// Path: home.lottery.tabs
-class TranslationsHomeLotteryTabsZhCn {
-  TranslationsHomeLotteryTabsZhCn.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// zh-CN: '全部'
-  String get all => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.all', {}) ?? '全部';
-
-  /// zh-CN: '可用'
-  String get available => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.available', {}) ?? '可用';
-
-  /// zh-CN: '已使用'
-  String get used => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.used', {}) ?? '已使用';
-
-  /// zh-CN: '已过期'
-  String get expired => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.expired', {}) ?? '已过期';
-}
-
-// Path: home.lottery.prizeCard
-class TranslationsHomeLotteryPrizeCardZhCn {
-  TranslationsHomeLotteryPrizeCardZhCn.internal(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// zh-CN: '积分奖励，可在积分商城使用'
-  String get source => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.source', {}) ?? '积分奖励，可在积分商城使用';
-
-  /// zh-CN: '获得时间: ${time}'
-  String getTime({required Object time}) =>
-      TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.getTime', {'time': time}) ?? '获得时间: ${time}';
-
-  /// zh-CN: '有效期至: ${time}'
-  String expiryTime({required Object time}) =>
-      TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.expiryTime', {'time': time}) ?? '有效期至: ${time}';
-
-  /// zh-CN: '已过期'
-  String get statusExpired =>
-      TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.statusExpired', {}) ?? '已过期';
 }
 
 // Path: profile.walletPage.rules
@@ -3272,52 +3269,6 @@ extension on Translations {
           'home.grid.lottery' => TranslationOverrides.string(_root.$meta, 'home.grid.lottery', {}) ?? '幸运抽奖',
           'home.grid.invite' => TranslationOverrides.string(_root.$meta, 'home.grid.invite', {}) ?? '邀请好友',
           'home.grid.inviteHint' => TranslationOverrides.string(_root.$meta, 'home.grid.inviteHint', {}) ?? '邀请好友得现金',
-          'home.lottery.title' => TranslationOverrides.string(_root.$meta, 'home.lottery.title', {}) ?? '幸运抽奖',
-          'home.lottery.prizes' => TranslationOverrides.string(_root.$meta, 'home.lottery.prizes', {}) ?? '我的奖品',
-          'home.lottery.rules' => TranslationOverrides.string(_root.$meta, 'home.lottery.rules', {}) ?? '活动规则',
-          'home.lottery.subtitle' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.subtitle', {}) ?? '参与抽奖，赢取好礼',
-          'home.lottery.remaining' =>
-            ({required Object count}) =>
-                TranslationOverrides.string(_root.$meta, 'home.lottery.remaining', {'count': count}) ??
-                '剩余次数: ${count}',
-          'home.lottery.spin' => TranslationOverrides.string(_root.$meta, 'home.lottery.spin', {}) ?? '抽奖',
-          'home.lottery.spinning' => TranslationOverrides.string(_root.$meta, 'home.lottery.spinning', {}) ?? '...',
-          'home.lottery.congratulations' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.congratulations', {}) ?? '恭喜获得',
-          'home.lottery.accept' => TranslationOverrides.string(_root.$meta, 'home.lottery.accept', {}) ?? '开心收下',
-          'home.lottery.rule1' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.rule1', {}) ?? '每日有免费抽奖次数，次数用完后可领取任务获得',
-          'home.lottery.rule2' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.rule2', {}) ?? '优惠券48小时内有效，积分自动到账',
-          'home.lottery.rule3' => TranslationOverrides.string(_root.$meta, 'home.lottery.rule3', {}) ?? '活动最终解释权归平台所有',
-          'home.lottery.prizeUnit' => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeUnit', {}) ?? '积分',
-          'home.lottery.prizeList' => TranslationOverrides.string(_root.$meta, 'home.lottery.prizeList', {}) ?? '奖品说明',
-          'home.lottery.back' => TranslationOverrides.string(_root.$meta, 'home.lottery.back', {}) ?? '返回',
-          'home.lottery.prizeStats.total' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.total', {}) ?? '总奖品',
-          'home.lottery.prizeStats.used' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.used', {}) ?? '已使用',
-          'home.lottery.prizeStats.available' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.prizeStats.available', {}) ?? '可用',
-          'home.lottery.tabs.all' => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.all', {}) ?? '全部',
-          'home.lottery.tabs.available' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.available', {}) ?? '可用',
-          'home.lottery.tabs.used' => TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.used', {}) ?? '已使用',
-          'home.lottery.tabs.expired' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.tabs.expired', {}) ?? '已过期',
-          'home.lottery.prizeCard.source' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.source', {}) ?? '积分奖励，可在积分商城使用',
-          'home.lottery.prizeCard.getTime' =>
-            ({required Object time}) =>
-                TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.getTime', {'time': time}) ??
-                '获得时间: ${time}',
-          'home.lottery.prizeCard.expiryTime' =>
-            ({required Object time}) =>
-                TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.expiryTime', {'time': time}) ??
-                '有效期至: ${time}',
-          'home.lottery.prizeCard.statusExpired' =>
-            TranslationOverrides.string(_root.$meta, 'home.lottery.prizeCard.statusExpired', {}) ?? '已过期',
           'home.status.open' => TranslationOverrides.string(_root.$meta, 'home.status.open', {}) ?? '营业中',
           'home.status.closed' => TranslationOverrides.string(_root.$meta, 'home.status.closed', {}) ?? '休息中',
           'home.status.mobilePayment' =>
@@ -3385,6 +3336,51 @@ extension on Translations {
             TranslationOverrides.string(_root.$meta, 'invite.rules.process4', {}) ?? '系统自动发放奖励到您的账户',
           'invite.rules.process5' =>
             TranslationOverrides.string(_root.$meta, 'invite.rules.process5', {}) ?? '可在“我的成就”中查看邀请记录',
+          'lottery.title' => TranslationOverrides.string(_root.$meta, 'lottery.title', {}) ?? '幸运抽奖',
+          'lottery.prizes' => TranslationOverrides.string(_root.$meta, 'lottery.prizes', {}) ?? '我的奖品',
+          'lottery.rules' => TranslationOverrides.string(_root.$meta, 'lottery.rules', {}) ?? '活动规则',
+          'lottery.subtitle' => TranslationOverrides.string(_root.$meta, 'lottery.subtitle', {}) ?? '参与抽奖，赢取好礼',
+          'lottery.remaining' =>
+            ({required Object count}) =>
+                TranslationOverrides.string(_root.$meta, 'lottery.remaining', {'count': count}) ?? '剩余次数: ${count}',
+          'lottery.spin' => TranslationOverrides.string(_root.$meta, 'lottery.spin', {}) ?? '抽奖',
+          'lottery.spinning' => TranslationOverrides.string(_root.$meta, 'lottery.spinning', {}) ?? '...',
+          'lottery.congratulations' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.congratulations', {}) ?? '恭喜获得',
+          'lottery.accept' => TranslationOverrides.string(_root.$meta, 'lottery.accept', {}) ?? '开心收下',
+          'lottery.thankYou' => TranslationOverrides.string(_root.$meta, 'lottery.thankYou', {}) ?? '谢谢参与',
+          'lottery.thanksForParticipating' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.thanksForParticipating', {}) ?? '感谢参与',
+          'lottery.prizeListTitle' => TranslationOverrides.string(_root.$meta, 'lottery.prizeListTitle', {}) ?? '奖品一览',
+          'lottery.prizeStats.total' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.total', {}) ?? '总奖品',
+          'lottery.prizeStats.win' => TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.win', {}) ?? '已抽中',
+          'lottery.prizeStats.distributed' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.distributed', {}) ?? '已发放',
+          'lottery.prizeStats.viewAll' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeStats.viewAll', {}) ?? '查看您获得的所有奖品',
+          'lottery.tabs.all' => TranslationOverrides.string(_root.$meta, 'lottery.tabs.all', {}) ?? '全部',
+          'lottery.tabs.win' => TranslationOverrides.string(_root.$meta, 'lottery.tabs.win', {}) ?? '已中奖',
+          'lottery.tabs.lose' => TranslationOverrides.string(_root.$meta, 'lottery.tabs.lose', {}) ?? '未中奖',
+          'lottery.prizeCard.reward' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.reward', {}) ?? '奖励',
+          'lottery.prizeCard.id' =>
+            ({required Object id}) =>
+                TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.id', {'id': id}) ?? 'ID: ${id}',
+          'lottery.prizeCard.getTime' =>
+            ({required Object time}) =>
+                TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.getTime', {'time': time}) ??
+                '获得时间: ${time}',
+          'lottery.prizeCard.obtained' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.obtained', {}) ?? '已获得',
+          'lottery.prizeCard.notWon' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.prizeCard.notWon', {}) ?? '未中奖',
+          'lottery.rulesList.0' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.rulesList.0', {}) ?? '每日有免费抽奖次数，次数用完后可领取任务获得',
+          'lottery.rulesList.1' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.rulesList.1', {}) ?? '优惠券48小时内有效，积分自动到账',
+          'lottery.rulesList.2' =>
+            TranslationOverrides.string(_root.$meta, 'lottery.rulesList.2', {}) ?? '活动最终解释权归平台所有',
           'navigation.home' => TranslationOverrides.string(_root.$meta, 'navigation.home', {}) ?? '首页',
           'navigation.device' => TranslationOverrides.string(_root.$meta, 'navigation.device', {}) ?? '设备',
           'navigation.orders' => TranslationOverrides.string(_root.$meta, 'navigation.orders', {}) ?? '订单',
@@ -3631,10 +3627,10 @@ extension on Translations {
           'payment.cancelPay' => TranslationOverrides.string(_root.$meta, 'payment.cancelPay', {}) ?? '取消支付',
           'payment.amount' => TranslationOverrides.string(_root.$meta, 'payment.amount', {}) ?? '支付金额',
           'payment.remainingTime' => TranslationOverrides.string(_root.$meta, 'payment.remainingTime', {}) ?? '支付剩余时间',
-          'payment.addCard' => TranslationOverrides.string(_root.$meta, 'payment.addCard', {}) ?? '添加银行卡',
           _ => null,
         } ??
         switch (path) {
+          'payment.addCard' => TranslationOverrides.string(_root.$meta, 'payment.addCard', {}) ?? '添加银行卡',
           'payment.paymentMethods' => TranslationOverrides.string(_root.$meta, 'payment.paymentMethods', {}) ?? '支付方式',
           'payment.setupSuccess' => TranslationOverrides.string(_root.$meta, 'payment.setupSuccess', {}) ?? '添加银行卡成功',
           'payment.setupFailed' => TranslationOverrides.string(_root.$meta, 'payment.setupFailed', {}) ?? '添加银行卡失败',

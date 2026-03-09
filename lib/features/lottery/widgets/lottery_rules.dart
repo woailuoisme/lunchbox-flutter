@@ -13,11 +13,7 @@ class LotteryRules extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final rules = [
-      '每日有免费抽奖次数，次数用完后可领取任务获得',
-      '优惠券48小时内有效，${t.points.unit}自动到账',
-      '活动最终解释权归平台所有',
-    ];
+    final rules = t.lottery.rulesList;
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
@@ -55,7 +51,7 @@ class LotteryRules extends StatelessWidget {
                 ),
                 SizedBox(width: 12.w),
                 Text(
-                  '活动规则',
+                  t.lottery.rules,
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,

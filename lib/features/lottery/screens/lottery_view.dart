@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/features/lottery/entities/lottery_prize.dart';
 import 'package:lunchbox/features/lottery/entities/lottery_state.dart';
 import 'package:lunchbox/features/lottery/providers/lottery_provider.dart';
 import 'package:lunchbox/features/lottery/widgets/lottery_bottom_buttons.dart';
@@ -58,7 +57,8 @@ class _LotteryViewState extends ConsumerState<LotteryView>
 
     // 2. 计算旋转角度
     final items = notifier.wheelItems;
-    final sectorAngle = 2 * math.pi / items.length;
+    final totalItems = items.length;
+    final sectorAngle = 2 * math.pi / totalItems;
 
     // 目标角度：让中奖扇区对准顶部指针
     final randomOffset =
@@ -68,8 +68,8 @@ class _LotteryViewState extends ConsumerState<LotteryView>
     const minSpins = 5;
     const spinRotation = minSpins * 2 * math.pi;
 
-    // 计算目标位置
-    final targetAngleFromTop = (items.length - winIndex) * sectorAngle;
+    // 计算目标位置（转盘是逆时针旋转）
+    final targetAngleFromTop = (totalItems - winIndex) * sectorAngle;
 
     // 当前角度归一化
     final normalizedCurrent = _currentRotation % (2 * math.pi);
@@ -91,30 +91,30 @@ class _LotteryViewState extends ConsumerState<LotteryView>
       end: endRotation,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
 
-    animation.addListener(() {
+    void animationListener() {
       setState(() {
         _currentRotation = animation.value;
       });
-    });
+    }
 
+    animation.addListener(animationListener);
     await _controller.forward(from: 0);
+    animation.removeListener(animationListener);
 
     // 4. 动画结束，显示结果
     _currentRotation = endRotation; // 修正最终位置
-    final prize = notifier.createPrize(winIndex);
-    notifier.completeSpin(prize);
+    notifier.completeSpin();
 
+    final lastWon = ref.read(lotteryProvider).value?.lastWonPrize;
     if (mounted) {
-      await LotteryResultDialog.show(context, prize.name);
+      await LotteryResultDialog.show(context, lastWon?.name ?? '谢谢参与');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final lotteryAsync = ref.watch(lotteryProvider);
-    final lotteryState =
-        lotteryAsync.value ??
-        const LotteryState(remainingSpins: 3, prizes: <LotteryPrize>[]);
+    final lotteryState = lotteryAsync.value ?? const LotteryState();
     final lotteryNotifier = ref.read(lotteryProvider.notifier);
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;

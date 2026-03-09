@@ -1,6 +1,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 /// 奖品说明列表组件
@@ -50,7 +51,7 @@ class LotteryPrizeList extends StatelessWidget {
                 ),
                 SizedBox(width: 12.w),
                 Text(
-                  '奖品一览',
+                  t.lottery.prizeListTitle,
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,

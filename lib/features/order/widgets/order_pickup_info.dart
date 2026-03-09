@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 /// 订单取货信息组件（二维码/取货码）
@@ -77,20 +78,7 @@ class OrderPickupInfo extends StatelessWidget {
                     ],
                   ),
                   padding: EdgeInsets.all(16.w),
-                  child: QrImageView(
-                    data: order.id.toString(),
-                    version: QrVersions.auto,
-                    size: 160.w,
-                    gapless: false,
-                    eyeStyle: const QrEyeStyle(
-                      eyeShape: QrEyeShape.circle,
-                      color: Color(0xFF1A1A1A),
-                    ),
-                    dataModuleStyle: const QrDataModuleStyle(
-                      dataModuleShape: QrDataModuleShape.circle,
-                      color: Color(0xFF1A1A1A),
-                    ),
-                  ),
+                  child: _buildQrCode(theme, order),
                 ),
                 SizedBox(height: 16.h),
                 Text(
@@ -104,59 +92,53 @@ class OrderPickupInfo extends StatelessWidget {
               ],
             ),
           ),
-
-          // Dash line or Divider
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Row(
-              children: List.generate(
-                30,
-                (index) => Expanded(
-                  child: Container(
-                    height: 1,
-                    margin: EdgeInsets.symmetric(horizontal: 1.w),
-                    color: theme.dividerColor.withValues(alpha: 0.5),
-                  ),
-                ),
-              ).toList(),
-            ),
-          ),
-
-          // Bottom Instruction
-          Padding(
-            padding: EdgeInsets.all(20.w),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer.withValues(
-                  alpha: 0.3,
-                ),
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Symbols.info,
-                    size: 18.sp,
-                    color: theme.colorScheme.primary,
-                  ),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: Text(
-                      t.order.pickupCodeHint,
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildQrCode(ThemeData theme, OrderModel order) {
+    if (order.qrCodeImage != null && order.qrCodeImage!.isNotEmpty) {
+      if (order.qrCodeImage!.startsWith('data:image/svg+xml;charset=utf-8,')) {
+        final svgString = Uri.decodeComponent(
+          order.qrCodeImage!.substring(
+            'data:image/svg+xml;charset=utf-8,'.length,
+          ),
+        );
+        return SizedBox(
+          width: 160.w,
+          height: 160.w,
+          child: SvgPicture.string(svgString),
+        );
+      } else if (order.qrCodeImage!.startsWith('data:image/svg+xml;base64,')) {
+        final base64String = order.qrCodeImage!.substring(
+          'data:image/svg+xml;base64,'.length,
+        );
+        try {
+          final svgString = utf8.decode(base64Decode(base64String));
+          return SizedBox(
+            width: 160.w,
+            height: 160.w,
+            child: SvgPicture.string(svgString),
+          );
+        } catch (e) {
+          // fallback if decode parse fails
+        }
+      }
+    }
+
+    return QrImageView(
+      data: order.id.toString(),
+      version: QrVersions.auto,
+      size: 160.w,
+      gapless: false,
+      eyeStyle: const QrEyeStyle(
+        eyeShape: QrEyeShape.circle,
+        color: Color(0xFF1A1A1A),
+      ),
+      dataModuleStyle: const QrDataModuleStyle(
+        dataModuleShape: QrDataModuleShape.circle,
+        color: Color(0xFF1A1A1A),
       ),
     );
   }

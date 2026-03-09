@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/core/services/toast_service.dart';
 
 /// 订单详情信息行组件
 /// 展示标签和对应的数值
-class OrderInfoRow extends StatelessWidget {
+class OrderInfoRow extends ConsumerWidget {
   const OrderInfoRow({
     required this.label,
     required this.value,
@@ -19,9 +21,9 @@ class OrderInfoRow extends StatelessWidget {
   final bool isCopyable;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    
+
     Widget content = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -63,12 +65,7 @@ class OrderInfoRow extends StatelessWidget {
         onTap: () async {
           await Clipboard.setData(ClipboardData(text: value));
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('已复制'), // using simple hardcoded text for visual effect when there's no general copy string
-                duration: Duration(seconds: 2),
-              ),
-            );
+            ref.read(toastServiceProvider).showInfo('已复制', context: context);
           }
         },
         behavior: HitTestBehavior.opaque,
@@ -77,7 +74,8 @@ class OrderInfoRow extends StatelessWidget {
     }
 
     return Padding(
-      padding: padding ?? EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
+      padding:
+          padding ?? EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
       child: content,
     );
   }

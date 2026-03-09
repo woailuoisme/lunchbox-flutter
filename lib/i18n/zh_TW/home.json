@@ -19,40 +19,6 @@
     "lottery": "幸運抽獎",
     "invite": "邀請好友"
   },
-  "lottery": {
-    "title": "幸運抽獎",
-    "prizes": "我的獎品",
-    "rules": "活動規則",
-    "subtitle": "參與抽獎，贏取好禮",
-    "remaining": "剩餘次數: ${count}",
-    "spin": "抽獎",
-    "spinning": "...",
-    "congratulations": "恭喜獲得",
-    "accept": "開心收下",
-    "rule1": "每日有免費抽獎次數，次數用完後可領取任務獲得",
-    "rule2": "優惠券48小時內有效，積分自動到帳",
-    "rule3": "活動最終解釋權歸平台所有",
-    "prizeUnit": "積分",
-    "prizeList": "獎品說明",
-    "back": "返回",
-    "prizeStats": {
-      "total": "總獎品",
-      "used": "已使用",
-      "available": "可用"
-    },
-    "tabs": {
-      "all": "全部",
-      "available": "可用",
-      "used": "已使用",
-      "expired": "已過期"
-    },
-    "prizeCard": {
-      "source": "積分獎勵，可在積分商城使用",
-      "getTime": "獲得時間: ${time}",
-      "expiryTime": "有效期至: ${time}",
-      "statusExpired": "已過期"
-    }
-  },
   "status": {
     "open": "營業中",
     "closed": "休息中",

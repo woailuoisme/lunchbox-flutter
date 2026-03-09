@@ -42,7 +42,7 @@ class LotteryHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  t.home.grid.lottery,
+                  t.lottery.title,
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
@@ -50,7 +50,7 @@ class LotteryHeader extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  t.home.lottery.subtitle,
+                  t.lottery.subtitle,
                   style: TextStyle(fontSize: 12.sp, color: colorScheme.outline),
                 ),
               ],
@@ -66,7 +66,7 @@ class LotteryHeader extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Text(
-                t.home.lottery.remaining(count: remainingSpins),
+                t.lottery.remaining(count: remainingSpins),
                 style: TextStyle(
                   color: colorScheme.onPrimary,
                   fontSize: 12.sp,

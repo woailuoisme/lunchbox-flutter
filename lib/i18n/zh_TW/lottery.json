@@ -1,0 +1,37 @@
+{
+  "title": "幸運抽獎",
+  "prizes": "我的獎品",
+  "rules": "活動規則",
+  "subtitle": "參與抽獎，贏取好禮",
+  "remaining": "剩餘次數: ${count}",
+  "spin": "抽獎",
+  "spinning": "...",
+  "congratulations": "恭喜獲得",
+  "accept": "開心收下",
+  "thankYou": "謝謝參與",
+  "thanksForParticipating": "感謝參與",
+  "prizeListTitle": "獎品一覽",
+  "prizeStats": {
+    "total": "總獎品",
+    "win": "已抽中",
+    "distributed": "已發放",
+    "viewAll": "查看您獲得的所有獎品"
+  },
+  "tabs": {
+    "all": "全部",
+    "win": "已中獎",
+    "lose": "未中獎"
+  },
+  "prizeCard": {
+    "reward": "獎勵",
+    "id": "ID: ${id}",
+    "getTime": "獲得時間: ${time}",
+    "obtained": "已獲得",
+    "notWon": "未中獎"
+  },
+  "rulesList": [
+    "每日有免費抽獎次數，次數用完後可領取任務獲得",
+    "優惠券48小時內有效，積分自動到帳",
+    "活動最終解釋權歸平台所有"
+  ]
+}

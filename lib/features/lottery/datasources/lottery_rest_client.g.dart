@@ -20,12 +20,12 @@ class _LotteryRestClient implements LotteryRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<List<LotteryPrizeModel>>> getLotteryPrizes() async {
+  Future<ApiResponse<List<LotteryPrizeResponse>>> getLotteryPrizes() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<LotteryPrizeModel>>>(
+    final _options = _setStreamType<ApiResponse<List<LotteryPrizeResponse>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,15 +36,16 @@ class _LotteryRestClient implements LotteryRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<LotteryPrizeModel>> _value;
+    late ApiResponse<List<LotteryPrizeResponse>> _value;
     try {
-      _value = ApiResponse<List<LotteryPrizeModel>>.fromJson(
+      _value = ApiResponse<List<LotteryPrizeResponse>>.fromJson(
         _result.data!,
         (json) => json is List<dynamic>
             ? json
-                  .map<LotteryPrizeModel>(
-                    (i) =>
-                        LotteryPrizeModel.fromJson(i as Map<String, dynamic>),
+                  .map<LotteryPrizeResponse>(
+                    (i) => LotteryPrizeResponse.fromJson(
+                      i as Map<String, dynamic>,
+                    ),
                   )
                   .toList()
             : List.empty(),
@@ -57,12 +58,12 @@ class _LotteryRestClient implements LotteryRestClient {
   }
 
   @override
-  Future<ApiResponse<LotteryPrizeModel>> drawLottery() async {
+  Future<ApiResponse<LotteryDrawResponse>> drawLottery() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<LotteryPrizeModel>>(
+    final _options = _setStreamType<ApiResponse<LotteryDrawResponse>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -73,11 +74,11 @@ class _LotteryRestClient implements LotteryRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<LotteryPrizeModel> _value;
+    late ApiResponse<LotteryDrawResponse> _value;
     try {
-      _value = ApiResponse<LotteryPrizeModel>.fromJson(
+      _value = ApiResponse<LotteryDrawResponse>.fromJson(
         _result.data!,
-        (json) => LotteryPrizeModel.fromJson(json as Map<String, dynamic>),
+        (json) => LotteryDrawResponse.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -87,38 +88,36 @@ class _LotteryRestClient implements LotteryRestClient {
   }
 
   @override
-  Future<ApiResponse<List<LotteryRecordModel>>> getLotteryRecords({
-    int? page,
-    int? size,
-  }) async {
+  Future<ApiResponse<PaginatedResponse<LotteryRecordResponse>>>
+  getLotteryRecords({int? page, int? size}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'page': page, r'size': size};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<LotteryRecordModel>>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/lottery/records',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<ApiResponse<PaginatedResponse<LotteryRecordResponse>>>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/api/v1/lottery/records',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<LotteryRecordModel>> _value;
+    late ApiResponse<PaginatedResponse<LotteryRecordResponse>> _value;
     try {
-      _value = ApiResponse<List<LotteryRecordModel>>.fromJson(
+      _value = ApiResponse<PaginatedResponse<LotteryRecordResponse>>.fromJson(
         _result.data!,
-        (json) => json is List<dynamic>
-            ? json
-                  .map<LotteryRecordModel>(
-                    (i) =>
-                        LotteryRecordModel.fromJson(i as Map<String, dynamic>),
-                  )
-                  .toList()
-            : List.empty(),
+        (json) => PaginatedResponse<LotteryRecordResponse>.fromJson(
+          json as Map<String, dynamic>,
+          (json) =>
+              LotteryRecordResponse.fromJson(json as Map<String, dynamic>),
+        ),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -128,12 +127,12 @@ class _LotteryRestClient implements LotteryRestClient {
   }
 
   @override
-  Future<ApiResponse<LotteryStatisticsModel>> getLotteryStatistics() async {
+  Future<ApiResponse<LotteryStatisticsResponse>> getLotteryStatistics() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<LotteryStatisticsModel>>(
+    final _options = _setStreamType<ApiResponse<LotteryStatisticsResponse>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -144,11 +143,12 @@ class _LotteryRestClient implements LotteryRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<LotteryStatisticsModel> _value;
+    late ApiResponse<LotteryStatisticsResponse> _value;
     try {
-      _value = ApiResponse<LotteryStatisticsModel>.fromJson(
+      _value = ApiResponse<LotteryStatisticsResponse>.fromJson(
         _result.data!,
-        (json) => LotteryStatisticsModel.fromJson(json as Map<String, dynamic>),
+        (json) =>
+            LotteryStatisticsResponse.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -158,14 +158,14 @@ class _LotteryRestClient implements LotteryRestClient {
   }
 
   @override
-  Future<ApiResponse<LotteryRecordModel>> getLotteryRecordDetail(
-    String recordId,
+  Future<ApiResponse<LotteryRecordResponse>> getLotteryRecordDetail(
+    int recordId,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<LotteryRecordModel>>(
+    final _options = _setStreamType<ApiResponse<LotteryRecordResponse>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -176,11 +176,11 @@ class _LotteryRestClient implements LotteryRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<LotteryRecordModel> _value;
+    late ApiResponse<LotteryRecordResponse> _value;
     try {
-      _value = ApiResponse<LotteryRecordModel>.fromJson(
+      _value = ApiResponse<LotteryRecordResponse>.fromJson(
         _result.data!,
-        (json) => LotteryRecordModel.fromJson(json as Map<String, dynamic>),
+        (json) => LotteryRecordResponse.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
