@@ -207,12 +207,12 @@ return $default(_that.success,_that.code,_that.message,_that.data,_that.errors);
 @JsonSerializable(genericArgumentFactories: true)
 
 class _ApiResponse<T> implements ApiResponse<T> {
-  const _ApiResponse({required this.success, this.code = 0, required this.message, this.data, final  Map<String, List<String>>? errors}): _errors = errors;
+  const _ApiResponse({this.success = false, this.code = 0, this.message = '', this.data, final  Map<String, List<String>>? errors}): _errors = errors;
   factory _ApiResponse.fromJson(Map<String, dynamic> json,T Function(Object?) fromJsonT) => _$ApiResponseFromJson(json,fromJsonT);
 
-@override final  bool success;
+@override@JsonKey() final  bool success;
 @override@JsonKey() final  int code;
-@override final  String message;
+@override@JsonKey() final  String message;
 @override final  T? data;
  final  Map<String, List<String>>? _errors;
 @override Map<String, List<String>>? get errors {

@@ -7,7 +7,7 @@ part 'paginated_response.g.dart';
 @Freezed(genericArgumentFactories: true)
 sealed class PaginatedResponse<T> with _$PaginatedResponse<T> {
   const factory PaginatedResponse({
-    required List<T> items,
+    @Default([]) List<T> items,
     required PaginationMeta meta,
   }) = _PaginatedResponse;
 
@@ -21,11 +21,11 @@ sealed class PaginatedResponse<T> with _$PaginatedResponse<T> {
 @freezed
 sealed class PaginationMeta with _$PaginationMeta {
   const factory PaginationMeta({
-    @JsonKey(name: 'current_page') required int currentPage,
-    @JsonKey(name: 'per_page') required int perPage,
-    @JsonKey(name: 'last_page') required int lastPage,
-    @JsonKey(name: 'has_more') required bool hasMore,
-    required int total,
+    @Default(1) @JsonKey(name: 'current_page') int currentPage,
+    @Default(10) @JsonKey(name: 'per_page') int perPage,
+    @Default(1) @JsonKey(name: 'last_page') int lastPage,
+    @Default(false) @JsonKey(name: 'has_more') bool hasMore,
+    @Default(0) int total,
     int? from,
     int? to,
   }) = _PaginationMeta;

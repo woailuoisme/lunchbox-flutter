@@ -9,13 +9,13 @@ part 'api_response_model.g.dart';
 sealed class ApiResponseModel<T> with _$ApiResponseModel<T> {
   const factory ApiResponseModel({
     /// 响应状态码
-    required int code,
+    @Default(0) int code,
 
     /// 响应消息
-    required String message,
+    @Default('') String message,
 
     /// 响应时间戳
-    required int timestamp,
+    @Default(0) int timestamp,
 
     /// 响应数据
     T? data,
@@ -56,16 +56,16 @@ sealed class ApiResponseModel<T> with _$ApiResponseModel<T> {
 sealed class PaginatedResponseModel<T> with _$PaginatedResponseModel<T> {
   const factory PaginatedResponseModel({
     /// 数据列表
-    required List<T> list,
+    @Default([]) List<T> list,
 
     /// 总数
-    required int total,
+    @Default(0) int total,
 
     /// 当前页码
-    required int page,
+    @Default(1) int page,
 
     /// 每页数量
-    required int pageSize,
+    @Default(10) int pageSize,
   }) = _PaginatedResponseModel<T>;
   const PaginatedResponseModel._();
 

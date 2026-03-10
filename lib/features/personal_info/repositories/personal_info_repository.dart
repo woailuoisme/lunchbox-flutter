@@ -16,15 +16,15 @@ class PersonalInfoRepository {
   final PersonalInfoRestClient _client;
 
   Future<ProfileUpdateData?> updateProfile({
-    required String nickname,
-    required String gender,
-    required String telephone,
+    String? nickname,
+    String? gender,
+    String? telephone,
     File? avatar,
   }) async {
     final response = await _client.updateProfile(
-      nickname,
-      gender,
-      telephone,
+      nickname: nickname,
+      gender: gender,
+      telephone: telephone,
       avatar: avatar,
     );
     return response.data;

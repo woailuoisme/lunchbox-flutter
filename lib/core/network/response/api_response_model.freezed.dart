@@ -210,15 +210,15 @@ return $default(_that.code,_that.message,_that.timestamp,_that.data);case _:
 @JsonSerializable(genericArgumentFactories: true)
 
 class _ApiResponseModel<T> extends ApiResponseModel<T> {
-  const _ApiResponseModel({required this.code, required this.message, required this.timestamp, this.data}): super._();
+  const _ApiResponseModel({this.code = 0, this.message = '', this.timestamp = 0, this.data}): super._();
   factory _ApiResponseModel.fromJson(Map<String, dynamic> json,T Function(Object?) fromJsonT) => _$ApiResponseModelFromJson(json,fromJsonT);
 
 /// 响应状态码
-@override final  int code;
+@override@JsonKey() final  int code;
 /// 响应消息
-@override final  String message;
+@override@JsonKey() final  String message;
 /// 响应时间戳
-@override final  int timestamp;
+@override@JsonKey() final  int timestamp;
 /// 响应数据
 @override final  T? data;
 
@@ -484,24 +484,24 @@ return $default(_that.list,_that.total,_that.page,_that.pageSize);case _:
 @JsonSerializable(genericArgumentFactories: true)
 
 class _PaginatedResponseModel<T> extends PaginatedResponseModel<T> {
-  const _PaginatedResponseModel({required final  List<T> list, required this.total, required this.page, required this.pageSize}): _list = list,super._();
+  const _PaginatedResponseModel({final  List<T> list = const [], this.total = 0, this.page = 1, this.pageSize = 10}): _list = list,super._();
   factory _PaginatedResponseModel.fromJson(Map<String, dynamic> json,T Function(Object?) fromJsonT) => _$PaginatedResponseModelFromJson(json,fromJsonT);
 
 /// 数据列表
  final  List<T> _list;
 /// 数据列表
-@override List<T> get list {
+@override@JsonKey() List<T> get list {
   if (_list is EqualUnmodifiableListView) return _list;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_list);
 }
 
 /// 总数
-@override final  int total;
+@override@JsonKey() final  int total;
 /// 当前页码
-@override final  int page;
+@override@JsonKey() final  int page;
 /// 每页数量
-@override final  int pageSize;
+@override@JsonKey() final  int pageSize;
 
 /// Create a copy of PaginatedResponseModel
 /// with the given fields replaced by the non-null parameter values.

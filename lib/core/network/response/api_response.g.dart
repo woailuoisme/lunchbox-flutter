@@ -11,9 +11,9 @@ _ApiResponse<T> _$ApiResponseFromJson<T>(
   T Function(Object? json) fromJsonT,
 ) => $checkedCreate('_ApiResponse', json, ($checkedConvert) {
   final val = _ApiResponse<T>(
-    success: $checkedConvert('success', (v) => v as bool),
+    success: $checkedConvert('success', (v) => v as bool? ?? false),
     code: $checkedConvert('code', (v) => (v as num?)?.toInt() ?? 0),
-    message: $checkedConvert('message', (v) => v as String),
+    message: $checkedConvert('message', (v) => v as String? ?? ''),
     data: $checkedConvert(
       'data',
       (v) => _$nullableGenericFromJson(v, fromJsonT),

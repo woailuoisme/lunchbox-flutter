@@ -1396,6 +1396,33 @@ class _TranslationsPointsEn extends TranslationsPointsZhCn {
   @override
   String get insufficientPoints =>
       TranslationOverrides.string(_root.$meta, 'points.insufficientPoints', {}) ?? 'Insufficient balance';
+  @override
+  String get exchangeConfirmTitle =>
+      TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmTitle', {}) ?? 'Exchange Confirmation';
+  @override
+  String exchangeConfirmMessage({required Object points, required Object product}) =>
+      TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmMessage', {
+        'points': points,
+        'product': product,
+      }) ??
+      'Are you sure to consume ${points} points to exchange ${product}?';
+  @override
+  String get exchangeSuccess =>
+      TranslationOverrides.string(_root.$meta, 'points.exchangeSuccess', {}) ?? 'Exchange Success';
+  @override
+  String get exchangeFailed =>
+      TranslationOverrides.string(_root.$meta, 'points.exchangeFailed', {}) ?? 'Exchange Failed';
+  @override
+  String loadFailed({required Object error}) =>
+      TranslationOverrides.string(_root.$meta, 'points.loadFailed', {'error': error}) ?? 'Load Failed: ${error}';
+  @override
+  String get retry => TranslationOverrides.string(_root.$meta, 'points.retry', {}) ?? 'Retry';
+  @override
+  String get waitProducts =>
+      TranslationOverrides.string(_root.$meta, 'points.waitProducts', {}) ?? 'Loading products...';
+  @override
+  String get waitRecords =>
+      TranslationOverrides.string(_root.$meta, 'points.waitRecords', {}) ?? 'Loading records details...';
 }
 
 // Path: product
@@ -3384,6 +3411,28 @@ extension on TranslationsEn {
           'points.exchangeNow' => TranslationOverrides.string(_root.$meta, 'points.exchangeNow', {}) ?? 'Exchange Now',
           'points.insufficientPoints' =>
             TranslationOverrides.string(_root.$meta, 'points.insufficientPoints', {}) ?? 'Insufficient balance',
+          'points.exchangeConfirmTitle' =>
+            TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmTitle', {}) ?? 'Exchange Confirmation',
+          'points.exchangeConfirmMessage' =>
+            ({required Object points, required Object product}) =>
+                TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmMessage', {
+                  'points': points,
+                  'product': product,
+                }) ??
+                'Are you sure to consume ${points} points to exchange ${product}?',
+          'points.exchangeSuccess' =>
+            TranslationOverrides.string(_root.$meta, 'points.exchangeSuccess', {}) ?? 'Exchange Success',
+          'points.exchangeFailed' =>
+            TranslationOverrides.string(_root.$meta, 'points.exchangeFailed', {}) ?? 'Exchange Failed',
+          'points.loadFailed' =>
+            ({required Object error}) =>
+                TranslationOverrides.string(_root.$meta, 'points.loadFailed', {'error': error}) ??
+                'Load Failed: ${error}',
+          'points.retry' => TranslationOverrides.string(_root.$meta, 'points.retry', {}) ?? 'Retry',
+          'points.waitProducts' =>
+            TranslationOverrides.string(_root.$meta, 'points.waitProducts', {}) ?? 'Loading products...',
+          'points.waitRecords' =>
+            TranslationOverrides.string(_root.$meta, 'points.waitRecords', {}) ?? 'Loading records details...',
           'product.title' => TranslationOverrides.string(_root.$meta, 'product.title', {}) ?? 'Product List',
           'product.detail' => TranslationOverrides.string(_root.$meta, 'product.detail', {}) ?? 'Product Detail',
           'product.hot' => TranslationOverrides.string(_root.$meta, 'product.hot', {}) ?? 'Hot',

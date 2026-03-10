@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/core/widgets/widgets.dart' as widgets;
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:lunchbox/features/points/repositories/points_repository.dart';
+import 'package:lunchbox/features/points/providers/points_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/routes.dart';
-import 'package:lunchbox/features/points/entities/points_record_model.dart';
+import 'package:lunchbox/features/points/entities/points_record_response.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lunchbox/features/points/widgets/points_balance_card.dart';
 import 'package:lunchbox/features/points/widgets/points_mall_banner.dart';
 import 'package:lunchbox/features/points/widgets/points_rules_section.dart';
@@ -48,27 +50,34 @@ class _MyPointsViewState extends ConsumerState<MyPointsView>
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text(t.points.title),
+        title: Text(
+          t.points.title,
+          style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18.sp),
+        ),
         centerTitle: true,
-        backgroundColor:
-            theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
+        backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
       ),
       body: widgets.CustomRefreshView(
         onRefresh: () async {
           await _listKeys[_tabController.index].currentState?.refresh();
-          // Wait a bit to show the refresh animation, as paging refresh is sync/fast
           await Future<void>.delayed(const Duration(milliseconds: 500));
         },
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
-              SliverToBoxAdapter(child: _buildHeader(context, ref)),
-              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-              SliverToBoxAdapter(child: _buildMallBanner(context)),
-              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-              SliverToBoxAdapter(child: _buildRulesSection(context)),
-              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    _buildHeader(context, ref),
+                    _buildMallBanner(context),
+                    SizedBox(height: 16.h),
+                    _buildRulesSection(context),
+                    SizedBox(height: 16.h),
+                  ],
+                ),
+              ),
               SliverOverlapAbsorber(
                 handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                   context,
@@ -82,6 +91,16 @@ class _MyPointsViewState extends ConsumerState<MyPointsView>
                       unselectedLabelColor: theme.hintColor,
                       indicatorColor: theme.colorScheme.primary,
                       indicatorSize: TabBarIndicatorSize.label,
+                      indicatorWeight: 3,
+                      dividerColor: Colors.transparent,
+                      labelStyle: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w900,
+                      ),
+                      unselectedLabelStyle: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                       tabs: [
                         Tab(text: t.points.all),
                         Tab(text: t.points.earned),
@@ -104,7 +123,6 @@ class _MyPointsViewState extends ConsumerState<MyPointsView>
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomBar(context),
     );
   }
 
@@ -112,13 +130,10 @@ class _MyPointsViewState extends ConsumerState<MyPointsView>
     final pointsAsync = ref.watch(pointsBalanceProvider);
 
     return PointsBalanceCard(
-      points: pointsAsync.maybeWhen(data: (v) => v, orElse: () => 0),
+      points: pointsAsync.maybeWhen(data: (int v) => v, orElse: () => 0),
       title: t.points.title,
       recordsLabel: t.points.records,
       isLoading: pointsAsync.isLoading,
-      onRecordsTap: () {
-        // 可以滚动到记录列表
-      },
     );
   }
 
@@ -156,7 +171,7 @@ class _PointsRecordList extends ConsumerStatefulWidget {
 
 class _PointsRecordListState extends ConsumerState<_PointsRecordList>
     with AutomaticKeepAliveClientMixin {
-  late final PagingController<int, PointsRecordModel> _pagingController;
+  late final PagingController<int, PointsRecordResponse> _pagingController;
 
   @override
   bool get wantKeepAlive => true;
@@ -164,7 +179,7 @@ class _PointsRecordListState extends ConsumerState<_PointsRecordList>
   @override
   void initState() {
     super.initState();
-    _pagingController = PagingController<int, PointsRecordModel>(
+    _pagingController = PagingController<int, PointsRecordResponse>(
       getNextPageKey: (state) {
         if (state.pages == null || state.pages!.isEmpty) {
           return 1;
@@ -185,10 +200,10 @@ class _PointsRecordListState extends ConsumerState<_PointsRecordList>
     super.dispose();
   }
 
-  Future<List<PointsRecordModel>> _fetchPage(int pageKey) async {
-    return await ref
-        .read(pointsRepositoryProvider.notifier)
-        .getPointsRecords(page: pageKey, type: widget.type);
+  Future<List<PointsRecordResponse>> _fetchPage(int pageKey) async {
+    return await ref.read(
+      pointsRecordsProvider(page: pageKey, type: widget.type).future,
+    );
   }
 
   Future<void> refresh() async {
@@ -209,33 +224,65 @@ class _PointsRecordListState extends ConsumerState<_PointsRecordList>
           sliver: PagingListener(
             controller: _pagingController,
             builder: (context, state, fetchNextPage) =>
-                PagedSliverList<int, PointsRecordModel>(
+                PagedSliverList<int, PointsRecordResponse>(
                   state: state,
                   fetchNextPage: fetchNextPage,
-                  builderDelegate: PagedChildBuilderDelegate<PointsRecordModel>(
-                    itemBuilder: (context, item, index) =>
-                        PointsRecordItem(item: item),
-                    noItemsFoundIndicatorBuilder: (context) => PointsEmptyState(
-                      message: t.points.noRecords,
-                      icon: Symbols.history,
-                    ),
-                    firstPageProgressIndicatorBuilder: (context) =>
-                        const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(24.0),
-                            child: CircularProgressIndicator(),
+                  builderDelegate:
+                      PagedChildBuilderDelegate<PointsRecordResponse>(
+                        itemBuilder: (context, item, index) =>
+                            PointsRecordItem(item: item)
+                                .animate()
+                                .fadeIn(duration: 300.ms)
+                                .slideY(begin: 0.1, end: 0),
+                        noItemsFoundIndicatorBuilder: (context) =>
+                            PointsEmptyState(
+                              message: t.points.noRecords,
+                              icon: Symbols.history,
+                            ),
+                        firstPageErrorIndicatorBuilder: (context) =>
+                            widgets.ErrorWidget(
+                              message: state.error.toString(),
+                              onRetry: () => _pagingController.refresh(),
+                            ),
+                        newPageErrorIndicatorBuilder: (context) => Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          child: widgets.ErrorWidget(
+                            message: state.error.toString(),
+                            onRetry: fetchNextPage,
                           ),
                         ),
-                    newPageProgressIndicatorBuilder: (context) => const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                  ),
+                        firstPageProgressIndicatorBuilder: (context) =>
+                            _buildSkeletonList(),
+                        newPageProgressIndicatorBuilder: (context) =>
+                            const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Center(child: CircularProgressIndicator()),
+                            ),
+                      ),
                 ),
           ),
         ),
         SliverToBoxAdapter(child: SizedBox(height: 32.h)),
       ],
+    );
+  }
+
+  Widget _buildSkeletonList() {
+    return Skeletonizer(
+      enabled: true,
+      child: Column(
+        children: List.generate(
+          8,
+          (index) => PointsRecordItem(
+            item: PointsRecordResponse(
+              id: 0,
+              redemptionContent: t.points.waitRecords,
+              createdAt: '2024-01-01 12:00:00',
+              inte: -100,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

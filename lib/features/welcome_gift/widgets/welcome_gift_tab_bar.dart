@@ -23,27 +23,31 @@ class WelcomeGiftTabBar extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: TabBar(
         controller: tabController,
         indicator: BoxDecoration(
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(12.r),
-          gradient: const LinearGradient(
-            colors: [Color(0xFFFF8A65), Color(0xFFFFAB91)],
-          ),
+          boxShadow: [
+            BoxShadow(
+              color: colorScheme.shadow.withValues(alpha: 0.05),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        labelColor: Colors.white,
+        labelColor: colorScheme.primary,
         unselectedLabelColor: colorScheme.onSurfaceVariant,
+        labelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+        unselectedLabelStyle: TextStyle(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.normal,
+        ),
         indicatorSize: TabBarIndicatorSize.tab,
         dividerColor: Colors.transparent,
         tabs: [
@@ -53,18 +57,27 @@ class WelcomeGiftTabBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(t.welcome_gift.tabs.received),
-                SizedBox(width: 4.w),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(10.r),
+                if (receivedCount > 0) ...[
+                  SizedBox(width: 6.w),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 6.w,
+                      vertical: 2.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: colorScheme.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Text(
+                      receivedCount.toString(),
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  child: Text(
-                    receivedCount.toString(),
-                    style: TextStyle(fontSize: 10.sp),
-                  ),
-                ),
+                ],
               ],
             ),
           ),

@@ -1,9 +1,11 @@
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lunchbox/features/feedback/providers/feedback_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
-import 'package:lunchbox/features/feedback/repositories/feedback_repository.dart';
 import 'package:lunchbox/features/feedback/widgets/feedback_contact_input.dart';
 import 'package:lunchbox/features/feedback/widgets/feedback_description_input.dart';
 import 'package:lunchbox/features/feedback/widgets/feedback_header.dart';
@@ -21,21 +23,18 @@ class FeedbackView extends ConsumerStatefulWidget {
 
 class _FeedbackViewState extends ConsumerState<FeedbackView> {
   int _selectedTypeIndex = 0;
-  final _titleController = TextEditingController();
   final _contentController = TextEditingController();
   final _contactController = TextEditingController();
-  bool _isSubmitting = false;
+  List<File> _selectedFiles = [];
 
   @override
   void dispose() {
-    _titleController.dispose();
     _contentController.dispose();
     _contactController.dispose();
     super.dispose();
   }
 
   Future<void> _submitFeedback() async {
-    final title = _titleController.text.trim();
     final content = _contentController.text.trim();
     final contact = _contactController.text.trim();
 
@@ -49,26 +48,31 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
       return;
     }
 
-    setState(() => _isSubmitting = true);
+    final typeLabels = [
+      t.feedback.errorReport,
+      t.feedback.suggestion,
+      t.feedback.complaint,
+      t.feedback.other,
+    ];
+    final type = typeLabels[_selectedTypeIndex];
 
-    try {
-      final typeLabels = [
-        t.feedback.errorReport,
-        t.feedback.suggestion,
-        t.feedback.complaint,
-        t.feedback.other,
-      ];
-      final type = typeLabels[_selectedTypeIndex];
+    // 组合联系方式到内容中（如果后端不支持单独字段）
+    final finalContent = contact.isNotEmpty
+        ? '$content\n\n联系方式: $contact'
+        : content;
 
-      await ref
-          .read(feedbackRepositoryProvider)
-          .submitFeedback(
-            content: content,
-            contact: contact,
-            title: title,
-            type: type,
-          );
-      if (mounted) {
+    final images = await Future.wait(
+      _selectedFiles.map(
+        (file) async => await MultipartFile.fromFile(file.path),
+      ),
+    );
+
+    final success = await ref
+        .read(feedbackProvider.notifier)
+        .submitFeedback(content: finalContent, type: type, images: images);
+
+    if (mounted) {
+      if (success) {
         toastification.show(
           context: context,
           type: ToastificationType.success,
@@ -76,19 +80,13 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
           autoCloseDuration: const Duration(seconds: 2),
         );
         Navigator.pop(context);
-      }
-    } catch (e) {
-      if (mounted) {
+      } else {
         toastification.show(
           context: context,
           type: ToastificationType.error,
-          title: Text('${t.feedback.submitFailed}: $e'),
+          title: Text(t.feedback.submitFailed),
           autoCloseDuration: const Duration(seconds: 3),
         );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isSubmitting = false);
       }
     }
   }
@@ -96,6 +94,7 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isSubmitting = ref.watch(feedbackProvider).isLoading;
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
@@ -117,18 +116,18 @@ class _FeedbackViewState extends ConsumerState<FeedbackView> {
                   setState(() => _selectedTypeIndex = index),
             ),
             SizedBox(height: 16.h),
-            FeedbackDescriptionInput(
-              titleController: _titleController,
-              contentController: _contentController,
-            ),
+            FeedbackDescriptionInput(contentController: _contentController),
             SizedBox(height: 16.h),
-            const FeedbackImageUpload(),
+            FeedbackImageUpload(
+              onImagesChanged: (files) =>
+                  setState(() => _selectedFiles = files),
+            ),
             SizedBox(height: 16.h),
             FeedbackContactInput(controller: _contactController),
             SizedBox(height: 32.h),
             FeedbackSubmitButton(
               onPressed: _submitFeedback,
-              isLoading: _isSubmitting,
+              isLoading: isSubmitting,
             ),
           ],
         ),

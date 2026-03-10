@@ -20,10 +20,10 @@ class _PersonalInfoRestClient implements PersonalInfoRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<ProfileUpdateData>> updateProfile(
-    String nickname,
-    String gender,
-    String telephone, {
+  Future<ApiResponse<ProfileUpdateData>> updateProfile({
+    String? nickname,
+    String? gender,
+    String? telephone,
     File? avatar,
   }) async {
     final _extra = <String, dynamic>{};
@@ -31,9 +31,15 @@ class _PersonalInfoRestClient implements PersonalInfoRestClient {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.fields.add(MapEntry('nickname', nickname));
-    _data.fields.add(MapEntry('gender', gender));
-    _data.fields.add(MapEntry('telephone', telephone));
+    if (nickname != null) {
+      _data.fields.add(MapEntry('nickname', nickname));
+    }
+    if (gender != null) {
+      _data.fields.add(MapEntry('gender', gender));
+    }
+    if (telephone != null) {
+      _data.fields.add(MapEntry('telephone', telephone));
+    }
     if (avatar != null) {
       _data.files.add(
         MapEntry(

@@ -16,42 +16,67 @@ class ProfileInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Row(
-              children: [
-                Container(
-                  width: 4.w,
-                  height: 16.h,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(2.r),
-                  ),
-                ),
-                SizedBox(width: 8.w),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: theme.textTheme.titleMedium?.color,
-                  ),
-                ),
-              ],
-            ),
+        color: isDark ? theme.cardColor : Colors.white,
+        borderRadius: BorderRadius.circular(24.r),
+        boxShadow: [
+          BoxShadow(
+            color: theme.shadowColor.withValues(alpha: isDark ? 0.3 : 0.04),
+            blurRadius: 20,
+            spreadRadius: 0,
+            offset: const Offset(0, 8),
           ),
-          ...children,
-          SizedBox(height: 8.h),
         ],
+        border: Border.all(
+          color: theme.dividerColor.withValues(alpha: 0.05),
+          width: 0.5,
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24.r),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 12.h),
+              child: Row(
+                children: [
+                  Container(
+                    width: 4.w,
+                    height: 18.h,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          theme.colorScheme.primary,
+                          theme.colorScheme.primary.withValues(alpha: 0.6),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      borderRadius: BorderRadius.circular(4.r),
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.3,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ...children,
+            SizedBox(height: 12.h),
+          ],
+        ),
       ),
     );
   }

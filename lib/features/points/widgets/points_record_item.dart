@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/features/points/entities/points_record_model.dart';
+import 'package:lunchbox/features/points/entities/points_record_response.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 /// 积分记录项组件
@@ -8,77 +8,87 @@ import 'package:material_symbols_icons/symbols.dart';
 class PointsRecordItem extends StatelessWidget {
   const PointsRecordItem({required this.item, super.key});
 
-  final PointsRecordModel item;
+  final PointsRecordResponse item;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isGain = item.points > 0;
+    final colorScheme = theme.colorScheme;
+    final isGain = item.inte > 0;
 
     return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: theme.shadowColor.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: theme.dividerColor.withValues(alpha: 0.05),
+          width: 0.5,
+        ),
       ),
       child: Row(
         children: [
-          Container(
-            padding: EdgeInsets.all(10.w),
-            decoration: BoxDecoration(
-              color: isGain
-                  ? theme.colorScheme.primaryContainer.withValues(alpha: 0.3)
-                  : theme.colorScheme.errorContainer.withValues(alpha: 0.3),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              isGain ? Symbols.add : Symbols.remove,
-              color: isGain
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.error,
-              size: 20.sp,
-            ),
-          ),
-          SizedBox(width: 16.w),
+          _buildLeadingIcon(context, isGain),
+          SizedBox(width: 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item.title,
+                  item.redemptionContent,
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                     color: theme.textTheme.titleMedium?.color,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  item.date,
-                  style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
+                  item.createdAt,
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    color: theme.hintColor,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
           ),
+          SizedBox(width: 12.w),
           Text(
-            isGain ? '+${item.points}' : '${item.points}',
+            isGain ? '+${item.inte}' : '${item.inte}',
             style: TextStyle(
               fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: isGain
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.error,
+              fontWeight: FontWeight.w900,
+              color: isGain ? colorScheme.primary : colorScheme.error,
+              letterSpacing: -0.5,
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLeadingIcon(BuildContext context, bool isGain) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Container(
+      width: 44.w,
+      height: 44.w,
+      decoration: BoxDecoration(
+        color: isGain
+            ? colorScheme.primary.withValues(alpha: 0.08)
+            : colorScheme.error.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Icon(
+        isGain ? Symbols.add_circle : Symbols.do_not_disturb_on,
+        color: isGain ? colorScheme.primary : colorScheme.error,
+        size: 24.sp,
       ),
     );
   }

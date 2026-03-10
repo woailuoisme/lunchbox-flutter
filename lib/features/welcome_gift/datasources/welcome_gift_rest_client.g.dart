@@ -20,12 +20,13 @@ class _WelcomeGiftRestClient implements WelcomeGiftRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<List<WelcomeGiftItemModel>>> getWelcomeGiftItems() async {
+  Future<ApiResponse<List<WelcomeGiftItemResponse>>>
+  getWelcomeGiftItems() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<WelcomeGiftItemModel>>>(
+    final _options = _setStreamType<ApiResponse<List<WelcomeGiftItemResponse>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,14 +37,14 @@ class _WelcomeGiftRestClient implements WelcomeGiftRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<WelcomeGiftItemModel>> _value;
+    late ApiResponse<List<WelcomeGiftItemResponse>> _value;
     try {
-      _value = ApiResponse<List<WelcomeGiftItemModel>>.fromJson(
+      _value = ApiResponse<List<WelcomeGiftItemResponse>>.fromJson(
         _result.data!,
         (json) => json is List<dynamic>
             ? json
-                  .map<WelcomeGiftItemModel>(
-                    (i) => WelcomeGiftItemModel.fromJson(
+                  .map<WelcomeGiftItemResponse>(
+                    (i) => WelcomeGiftItemResponse.fromJson(
                       i as Map<String, dynamic>,
                     ),
                   )
@@ -58,12 +59,11 @@ class _WelcomeGiftRestClient implements WelcomeGiftRestClient {
   }
 
   @override
-  Future<ApiResponse<void>> claimWelcomeGift(Map<String, dynamic> body) async {
+  Future<ApiResponse<void>> claimWelcomeGift(int giftId) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'gift_id': giftId};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<ApiResponse<void>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
@@ -86,12 +86,12 @@ class _WelcomeGiftRestClient implements WelcomeGiftRestClient {
   }
 
   @override
-  Future<ApiResponse<List<WelcomeGiftLogModel>>> getWelcomeGiftLogs() async {
+  Future<ApiResponse<List<WelcomeGiftLogResponse>>> getWelcomeGiftLogs() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<WelcomeGiftLogModel>>>(
+    final _options = _setStreamType<ApiResponse<List<WelcomeGiftLogResponse>>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -102,15 +102,16 @@ class _WelcomeGiftRestClient implements WelcomeGiftRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<WelcomeGiftLogModel>> _value;
+    late ApiResponse<List<WelcomeGiftLogResponse>> _value;
     try {
-      _value = ApiResponse<List<WelcomeGiftLogModel>>.fromJson(
+      _value = ApiResponse<List<WelcomeGiftLogResponse>>.fromJson(
         _result.data!,
         (json) => json is List<dynamic>
             ? json
-                  .map<WelcomeGiftLogModel>(
-                    (i) =>
-                        WelcomeGiftLogModel.fromJson(i as Map<String, dynamic>),
+                  .map<WelcomeGiftLogResponse>(
+                    (i) => WelcomeGiftLogResponse.fromJson(
+                      i as Map<String, dynamic>,
+                    ),
                   )
                   .toList()
             : List.empty(),

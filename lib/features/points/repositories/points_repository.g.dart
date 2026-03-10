@@ -8,12 +8,18 @@ part of 'points_repository.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// 积分商城与记录相关的 Repository
+/// 封装所有积分 API 请求，错误由上层 Provider 处理
 
 @ProviderFor(PointsRepository)
 final pointsRepositoryProvider = PointsRepositoryProvider._();
 
+/// 积分商城与记录相关的 Repository
+/// 封装所有积分 API 请求，错误由上层 Provider 处理
 final class PointsRepositoryProvider
     extends $AsyncNotifierProvider<PointsRepository, void> {
+  /// 积分商城与记录相关的 Repository
+  /// 封装所有积分 API 请求，错误由上层 Provider 处理
   PointsRepositoryProvider._()
     : super(
         from: null,
@@ -33,7 +39,10 @@ final class PointsRepositoryProvider
   PointsRepository create() => PointsRepository();
 }
 
-String _$pointsRepositoryHash() => r'4f8ae64148d8b093c07474cbbfb3b68b28c61b14';
+String _$pointsRepositoryHash() => r'bc3c0479d18d5dae7c7518af714fdd8a0585a6fd';
+
+/// 积分商城与记录相关的 Repository
+/// 封装所有积分 API 请求，错误由上层 Provider 处理
 
 abstract class _$PointsRepository extends $AsyncNotifier<void> {
   FutureOr<void> build();
@@ -52,118 +61,3 @@ abstract class _$PointsRepository extends $AsyncNotifier<void> {
     element.handleCreate(ref, build);
   }
 }
-
-@ProviderFor(pointsBalance)
-final pointsBalanceProvider = PointsBalanceProvider._();
-
-final class PointsBalanceProvider
-    extends $FunctionalProvider<AsyncValue<int>, int, FutureOr<int>>
-    with $FutureModifier<int>, $FutureProvider<int> {
-  PointsBalanceProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'pointsBalanceProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$pointsBalanceHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<int> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<int> create(Ref ref) {
-    return pointsBalance(ref);
-  }
-}
-
-String _$pointsBalanceHash() => r'1d537d990d93522c7393fb0947c7bd89384992ac';
-
-@ProviderFor(pointsRecords)
-final pointsRecordsProvider = PointsRecordsProvider._();
-
-final class PointsRecordsProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<PointsRecordModel>>,
-          List<PointsRecordModel>,
-          FutureOr<List<PointsRecordModel>>
-        >
-    with
-        $FutureModifier<List<PointsRecordModel>>,
-        $FutureProvider<List<PointsRecordModel>> {
-  PointsRecordsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'pointsRecordsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$pointsRecordsHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<List<PointsRecordModel>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<List<PointsRecordModel>> create(Ref ref) {
-    return pointsRecords(ref);
-  }
-}
-
-String _$pointsRecordsHash() => r'43fcb7c3f0e5223cee8b1a66811b1c726e71a203';
-
-@ProviderFor(mallProducts)
-final mallProductsProvider = MallProductsProvider._();
-
-final class MallProductsProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<MallProductModel>>,
-          List<MallProductModel>,
-          FutureOr<List<MallProductModel>>
-        >
-    with
-        $FutureModifier<List<MallProductModel>>,
-        $FutureProvider<List<MallProductModel>> {
-  MallProductsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'mallProductsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$mallProductsHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<List<MallProductModel>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<List<MallProductModel>> create(Ref ref) {
-    return mallProducts(ref);
-  }
-}
-
-String _$mallProductsHash() => r'87b225c22d5695f76d44b6c03ba93428c341d6e9';

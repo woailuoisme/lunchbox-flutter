@@ -14,14 +14,28 @@ class PartnerHeader extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 32.h),
+      padding: EdgeInsets.fromLTRB(24.w, 40.h, 24.w, 56.h),
       decoration: BoxDecoration(
         gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
           colors: [
             theme.colorScheme.primary,
-            theme.colorScheme.primaryContainer,
+            theme.colorScheme.primary.withValues(alpha: 0.8),
+            theme.colorScheme.tertiary,
           ],
         ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32.r),
+          bottomRight: Radius.circular(32.r),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -29,16 +43,19 @@ class PartnerHeader extends StatelessWidget {
             title,
             style: TextStyle(
               color: theme.colorScheme.onPrimary,
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
+              fontSize: 28.sp,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 1.2,
             ),
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: 12.h),
           Text(
             subtitle,
+            textAlign: TextAlign.center,
             style: TextStyle(
-              color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
-              fontSize: 14.sp,
+              color: theme.colorScheme.onPrimary.withValues(alpha: 0.9),
+              fontSize: 15.sp,
+              height: 1.5,
             ),
           ),
         ],

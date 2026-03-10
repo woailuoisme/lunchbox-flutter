@@ -1,13 +1,19 @@
+import 'dart:io';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:lunchbox/features/personal_info/repositories/personal_info_repository.dart';
+import 'package:lunchbox/features/personal_info/providers/personal_info_provider.dart';
 import 'package:lunchbox/features/profile/providers/profile_provider.dart';
 import 'package:lunchbox/features/personal_info/widgets/profile_avatar_edit.dart';
 import 'package:lunchbox/features/personal_info/widgets/profile_info_card.dart';
 import 'package:lunchbox/features/personal_info/widgets/profile_info_tile.dart';
+import 'package:lunchbox/features/personal_info/widgets/profile_edit_save_button.dart';
+import 'package:lunchbox/features/personal_info/widgets/gender_picker_sheet.dart';
+import 'package:lunchbox/features/personal_info/widgets/profile_edit_dialog.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:toastification/toastification.dart';
@@ -21,112 +27,174 @@ class ProfileEditView extends ConsumerStatefulWidget {
 }
 
 class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
-  // 临时存储编辑状态
+  final _nicknameController = TextEditingController();
+  final _phoneController = TextEditingController();
   String? _selectedGender;
   DateTime? _selectedBirthday;
+  File? _selectedAvatarFile;
+  bool _isInitialized = false;
+
+  @override
+  void dispose() {
+    _nicknameController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  void _initializeData() {
+    if (_isInitialized) return;
+
+    final state = ref.read(profileProvider);
+    final user = state.value?.currentUser;
+
+    if (user != null) {
+      _nicknameController.text = user.nickname;
+      _phoneController.text = user.telephone ?? '';
+      _selectedGender = user.gender;
+
+      if (user.birthday != null && user.birthday!.isNotEmpty) {
+        try {
+          _selectedBirthday = DateTime.parse(user.birthday!);
+        } catch (_) {}
+      }
+      _isInitialized = true;
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+      maxWidth: 1000,
+    );
+
+    if (image != null) {
+      setState(() {
+        _selectedAvatarFile = File(image.path);
+      });
+    }
+  }
 
   Future<void> _saveProfile() async {
-    final user = ref.read(profileProvider).value?.currentUser;
-    if (user == null) return;
+    final nickname = _nicknameController.text.trim();
+    final telephone = _phoneController.text.trim();
 
-    try {
-      final repository = ref.read(personalInfoRepositoryProvider);
-      final updatedUser = await repository.updateProfile(
-        nickname: user.nickname,
-        gender: _selectedGender ?? user.gender,
-        telephone: user.telephone ?? '',
-        // birthday: _selectedBirthday?.toIso8601String(), // API 暂时不支持 birthday
+    if (nickname.isEmpty) {
+      toastification.show(
+        context: context,
+        title: Text(t.auth.nickname + t.profile.info.notSet),
+        type: ToastificationType.warning,
       );
+      return;
+    }
 
-      // Update profile state
-      ref.invalidate(profileProvider);
+    final success = await ref
+        .read(personalInfoProvider.notifier)
+        .updateProfile(
+          nickname: nickname,
+          gender: _selectedGender ?? 'unknown',
+          telephone: telephone,
+          avatar: _selectedAvatarFile,
+        );
 
-      if (mounted) {
-        toastification.show(
-          context: context,
-          title: Text(t.profile.saveSuccess),
-          type: ToastificationType.success,
-          autoCloseDuration: const Duration(seconds: 2),
-        );
-        context.pop();
-      }
-    } catch (e) {
-      if (mounted) {
-        toastification.show(
-          context: context,
-          title: Text(t.profile.saveFailed(error: e.toString())),
-          type: ToastificationType.error,
-          autoCloseDuration: const Duration(seconds: 2),
-        );
-      }
+    if (success && mounted) {
+      toastification.show(
+        context: context,
+        title: Text(t.common.success),
+        description: Text(t.profile.saveSuccess),
+        type: ToastificationType.success,
+        autoCloseDuration: const Duration(seconds: 2),
+      );
+      context.pop();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    _initializeData();
+
     final state = ref.watch(profileProvider);
+    final updateState = ref.watch(personalInfoProvider);
     final user = state.value?.currentUser;
     final theme = Theme.of(context);
-
-    // 初始化本地状态（如果未初始化）
-    if (user != null) {
-      _selectedGender ??= user.gender;
-      if (_selectedBirthday == null &&
-          user.birthday != null &&
-          user.birthday!.isNotEmpty) {
-        try {
-          _selectedBirthday = DateTime.parse(user.birthday!);
-        } catch (_) {
-          // 忽略解析错误
-        }
-      }
-    }
+    final isUpdating = updateState is AsyncLoading;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(t.profile.personalInfo),
         centerTitle: true,
-        backgroundColor:
-            theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
         elevation: 0,
-        actions: [],
+        backgroundColor: theme.colorScheme.surface.withValues(alpha: 0.8),
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(color: Colors.transparent),
+          ),
+        ),
+        scrolledUnderElevation: 0,
       ),
       body: user == null
           ? const Center(child: CircularProgressIndicator())
-          : Column(
+          : Stack(
               children: [
-                Expanded(
+                // 顶部背景渐变
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 250.h,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          theme.colorScheme.primaryContainer.withValues(
+                            alpha: 0.5,
+                          ),
+                          theme.colorScheme.surface.withValues(alpha: 0),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                // 主滚动区域
+                Positioned.fill(
                   child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top + 56.h,
+                      bottom: 110.h,
+                    ),
                     child: Column(
                       children: [
-                        SizedBox(height: 32.h),
-                        // 头像区域
+                        SizedBox(height: 20.h),
                         ProfileAvatarEdit(
                           avatarUrl:
                               user.avatar ??
                               'https://picsum.photos/seed/user/200',
+                          localImage: _selectedAvatarFile,
                           changeLabel: t.profile.avatar.clickToChange,
-                          onTap: () {
-                            toastification.show(
-                              context: context,
-                              title: Text(t.profile.avatar.uploading),
-                              type: ToastificationType.info,
-                              autoCloseDuration: const Duration(seconds: 2),
-                            );
-                          },
+                          isLoading: isUpdating,
+                          onTap: _pickImage,
                         ),
                         SizedBox(height: 32.h),
 
-                        // 基本信息卡片
+                        // 基本信息
                         ProfileInfoCard(
                           title: t.profile.info.basic,
                           children: [
                             ProfileInfoTile(
-                              icon: Symbols.phone_android,
-                              label: t.profile.info.phone,
-                              value: _maskPhoneNumber(user.telephone ?? ''),
-                              isEditable: false,
+                              icon: Symbols.person,
+                              label: t.auth.nickname,
+                              value: _nicknameController.text.isEmpty
+                                  ? t.profile.info.notSet
+                                  : _nicknameController.text,
+                              onTap: () => _showEditNicknameDialog(context),
                             ),
                             _buildDivider(context),
                             ProfileInfoTile(
@@ -137,6 +205,21 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                             ),
                             _buildDivider(context),
                             ProfileInfoTile(
+                              icon: Symbols.phone_android,
+                              label: t.profile.info.phone,
+                              value: _phoneController.text.isEmpty
+                                  ? t.profile.info.notSet
+                                  : _maskPhone(_phoneController.text),
+                              onTap: () => _showEditPhoneDialog(context),
+                            ),
+                          ],
+                        ),
+
+                        // 更多信息
+                        ProfileInfoCard(
+                          title: t.profile.info.other,
+                          children: [
+                            ProfileInfoTile(
                               icon: Symbols.cake,
                               label: t.profile.info.birthday,
                               value: _selectedBirthday != null
@@ -146,77 +229,30 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
                                   : t.profile.info.notSet,
                               onTap: () => _showDatePicker(context),
                             ),
-                          ],
-                        ),
-                        SizedBox(height: 16.h),
-
-                        // 其他信息卡片
-                        ProfileInfoCard(
-                          title: t.profile.info.other,
-                          children: [
+                            _buildDivider(context),
                             ProfileInfoTile(
                               icon: Symbols.mail,
                               label: t.profile.info.email,
-                              value: user.email ?? 'user@example.com',
-                              isEditable: false, // 假设邮箱不可编辑或需要特定流程
+                              value: (user.email == null || user.email!.isEmpty)
+                                  ? t.profile.info.notSet
+                                  : user.email!,
+                              isEditable: false,
                             ),
                           ],
                         ),
-                        SizedBox(height: 32.h),
                       ],
                     ),
                   ),
                 ),
-                // 底部保存按钮
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 16.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    boxShadow: [
-                      BoxShadow(
-                        color: theme.shadowColor.withValues(alpha: 0.05),
-                        offset: const Offset(0, -2),
-                        blurRadius: 10,
-                      ),
-                    ],
-                  ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 48.h,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        // 保存逻辑
-                        // TODO: 调用 API 更新性别和生日
-                        toastification.show(
-                          context: context,
-                          title: Text(t.profile.saveSuccess),
-                          type: ToastificationType.success,
-                          autoCloseDuration: const Duration(seconds: 2),
-                        );
-                        context.pop();
-                      },
-                      icon: Icon(
-                        Symbols.save,
-                        color: theme.colorScheme.onPrimary,
-                      ),
-                      label: Text(
-                        t.profile.saveInfo,
-                        style: TextStyle(
-                          color: theme.colorScheme.onPrimary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colorScheme.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24.r),
-                        ),
-                      ),
-                    ),
+
+                // 底部固定保存按钮
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: ProfileEditSaveButton(
+                    onPressed: _saveProfile,
+                    isLoading: isUpdating,
                   ),
                 ),
               ],
@@ -225,21 +261,14 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
   }
 
   Widget _buildDivider(BuildContext context) {
-    final theme = Theme.of(context);
-    return Divider(
-      height: 1.h,
-      thickness: 1.h,
-      indent: 48.w,
-      endIndent: 16.w,
-      color: theme.dividerColor,
+    return Padding(
+      padding: EdgeInsets.only(left: 56.w, right: 16.w),
+      child: Divider(
+        height: 1.h,
+        thickness: 0.5,
+        color: Theme.of(context).dividerColor.withValues(alpha: 0.1),
+      ),
     );
-  }
-
-  String _maskPhoneNumber(String phone) {
-    if (phone.length < 7) {
-      return phone;
-    }
-    return '${phone.substring(0, 3)}****${phone.substring(phone.length - 4)}';
   }
 
   String _getGenderLabel(String? gender) {
@@ -253,53 +282,56 @@ class _ProfileEditViewState extends ConsumerState<ProfileEditView> {
     }
   }
 
-  void _showGenderPicker(BuildContext context) {
-    showModalBottomSheet<void>(
+  String _maskPhone(String phone) {
+    if (phone.length < 7) return phone;
+    return phone.replaceRange(3, 7, '****');
+  }
+
+  void _showEditNicknameDialog(BuildContext context) {
+    showDialog<void>(
       context: context,
-      builder: (context) {
-        return Container(
-          padding: EdgeInsets.symmetric(vertical: 24.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildGenderOption(t.profile.gender.male, 'male'),
-              _buildGenderOption(t.profile.gender.female, 'female'),
-              _buildGenderOption(t.profile.gender.unknown, 'unknown'),
-            ],
-          ),
-        );
-      },
+      builder: (context) => ProfileEditDialog(
+        title: t.common.edit + t.auth.nickname,
+        initialValue: _nicknameController.text,
+        hintText: t.auth.enterNickname,
+        onConfirm: (value) => setState(() => _nicknameController.text = value),
+      ),
     );
   }
 
-  Widget _buildGenderOption(String label, String value) {
-    return ListTile(
-      title: Text(
-        label,
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 16.sp),
+  void _showEditPhoneDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (context) => ProfileEditDialog(
+        title: t.common.edit + t.profile.info.phone,
+        initialValue: _phoneController.text,
+        hintText: t.auth.enterPhoneNumber,
+        keyboardType: TextInputType.phone,
+        onConfirm: (value) => setState(() => _phoneController.text = value),
       ),
-      onTap: () {
-        setState(() {
-          _selectedGender = value;
-        });
-        Navigator.pop(context);
-      },
+    );
+  }
+
+  void _showGenderPicker(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => GenderPickerSheet(
+        selectedGender: _selectedGender,
+        onSelected: (value) => setState(() => _selectedGender = value),
+      ),
     );
   }
 
   void _showDatePicker(BuildContext context) {
     showDatePicker(
       context: context,
-      initialDate: _selectedBirthday ?? DateTime(1990),
+      initialDate: _selectedBirthday ?? DateTime(1995, 1, 1),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
-      locale: const Locale('zh'),
     ).then((picked) {
       if (picked != null) {
-        setState(() {
-          _selectedBirthday = picked;
-        });
+        setState(() => _selectedBirthday = picked);
       }
     });
   }

@@ -22,10 +22,10 @@ abstract class PersonalInfoRestClient {
   /// 更新用户信息
   @POST('/api/v1/auth/profile_update')
   @MultiPart()
-  Future<ApiResponse<ProfileUpdateData>> updateProfile(
-    @Part() String nickname,
-    @Part() String gender,
-    @Part() String telephone, {
+  Future<ApiResponse<ProfileUpdateData>> updateProfile({
+    @Part() String? nickname,
+    @Part() String? gender,
+    @Part() String? telephone,
     @Part() File? avatar,
   });
 }

@@ -3,12 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 
 class FeedbackDescriptionInput extends StatelessWidget {
-  const FeedbackDescriptionInput({
-    super.key,
-    required this.titleController,
-    required this.contentController,
-  });
-  final TextEditingController titleController;
+  const FeedbackDescriptionInput({super.key, required this.contentController});
   final TextEditingController contentController;
 
   @override
@@ -28,25 +23,6 @@ class FeedbackDescriptionInput extends StatelessWidget {
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 16.h),
-          TextField(
-            controller: titleController,
-            decoration: InputDecoration(
-              hintText: t.feedback.titleHint,
-              filled: true,
-              fillColor: theme.colorScheme.surfaceContainerHighest.withValues(
-                alpha: 0.3,
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.r),
-                borderSide: BorderSide.none,
-              ),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 16.w,
-                vertical: 12.h,
-              ),
-            ),
-          ),
-          SizedBox(height: 12.h),
           TextField(
             controller: contentController,
             maxLines: 5,

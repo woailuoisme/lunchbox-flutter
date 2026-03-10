@@ -1,190 +1,48 @@
-import 'package:lunchbox/features/points/entities/mall_product_model.dart';
-import 'package:lunchbox/features/points/entities/points_record_model.dart';
+import 'package:lunchbox/features/points/datasources/points_rest_client.dart';
+import 'package:lunchbox/features/points/entities/mall_product_response.dart';
+import 'package:lunchbox/features/points/entities/points_record_response.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'points_repository.g.dart';
 
+/// 积分商城与记录相关的 Repository
+/// 封装所有积分 API 请求，错误由上层 Provider 处理
 @riverpod
 class PointsRepository extends _$PointsRepository {
-  static int _mockBalance = 2580;
-
   @override
   FutureOr<void> build() {}
 
-  Future<int> getPointsBalance() async {
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-    return _mockBalance;
-  }
-
-  Future<List<PointsRecordModel>> getPointsRecords({
-    int page = 1,
-    int pageSize = 20,
-    String? type,
+  /// 获取商城商品列表（服务端过滤）
+  /// [type] 商品类型: balance（余额类）| coupon（优惠券类）
+  Future<List<MallProductResponse>> getMallProducts({
+    required String type,
+    int pageSize = 100,
   }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-
-    final allRecords = [
-      const PointsRecordModel(
-        id: '1',
-        title: '购买商品获得',
-        points: 50,
-        date: '2025-02-01',
-        type: 'gain',
-      ),
-      const PointsRecordModel(
-        id: '2',
-        title: '签到奖励',
-        points: 10,
-        date: '2025-02-02',
-        type: 'gain',
-      ),
-      const PointsRecordModel(
-        id: '3',
-        title: '兑换优惠券',
-        points: -200,
-        date: '2025-02-03',
-        type: 'use',
-      ),
-      const PointsRecordModel(
-        id: '4',
-        title: '购买商品获得',
-        points: 80,
-        date: '2025-02-04',
-        type: 'gain',
-      ),
-      const PointsRecordModel(
-        id: '5',
-        title: '邀请好友',
-        points: 100,
-        date: '2025-02-05',
-        type: 'gain',
-      ),
-      // Add more mock data to demonstrate pagination if needed
-      for (int i = 6; i <= 30; i++)
-        PointsRecordModel(
-          id: '$i',
-          title: i % 2 == 0 ? '购买商品获得' : '兑换优惠券',
-          points: i % 2 == 0 ? 50 : -20,
-          date: '2025-02-0${i % 9 + 1}',
-          type: i % 2 == 0 ? 'gain' : 'use',
-        ),
-    ];
-
-    var filtered = allRecords;
-    if (type != null && type != 'all') {
-      filtered = allRecords.where((e) => e.type == type).toList();
-    }
-
-    final startIndex = (page - 1) * pageSize;
-    if (startIndex >= filtered.length) {
-      return [];
-    }
-
-    final endIndex = startIndex + pageSize;
-    return filtered.sublist(
-      startIndex,
-      endIndex > filtered.length ? filtered.length : endIndex,
-    );
+    final client = ref.read(pointsRestClientProvider);
+    final response = await client.getRedemptionItems(type: type);
+    return response.data?.items ?? [];
   }
 
-  Future<List<MallProductModel>> getMallProducts({
-    int page = 1,
-    int pageSize = 20,
-    String? type,
+  /// 兑换商品，失败时抛出异常以便上层 Provider 捕获并处理
+  Future<void> exchangeProduct(int productId) async {
+    final client = ref.read(pointsRestClientProvider);
+    final response = await client.redeemItem(productId);
+    if (!response.success) {
+      throw Exception(response.message);
+    }
+  }
+
+  /// 获取积分历史记录（分页）
+  /// [page] 当前页码，[type] 过滤类型: all | gain | use
+  Future<List<PointsRecordResponse>> getPointsRecords({
+    required int page,
+    required String type,
   }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 600));
-
-    final allProducts = [
-      const MallProductModel(
-        id: '1',
-        title: '10元无门槛券',
-        amountValue: 10,
-        pointsCost: 1000,
-        isHot: true,
-        type: 'coupon',
-      ),
-      const MallProductModel(
-        id: '2',
-        title: '5元立减券',
-        amountValue: 5,
-        pointsCost: 500,
-        isHot: false,
-        type: 'coupon',
-      ),
-      const MallProductModel(
-        id: '3',
-        title: '20元满减券',
-        amountValue: 20,
-        pointsCost: 1800,
-        isHot: true,
-        type: 'coupon',
-      ),
-      const MallProductModel(
-        id: '4',
-        title: '50元余额',
-        amountValue: 50,
-        pointsCost: 5000,
-        isHot: false,
-        type: 'balance',
-      ),
-      const MallProductModel(
-        id: '5',
-        title: '免运费券',
-        amountValue: 0,
-        pointsCost: 300,
-        isHot: false,
-        type: 'coupon',
-      ),
-      // Mock pagination data
-      for (int i = 6; i <= 30; i++)
-        MallProductModel(
-          id: '$i',
-          title: i % 2 == 0 ? '${i * 10}元余额' : '${i * 5}元优惠券',
-          amountValue: i % 2 == 0 ? i * 10 : i * 5,
-          pointsCost: i * 100,
-          isHot: i % 5 == 0,
-          type: i % 2 == 0 ? 'balance' : 'coupon',
-        ),
-    ];
-
-    var filtered = allProducts;
-    if (type != null && type != 'all') {
-      filtered = allProducts.where((e) => e.type == type).toList();
-    }
-
-    final startIndex = (page - 1) * pageSize;
-    if (startIndex >= filtered.length) {
-      return [];
-    }
-
-    final endIndex = startIndex + pageSize;
-    return filtered.sublist(
-      startIndex,
-      endIndex > filtered.length ? filtered.length : endIndex,
+    final client = ref.read(pointsRestClientProvider);
+    final response = await client.getRedemptionHistory(
+      page: page,
+      type: type == 'all' ? null : type,
     );
+    return response.data?.items ?? [];
   }
-
-  Future<bool> exchangeProduct(String productId, int cost) async {
-    await Future<void>.delayed(const Duration(milliseconds: 1000));
-    if (_mockBalance >= cost) {
-      _mockBalance -= cost;
-      return true;
-    }
-    return false;
-  }
-}
-
-@riverpod
-Future<int> pointsBalance(Ref ref) {
-  return ref.watch(pointsRepositoryProvider.notifier).getPointsBalance();
-}
-
-@riverpod
-Future<List<PointsRecordModel>> pointsRecords(Ref ref) {
-  return ref.watch(pointsRepositoryProvider.notifier).getPointsRecords();
-}
-
-@riverpod
-Future<List<MallProductModel>> mallProducts(Ref ref) {
-  return ref.watch(pointsRepositoryProvider.notifier).getMallProducts();
 }

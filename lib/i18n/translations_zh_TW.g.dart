@@ -1090,6 +1090,29 @@ class _TranslationsPointsZhTw extends TranslationsPointsZhCn {
   String get exchangeNow => TranslationOverrides.string(_root.$meta, 'points.exchangeNow', {}) ?? '立即兌換';
   @override
   String get insufficientPoints => TranslationOverrides.string(_root.$meta, 'points.insufficientPoints', {}) ?? '餘額不足';
+  @override
+  String get exchangeConfirmTitle =>
+      TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmTitle', {}) ?? '兌換確認';
+  @override
+  String exchangeConfirmMessage({required Object points, required Object product}) =>
+      TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmMessage', {
+        'points': points,
+        'product': product,
+      }) ??
+      '確定消耗 ${points} 積分兌換 ${product} 嗎？';
+  @override
+  String get exchangeSuccess => TranslationOverrides.string(_root.$meta, 'points.exchangeSuccess', {}) ?? '兌换成功';
+  @override
+  String get exchangeFailed => TranslationOverrides.string(_root.$meta, 'points.exchangeFailed', {}) ?? '兌换失敗';
+  @override
+  String loadFailed({required Object error}) =>
+      TranslationOverrides.string(_root.$meta, 'points.loadFailed', {'error': error}) ?? '加載失敗: ${error}';
+  @override
+  String get retry => TranslationOverrides.string(_root.$meta, 'points.retry', {}) ?? '重試';
+  @override
+  String get waitProducts => TranslationOverrides.string(_root.$meta, 'points.waitProducts', {}) ?? '正在加載商品...';
+  @override
+  String get waitRecords => TranslationOverrides.string(_root.$meta, 'points.waitRecords', {}) ?? '正在加載記錄詳情...';
 }
 
 // Path: product
@@ -2267,6 +2290,23 @@ extension on TranslationsZhTw {
           'points.exchangeNow' => TranslationOverrides.string(_root.$meta, 'points.exchangeNow', {}) ?? '立即兌換',
           'points.insufficientPoints' =>
             TranslationOverrides.string(_root.$meta, 'points.insufficientPoints', {}) ?? '餘額不足',
+          'points.exchangeConfirmTitle' =>
+            TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmTitle', {}) ?? '兌換確認',
+          'points.exchangeConfirmMessage' =>
+            ({required Object points, required Object product}) =>
+                TranslationOverrides.string(_root.$meta, 'points.exchangeConfirmMessage', {
+                  'points': points,
+                  'product': product,
+                }) ??
+                '確定消耗 ${points} 積分兌換 ${product} 嗎？',
+          'points.exchangeSuccess' => TranslationOverrides.string(_root.$meta, 'points.exchangeSuccess', {}) ?? '兌换成功',
+          'points.exchangeFailed' => TranslationOverrides.string(_root.$meta, 'points.exchangeFailed', {}) ?? '兌换失敗',
+          'points.loadFailed' =>
+            ({required Object error}) =>
+                TranslationOverrides.string(_root.$meta, 'points.loadFailed', {'error': error}) ?? '加載失敗: ${error}',
+          'points.retry' => TranslationOverrides.string(_root.$meta, 'points.retry', {}) ?? '重試',
+          'points.waitProducts' => TranslationOverrides.string(_root.$meta, 'points.waitProducts', {}) ?? '正在加載商品...',
+          'points.waitRecords' => TranslationOverrides.string(_root.$meta, 'points.waitRecords', {}) ?? '正在加載記錄詳情...',
           'product.title' => TranslationOverrides.string(_root.$meta, 'product.title', {}) ?? '商品列表',
           'product.detail' => TranslationOverrides.string(_root.$meta, 'product.detail', {}) ?? '商品詳情',
           'product.hot' => TranslationOverrides.string(_root.$meta, 'product.hot', {}) ?? '熱銷',
@@ -2372,6 +2412,9 @@ extension on TranslationsZhTw {
             TranslationOverrides.string(_root.$meta, 'settings.schemes.shadOrange', {}) ?? '活力橙 (ShadOrange)',
           'settings.schemes.shadGreen' =>
             TranslationOverrides.string(_root.$meta, 'settings.schemes.shadGreen', {}) ?? '自然綠 (ShadGreen)',
+          _ => null,
+        } ??
+        switch (path) {
           'settings.schemes.bahamaBlue' =>
             TranslationOverrides.string(_root.$meta, 'settings.schemes.bahamaBlue', {}) ?? '巴哈馬藍 (BahamaBlue)',
           'settings.schemes.damask' =>
@@ -2383,9 +2426,6 @@ extension on TranslationsZhTw {
           'settings.copyright' =>
             TranslationOverrides.string(_root.$meta, 'settings.copyright', {}) ?? '© 2024 Lunchbox Team',
           'splash.starting' => TranslationOverrides.string(_root.$meta, 'splash.starting', {}) ?? '正在啟動...',
-          _ => null,
-        } ??
-        switch (path) {
           'splash.checkingServices' =>
             TranslationOverrides.string(_root.$meta, 'splash.checkingServices', {}) ?? '檢查服務狀態...',
           'splash.loadingConfig' => TranslationOverrides.string(_root.$meta, 'splash.loadingConfig', {}) ?? '載入配置...',

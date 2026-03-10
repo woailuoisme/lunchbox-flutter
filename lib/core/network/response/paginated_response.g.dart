@@ -13,7 +13,7 @@ _PaginatedResponse<T> _$PaginatedResponseFromJson<T>(
   final val = _PaginatedResponse<T>(
     items: $checkedConvert(
       'items',
-      (v) => (v as List<dynamic>).map(fromJsonT).toList(),
+      (v) => (v as List<dynamic>?)?.map(fromJsonT).toList() ?? const [],
     ),
     meta: $checkedConvert(
       'meta',
@@ -31,32 +31,33 @@ Map<String, dynamic> _$PaginatedResponseToJson<T>(
   'meta': instance.meta.toJson(),
 };
 
-_PaginationMeta _$PaginationMetaFromJson(Map<String, dynamic> json) =>
-    $checkedCreate(
-      '_PaginationMeta',
-      json,
-      ($checkedConvert) {
-        final val = _PaginationMeta(
-          currentPage: $checkedConvert(
-            'current_page',
-            (v) => (v as num).toInt(),
-          ),
-          perPage: $checkedConvert('per_page', (v) => (v as num).toInt()),
-          lastPage: $checkedConvert('last_page', (v) => (v as num).toInt()),
-          hasMore: $checkedConvert('has_more', (v) => v as bool),
-          total: $checkedConvert('total', (v) => (v as num).toInt()),
-          from: $checkedConvert('from', (v) => (v as num?)?.toInt()),
-          to: $checkedConvert('to', (v) => (v as num?)?.toInt()),
-        );
-        return val;
-      },
-      fieldKeyMap: const {
-        'currentPage': 'current_page',
-        'perPage': 'per_page',
-        'lastPage': 'last_page',
-        'hasMore': 'has_more',
-      },
+_PaginationMeta _$PaginationMetaFromJson(
+  Map<String, dynamic> json,
+) => $checkedCreate(
+  '_PaginationMeta',
+  json,
+  ($checkedConvert) {
+    final val = _PaginationMeta(
+      currentPage: $checkedConvert(
+        'current_page',
+        (v) => (v as num?)?.toInt() ?? 1,
+      ),
+      perPage: $checkedConvert('per_page', (v) => (v as num?)?.toInt() ?? 10),
+      lastPage: $checkedConvert('last_page', (v) => (v as num?)?.toInt() ?? 1),
+      hasMore: $checkedConvert('has_more', (v) => v as bool? ?? false),
+      total: $checkedConvert('total', (v) => (v as num?)?.toInt() ?? 0),
+      from: $checkedConvert('from', (v) => (v as num?)?.toInt()),
+      to: $checkedConvert('to', (v) => (v as num?)?.toInt()),
     );
+    return val;
+  },
+  fieldKeyMap: const {
+    'currentPage': 'current_page',
+    'perPage': 'per_page',
+    'lastPage': 'last_page',
+    'hasMore': 'has_more',
+  },
+);
 
 Map<String, dynamic> _$PaginationMetaToJson(_PaginationMeta instance) =>
     <String, dynamic>{

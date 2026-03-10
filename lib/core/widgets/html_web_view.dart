@@ -51,7 +51,7 @@ class _HtmlWebViewState extends State<HtmlWebView> {
       line-height: 1.6;
       color: inherit;
       margin: 0;
-      padding: 16px;
+      padding: 8px;
       word-wrap: break-word;
     }
     h1 { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 24px; }

@@ -11,9 +11,9 @@ _ApiResponseModel<T> _$ApiResponseModelFromJson<T>(
   T Function(Object? json) fromJsonT,
 ) => $checkedCreate('_ApiResponseModel', json, ($checkedConvert) {
   final val = _ApiResponseModel<T>(
-    code: $checkedConvert('code', (v) => (v as num).toInt()),
-    message: $checkedConvert('message', (v) => v as String),
-    timestamp: $checkedConvert('timestamp', (v) => (v as num).toInt()),
+    code: $checkedConvert('code', (v) => (v as num?)?.toInt() ?? 0),
+    message: $checkedConvert('message', (v) => v as String? ?? ''),
+    timestamp: $checkedConvert('timestamp', (v) => (v as num?)?.toInt() ?? 0),
     data: $checkedConvert(
       'data',
       (v) => _$nullableGenericFromJson(v, fromJsonT),
@@ -49,11 +49,11 @@ _PaginatedResponseModel<T> _$PaginatedResponseModelFromJson<T>(
   final val = _PaginatedResponseModel<T>(
     list: $checkedConvert(
       'list',
-      (v) => (v as List<dynamic>).map(fromJsonT).toList(),
+      (v) => (v as List<dynamic>?)?.map(fromJsonT).toList() ?? const [],
     ),
-    total: $checkedConvert('total', (v) => (v as num).toInt()),
-    page: $checkedConvert('page', (v) => (v as num).toInt()),
-    pageSize: $checkedConvert('page_size', (v) => (v as num).toInt()),
+    total: $checkedConvert('total', (v) => (v as num?)?.toInt() ?? 0),
+    page: $checkedConvert('page', (v) => (v as num?)?.toInt() ?? 1),
+    pageSize: $checkedConvert('page_size', (v) => (v as num?)?.toInt() ?? 10),
   );
   return val;
 }, fieldKeyMap: const {'pageSize': 'page_size'});

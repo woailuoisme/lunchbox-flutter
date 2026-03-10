@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/core/providers/navigator_key_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -197,10 +198,22 @@ class DialogService {
       context: targetContext,
       dialogType: dialogType,
       animType: AnimType.scale,
+      headerAnimationLoop: false,
       title: title,
       desc: message,
+      // 使用主题中的字体样式
+      titleTextStyle: TextStyle(
+        fontSize: 18.sp,
+        fontWeight: FontWeight.bold,
+        color: theme.colorScheme.onSurface,
+      ),
+      descTextStyle: TextStyle(
+        fontSize: 15.sp,
+        color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+      ),
       btnOkText: okText ?? t.common.ok,
       btnOkColor: theme.colorScheme.primary,
+      buttonsBorderRadius: BorderRadius.circular(12.r),
       btnOkOnPress: onOk ?? () {},
     ).show();
   }

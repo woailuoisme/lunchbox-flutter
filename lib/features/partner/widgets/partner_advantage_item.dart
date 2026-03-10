@@ -19,19 +19,33 @@ class PartnerAdvantageItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 12.h),
+      padding: EdgeInsets.only(bottom: 20.h),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(8.w),
+            padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8.r),
+              gradient: LinearGradient(
+                colors: [
+                  theme.colorScheme.primaryContainer,
+                  theme.colorScheme.primary.withValues(alpha: 0.1),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.05),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             child: Icon(icon, color: theme.colorScheme.primary, size: 24.sp),
           ),
-          SizedBox(width: 12.w),
+          SizedBox(width: 16.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,14 +54,18 @@ class PartnerAdvantageItem extends StatelessWidget {
                   title,
                   style: TextStyle(
                     fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: theme.textTheme.titleMedium?.color,
+                    fontWeight: FontWeight.w700,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
-                SizedBox(height: 4.h),
+                SizedBox(height: 6.h),
                 Text(
                   description,
-                  style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    height: 1.4,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),

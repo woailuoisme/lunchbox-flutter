@@ -7,9 +7,9 @@ part 'api_response.g.dart';
 @Freezed(genericArgumentFactories: true)
 sealed class ApiResponse<T> with _$ApiResponse<T> {
   const factory ApiResponse({
-    required bool success,
+    @Default(false) bool success,
     @Default(0) int code,
-    required String message,
+    @Default('') String message,
     T? data,
     Map<String, List<String>>? errors,
   }) = _ApiResponse;

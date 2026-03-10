@@ -1680,6 +1680,19 @@ class TranslationsPointsZhCn {
 
   /// zh-CN: '兑换失败'
   String get exchangeFailed => TranslationOverrides.string(_root.$meta, 'points.exchangeFailed', {}) ?? '兑换失败';
+
+  /// zh-CN: '加载失败: ${error}'
+  String loadFailed({required Object error}) =>
+      TranslationOverrides.string(_root.$meta, 'points.loadFailed', {'error': error}) ?? '加载失败: ${error}';
+
+  /// zh-CN: '重试'
+  String get retry => TranslationOverrides.string(_root.$meta, 'points.retry', {}) ?? '重试';
+
+  /// zh-CN: '正在加载商品...'
+  String get waitProducts => TranslationOverrides.string(_root.$meta, 'points.waitProducts', {}) ?? '正在加载商品...';
+
+  /// zh-CN: '正在加载记录详情...'
+  String get waitRecords => TranslationOverrides.string(_root.$meta, 'points.waitRecords', {}) ?? '正在加载记录详情...';
 }
 
 // Path: product
@@ -1873,6 +1886,9 @@ class TranslationsProfileZhCn {
 
   /// zh-CN: '优惠券'
   String get couponCount => TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ?? '优惠券';
+
+  /// zh-CN: '积分兑换'
+  String get pointsMall => TranslationOverrides.string(_root.$meta, 'profile.pointsMall', {}) ?? '积分兑换';
 
   late final TranslationsProfileWalletPageZhCn walletPage = TranslationsProfileWalletPageZhCn.internal(_root);
 }
@@ -3673,6 +3689,12 @@ extension on Translations {
                 '确定消耗 ${points} 积分兑换 ${product} 吗？',
           'points.exchangeSuccess' => TranslationOverrides.string(_root.$meta, 'points.exchangeSuccess', {}) ?? '兑换成功',
           'points.exchangeFailed' => TranslationOverrides.string(_root.$meta, 'points.exchangeFailed', {}) ?? '兑换失败',
+          'points.loadFailed' =>
+            ({required Object error}) =>
+                TranslationOverrides.string(_root.$meta, 'points.loadFailed', {'error': error}) ?? '加载失败: ${error}',
+          'points.retry' => TranslationOverrides.string(_root.$meta, 'points.retry', {}) ?? '重试',
+          'points.waitProducts' => TranslationOverrides.string(_root.$meta, 'points.waitProducts', {}) ?? '正在加载商品...',
+          'points.waitRecords' => TranslationOverrides.string(_root.$meta, 'points.waitRecords', {}) ?? '正在加载记录详情...',
           'product.title' => TranslationOverrides.string(_root.$meta, 'product.title', {}) ?? '商品列表',
           'product.detail' => TranslationOverrides.string(_root.$meta, 'product.detail', {}) ?? '商品详情',
           'product.hot' => TranslationOverrides.string(_root.$meta, 'product.hot', {}) ?? '热销',
@@ -3759,6 +3781,7 @@ extension on Translations {
           'profile.walletBalance' => TranslationOverrides.string(_root.$meta, 'profile.walletBalance', {}) ?? '钱包余额',
           'profile.coin' => TranslationOverrides.string(_root.$meta, 'profile.coin', {}) ?? '积分',
           'profile.couponCount' => TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ?? '优惠券',
+          'profile.pointsMall' => TranslationOverrides.string(_root.$meta, 'profile.pointsMall', {}) ?? '积分兑换',
           'profile.walletPage.title' =>
             TranslationOverrides.string(_root.$meta, 'profile.walletPage.title', {}) ?? '钱包',
           'profile.walletPage.topUp' =>

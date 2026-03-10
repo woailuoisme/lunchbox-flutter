@@ -20,5 +20,13 @@
   "noProducts": "暫無商品",
   "cost": "${points} 積分",
   "exchangeNow": "立即兌換",
-  "insufficientPoints": "餘額不足"
+  "insufficientPoints": "餘額不足",
+  "exchangeConfirmTitle": "兌換確認",
+  "exchangeConfirmMessage": "確定消耗 ${points} 積分兌換 ${product} 嗎？",
+  "exchangeSuccess": "兌换成功",
+  "exchangeFailed": "兌换失敗",
+  "loadFailed": "加載失敗: ${error}",
+  "retry": "重試",
+  "waitProducts": "正在加載商品...",
+  "waitRecords": "正在加載記錄詳情..."
 }

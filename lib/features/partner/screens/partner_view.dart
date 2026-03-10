@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:lunchbox/features/partner/repositories/partner_repository.dart';
+import 'package:lunchbox/features/partner/providers/partner_provider.dart';
 import 'package:lunchbox/features/partner/widgets/partner_advantage_item.dart';
 import 'package:lunchbox/features/partner/widgets/partner_application_form.dart';
 import 'package:lunchbox/features/partner/widgets/partner_condition_list.dart';
@@ -19,68 +20,46 @@ class PartnerView extends ConsumerStatefulWidget {
 }
 
 class _PartnerViewState extends ConsumerState<PartnerView> {
-  final _nameController = TextEditingController();
-  final _companyController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _intentionController = TextEditingController();
-  bool _isSubmitting = false;
+  final _formKey = GlobalKey<FormBuilderState>();
+  bool _isFormValid = false;
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _companyController.dispose();
-    _phoneController.dispose();
-    _intentionController.dispose();
-    super.dispose();
+  void _onFormChanged() {
+    setState(() {
+      _isFormValid = _formKey.currentState?.isValid ?? false;
+    });
   }
 
   Future<void> _submitApplication() async {
-    final name = _nameController.text.trim();
-    final company = _companyController.text.trim();
-    final phone = _phoneController.text.trim();
-    final intention = _intentionController.text.trim();
+    if (_formKey.currentState?.saveAndValidate() ?? false) {
+      final values = _formKey.currentState!.value;
 
-    if (name.isEmpty || company.isEmpty || phone.isEmpty || intention.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(t.partner.incompleteInfo)));
-      return;
-    }
-
-    setState(() {
-      _isSubmitting = true;
-    });
-
-    try {
-      await ref
-          .read(partnerRepositoryProvider.notifier)
-          .submitApplication(
-            name: name,
-            company: company,
-            phone: phone,
-            intention: intention,
+      final success = await ref
+          .read(partnerProvider.notifier)
+          .submitConsult(
+            name: values['name'] as String,
+            phone: values['phone'] as String,
+            company: values['company'] as String,
+            message: values['message'] as String,
           );
 
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(t.partner.submitSuccess)));
-        _nameController.clear();
-        _companyController.clear();
-        _phoneController.clear();
-        _intentionController.clear();
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(t.partner.errorOccurred(error: e.toString()))),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isSubmitting = false;
-        });
+        if (success) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(t.partner.submitSuccess)));
+          _formKey.currentState?.reset();
+        } else {
+          final state = ref.read(partnerProvider);
+          if (state is AsyncError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  t.partner.errorOccurred(error: state.error.toString()),
+                ),
+              ),
+            );
+          }
+        }
       }
     }
   }
@@ -112,8 +91,6 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
                   _buildConditions(context),
                   SizedBox(height: 16.h),
                   _buildApplicationForm(context),
-                  SizedBox(height: 16.h),
-                  _buildContactInfo(context),
                   SizedBox(height: 32.h),
                 ],
               ),
@@ -207,6 +184,8 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
       title: t.partner.applicationTitle,
       children: [
         PartnerApplicationForm(
+          formKey: _formKey,
+          onFormChanged: _onFormChanged,
           nameLabel: t.partner.nameLabel,
           nameHint: t.partner.nameInputHint,
           companyLabel: t.partner.companyLabel,
@@ -216,58 +195,10 @@ class _PartnerViewState extends ConsumerState<PartnerView> {
           intentionLabel: t.partner.intentionLabel,
           intentionHint: t.partner.intentionInputHint,
           submitText: t.partner.submit,
-          nameController: _nameController,
-          companyController: _companyController,
-          phoneController: _phoneController,
-          intentionController: _intentionController,
-          onSubmit: _submitApplication,
-          isSubmitting: _isSubmitting,
+          onSubmit: _isFormValid ? _submitApplication : null,
+          isSubmitting: ref.watch(partnerProvider).isLoading,
         ),
       ],
-    );
-  }
-
-  Widget _buildContactInfo(BuildContext context) {
-    return PartnerSectionCard(
-      title: t.partner.contactTitle,
-      children: [
-        _buildContactTile(
-          context,
-          Symbols.phone,
-          t.partner.serviceHotline,
-          '400-114-8818',
-        ),
-        _buildContactTile(
-          context,
-          Symbols.location_on,
-          t.partner.address,
-          '广东省东莞市松山湖园区科汇路1号1栋1510室',
-        ),
-      ],
-    );
-  }
-
-  Widget _buildContactTile(
-    BuildContext context,
-    IconData icon,
-    String label,
-    String content,
-  ) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.only(bottom: 12.h),
-      child: Row(
-        children: [
-          Icon(icon, size: 20.sp, color: theme.colorScheme.primary),
-          SizedBox(width: 8.w),
-          Expanded(
-            child: Text(
-              '$label: $content',
-              style: TextStyle(color: theme.textTheme.bodyMedium?.color),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -20,17 +20,16 @@ class _PartnerRestClient implements PartnerRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<void>> applyPartner(Map<String, dynamic> body) async {
+  Future<ApiResponse<void>> submitConsult(PartnerConsultRequest body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = body;
     final _options = _setStreamType<ApiResponse<void>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/user/partner/apply',
+            '/api/v1/common/consult',
             queryParameters: queryParameters,
             data: _data,
           )

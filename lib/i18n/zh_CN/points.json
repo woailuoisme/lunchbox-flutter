@@ -24,5 +24,9 @@
   "exchangeConfirmTitle": "兑换确认",
   "exchangeConfirmMessage": "确定消耗 ${points} 积分兑换 ${product} 吗？",
   "exchangeSuccess": "兑换成功",
-  "exchangeFailed": "兑换失败"
+  "exchangeFailed": "兑换失败",
+  "loadFailed": "加载失败: ${error}",
+  "retry": "重试",
+  "waitProducts": "正在加载商品...",
+  "waitRecords": "正在加载记录详情..."
 }

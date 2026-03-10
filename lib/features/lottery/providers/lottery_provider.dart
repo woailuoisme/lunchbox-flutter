@@ -4,6 +4,7 @@ import 'package:lunchbox/features/lottery/entities/lottery_record_response.dart'
 import 'package:lunchbox/features/lottery/entities/lottery_statistics_response.dart';
 import 'package:lunchbox/features/lottery/entities/lottery_state.dart';
 import 'package:lunchbox/features/lottery/repositories/lottery_repository.dart';
+import 'package:lunchbox/features/profile/providers/profile_provider.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -26,8 +27,11 @@ class LotteryNotifier extends _$LotteryNotifier {
     final stats = results[1] as LotteryStatisticsResponse?;
     final recordsPage = results[2] as PaginatedResponse<LotteryRecordResponse>?;
 
+    final profileState = ref.watch(profileProvider).value;
+    final lotteryCount = profileState?.currentUser?.lotteryCount ?? 0;
+
     return LotteryState(
-      remainingSpins: 3, // TODO: 从接口获取真实次数
+      remainingSpins: lotteryCount,
       prizes: prizes,
       statistics: stats,
       records: recordsPage?.items ?? [],

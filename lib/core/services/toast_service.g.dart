@@ -9,46 +9,16 @@ part of 'toast_service.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 /// Toast 服务
-///
-/// 提供统一的 Toast 通知功能，支持成功、错误、信息和警告四种类型。
-/// 使用 Toastification 库实现现代化、可定制的通知提示。
-///
-/// 使用示例：
-/// ```dart
-/// final toastService = ref.read(toastServiceProvider);
-/// toastService.showSuccess('操作成功');
-/// toastService.showError('操作失败，请重试');
-/// ```
 
 @ProviderFor(toastService)
 final toastServiceProvider = ToastServiceProvider._();
 
 /// Toast 服务
-///
-/// 提供统一的 Toast 通知功能，支持成功、错误、信息和警告四种类型。
-/// 使用 Toastification 库实现现代化、可定制的通知提示。
-///
-/// 使用示例：
-/// ```dart
-/// final toastService = ref.read(toastServiceProvider);
-/// toastService.showSuccess('操作成功');
-/// toastService.showError('操作失败，请重试');
-/// ```
 
 final class ToastServiceProvider
     extends $FunctionalProvider<ToastService, ToastService, ToastService>
     with $Provider<ToastService> {
   /// Toast 服务
-  ///
-  /// 提供统一的 Toast 通知功能，支持成功、错误、信息和警告四种类型。
-  /// 使用 Toastification 库实现现代化、可定制的通知提示。
-  ///
-  /// 使用示例：
-  /// ```dart
-  /// final toastService = ref.read(toastServiceProvider);
-  /// toastService.showSuccess('操作成功');
-  /// toastService.showError('操作失败，请重试');
-  /// ```
   ToastServiceProvider._()
     : super(
         from: null,

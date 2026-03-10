@@ -213,11 +213,11 @@ return $default(_that.items,_that.meta);case _:
 @JsonSerializable(genericArgumentFactories: true)
 
 class _PaginatedResponse<T> implements PaginatedResponse<T> {
-  const _PaginatedResponse({required final  List<T> items, required this.meta}): _items = items;
+  const _PaginatedResponse({final  List<T> items = const [], required this.meta}): _items = items;
   factory _PaginatedResponse.fromJson(Map<String, dynamic> json,T Function(Object?) fromJsonT) => _$PaginatedResponseFromJson(json,fromJsonT);
 
  final  List<T> _items;
-@override List<T> get items {
+@override@JsonKey() List<T> get items {
   if (_items is EqualUnmodifiableListView) return _items;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_items);
@@ -493,14 +493,14 @@ return $default(_that.currentPage,_that.perPage,_that.lastPage,_that.hasMore,_th
 @JsonSerializable()
 
 class _PaginationMeta implements PaginationMeta {
-  const _PaginationMeta({@JsonKey(name: 'current_page') required this.currentPage, @JsonKey(name: 'per_page') required this.perPage, @JsonKey(name: 'last_page') required this.lastPage, @JsonKey(name: 'has_more') required this.hasMore, required this.total, this.from, this.to});
+  const _PaginationMeta({@JsonKey(name: 'current_page') this.currentPage = 1, @JsonKey(name: 'per_page') this.perPage = 10, @JsonKey(name: 'last_page') this.lastPage = 1, @JsonKey(name: 'has_more') this.hasMore = false, this.total = 0, this.from, this.to});
   factory _PaginationMeta.fromJson(Map<String, dynamic> json) => _$PaginationMetaFromJson(json);
 
 @override@JsonKey(name: 'current_page') final  int currentPage;
 @override@JsonKey(name: 'per_page') final  int perPage;
 @override@JsonKey(name: 'last_page') final  int lastPage;
 @override@JsonKey(name: 'has_more') final  bool hasMore;
-@override final  int total;
+@override@JsonKey() final  int total;
 @override final  int? from;
 @override final  int? to;
 

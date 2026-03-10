@@ -17,6 +17,11 @@ abstract class FeedbackRestClient {
   factory FeedbackRestClient(Dio dio, {String baseUrl}) = _FeedbackRestClient;
 
   /// 提交反馈
-  @POST('/api/v1/user/feedback')
-  Future<ApiResponse<void>> submitFeedback(@Body() Map<String, dynamic> body);
+  @POST('/api/v1/feedback')
+  @MultiPart()
+  Future<ApiResponse<void>> submitFeedback({
+    @Part() required String content,
+    @Part() required String type,
+    @Part(name: 'images[]') List<MultipartFile>? images,
+  });
 }

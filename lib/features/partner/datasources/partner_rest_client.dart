@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:lunchbox/core/network/dio_provider.dart';
 import 'package:lunchbox/core/network/response/api_response.dart';
+import 'package:lunchbox/features/partner/entities/partner_consult_request.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,7 +17,7 @@ PartnerRestClient partnerRestClient(Ref ref) {
 abstract class PartnerRestClient {
   factory PartnerRestClient(Dio dio, {String baseUrl}) = _PartnerRestClient;
 
-  /// 申请合伙人
-  @POST('/api/v1/user/partner/apply')
-  Future<ApiResponse<void>> applyPartner(@Body() Map<String, dynamic> body);
+  /// 提交合作咨询信息
+  @POST('/api/v1/common/consult')
+  Future<ApiResponse<void>> submitConsult(@Body() PartnerConsultRequest body);
 }

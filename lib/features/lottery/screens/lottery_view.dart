@@ -9,7 +9,7 @@ import 'package:lunchbox/features/lottery/entities/lottery_state.dart';
 import 'package:lunchbox/features/lottery/providers/lottery_provider.dart';
 import 'package:lunchbox/features/lottery/widgets/lottery_bottom_buttons.dart';
 import 'package:lunchbox/features/lottery/widgets/lottery_header.dart';
-import 'package:lunchbox/features/lottery/widgets/lottery_prize_list.dart';
+// import 'package:lunchbox/features/lottery/widgets/lottery_prize_list.dart';
 import 'package:lunchbox/features/lottery/widgets/lottery_result_dialog.dart';
 import 'package:lunchbox/features/lottery/widgets/lottery_rules.dart';
 import 'package:lunchbox/features/lottery/widgets/lottery_wheel.dart';
@@ -146,11 +146,12 @@ class _LotteryViewState extends ConsumerState<LotteryView>
               begin: const Offset(0.8, 0.8),
             ),
             SizedBox(height: 30.h),
-            LotteryPrizeList(prizes: lotteryNotifier.wheelItems)
-                .animate(delay: 200.ms)
-                .fadeIn(duration: 600.ms)
-                .slideY(begin: 0.1, end: 0),
-            SizedBox(height: 20.h),
+            // 暂不显示奖品一览
+            // LotteryPrizeList(prizes: lotteryNotifier.wheelItems)
+            //     .animate(delay: 200.ms)
+            //     .fadeIn(duration: 600.ms)
+            //     .slideY(begin: 0.1, end: 0),
+            // SizedBox(height: 20.h),
             const LotteryRules()
                 .animate(delay: 400.ms)
                 .fadeIn(duration: 600.ms)

@@ -20,5 +20,13 @@
   "noProducts": "No products",
   "cost": "${points} Points",
   "exchangeNow": "Exchange Now",
-  "insufficientPoints": "Insufficient balance"
+  "insufficientPoints": "Insufficient balance",
+  "exchangeConfirmTitle": "Exchange Confirmation",
+  "exchangeConfirmMessage": "Are you sure to consume ${points} points to exchange ${product}?",
+  "exchangeSuccess": "Exchange Success",
+  "exchangeFailed": "Exchange Failed",
+  "loadFailed": "Load Failed: ${error}",
+  "retry": "Retry",
+  "waitProducts": "Loading products...",
+  "waitRecords": "Loading records details..."
 }

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:lunchbox/core/network/dio_provider.dart';
 import 'package:lunchbox/core/network/response/api_response.dart';
-import 'package:lunchbox/features/welcome_gift/entities/welcome_gift_item_model.dart';
-import 'package:lunchbox/features/welcome_gift/entities/welcome_gift_log_model.dart';
+import 'package:lunchbox/features/welcome_gift/entities/welcome_gift_item_response.dart';
+import 'package:lunchbox/features/welcome_gift/entities/welcome_gift_log_response.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -21,13 +21,13 @@ abstract class WelcomeGiftRestClient {
 
   /// 获取新人礼包列表
   @GET('/api/v1/welcome_gift/items')
-  Future<ApiResponse<List<WelcomeGiftItemModel>>> getWelcomeGiftItems();
+  Future<ApiResponse<List<WelcomeGiftItemResponse>>> getWelcomeGiftItems();
 
   /// 领取新人礼包
   @POST('/api/v1/welcome_gift/claim')
-  Future<ApiResponse<void>> claimWelcomeGift(@Body() Map<String, dynamic> body);
+  Future<ApiResponse<void>> claimWelcomeGift(@Query('gift_id') int giftId);
 
   /// 获取用户领取记录
   @GET('/api/v1/welcome_gift/logs')
-  Future<ApiResponse<List<WelcomeGiftLogModel>>> getWelcomeGiftLogs();
+  Future<ApiResponse<List<WelcomeGiftLogResponse>>> getWelcomeGiftLogs();
 }

@@ -20,33 +20,35 @@ class _PointsRestClient implements PointsRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<List<MallProductModel>>> getRedemptionItems() async {
+  Future<ApiResponse<PaginatedResponse<MallProductResponse>>>
+  getRedemptionItems({int? page, String? type}) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'page': page, r'type': type};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<MallProductModel>>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/redemption/items',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<ApiResponse<PaginatedResponse<MallProductResponse>>>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/api/v1/redemption/items',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<MallProductModel>> _value;
+    late ApiResponse<PaginatedResponse<MallProductResponse>> _value;
     try {
-      _value = ApiResponse<List<MallProductModel>>.fromJson(
+      _value = ApiResponse<PaginatedResponse<MallProductResponse>>.fromJson(
         _result.data!,
-        (json) => json is List<dynamic>
-            ? json
-                  .map<MallProductModel>(
-                    (i) => MallProductModel.fromJson(i as Map<String, dynamic>),
-                  )
-                  .toList()
-            : List.empty(),
+        (json) => PaginatedResponse<MallProductResponse>.fromJson(
+          json as Map<String, dynamic>,
+          (json) => MallProductResponse.fromJson(json as Map<String, dynamic>),
+        ),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -56,25 +58,28 @@ class _PointsRestClient implements PointsRestClient {
   }
 
   @override
-  Future<ApiResponse<void>> redeemItem(String itemId) async {
+  Future<ApiResponse<dynamic>> redeemItem(int id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<void>>(
+    final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/redemption/items/${itemId}',
+            '/api/v1/redemption/redeem/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<void> _value;
+    late ApiResponse<dynamic> _value;
     try {
-      _value = ApiResponse<void>.fromJson(_result.data!, (json) => () {}());
+      _value = ApiResponse<dynamic>.fromJson(
+        _result.data!,
+        (json) => json as dynamic,
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -83,34 +88,35 @@ class _PointsRestClient implements PointsRestClient {
   }
 
   @override
-  Future<ApiResponse<List<PointsRecordModel>>> getRedemptionHistory() async {
+  Future<ApiResponse<PaginatedResponse<PointsRecordResponse>>>
+  getRedemptionHistory({int? page, String? type}) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'page': page, r'type': type};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<PointsRecordModel>>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/redemption/history',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<ApiResponse<PaginatedResponse<PointsRecordResponse>>>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/api/v1/redemption/history',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<PointsRecordModel>> _value;
+    late ApiResponse<PaginatedResponse<PointsRecordResponse>> _value;
     try {
-      _value = ApiResponse<List<PointsRecordModel>>.fromJson(
+      _value = ApiResponse<PaginatedResponse<PointsRecordResponse>>.fromJson(
         _result.data!,
-        (json) => json is List<dynamic>
-            ? json
-                  .map<PointsRecordModel>(
-                    (i) =>
-                        PointsRecordModel.fromJson(i as Map<String, dynamic>),
-                  )
-                  .toList()
-            : List.empty(),
+        (json) => PaginatedResponse<PointsRecordResponse>.fromJson(
+          json as Map<String, dynamic>,
+          (json) => PointsRecordResponse.fromJson(json as Map<String, dynamic>),
+        ),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);

@@ -18,15 +18,20 @@ class PartnerSectionCard extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(12.r),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: theme.shadowColor.withValues(alpha: 0.05),
-            blurRadius: 10,
+            color: theme.shadowColor.withValues(alpha: 0.04),
+            blurRadius: 16,
             offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: theme.shadowColor.withValues(alpha: 0.02),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -37,24 +42,32 @@ class PartnerSectionCard extends StatelessWidget {
             children: [
               Container(
                 width: 4.w,
-                height: 16.h,
+                height: 18.h,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
+                  gradient: LinearGradient(
+                    colors: [
+                      theme.colorScheme.primary,
+                      theme.colorScheme.tertiary,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                   borderRadius: BorderRadius.circular(2.r),
                 ),
               ),
-              SizedBox(width: 8.w),
+              SizedBox(width: 10.w),
               Text(
                 title,
                 style: TextStyle(
                   fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: theme.textTheme.titleLarge?.color,
+                  fontWeight: FontWeight.w800,
+                  color: theme.colorScheme.onSurface,
+                  letterSpacing: 0.5,
                 ),
               ),
             ],
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 20.h),
           ...children,
         ],
       ),

@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lunchbox/core/services/dialog_service.dart';
+
 import 'package:lunchbox/core/widgets/html_web_view.dart';
-import 'package:lunchbox/features/profile/widgets/about_feature_item.dart';
-import 'package:lunchbox/features/profile/widgets/section_title.dart';
+import 'package:lunchbox/features/profile/widgets/about_contact_section.dart';
+import 'package:lunchbox/features/profile/widgets/about_features_section.dart';
+import 'package:lunchbox/features/profile/widgets/about_logo_section.dart';
+import 'package:lunchbox/features/profile/widgets/about_policy_section.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -23,120 +23,94 @@ class AboutUsView extends ConsumerStatefulWidget {
 }
 
 class _AboutUsViewState extends ConsumerState<AboutUsView> {
-  String _version = '1.0.0';
-
   @override
   void initState() {
     super.initState();
-    _initPackageInfo();
   }
 
   void _showPolicyDialog() {
-    ref
-        .read(dialogServiceProvider)
-        .showContent(
-          context: context,
-          title: t.about.userAgreementAndPrivacy,
-          width: 0.9.sw,
-          padding: EdgeInsets.zero,
-          content: SizedBox(
-            height: 0.75.sh,
-            child: FutureBuilder<String>(
-              future: Future.delayed(
-                const Duration(milliseconds: 300),
-                () => rootBundle.loadString('assets/html/xieyi.html'),
-              ),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Skeletonizer(
-                    enabled: true,
-                    child: SingleChildScrollView(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20.w,
-                        vertical: 16.h,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                            child: Container(
-                              width: 200.w,
-                              height: 24.h,
-                              color: Colors.black,
-                            ),
-                          ),
-                          SizedBox(height: 24.h),
-                          Container(
-                            width: double.infinity,
-                            height: 16.h,
-                            color: Colors.black,
-                          ),
-                          SizedBox(height: 8.h),
-                          Container(
-                            width: double.infinity,
-                            height: 16.h,
-                            color: Colors.black,
-                          ),
-                          SizedBox(height: 8.h),
-                          Container(
-                            width: 200.w,
-                            height: 16.h,
-                            color: Colors.black,
-                          ),
-                          SizedBox(height: 16.h),
-                          Container(
-                            width: double.infinity,
-                            height: 16.h,
-                            color: Colors.black,
-                          ),
-                          SizedBox(height: 8.h),
-                          Container(
-                            width: double.infinity,
-                            height: 16.h,
-                            color: Colors.black,
-                          ),
-                          SizedBox(height: 8.h),
-                          Container(
-                            width: 300.w,
-                            height: 16.h,
-                            color: Colors.black,
-                          ),
-                        ],
-                      ),
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          insetPadding: EdgeInsets.zero, // 关键：去掉外部边距，使宽度等于屏幕宽度
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          child: Container(
+            width: 1.1.sw,
+            constraints: BoxConstraints(maxHeight: 0.8.sh),
+            padding: EdgeInsets.symmetric(vertical: 24.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // 标题
+                Text(
+                  t.about.userAgreementAndPrivacy,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                // 内容
+                Flexible(
+                  child: FutureBuilder<String>(
+                    future: Future.delayed(
+                      const Duration(milliseconds: 300),
+                      () => rootBundle.loadString('assets/html/xieyi.html'),
                     ),
-                  );
-                }
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Symbols.error,
-                          size: 48.sp,
-                          color: Theme.of(context).colorScheme.error,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Symbols.error,
+                                size: 40.sp,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                              SizedBox(height: 12.h),
+                              Text(
+                                t.common.error,
+                                style: TextStyle(fontSize: 14.sp),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      // 将 HtmlWebView 包裹在 Padding 中，让内部内容贴边或留缝
+                      return HtmlWebView(htmlContent: snapshot.data ?? '');
+                    },
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                // 底部按钮
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      style: FilledButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
-                        SizedBox(height: 16.h),
-                        Text(t.common.error),
-                      ],
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(t.common.ok),
                     ),
-                  );
-                }
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(8.r),
-                  child: HtmlWebView(htmlContent: snapshot.data ?? ''),
-                );
-              },
+                  ),
+                ),
+              ],
             ),
           ),
         );
-  }
-
-  Future<void> _initPackageInfo() async {
-    final info = await PackageInfo.fromPlatform();
-    setState(() {
-      _version = info.version;
-    });
+      },
+    );
   }
 
   @override
@@ -155,13 +129,20 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: SizedBox(height: 24.h)),
-          SliverToBoxAdapter(child: _buildLogoSection(context)),
+          const SliverToBoxAdapter(child: AboutLogoSection()),
           SliverToBoxAdapter(child: SizedBox(height: 32.h)),
-          SliverToBoxAdapter(child: _buildFeaturesSection(context)),
+          const SliverToBoxAdapter(child: AboutFeaturesSection()),
           SliverToBoxAdapter(child: SizedBox(height: 24.h)),
-          SliverToBoxAdapter(child: _buildPolicySection(context)),
+          SliverToBoxAdapter(
+            child: AboutPolicySection(onTapPolicy: _showPolicyDialog),
+          ),
           SliverToBoxAdapter(child: SizedBox(height: 24.h)),
-          SliverToBoxAdapter(child: _buildContactSection(context)),
+          SliverToBoxAdapter(
+            child: AboutContactSection(
+              onTapPhone: _launchPhone,
+              onTapAddress: _launchMap,
+            ),
+          ),
           SliverToBoxAdapter(child: SizedBox(height: 32.h)),
           SliverToBoxAdapter(
             child: Padding(
@@ -190,274 +171,6 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
           ),
           SliverToBoxAdapter(child: SizedBox(height: 32.h)),
         ],
-      ),
-    );
-  }
-
-  Widget _buildLogoSection(BuildContext context) {
-    final theme = Theme.of(context);
-    return Column(
-      children: [
-        Container(
-          width: 100.w,
-          height: 100.w,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: theme.shadowColor.withValues(alpha: 0.1),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
-              ),
-            ],
-            image: const DecorationImage(
-              image: NetworkImage('https://picsum.photos/seed/logo/200'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        SizedBox(height: 20.h),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          child: Text(
-            'Version $_version',
-            style: TextStyle(
-              color: theme.colorScheme.primary,
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        SizedBox(height: 16.h),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.w),
-          child: Text(
-            t.profile.appDescription,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
-              fontSize: 14.sp,
-              height: 1.5,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFeaturesSection(BuildContext context) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionTitle(title: t.about.featuresTitle),
-          SizedBox(height: 16.h),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            mainAxisSpacing: 12.w,
-            crossAxisSpacing: 12.w,
-            childAspectRatio: 1.3,
-            children: [
-              AboutFeatureItem(
-                icon: Symbols.restaurant,
-                title: t.about.feature1Title,
-                desc: t.about.feature1Desc,
-                color: theme.colorScheme.primary,
-              ),
-              AboutFeatureItem(
-                icon: Symbols.rocket_launch,
-                title: t.about.feature2Title,
-                desc: t.about.feature2Desc,
-                color: theme.colorScheme.primary,
-              ),
-              AboutFeatureItem(
-                icon: Symbols.star,
-                title: t.about.feature3Title,
-                desc: t.about.feature3Desc,
-                color: theme.colorScheme.primary,
-              ),
-              AboutFeatureItem(
-                icon: Symbols.diamond,
-                title: t.about.feature4Title,
-                desc: t.about.feature4Desc,
-                color: theme.colorScheme.primary,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPolicySection(BuildContext context) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionTitle(title: t.about.policyTitle),
-          SizedBox(height: 12.h),
-          Container(
-            decoration: BoxDecoration(
-              color: theme.cardColor,
-              borderRadius: BorderRadius.circular(16.r),
-              boxShadow: [
-                BoxShadow(
-                  color: theme.shadowColor.withValues(alpha: 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: ListTile(
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 16.w,
-                vertical: 4.h,
-              ),
-              leading: Container(
-                padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Symbols.description,
-                  color: theme.colorScheme.primary,
-                  size: 20.sp,
-                ),
-              ),
-              title: Text(
-                t.about.userAgreementAndPrivacy,
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-              ),
-              subtitle: Text(
-                t.about.viewDetails,
-                style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
-              ),
-              trailing: Icon(
-                Symbols.chevron_right,
-                size: 20.sp,
-                color: theme.hintColor,
-              ),
-              onTap: _showPolicyDialog,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContactSection(BuildContext context) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionTitle(title: t.about.contactTitle),
-          SizedBox(height: 12.h),
-          Container(
-            decoration: BoxDecoration(
-              color: theme.cardColor,
-              borderRadius: BorderRadius.circular(16.r),
-              boxShadow: [
-                BoxShadow(
-                  color: theme.shadowColor.withValues(alpha: 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                _buildContactTile(
-                  context,
-                  icon: Symbols.phone,
-                  title: t.about.customerServiceHotline,
-                  subtitle: t.about.customerServiceNumber,
-                  onTap: _launchPhone,
-                  isFirst: true,
-                ),
-                Divider(
-                  height: 1,
-                  indent: 56.w,
-                  color: theme.dividerColor.withValues(alpha: 0.5),
-                ),
-                _buildContactTile(
-                  context,
-                  icon: Symbols.location_on,
-                  title: t.about.companyAddress,
-                  subtitle: t.about.addressDetails,
-                  onTap: _launchMap,
-                  isLast: true,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContactTile(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-    bool isFirst = false,
-    bool isLast = false,
-  }) {
-    final theme = Theme.of(context);
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-      leading: Container(
-        padding: EdgeInsets.all(8.w),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.primary.withValues(alpha: 0.1),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(icon, color: theme.colorScheme.primary, size: 20.sp),
-      ),
-      title: Text(
-        title,
-        style: TextStyle(fontSize: 12.sp, color: theme.hintColor),
-      ),
-      subtitle: Padding(
-        padding: EdgeInsets.only(top: 4.h),
-        child: Text(
-          subtitle,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-            color: theme.textTheme.bodyLarge?.color,
-          ),
-        ),
-      ),
-      trailing: Icon(
-        Symbols.chevron_right,
-        size: 20.sp,
-        color: theme.hintColor,
-      ),
-      onTap: onTap,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: isFirst ? Radius.circular(16.r) : Radius.zero,
-          bottom: isLast ? Radius.circular(16.r) : Radius.zero,
-        ),
       ),
     );
   }
@@ -494,8 +207,6 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
   }
 
   Future<void> _shareApp() async {
-    await SharePlus.instance.share(
-      ShareParams(text: 'Lunchbox - 您的专属午餐管家\n版本: $_version'),
-    );
+    await SharePlus.instance.share(ShareParams(text: 'Lunchbox - 您的专属午餐管家'));
   }
 }

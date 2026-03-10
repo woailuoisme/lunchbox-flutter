@@ -43,6 +43,7 @@
   "walletBalance": "钱包余额",
   "coin": "积分",
   "couponCount": "优惠券",
+  "pointsMall": "积分兑换",
   "walletPage": {
     "title": "钱包",
     "topUp": "充值",

@@ -20,17 +20,31 @@ class _FeedbackRestClient implements FeedbackRestClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<void>> submitFeedback(Map<String, dynamic> body) async {
+  Future<ApiResponse<void>> submitFeedback({
+    required String content,
+    required String type,
+    List<MultipartFile>? images,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = FormData();
+    _data.fields.add(MapEntry('content', content));
+    _data.fields.add(MapEntry('type', type));
+    if (images != null) {
+      _data.files.addAll(images.map((i) => MapEntry('images[]', i)));
+    }
     final _options = _setStreamType<ApiResponse<void>>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
+      Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'multipart/form-data',
+          )
           .compose(
             _dio.options,
-            '/api/v1/user/feedback',
+            '/api/v1/feedback',
             queryParameters: queryParameters,
             data: _data,
           )

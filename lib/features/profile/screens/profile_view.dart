@@ -74,9 +74,19 @@ class ProfileView extends ConsumerWidget {
             onTap: () => const WalletRoute().push<void>(context),
           ),
           ProfileMenuTile(
+            icon: Symbols.card_giftcard,
+            title: t.welcome_gift.title,
+            onTap: () => const WelcomeGiftRoute().push<void>(context),
+          ),
+          ProfileMenuTile(
             icon: Symbols.airplane_ticket,
             title: t.profile.coupon,
             onTap: () => const MyCouponsRoute().push<void>(context),
+          ),
+          ProfileMenuTile(
+            icon: Symbols.stars,
+            title: t.profile.pointsMall,
+            onTap: () => const PointsMallRoute().push<void>(context),
           ),
 
           // 个人相关
@@ -98,16 +108,15 @@ class ProfileView extends ConsumerWidget {
             onTap: () => const FeedbackRoute().push<void>(context),
           ),
 
-          // 关于与设置
-          ProfileMenuTile(
-            icon: Symbols.info,
-            title: t.profile.about,
-            onTap: () => const AboutUsRoute().push<void>(context),
-          ),
           ProfileMenuTile(
             icon: Symbols.settings,
             title: t.profile.settings,
             onTap: () => const SettingsRoute().push<void>(context),
+          ),
+          ProfileMenuTile(
+            icon: Symbols.info,
+            title: t.profile.about,
+            onTap: () => const AboutUsRoute().push<void>(context),
             showDivider: false,
           ),
         ],
