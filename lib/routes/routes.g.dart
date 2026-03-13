@@ -26,6 +26,7 @@ List<RouteBase> get $appRoutes => [
   $productDetailRoute,
   $cartRoute,
   $orderDetailRoute,
+  $orderReviewRoute,
   $paymentRoute,
   $profileEditRoute,
   $walletRoute,
@@ -568,6 +569,36 @@ mixin $OrderDetailRoute on GoRouteData {
 
   @override
   void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $orderReviewRoute => GoRouteData.$route(
+  path: '/order-review',
+  factory: $OrderReviewRoute._fromState,
+);
+
+mixin $OrderReviewRoute on GoRouteData {
+  static OrderReviewRoute _fromState(GoRouterState state) =>
+      OrderReviewRoute($extra: state.extra as Map<String, dynamic>);
+
+  OrderReviewRoute get _self => this as OrderReviewRoute;
+
+  @override
+  String get location => GoRouteData.$location('/order-review');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
 }
 
 RouteBase get $paymentRoute =>

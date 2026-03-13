@@ -168,9 +168,11 @@ class _FeedbackImageUploadState extends State<FeedbackImageUpload> {
             children: [
               Icon(Symbols.info, size: 14.sp, color: theme.hintColor),
               SizedBox(width: 4.w),
-              Text(
-                t.feedback.uploadLimitHint,
-                style: TextStyle(fontSize: 10.sp, color: theme.hintColor),
+              Expanded(
+                child: Text(
+                  t.feedback.uploadLimitHint,
+                  style: TextStyle(fontSize: 10.sp, color: theme.hintColor),
+                ),
               ),
             ],
           ),

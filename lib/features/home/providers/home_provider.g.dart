@@ -39,7 +39,7 @@ final class HomeNotifierProvider
   HomeNotifier create() => HomeNotifier();
 }
 
-String _$homeNotifierHash() => r'6ae3aaa7076e9a1432d44a16f73eaacb47c87291';
+String _$homeNotifierHash() => r'030fa11aab4a97e7f53b35a75a7a620a4c47ec50';
 
 /// 首页数据管理器
 /// 职责：聚合首页所需的所有并发加载数据，并利用 AsyncValue 处理加载/错误状态

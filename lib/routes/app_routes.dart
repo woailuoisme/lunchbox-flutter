@@ -48,6 +48,7 @@ class AppRoutes {
   // 订单相关
   static const String orderList = '/orders';
   static const String orderDetail = '/order'; // 实际路径为 /order/:id
+  static const String orderReview = '/order-review';
 
   // 支付
   static const String payment = '/payment';

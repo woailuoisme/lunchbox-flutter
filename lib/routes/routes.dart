@@ -14,6 +14,7 @@ import 'package:lunchbox/features/lottery/lottery.dart';
 import 'package:lunchbox/features/my_coupons/my_coupons.dart';
 import 'package:lunchbox/features/onboarding/onboarding.dart';
 import 'package:lunchbox/features/order/order.dart';
+import 'package:lunchbox/features/order/screens/order_review_view.dart';
 import 'package:lunchbox/features/partner/partner.dart';
 import 'package:lunchbox/features/payment/payment.dart';
 import 'package:lunchbox/features/personal_info/personal_info.dart';
@@ -265,6 +266,20 @@ class OrderDetailRoute extends GoRouteData with $OrderDetailRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const OrderDetailView();
+}
+
+// 订单评价
+@TypedGoRoute<OrderReviewRoute>(path: AppRoutes.orderReview)
+class OrderReviewRoute extends GoRouteData with $OrderReviewRoute {
+  const OrderReviewRoute({required this.$extra});
+
+  final Map<String, dynamic> $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    final order = $extra['order'] as OrderModel;
+    return OrderReviewView(order: order);
+  }
 }
 
 // 支付

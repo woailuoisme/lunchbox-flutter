@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:lunchbox/core/network/response/paginated_response.dart';
 import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
 import 'package:lunchbox/features/order/datasources/order_rest_client.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
+import 'package:lunchbox/features/order/entities/order_review_response.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'order_repository.g.dart';
@@ -50,6 +52,24 @@ class OrderRepository {
   Future<bool> confirmOrder(String orderId) async {
     final response = await _client.confirmOrder(orderId);
     return response.success;
+  }
+
+  /// 添加商品评价
+  Future<OrderReviewResponse?> addProductReview({
+    required int orderId,
+    required int productId,
+    required String content,
+    required int rating,
+    List<MultipartFile>? images,
+  }) async {
+    final response = await _client.addProductReview(
+      orderId: orderId,
+      productId: productId,
+      content: content,
+      rating: rating,
+      images: images,
+    );
+    return response.data;
   }
 
   /// 支付订单 (未实现)

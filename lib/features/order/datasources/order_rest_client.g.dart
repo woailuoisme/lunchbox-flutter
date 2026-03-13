@@ -147,6 +147,55 @@ class _OrderRestClient implements OrderRestClient {
     return _value;
   }
 
+  @override
+  Future<ApiResponse<OrderReviewResponse>> addProductReview({
+    required int orderId,
+    required int productId,
+    required String content,
+    required int rating,
+    List<MultipartFile>? images,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry('order_id', orderId.toString()));
+    _data.fields.add(MapEntry('product_id', productId.toString()));
+    _data.fields.add(MapEntry('content', content));
+    _data.fields.add(MapEntry('rating', rating.toString()));
+    if (images != null) {
+      _data.files.addAll(images.map((i) => MapEntry('images[]', i)));
+    }
+    final _options = _setStreamType<ApiResponse<OrderReviewResponse>>(
+      Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'multipart/form-data',
+          )
+          .compose(
+            _dio.options,
+            '/api/v1/user/add_product_review',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<OrderReviewResponse> _value;
+    try {
+      _value = ApiResponse<OrderReviewResponse>.fromJson(
+        _result.data!,
+        (json) => OrderReviewResponse.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

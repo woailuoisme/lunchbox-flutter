@@ -549,6 +549,9 @@ class TranslationsCommunityZhCn {
   /// zh-CN: '与美食爱好者一起分享美味'
   String get share => TranslationOverrides.string(_root.$meta, 'community.share', {}) ?? '与美食爱好者一起分享美味';
 
+  /// zh-CN: '距离'
+  String get distance => TranslationOverrides.string(_root.$meta, 'community.distance', {}) ?? '距离';
+
   /// zh-CN: '东莞中科云计算研究院'
   String get org => TranslationOverrides.string(_root.$meta, 'community.org', {}) ?? '东莞中科云计算研究院';
 
@@ -949,6 +952,17 @@ class TranslationsHomeZhCn {
   final Translations _root; // ignore: unused_field
 
   // Translations
+
+  /// zh-CN: '正在定位最近的设备...'
+  String get locatingDevice => TranslationOverrides.string(_root.$meta, 'home.locatingDevice', {}) ?? '正在定位最近的设备...';
+
+  /// zh-CN: '${name} ${distance}'
+  String nearestDevice({required Object name, required Object distance}) =>
+      TranslationOverrides.string(_root.$meta, 'home.nearestDevice', {'name': name, 'distance': distance}) ??
+      '${name} ${distance}';
+
+  /// zh-CN: '暂无可用设备'
+  String get noAvailableDevice => TranslationOverrides.string(_root.$meta, 'home.noAvailableDevice', {}) ?? '暂无可用设备';
 
   /// zh-CN: '选择城市'
   String get selectCity => TranslationOverrides.string(_root.$meta, 'home.selectCity', {}) ?? '选择城市';
@@ -1364,6 +1378,8 @@ class TranslationsOrderZhCn {
   /// zh-CN: '客服功能暂未开放'
   String get serviceNotAvailable =>
       TranslationOverrides.string(_root.$meta, 'order.serviceNotAvailable', {}) ?? '客服功能暂未开放';
+
+  late final TranslationsOrderReviewZhCn review = TranslationsOrderReviewZhCn.internal(_root);
 
   /// zh-CN: 'Stripe (信用卡)'
   String get paymentStripe => TranslationOverrides.string(_root.$meta, 'order.paymentStripe', {}) ?? 'Stripe (信用卡)';
@@ -2476,6 +2492,53 @@ class TranslationsOrderStatusZhCn {
   String get failed => TranslationOverrides.string(_root.$meta, 'order.status.failed', {}) ?? '支付失败';
 }
 
+// Path: order.review
+class TranslationsOrderReviewZhCn {
+  TranslationsOrderReviewZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// zh-CN: '评价订单'
+  String get title => TranslationOverrides.string(_root.$meta, 'order.review.title', {}) ?? '评价订单';
+
+  /// zh-CN: '提交评价'
+  String get submit => TranslationOverrides.string(_root.$meta, 'order.review.submit', {}) ?? '提交评价';
+
+  /// zh-CN: '评分'
+  String get rating => TranslationOverrides.string(_root.$meta, 'order.review.rating', {}) ?? '评分';
+
+  /// zh-CN: '写下您的用餐体验吧...'
+  String get contentHint => TranslationOverrides.string(_root.$meta, 'order.review.contentHint', {}) ?? '写下您的用餐体验吧...';
+
+  /// zh-CN: '上传图片'
+  String get uploadImages => TranslationOverrides.string(_root.$meta, 'order.review.uploadImages', {}) ?? '上传图片';
+
+  /// zh-CN: '评价提交成功'
+  String get submitSuccess => TranslationOverrides.string(_root.$meta, 'order.review.submitSuccess', {}) ?? '评价提交成功';
+
+  /// zh-CN: '评价提交失败'
+  String get submitFailed => TranslationOverrides.string(_root.$meta, 'order.review.submitFailed', {}) ?? '评价提交失败';
+
+  /// zh-CN: '请为所有商品评分'
+  String get pleaseRate => TranslationOverrides.string(_root.$meta, 'order.review.pleaseRate', {}) ?? '请为所有商品评分';
+
+  /// zh-CN: '请填写评价内容'
+  String get pleaseInput => TranslationOverrides.string(_root.$meta, 'order.review.pleaseInput', {}) ?? '请填写评价内容';
+
+  /// zh-CN: '评价内容不能超过256个字'
+  String get contentTooLong =>
+      TranslationOverrides.string(_root.$meta, 'order.review.contentTooLong', {}) ?? '评价内容不能超过256个字';
+
+  /// zh-CN: '正在提交...'
+  String get submitting => TranslationOverrides.string(_root.$meta, 'order.review.submitting', {}) ?? '正在提交...';
+
+  /// zh-CN: '订单号：${sn}'
+  String orderInfo({required Object sn}) =>
+      TranslationOverrides.string(_root.$meta, 'order.review.orderInfo', {'sn': sn}) ?? '订单号：${sn}';
+}
+
 // Path: order.statusDesc
 class TranslationsOrderStatusDescZhCn {
   TranslationsOrderStatusDescZhCn.internal(this._root);
@@ -3081,6 +3144,7 @@ extension on Translations {
           'community.title' => TranslationOverrides.string(_root.$meta, 'community.title', {}) ?? '社群福利',
           'community.join' => TranslationOverrides.string(_root.$meta, 'community.join', {}) ?? '加入社群',
           'community.share' => TranslationOverrides.string(_root.$meta, 'community.share', {}) ?? '与美食爱好者一起分享美味',
+          'community.distance' => TranslationOverrides.string(_root.$meta, 'community.distance', {}) ?? '距离',
           'community.org' => TranslationOverrides.string(_root.$meta, 'community.org', {}) ?? '东莞中科云计算研究院',
           'community.dept' => TranslationOverrides.string(_root.$meta, 'community.dept', {}) ?? '云计算中心',
           'community.scanHint' =>
@@ -3263,6 +3327,14 @@ extension on Translations {
             TranslationOverrides.string(_root.$meta, 'feedback.submitFailed', {}) ?? '反馈提交失败，请稍后重试',
           'help.title' => TranslationOverrides.string(_root.$meta, 'help.title', {}) ?? '帮助中心',
           'help.developing' => TranslationOverrides.string(_root.$meta, 'help.developing', {}) ?? '帮助页面正在开发中',
+          'home.locatingDevice' =>
+            TranslationOverrides.string(_root.$meta, 'home.locatingDevice', {}) ?? '正在定位最近的设备...',
+          'home.nearestDevice' =>
+            ({required Object name, required Object distance}) =>
+                TranslationOverrides.string(_root.$meta, 'home.nearestDevice', {'name': name, 'distance': distance}) ??
+                '${name} ${distance}',
+          'home.noAvailableDevice' =>
+            TranslationOverrides.string(_root.$meta, 'home.noAvailableDevice', {}) ?? '暂无可用设备',
           'home.selectCity' => TranslationOverrides.string(_root.$meta, 'home.selectCity', {}) ?? '选择城市',
           'home.nearbyDevices' => TranslationOverrides.string(_root.$meta, 'home.nearbyDevices', {}) ?? '附近设备',
           'home.moreDevices' => TranslationOverrides.string(_root.$meta, 'home.moreDevices', {}) ?? '更多设备',
@@ -3544,6 +3616,28 @@ extension on Translations {
           'order.device' => TranslationOverrides.string(_root.$meta, 'order.device', {}) ?? '取餐设备',
           'order.serviceNotAvailable' =>
             TranslationOverrides.string(_root.$meta, 'order.serviceNotAvailable', {}) ?? '客服功能暂未开放',
+          'order.review.title' => TranslationOverrides.string(_root.$meta, 'order.review.title', {}) ?? '评价订单',
+          'order.review.submit' => TranslationOverrides.string(_root.$meta, 'order.review.submit', {}) ?? '提交评价',
+          'order.review.rating' => TranslationOverrides.string(_root.$meta, 'order.review.rating', {}) ?? '评分',
+          'order.review.contentHint' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.contentHint', {}) ?? '写下您的用餐体验吧...',
+          'order.review.uploadImages' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.uploadImages', {}) ?? '上传图片',
+          'order.review.submitSuccess' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.submitSuccess', {}) ?? '评价提交成功',
+          'order.review.submitFailed' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.submitFailed', {}) ?? '评价提交失败',
+          'order.review.pleaseRate' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.pleaseRate', {}) ?? '请为所有商品评分',
+          'order.review.pleaseInput' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.pleaseInput', {}) ?? '请填写评价内容',
+          'order.review.contentTooLong' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.contentTooLong', {}) ?? '评价内容不能超过256个字',
+          'order.review.submitting' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.submitting', {}) ?? '正在提交...',
+          'order.review.orderInfo' =>
+            ({required Object sn}) =>
+                TranslationOverrides.string(_root.$meta, 'order.review.orderInfo', {'sn': sn}) ?? '订单号：${sn}',
           'order.paymentStripe' =>
             TranslationOverrides.string(_root.$meta, 'order.paymentStripe', {}) ?? 'Stripe (信用卡)',
           'order.paymentBalance' => TranslationOverrides.string(_root.$meta, 'order.paymentBalance', {}) ?? '余额支付',
@@ -3622,6 +3716,9 @@ extension on Translations {
             TranslationOverrides.string(_root.$meta, 'partner.submitSuccess', {}) ?? '申请提交成功，我们会尽快联系您',
           'partner.submitFailed' =>
             TranslationOverrides.string(_root.$meta, 'partner.submitFailed', {}) ?? '申请提交失败，请稍后重试',
+          _ => null,
+        } ??
+        switch (path) {
           'partner.incompleteInfo' =>
             TranslationOverrides.string(_root.$meta, 'partner.incompleteInfo', {}) ?? '请填写完整信息',
           'partner.contactTitle' => TranslationOverrides.string(_root.$meta, 'partner.contactTitle', {}) ?? '联系我们',
@@ -3643,9 +3740,6 @@ extension on Translations {
           'payment.cancelPay' => TranslationOverrides.string(_root.$meta, 'payment.cancelPay', {}) ?? '取消支付',
           'payment.amount' => TranslationOverrides.string(_root.$meta, 'payment.amount', {}) ?? '支付金额',
           'payment.remainingTime' => TranslationOverrides.string(_root.$meta, 'payment.remainingTime', {}) ?? '支付剩余时间',
-          _ => null,
-        } ??
-        switch (path) {
           'payment.addCard' => TranslationOverrides.string(_root.$meta, 'payment.addCard', {}) ?? '添加银行卡',
           'payment.paymentMethods' => TranslationOverrides.string(_root.$meta, 'payment.paymentMethods', {}) ?? '支付方式',
           'payment.setupSuccess' => TranslationOverrides.string(_root.$meta, 'payment.setupSuccess', {}) ?? '添加银行卡成功',

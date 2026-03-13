@@ -24,7 +24,7 @@ class HomeRepository {
   }
 
   /// 获取最近的设备
-  Future<List<NearestDeviceModel>> getNearestDevice({
+  Future<NearestDeviceModel?> getNearestDevice({
     required double latitude,
     required double longitude,
     int limit = 1,
@@ -34,7 +34,7 @@ class HomeRepository {
       longitude: longitude,
       limit: limit,
     );
-    return response.data ?? [];
+    return response.data;
   }
 
   /// 获取推荐商品列表

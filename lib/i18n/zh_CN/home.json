@@ -1,4 +1,7 @@
 {
+  "locatingDevice": "正在定位最近的设备...",
+  "nearestDevice": "${name} ${distance}",
+  "noAvailableDevice": "暂无可用设备",
   "selectCity": "选择城市",
   "nearbyDevices": "附近设备",
   "moreDevices": "更多设备",

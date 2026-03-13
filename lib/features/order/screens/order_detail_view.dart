@@ -15,7 +15,9 @@ import 'package:lunchbox/features/order/widgets/order_info_section.dart';
 import 'package:lunchbox/features/order/widgets/order_pickup_info.dart';
 import 'package:lunchbox/features/order/widgets/order_price_summary.dart';
 import 'package:lunchbox/features/order/widgets/order_product_item.dart';
+import 'package:lunchbox/features/order/screens/order_review_view.dart';
 import 'package:lunchbox/core/services/toast_service.dart';
+
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
 
@@ -77,7 +79,18 @@ class OrderDetailView extends ConsumerWidget {
               await context.push(AppRoutes.cart);
             }
           }
+        case 'review':
+          if (context.mounted) {
+            final success = await OrderReviewView.show(context, order);
+            if (success == true && context.mounted) {
+              // 评价完刷新订单状态
+              await ref
+                  .read(orderProvider.notifier)
+                  .loadOrderById(order.id.toString());
+            }
+          }
           break;
+
         case 'refund':
           if (context.mounted) {
             ref
@@ -265,6 +278,14 @@ class OrderDetailView extends ConsumerWidget {
         order.status == OrderStatus.refund ||
         order.status == OrderStatus.completed) {
       buttons = [
+        if (order.status == OrderStatus.completed)
+          OrderActionButton(
+            text: t.order.review.title,
+            textColor: theme.colorScheme.primary,
+            borderColor: theme.colorScheme.primary,
+            onTap: () => _handleAction(order, 'review', context, ref),
+          ),
+        if (order.status == OrderStatus.completed) SizedBox(width: 12.w),
         if (order.status != OrderStatus.completed)
           OrderActionButton(
             text: t.order.deleteOrder,

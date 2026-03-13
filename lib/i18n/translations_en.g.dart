@@ -490,6 +490,8 @@ class _TranslationsCommunityEn extends TranslationsCommunityZhCn {
   String get share =>
       TranslationOverrides.string(_root.$meta, 'community.share', {}) ?? 'Share delicious food with foodies';
   @override
+  String get distance => TranslationOverrides.string(_root.$meta, 'community.distance', {}) ?? 'Distance';
+  @override
   String get org =>
       TranslationOverrides.string(_root.$meta, 'community.org', {}) ?? 'Dongguan CAS Cloud Computing Center';
   @override
@@ -815,6 +817,16 @@ class _TranslationsHomeEn extends TranslationsHomeZhCn {
 
   // Translations
   @override
+  String get locatingDevice =>
+      TranslationOverrides.string(_root.$meta, 'home.locatingDevice', {}) ?? 'Locating nearest device...';
+  @override
+  String nearestDevice({required Object name, required Object distance}) =>
+      TranslationOverrides.string(_root.$meta, 'home.nearestDevice', {'name': name, 'distance': distance}) ??
+      '${name} ${distance}';
+  @override
+  String get noAvailableDevice =>
+      TranslationOverrides.string(_root.$meta, 'home.noAvailableDevice', {}) ?? 'No devices available';
+  @override
   String get selectCity => TranslationOverrides.string(_root.$meta, 'home.selectCity', {}) ?? 'Select City';
   @override
   String get nearbyDevices => TranslationOverrides.string(_root.$meta, 'home.nearbyDevices', {}) ?? 'Nearby Devices';
@@ -827,6 +839,18 @@ class _TranslationsHomeEn extends TranslationsHomeZhCn {
   @override
   String get recommendTitle =>
       TranslationOverrides.string(_root.$meta, 'home.recommendTitle', {}) ?? 'Recommended for Me';
+  @override
+  String get selfPickup => TranslationOverrides.string(_root.$meta, 'home.selfPickup', {}) ?? 'Self Pickup';
+  @override
+  String get selfPickupHint =>
+      TranslationOverrides.string(_root.$meta, 'home.selfPickupHint', {}) ?? 'Scan to Order / Take Away';
+  @override
+  String get teamOrder => TranslationOverrides.string(_root.$meta, 'home.teamOrder', {}) ?? 'Team Order';
+  @override
+  String get teamOrderHint =>
+      TranslationOverrides.string(_root.$meta, 'home.teamOrderHint', {}) ?? 'Multi-person / Team Ordering';
+  @override
+  String get welcome => TranslationOverrides.string(_root.$meta, 'home.welcome', {}) ?? 'Hello, Richer User';
   @override
   late final _TranslationsHomeGridEn grid = _TranslationsHomeGridEn._(_root);
   @override
@@ -1131,6 +1155,8 @@ class _TranslationsOrderEn extends TranslationsOrderZhCn {
   @override
   String get serviceNotAvailable =>
       TranslationOverrides.string(_root.$meta, 'order.serviceNotAvailable', {}) ?? 'Service not available yet';
+  @override
+  late final _TranslationsOrderReviewEn review = _TranslationsOrderReviewEn._(_root);
   @override
   String get paymentStripe =>
       TranslationOverrides.string(_root.$meta, 'order.paymentStripe', {}) ?? 'Stripe (Credit Card)';
@@ -1572,6 +1598,8 @@ class _TranslationsProfileEn extends TranslationsProfileZhCn {
   String get coin => TranslationOverrides.string(_root.$meta, 'profile.coin', {}) ?? 'Points';
   @override
   String get couponCount => TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ?? 'Coupons';
+  @override
+  String get pointsMall => TranslationOverrides.string(_root.$meta, 'profile.pointsMall', {}) ?? 'Points Mall';
   @override
   late final _TranslationsProfileWalletPageEn walletPage = _TranslationsProfileWalletPageEn._(_root);
 }
@@ -2088,6 +2116,49 @@ class _TranslationsOrderStatusEn extends TranslationsOrderStatusZhCn {
   String get refunding => TranslationOverrides.string(_root.$meta, 'order.status.refunding', {}) ?? 'Refunding';
   @override
   String get failed => TranslationOverrides.string(_root.$meta, 'order.status.failed', {}) ?? 'Failed';
+}
+
+// Path: order.review
+class _TranslationsOrderReviewEn extends TranslationsOrderReviewZhCn {
+  _TranslationsOrderReviewEn._(TranslationsEn root) : this._root = root, super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title => TranslationOverrides.string(_root.$meta, 'order.review.title', {}) ?? 'Review Order';
+  @override
+  String get submit => TranslationOverrides.string(_root.$meta, 'order.review.submit', {}) ?? 'Submit Review';
+  @override
+  String get rating => TranslationOverrides.string(_root.$meta, 'order.review.rating', {}) ?? 'Rating';
+  @override
+  String get contentHint =>
+      TranslationOverrides.string(_root.$meta, 'order.review.contentHint', {}) ??
+      'Please share your experience with this product...';
+  @override
+  String get uploadImages =>
+      TranslationOverrides.string(_root.$meta, 'order.review.uploadImages', {}) ?? 'Upload Images';
+  @override
+  String get submitSuccess =>
+      TranslationOverrides.string(_root.$meta, 'order.review.submitSuccess', {}) ?? 'Review submitted successfully';
+  @override
+  String get submitFailed =>
+      TranslationOverrides.string(_root.$meta, 'order.review.submitFailed', {}) ?? 'Failed to submit review';
+  @override
+  String get pleaseRate =>
+      TranslationOverrides.string(_root.$meta, 'order.review.pleaseRate', {}) ?? 'Please rate all products';
+  @override
+  String get pleaseInput =>
+      TranslationOverrides.string(_root.$meta, 'order.review.pleaseInput', {}) ?? 'Please write a review';
+  @override
+  String get contentTooLong =>
+      TranslationOverrides.string(_root.$meta, 'order.review.contentTooLong', {}) ??
+      'Review content cannot exceed 256 characters';
+  @override
+  String get submitting => TranslationOverrides.string(_root.$meta, 'order.review.submitting', {}) ?? 'Submitting...';
+  @override
+  String orderInfo({required Object sn}) =>
+      TranslationOverrides.string(_root.$meta, 'order.review.orderInfo', {'sn': sn}) ?? 'Order: ${sn}';
 }
 
 // Path: order.statusDesc
@@ -2657,6 +2728,7 @@ extension on TranslationsEn {
           'community.join' => TranslationOverrides.string(_root.$meta, 'community.join', {}) ?? 'Join Community',
           'community.share' =>
             TranslationOverrides.string(_root.$meta, 'community.share', {}) ?? 'Share delicious food with foodies',
+          'community.distance' => TranslationOverrides.string(_root.$meta, 'community.distance', {}) ?? 'Distance',
           'community.org' =>
             TranslationOverrides.string(_root.$meta, 'community.org', {}) ?? 'Dongguan CAS Cloud Computing Center',
           'community.dept' =>
@@ -2884,6 +2956,14 @@ extension on TranslationsEn {
           'help.title' => TranslationOverrides.string(_root.$meta, 'help.title', {}) ?? 'Help Center',
           'help.developing' =>
             TranslationOverrides.string(_root.$meta, 'help.developing', {}) ?? 'Help page is under development',
+          'home.locatingDevice' =>
+            TranslationOverrides.string(_root.$meta, 'home.locatingDevice', {}) ?? 'Locating nearest device...',
+          'home.nearestDevice' =>
+            ({required Object name, required Object distance}) =>
+                TranslationOverrides.string(_root.$meta, 'home.nearestDevice', {'name': name, 'distance': distance}) ??
+                '${name} ${distance}',
+          'home.noAvailableDevice' =>
+            TranslationOverrides.string(_root.$meta, 'home.noAvailableDevice', {}) ?? 'No devices available',
           'home.selectCity' => TranslationOverrides.string(_root.$meta, 'home.selectCity', {}) ?? 'Select City',
           'home.nearbyDevices' =>
             TranslationOverrides.string(_root.$meta, 'home.nearbyDevices', {}) ?? 'Nearby Devices',
@@ -2894,6 +2974,13 @@ extension on TranslationsEn {
                 '${name} is ${distance} away',
           'home.recommendTitle' =>
             TranslationOverrides.string(_root.$meta, 'home.recommendTitle', {}) ?? 'Recommended for Me',
+          'home.selfPickup' => TranslationOverrides.string(_root.$meta, 'home.selfPickup', {}) ?? 'Self Pickup',
+          'home.selfPickupHint' =>
+            TranslationOverrides.string(_root.$meta, 'home.selfPickupHint', {}) ?? 'Scan to Order / Take Away',
+          'home.teamOrder' => TranslationOverrides.string(_root.$meta, 'home.teamOrder', {}) ?? 'Team Order',
+          'home.teamOrderHint' =>
+            TranslationOverrides.string(_root.$meta, 'home.teamOrderHint', {}) ?? 'Multi-person / Team Ordering',
+          'home.welcome' => TranslationOverrides.string(_root.$meta, 'home.welcome', {}) ?? 'Hello, Richer User',
           'home.grid.welfare' => TranslationOverrides.string(_root.$meta, 'home.grid.welfare', {}) ?? 'Welfare',
           'home.grid.service' => TranslationOverrides.string(_root.$meta, 'home.grid.service', {}) ?? 'Service',
           'home.grid.coupon' => TranslationOverrides.string(_root.$meta, 'home.grid.coupon', {}) ?? 'Coupons',
@@ -3224,6 +3311,32 @@ extension on TranslationsEn {
             TranslationOverrides.string(_root.$meta, 'order.contactService', {}) ?? 'Contact Service',
           'order.serviceNotAvailable' =>
             TranslationOverrides.string(_root.$meta, 'order.serviceNotAvailable', {}) ?? 'Service not available yet',
+          'order.review.title' => TranslationOverrides.string(_root.$meta, 'order.review.title', {}) ?? 'Review Order',
+          'order.review.submit' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.submit', {}) ?? 'Submit Review',
+          'order.review.rating' => TranslationOverrides.string(_root.$meta, 'order.review.rating', {}) ?? 'Rating',
+          'order.review.contentHint' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.contentHint', {}) ??
+                'Please share your experience with this product...',
+          'order.review.uploadImages' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.uploadImages', {}) ?? 'Upload Images',
+          'order.review.submitSuccess' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.submitSuccess', {}) ??
+                'Review submitted successfully',
+          'order.review.submitFailed' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.submitFailed', {}) ?? 'Failed to submit review',
+          'order.review.pleaseRate' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.pleaseRate', {}) ?? 'Please rate all products',
+          'order.review.pleaseInput' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.pleaseInput', {}) ?? 'Please write a review',
+          'order.review.contentTooLong' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.contentTooLong', {}) ??
+                'Review content cannot exceed 256 characters',
+          'order.review.submitting' =>
+            TranslationOverrides.string(_root.$meta, 'order.review.submitting', {}) ?? 'Submitting...',
+          'order.review.orderInfo' =>
+            ({required Object sn}) =>
+                TranslationOverrides.string(_root.$meta, 'order.review.orderInfo', {'sn': sn}) ?? 'Order: ${sn}',
           'order.paymentStripe' =>
             TranslationOverrides.string(_root.$meta, 'order.paymentStripe', {}) ?? 'Stripe (Credit Card)',
           'order.paymentWechat' => TranslationOverrides.string(_root.$meta, 'order.paymentWechat', {}) ?? 'WeChat Pay',
@@ -3355,6 +3468,9 @@ extension on TranslationsEn {
           'payment.success' => TranslationOverrides.string(_root.$meta, 'payment.success', {}) ?? 'Payment Successful',
           'payment.orderNotFound' =>
             TranslationOverrides.string(_root.$meta, 'payment.orderNotFound', {}) ?? 'Order Not Found',
+          _ => null,
+        } ??
+        switch (path) {
           'payment.payNow' => TranslationOverrides.string(_root.$meta, 'payment.payNow', {}) ?? 'Pay Now',
           'payment.initializing' =>
             TranslationOverrides.string(_root.$meta, 'payment.initializing', {}) ?? 'Initializing payment...',
@@ -3387,9 +3503,6 @@ extension on TranslationsEn {
           'points.rule2' =>
             TranslationOverrides.string(_root.$meta, 'points.rule2', {}) ?? 'Extra points can be obtained by lottery',
           'points.records' => TranslationOverrides.string(_root.$meta, 'points.records', {}) ?? 'Point Records',
-          _ => null,
-        } ??
-        switch (path) {
           'points.all' => TranslationOverrides.string(_root.$meta, 'points.all', {}) ?? 'All',
           'points.earned' => TranslationOverrides.string(_root.$meta, 'points.earned', {}) ?? 'Earned',
           'points.used' => TranslationOverrides.string(_root.$meta, 'points.used', {}) ?? 'Used',
@@ -3541,6 +3654,7 @@ extension on TranslationsEn {
             TranslationOverrides.string(_root.$meta, 'profile.walletBalance', {}) ?? 'Wallet Balance',
           'profile.coin' => TranslationOverrides.string(_root.$meta, 'profile.coin', {}) ?? 'Points',
           'profile.couponCount' => TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ?? 'Coupons',
+          'profile.pointsMall' => TranslationOverrides.string(_root.$meta, 'profile.pointsMall', {}) ?? 'Points Mall',
           'profile.walletPage.title' =>
             TranslationOverrides.string(_root.$meta, 'profile.walletPage.title', {}) ?? 'Wallet',
           'profile.walletPage.topUp' =>

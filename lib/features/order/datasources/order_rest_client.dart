@@ -3,6 +3,7 @@ import 'package:lunchbox/core/network/dio_provider.dart';
 import 'package:lunchbox/core/network/response/api_response.dart';
 import 'package:lunchbox/core/network/response/paginated_response.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
+import 'package:lunchbox/features/order/entities/order_review_response.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -42,4 +43,20 @@ abstract class OrderRestClient {
   /// 确认收货
   @POST('/api/v1/user/orders/confirm/{id}')
   Future<ApiResponse<void>> confirmOrder(@Path('id') String id);
+
+  /// 添加商品评价
+  /// [orderId] 订单ID
+  /// [productId] 商品ID
+  /// [content] 评价内容
+  /// [rating] 评分 (1-5分)
+  /// [images] 评价图片
+  @POST('/api/v1/user/add_product_review')
+  @MultiPart()
+  Future<ApiResponse<OrderReviewResponse>> addProductReview({
+    @Part(name: 'order_id') required int orderId,
+    @Part(name: 'product_id') required int productId,
+    @Part(name: 'content') required String content,
+    @Part(name: 'rating') required int rating,
+    @Part(name: 'images[]') List<MultipartFile>? images,
+  });
 }

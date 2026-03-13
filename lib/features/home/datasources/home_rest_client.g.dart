@@ -58,7 +58,7 @@ class _HomeRestClient implements HomeRestClient {
   }
 
   @override
-  Future<ApiResponse<List<NearestDeviceModel>>> getNearestDevice({
+  Future<ApiResponse<NearestDeviceModel>> getNearestDevice({
     required double latitude,
     required double longitude,
     int limit = 1,
@@ -71,7 +71,7 @@ class _HomeRestClient implements HomeRestClient {
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<NearestDeviceModel>>>(
+    final _options = _setStreamType<ApiResponse<NearestDeviceModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -82,18 +82,11 @@ class _HomeRestClient implements HomeRestClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<NearestDeviceModel>> _value;
+    late ApiResponse<NearestDeviceModel> _value;
     try {
-      _value = ApiResponse<List<NearestDeviceModel>>.fromJson(
+      _value = ApiResponse<NearestDeviceModel>.fromJson(
         _result.data!,
-        (json) => json is List<dynamic>
-            ? json
-                  .map<NearestDeviceModel>(
-                    (i) =>
-                        NearestDeviceModel.fromJson(i as Map<String, dynamic>),
-                  )
-                  .toList()
-            : List.empty(),
+        (json) => NearestDeviceModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);

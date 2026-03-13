@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
 import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
+import 'package:lunchbox/features/order/entities/order_review_response.dart';
 import 'package:lunchbox/features/order/providers/order_state.dart';
 import 'package:lunchbox/features/order/repositories/order_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,6 +18,30 @@ class OrderNotifier extends _$OrderNotifier {
   }
 
   OrderRepository get _repository => ref.read(orderRepositoryProvider);
+
+  /// 提交商品评价
+  Future<OrderReviewResponse?> addProductReview({
+    required int orderId,
+    required int productId,
+    required String content,
+    required int rating,
+    List<MultipartFile>? images,
+  }) async {
+    try {
+      final response = await _repository.addProductReview(
+        orderId: orderId,
+        productId: productId,
+        content: content,
+        rating: rating,
+        images: images,
+      );
+      LoggerUtils.i('OrderNotifier: Product review submitted: $productId');
+      return response;
+    } catch (e, stack) {
+      LoggerUtils.e('OrderNotifier: Failed to submit product review', e, stack);
+      rethrow;
+    }
+  }
 
   Future<List<OrderModel>> fetchOrdersPage({
     required int page,

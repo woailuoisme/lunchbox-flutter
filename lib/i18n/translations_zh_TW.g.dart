@@ -692,6 +692,14 @@ class _TranslationsHomeZhTw extends TranslationsHomeZhCn {
 
   // Translations
   @override
+  String get locatingDevice => TranslationOverrides.string(_root.$meta, 'home.locatingDevice', {}) ?? '正在定位最近的設備...';
+  @override
+  String nearestDevice({required Object name, required Object distance}) =>
+      TranslationOverrides.string(_root.$meta, 'home.nearestDevice', {'name': name, 'distance': distance}) ??
+      '${name} ${distance}';
+  @override
+  String get noAvailableDevice => TranslationOverrides.string(_root.$meta, 'home.noAvailableDevice', {}) ?? '暫無可用設備';
+  @override
   String get selectCity => TranslationOverrides.string(_root.$meta, 'home.selectCity', {}) ?? '選擇城市';
   @override
   String get nearbyDevices => TranslationOverrides.string(_root.$meta, 'home.nearbyDevices', {}) ?? '附近設備';
@@ -1250,6 +1258,8 @@ class _TranslationsProfileZhTw extends TranslationsProfileZhCn {
   String get coin => TranslationOverrides.string(_root.$meta, 'profile.coin', {}) ?? '積分';
   @override
   String get couponCount => TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ?? '優惠券';
+  @override
+  String get pointsMall => TranslationOverrides.string(_root.$meta, 'profile.pointsMall', {}) ?? '積分兌換';
 }
 
 // Path: settings
@@ -2031,6 +2041,14 @@ extension on TranslationsZhTw {
             TranslationOverrides.string(_root.$meta, 'feedback.submitFailed', {}) ?? '反饋提交失敗，請稍後重試',
           'help.title' => TranslationOverrides.string(_root.$meta, 'help.title', {}) ?? '幫助中心',
           'help.developing' => TranslationOverrides.string(_root.$meta, 'help.developing', {}) ?? '幫助頁面正在開發中',
+          'home.locatingDevice' =>
+            TranslationOverrides.string(_root.$meta, 'home.locatingDevice', {}) ?? '正在定位最近的設備...',
+          'home.nearestDevice' =>
+            ({required Object name, required Object distance}) =>
+                TranslationOverrides.string(_root.$meta, 'home.nearestDevice', {'name': name, 'distance': distance}) ??
+                '${name} ${distance}',
+          'home.noAvailableDevice' =>
+            TranslationOverrides.string(_root.$meta, 'home.noAvailableDevice', {}) ?? '暫無可用設備',
           'home.selectCity' => TranslationOverrides.string(_root.$meta, 'home.selectCity', {}) ?? '選擇城市',
           'home.nearbyDevices' => TranslationOverrides.string(_root.$meta, 'home.nearbyDevices', {}) ?? '附近設備',
           'home.moreDevices' => TranslationOverrides.string(_root.$meta, 'home.moreDevices', {}) ?? '更多設備',
@@ -2391,6 +2409,7 @@ extension on TranslationsZhTw {
           'profile.walletBalance' => TranslationOverrides.string(_root.$meta, 'profile.walletBalance', {}) ?? '錢包餘額',
           'profile.coin' => TranslationOverrides.string(_root.$meta, 'profile.coin', {}) ?? '積分',
           'profile.couponCount' => TranslationOverrides.string(_root.$meta, 'profile.couponCount', {}) ?? '優惠券',
+          'profile.pointsMall' => TranslationOverrides.string(_root.$meta, 'profile.pointsMall', {}) ?? '積分兌換',
           'settings.title' => TranslationOverrides.string(_root.$meta, 'settings.title', {}) ?? '設定',
           'settings.general' => TranslationOverrides.string(_root.$meta, 'settings.general', {}) ?? '通用',
           'settings.language' => TranslationOverrides.string(_root.$meta, 'settings.language', {}) ?? '語言',
@@ -2406,15 +2425,15 @@ extension on TranslationsZhTw {
           'settings.chinese' => TranslationOverrides.string(_root.$meta, 'settings.chinese', {}) ?? '簡體中文',
           'settings.traditionalChinese' =>
             TranslationOverrides.string(_root.$meta, 'settings.traditionalChinese', {}) ?? '繁體中文',
+          _ => null,
+        } ??
+        switch (path) {
           'settings.theme' => TranslationOverrides.string(_root.$meta, 'settings.theme', {}) ?? '主題模式',
           'settings.themeScheme' => TranslationOverrides.string(_root.$meta, 'settings.themeScheme', {}) ?? '主題配色',
           'settings.schemes.shadOrange' =>
             TranslationOverrides.string(_root.$meta, 'settings.schemes.shadOrange', {}) ?? '活力橙 (ShadOrange)',
           'settings.schemes.shadGreen' =>
             TranslationOverrides.string(_root.$meta, 'settings.schemes.shadGreen', {}) ?? '自然綠 (ShadGreen)',
-          _ => null,
-        } ??
-        switch (path) {
           'settings.schemes.bahamaBlue' =>
             TranslationOverrides.string(_root.$meta, 'settings.schemes.bahamaBlue', {}) ?? '巴哈馬藍 (BahamaBlue)',
           'settings.schemes.damask' =>

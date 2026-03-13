@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:material_symbols_icons/symbols.dart';
+import 'package:lunchbox/features/invite/widgets/invite_code_card.dart';
+import 'package:lunchbox/features/invite/widgets/invite_process_steps.dart';
+import 'package:lunchbox/features/invite/widgets/invite_reward_card.dart';
+import 'package:lunchbox/features/invite/widgets/invite_stats_card.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/routes/app_routes.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// 邀请好友页面
 class InviteFriendsView extends StatelessWidget {
@@ -16,6 +19,7 @@ class InviteFriendsView extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
+      backgroundColor: colorScheme.surface,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(t.invite.title),
@@ -31,194 +35,64 @@ class InviteFriendsView extends StatelessWidget {
                 context.push('${AppRoutes.invite}/${AppRoutes.inviteRules}');
               },
               icon: Icon(
-                Symbols.assignment,
+                Symbols.description,
                 color: colorScheme.onPrimary,
                 size: 16.sp,
               ),
               label: Text(
                 t.invite.ruleBtn,
-                style: TextStyle(color: colorScheme.onPrimary, fontSize: 14.sp),
+                style: TextStyle(color: colorScheme.onPrimary, fontSize: 13.sp),
               ),
               style: TextButton.styleFrom(
-                backgroundColor: colorScheme.onPrimary.withValues(alpha: 0.2),
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
+                backgroundColor: Colors.white.withValues(alpha: 0.2),
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                shape: const StadiumBorder(),
               ),
             ),
           ),
         ],
       ),
-      body: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [colorScheme.primary, colorScheme.primaryContainer],
-          ),
-        ),
-        child: Column(
-          children: [
-            SizedBox(height: 100.h),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Text(
-                      t.invite.title,
-                      style: TextStyle(
-                        color: colorScheme.onPrimary,
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 24.h),
-                    _buildRewardCard(colorScheme),
-                    SizedBox(height: 16.h),
-                    _buildInviteCode(colorScheme),
-                    SizedBox(height: 32.h),
-                    _buildBottomPanel(context, colorScheme),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRewardCard(ColorScheme colorScheme) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 24.w),
-      padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            colorScheme.onPrimary.withValues(alpha: 0.15),
-            colorScheme.onPrimary.withValues(alpha: 0.05),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: colorScheme.onPrimary.withValues(alpha: 0.2)),
-      ),
-      child: Row(
+      body: Stack(
         children: [
-          Container(
-            width: 40.w,
-            height: 40.w,
-            decoration: BoxDecoration(
-              color: colorScheme.secondary,
-              shape: BoxShape.circle,
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              '得',
-              style: TextStyle(
-                color: colorScheme.onSecondary,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 420.h,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [colorScheme.primary, colorScheme.primaryContainer],
+                ),
               ),
             ),
           ),
-          SizedBox(width: 16.w),
-          Container(
-            width: 1.w,
-            height: 40.h,
-            color: colorScheme.onPrimary.withValues(alpha: 0.3),
-          ),
-          SizedBox(width: 16.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      t.invite.rewardTitle,
-                      style: TextStyle(
-                        color: colorScheme.onPrimary,
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
+          SafeArea(
+            bottom: false,
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: Column(
+                children: [
+                  SizedBox(height: 16.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Column(
+                      children: [
+                        const InviteRewardCard(),
+                        SizedBox(height: 16.h),
+                        const InviteCodeCard(code: '69875AB30ED339.95006775'),
+                      ],
                     ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      t.invite.rewardSubtitle,
-                      style: TextStyle(
-                        color: colorScheme.onPrimary,
-                        fontSize: 16.sp,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  t.invite.rewardDesc,
-                  style: TextStyle(
-                    color: colorScheme.onPrimary.withValues(alpha: 0.7),
-                    fontSize: 12.sp,
                   ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInviteCode(ColorScheme colorScheme) {
-    const code = '69875AB30ED339.95006775';
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 24.w),
-      padding: EdgeInsets.all(20.w),
-      decoration: BoxDecoration(
-        color: colorScheme.onPrimary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      child: Column(
-        children: [
-          Text(
-            t.invite.myCode,
-            style: TextStyle(
-              color: colorScheme.onPrimary.withValues(alpha: 0.7),
-              fontSize: 12.sp,
-            ),
-          ),
-          SizedBox(height: 12.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                child: Text(
-                  code,
-                  style: TextStyle(
-                    color: colorScheme.onPrimary,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
+                  SizedBox(height: 32.h),
+                  _buildBottomPanel(context, colorScheme),
+                ],
               ),
-              SizedBox(width: 8.w),
-              GestureDetector(
-                onTap: () {
-                  Clipboard.setData(const ClipboardData(text: code));
-                  // Show toast or snackbar
-                },
-                child: Icon(
-                  Symbols.content_copy,
-                  color: colorScheme.onPrimary.withValues(alpha: 0.7),
-                  size: 16.sp,
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),
@@ -227,224 +101,82 @@ class InviteFriendsView extends StatelessWidget {
 
   Widget _buildBottomPanel(BuildContext context, ColorScheme colorScheme) {
     return Container(
+      width: double.infinity,
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.r),
-          topRight: Radius.circular(24.r),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32.r)),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, -5),
+          ),
+        ],
       ),
-      padding: EdgeInsets.fromLTRB(24.w, 32.h, 24.w, 48.h),
+      padding: EdgeInsets.fromLTRB(
+        24.w,
+        16.h,
+        24.w,
+        48.h + MediaQuery.of(context).padding.bottom,
+      ),
       child: Column(
         children: [
+          Container(
+            width: 36.w,
+            height: 4.h,
+            margin: EdgeInsets.only(bottom: 24.h),
+            decoration: BoxDecoration(
+              color: colorScheme.outlineVariant.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(2.r),
+            ),
+          ),
           SizedBox(
             width: double.infinity,
-            height: 50.h,
-            child: ElevatedButton(
+            height: 54.h,
+            child: ElevatedButton.icon(
               onPressed: () {},
+              icon: Icon(Symbols.send, size: 22.sp),
+              label: Text(
+                t.invite.btnInvite,
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: colorScheme.secondary,
                 foregroundColor: colorScheme.onSecondary,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.r),
+                  borderRadius: BorderRadius.circular(27.r),
                 ),
-                elevation: 0,
+                elevation: 4,
+                shadowColor: colorScheme.secondary.withValues(alpha: 0.3),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Symbols.chat, size: 24.sp),
-                  SizedBox(width: 8.w),
-                  Text(
-                    t.invite.btnInvite,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 32.h),
-          Text(
-            t.invite.processTitle,
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 24.h),
-          _buildProcessSteps(colorScheme),
-          SizedBox(height: 32.h),
-          _buildStats(colorScheme),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProcessSteps(ColorScheme colorScheme) {
-    final steps = [
-      {
-        'icon': Symbols.person_add,
-        'title': t.invite.step1,
-        'desc': t.invite.step1Desc,
-      },
-      {
-        'icon': Symbols.assignment,
-        'title': t.invite.step2,
-        'desc': t.invite.step2Desc,
-      },
-      {
-        'icon': Symbols.check_box,
-        'title': t.invite.step3,
-        'desc': t.invite.step3Desc,
-      },
-      {
-        'icon': Symbols.card_giftcard,
-        'title': t.invite.step4,
-        'desc': t.invite.step4Desc,
-      },
-    ];
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: steps.asMap().entries.map((entry) {
-        final index = entry.key;
-        final step = entry.value;
-        final isLast = index == steps.length - 1;
-
-        return Expanded(
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Container(
-                      width: 48.w,
-                      height: 48.w,
-                      decoration: BoxDecoration(
-                        color: index == 3
-                            ? colorScheme.primary
-                            : colorScheme.primaryContainer,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        step['icon']! as IconData,
-                        color: index == 3
-                            ? colorScheme.onPrimary
-                            : colorScheme.onPrimaryContainer,
-                        size: 24.sp,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      step['title']! as String,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.onSurface,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      step['desc']! as String,
-                      style: TextStyle(
-                        fontSize: 10.sp,
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              if (!isLast)
-                Icon(
-                  Symbols.arrow_forward,
-                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
-                  size: 16.sp,
-                ),
-            ],
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildStats(ColorScheme colorScheme) {
-    return Container(
-      padding: EdgeInsets.all(24.w),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.1)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            t.invite.stats,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: colorScheme.onSurfaceVariant,
-            ),
-          ),
-          SizedBox(height: 16.h),
           Row(
             children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      '0',
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.primary,
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      t.invite.invitedCount,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
+              Container(
+                width: 4.w,
+                height: 16.h,
+                decoration: BoxDecoration(
+                  color: colorScheme.primary,
+                  borderRadius: BorderRadius.circular(2.r),
                 ),
               ),
-              Container(
-                width: 1.w,
-                height: 30.h,
-                color: colorScheme.outline.withValues(alpha: 0.2),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      '0',
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.primary,
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      t.invite.rewardAmount,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
+              SizedBox(width: 8.w),
+              Text(
+                t.invite.processTitle,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
                 ),
               ),
             ],
           ),
+          SizedBox(height: 12.h),
+          const InviteProcessSteps(),
+          SizedBox(height: 32.h),
+          const InviteStatsCard(invitedCount: '0', rewardAmount: '0'),
         ],
       ),
     );

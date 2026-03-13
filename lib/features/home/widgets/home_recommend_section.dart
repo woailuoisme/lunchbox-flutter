@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -116,94 +115,75 @@ class HomeRecommendSection extends ConsumerWidget {
     ColorScheme colorScheme,
     bool isLoading,
   ) {
-    return OpenContainer(
-      transitionType: ContainerTransitionType.fade,
-      openBuilder: (context, _) {
-        // 模拟商品详情页跳转
-        return Scaffold(
-          appBar: AppBar(title: Text(product.name)),
-          body: Center(child: Text('商品详情: ${product.name}')),
-        );
-      },
-      closedElevation: 0,
-      closedColor: Colors.transparent,
-      closedShape: RoundedRectangleBorder(
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5.w),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20.r),
-      ),
-      closedBuilder: (context, openContainer) {
-        return Container(
-          margin: EdgeInsets.symmetric(horizontal: 5.w),
-          decoration: BoxDecoration(
-            color: colorScheme.surface,
-            borderRadius: BorderRadius.circular(20.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20.r),
-                  ),
-                  child: AppImage(
-                    imageUrl: product.image,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+              child: AppImage(
+                imageUrl: product.image,
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
-              Padding(
-                padding: EdgeInsets.all(12.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(12.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.name,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 8.h),
+                Row(
                   children: [
                     Text(
-                      product.name,
+                      '¥${product.price}',
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
+                        color: colorScheme.primary,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 8.h),
-                    Row(
-                      children: [
-                        Text(
-                          '¥${product.price}',
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                            color: colorScheme.primary,
-                          ),
+                    if (product.originalPrice != null) ...[
+                      SizedBox(width: 8.w),
+                      Text(
+                        '¥${product.originalPrice}',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          decoration: TextDecoration.lineThrough,
+                          color: colorScheme.onSurfaceVariant,
                         ),
-                        if (product.originalPrice != null) ...[
-                          SizedBox(width: 8.w),
-                          Text(
-                            '¥${product.originalPrice}',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              decoration: TextDecoration.lineThrough,
-                              color: colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
+                      ),
+                    ],
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }

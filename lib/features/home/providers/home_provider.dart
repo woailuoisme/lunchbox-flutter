@@ -47,22 +47,20 @@ class HomeNotifier extends _$HomeNotifier {
     final longitude = position?.longitude ?? 114.057868;
 
     // 获取最近设备依赖经纬度
-    final nearestDeviceList = await homeRepository.getNearestDevice(
+    final nearestDevice = await homeRepository.getNearestDevice(
       latitude: latitude,
       longitude: longitude,
     );
 
     LoggerUtils.i(
       'HomeNotifier: Data loaded - Banners: ${banners.length}, '
-      'Products: ${recommendProducts.length}, Nearest: ${nearestDeviceList.isNotEmpty ? nearestDeviceList.first.name : 'None'}',
+      'Products: ${recommendProducts.length}, Nearest: ${nearestDevice?.name ?? 'None'}',
     );
 
     return HomeState(
       banners: banners,
       recommendProducts: recommendProducts,
-      nearestDevice: nearestDeviceList.isNotEmpty
-          ? nearestDeviceList.first
-          : null,
+      nearestDevice: nearestDevice,
     );
   }
 

@@ -1,9 +1,17 @@
 {
+  "locatingDevice": "Locating nearest device...",
+  "nearestDevice": "${name} ${distance}",
+  "noAvailableDevice": "No devices available",
   "selectCity": "Select City",
   "nearbyDevices": "Nearby Devices",
   "moreDevices": "More Devices",
   "deviceDistance": "${name} is ${distance} away",
   "recommendTitle": "Recommended for Me",
+  "selfPickup": "Self Pickup",
+  "selfPickupHint": "Scan to Order / Take Away",
+  "teamOrder": "Team Order",
+  "teamOrderHint": "Multi-person / Team Ordering",
+  "welcome": "Hello, Richer User",
   "grid": {
     "welfare": "Welfare",
     "service": "Service",

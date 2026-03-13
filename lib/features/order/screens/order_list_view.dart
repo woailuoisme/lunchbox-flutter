@@ -8,6 +8,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:lunchbox/features/order/entities/order_model.dart';
 import 'package:lunchbox/features/order/entities/order_product_model.dart';
+import 'package:lunchbox/features/order/screens/order_review_view.dart';
 import 'package:lunchbox/features/order/widgets/order_action_button.dart';
 import 'package:lunchbox/features/order/widgets/order_empty_state.dart';
 import 'package:lunchbox/features/order/widgets/order_list_item.dart';
@@ -135,6 +136,14 @@ class _OrderListViewState extends ConsumerState<OrderListView>
             // Navigate to cart
             if (context.mounted) {
               await context.push(AppRoutes.cart);
+            }
+          }
+          break;
+        case 'review':
+          if (context.mounted) {
+            final success = await OrderReviewView.show(context, order);
+            if (success == true && context.mounted) {
+              _refreshCurrentTab();
             }
           }
           break;
@@ -336,6 +345,17 @@ class _OrderListViewState extends ConsumerState<OrderListView>
       );
     } else if (order.status == OrderStatus.completed ||
         order.status == OrderStatus.refund) {
+      if (order.status == OrderStatus.completed) {
+        buttons.add(
+          OrderActionButton(
+            text: t.order.review.title,
+            textColor: theme.colorScheme.primary,
+            borderColor: theme.colorScheme.primary,
+            onTap: () => _handleAction(order, 'review', context),
+          ),
+        );
+        buttons.add(SizedBox(width: 8.w));
+      }
       buttons.add(
         OrderActionButton(
           text: t.order.deleteOrder,

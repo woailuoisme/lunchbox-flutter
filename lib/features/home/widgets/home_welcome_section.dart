@@ -47,10 +47,13 @@ class HomeWelcomeSection extends ConsumerWidget {
                 SizedBox(width: 4.w),
                 Text(
                   isLoading
-                      ? '正在定位最近的设备...'
+                      ? t.home.locatingDevice
                       : (nearestDevice != null
-                            ? '${nearestDevice.name} ${nearestDevice.distanceKm}'
-                            : '暂无可用设备'),
+                            ? t.home.nearestDevice(
+                                name: nearestDevice.name,
+                                distance: nearestDevice.distanceKm,
+                              )
+                            : t.home.noAvailableDevice),
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: colorScheme.onSurfaceVariant,

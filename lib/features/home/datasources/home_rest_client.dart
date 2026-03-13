@@ -25,7 +25,7 @@ sealed class HomeRestClient {
   });
 
   @GET('/api/v1/home/nearest_device')
-  Future<ApiResponse<List<NearestDeviceModel>>> getNearestDevice({
+  Future<ApiResponse<NearestDeviceModel>> getNearestDevice({
     @Query('latitude') required double latitude,
     @Query('longitude') required double longitude,
     @Query('limit') int limit = 1,
