@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SplashState {
 
- bool get isLoading; String? get errorMessage; double get initializationProgress; String? get navigationPath; bool get hasInitialized;
+ bool get isLoading; String? get errorMessage; double get initializationProgress; String? get navigationPath; bool get hasInitialized; bool get isFirstLaunch;
 /// Create a copy of SplashState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $SplashStateCopyWith<SplashState> get copyWith => _$SplashStateCopyWithImpl<Spla
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SplashState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.initializationProgress, initializationProgress) || other.initializationProgress == initializationProgress)&&(identical(other.navigationPath, navigationPath) || other.navigationPath == navigationPath)&&(identical(other.hasInitialized, hasInitialized) || other.hasInitialized == hasInitialized));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SplashState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.initializationProgress, initializationProgress) || other.initializationProgress == initializationProgress)&&(identical(other.navigationPath, navigationPath) || other.navigationPath == navigationPath)&&(identical(other.hasInitialized, hasInitialized) || other.hasInitialized == hasInitialized)&&(identical(other.isFirstLaunch, isFirstLaunch) || other.isFirstLaunch == isFirstLaunch));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,errorMessage,initializationProgress,navigationPath,hasInitialized);
+int get hashCode => Object.hash(runtimeType,isLoading,errorMessage,initializationProgress,navigationPath,hasInitialized,isFirstLaunch);
 
 @override
 String toString() {
-  return 'SplashState(isLoading: $isLoading, errorMessage: $errorMessage, initializationProgress: $initializationProgress, navigationPath: $navigationPath, hasInitialized: $hasInitialized)';
+  return 'SplashState(isLoading: $isLoading, errorMessage: $errorMessage, initializationProgress: $initializationProgress, navigationPath: $navigationPath, hasInitialized: $hasInitialized, isFirstLaunch: $isFirstLaunch)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $SplashStateCopyWith<$Res>  {
   factory $SplashStateCopyWith(SplashState value, $Res Function(SplashState) _then) = _$SplashStateCopyWithImpl;
 @useResult
 $Res call({
- bool isLoading, String? errorMessage, double initializationProgress, String? navigationPath, bool hasInitialized
+ bool isLoading, String? errorMessage, double initializationProgress, String? navigationPath, bool hasInitialized, bool isFirstLaunch
 });
 
 
@@ -62,13 +62,14 @@ class _$SplashStateCopyWithImpl<$Res>
 
 /// Create a copy of SplashState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? errorMessage = freezed,Object? initializationProgress = null,Object? navigationPath = freezed,Object? hasInitialized = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? errorMessage = freezed,Object? initializationProgress = null,Object? navigationPath = freezed,Object? hasInitialized = null,Object? isFirstLaunch = null,}) {
   return _then(_self.copyWith(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,initializationProgress: null == initializationProgress ? _self.initializationProgress : initializationProgress // ignore: cast_nullable_to_non_nullable
 as double,navigationPath: freezed == navigationPath ? _self.navigationPath : navigationPath // ignore: cast_nullable_to_non_nullable
 as String?,hasInitialized: null == hasInitialized ? _self.hasInitialized : hasInitialized // ignore: cast_nullable_to_non_nullable
+as bool,isFirstLaunch: null == isFirstLaunch ? _self.isFirstLaunch : isFirstLaunch // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -151,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  String? errorMessage,  double initializationProgress,  String? navigationPath,  bool hasInitialized)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  String? errorMessage,  double initializationProgress,  String? navigationPath,  bool hasInitialized,  bool isFirstLaunch)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SplashState() when $default != null:
-return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,_that.navigationPath,_that.hasInitialized);case _:
+return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,_that.navigationPath,_that.hasInitialized,_that.isFirstLaunch);case _:
   return orElse();
 
 }
@@ -172,10 +173,10 @@ return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  String? errorMessage,  double initializationProgress,  String? navigationPath,  bool hasInitialized)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  String? errorMessage,  double initializationProgress,  String? navigationPath,  bool hasInitialized,  bool isFirstLaunch)  $default,) {final _that = this;
 switch (_that) {
 case _SplashState():
-return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,_that.navigationPath,_that.hasInitialized);}
+return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,_that.navigationPath,_that.hasInitialized,_that.isFirstLaunch);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -189,10 +190,10 @@ return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  String? errorMessage,  double initializationProgress,  String? navigationPath,  bool hasInitialized)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  String? errorMessage,  double initializationProgress,  String? navigationPath,  bool hasInitialized,  bool isFirstLaunch)?  $default,) {final _that = this;
 switch (_that) {
 case _SplashState() when $default != null:
-return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,_that.navigationPath,_that.hasInitialized);case _:
+return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,_that.navigationPath,_that.hasInitialized,_that.isFirstLaunch);case _:
   return null;
 
 }
@@ -204,7 +205,7 @@ return $default(_that.isLoading,_that.errorMessage,_that.initializationProgress,
 
 
 class _SplashState implements SplashState {
-  const _SplashState({this.isLoading = true, this.errorMessage, this.initializationProgress = 0.0, this.navigationPath, this.hasInitialized = false});
+  const _SplashState({this.isLoading = true, this.errorMessage, this.initializationProgress = 0.0, this.navigationPath, this.hasInitialized = false, this.isFirstLaunch = true});
   
 
 @override@JsonKey() final  bool isLoading;
@@ -212,6 +213,7 @@ class _SplashState implements SplashState {
 @override@JsonKey() final  double initializationProgress;
 @override final  String? navigationPath;
 @override@JsonKey() final  bool hasInitialized;
+@override@JsonKey() final  bool isFirstLaunch;
 
 /// Create a copy of SplashState
 /// with the given fields replaced by the non-null parameter values.
@@ -223,16 +225,16 @@ _$SplashStateCopyWith<_SplashState> get copyWith => __$SplashStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SplashState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.initializationProgress, initializationProgress) || other.initializationProgress == initializationProgress)&&(identical(other.navigationPath, navigationPath) || other.navigationPath == navigationPath)&&(identical(other.hasInitialized, hasInitialized) || other.hasInitialized == hasInitialized));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SplashState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.initializationProgress, initializationProgress) || other.initializationProgress == initializationProgress)&&(identical(other.navigationPath, navigationPath) || other.navigationPath == navigationPath)&&(identical(other.hasInitialized, hasInitialized) || other.hasInitialized == hasInitialized)&&(identical(other.isFirstLaunch, isFirstLaunch) || other.isFirstLaunch == isFirstLaunch));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,errorMessage,initializationProgress,navigationPath,hasInitialized);
+int get hashCode => Object.hash(runtimeType,isLoading,errorMessage,initializationProgress,navigationPath,hasInitialized,isFirstLaunch);
 
 @override
 String toString() {
-  return 'SplashState(isLoading: $isLoading, errorMessage: $errorMessage, initializationProgress: $initializationProgress, navigationPath: $navigationPath, hasInitialized: $hasInitialized)';
+  return 'SplashState(isLoading: $isLoading, errorMessage: $errorMessage, initializationProgress: $initializationProgress, navigationPath: $navigationPath, hasInitialized: $hasInitialized, isFirstLaunch: $isFirstLaunch)';
 }
 
 
@@ -243,7 +245,7 @@ abstract mixin class _$SplashStateCopyWith<$Res> implements $SplashStateCopyWith
   factory _$SplashStateCopyWith(_SplashState value, $Res Function(_SplashState) _then) = __$SplashStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isLoading, String? errorMessage, double initializationProgress, String? navigationPath, bool hasInitialized
+ bool isLoading, String? errorMessage, double initializationProgress, String? navigationPath, bool hasInitialized, bool isFirstLaunch
 });
 
 
@@ -260,13 +262,14 @@ class __$SplashStateCopyWithImpl<$Res>
 
 /// Create a copy of SplashState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? errorMessage = freezed,Object? initializationProgress = null,Object? navigationPath = freezed,Object? hasInitialized = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? errorMessage = freezed,Object? initializationProgress = null,Object? navigationPath = freezed,Object? hasInitialized = null,Object? isFirstLaunch = null,}) {
   return _then(_SplashState(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,initializationProgress: null == initializationProgress ? _self.initializationProgress : initializationProgress // ignore: cast_nullable_to_non_nullable
 as double,navigationPath: freezed == navigationPath ? _self.navigationPath : navigationPath // ignore: cast_nullable_to_non_nullable
 as String?,hasInitialized: null == hasInitialized ? _self.hasInitialized : hasInitialized // ignore: cast_nullable_to_non_nullable
+as bool,isFirstLaunch: null == isFirstLaunch ? _self.isFirstLaunch : isFirstLaunch // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

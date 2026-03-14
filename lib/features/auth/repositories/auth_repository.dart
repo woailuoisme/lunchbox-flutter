@@ -226,5 +226,7 @@ class AuthRepository {
     await _storageService.write(AppConstants.keyAuthToken, token);
     await _storageService.write(AppConstants.keyUserId, userId);
     await _storageService.write(AppConstants.keyUserPermissions, permissions);
+    // 登录成功后，确保下次启动不再进入引导页
+    await _storageService.write(AppConstants.keyIsFirstLaunch, false);
   }
 }

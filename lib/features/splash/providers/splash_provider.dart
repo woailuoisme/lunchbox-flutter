@@ -18,6 +18,7 @@ sealed class SplashState with _$SplashState {
     @Default(0.0) double initializationProgress,
     String? navigationPath,
     @Default(false) bool hasInitialized,
+    @Default(true) bool isFirstLaunch,
   }) = _SplashState;
 }
 
@@ -114,14 +115,30 @@ class SplashNotifier extends _$SplashNotifier {
         storageService.read<bool>(AppConstants.keyIsFirstLaunch) ?? true;
 
     String targetPath;
-    if (isFirstLaunch) {
+    if (isLoggedIn) {
+      targetPath = AppRoutes.home;
+    } else if (isFirstLaunch) {
       targetPath = AppRoutes.onboarding;
     } else {
-      targetPath = isLoggedIn ? AppRoutes.home : AppRoutes.signin;
+      targetPath = AppRoutes.signin;
     }
 
     state = AsyncData(currentState.copyWith(navigationPath: targetPath));
     LoggerUtils.i('SplashNotifier: Target path -> $targetPath');
+  }
+
+  /// 引导页完成后调用：更新导航路径，防止重复显示引导页
+  void notifyOnboardingComplete() {
+    final current = state.value;
+    if (current != null) {
+      state = AsyncData(
+        current.copyWith(
+          navigationPath: AppRoutes.signin,
+          isFirstLaunch: false,
+        ),
+      );
+      LoggerUtils.i('SplashNotifier: Onboarding completed, path set to signin');
+    }
   }
 
   /// 重试初始化流程

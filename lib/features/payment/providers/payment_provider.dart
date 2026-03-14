@@ -4,6 +4,7 @@ import 'package:flutter_stripe/flutter_stripe.dart' hide PaymentMethod;
 import 'package:lunchbox/core/env/app_env.dart';
 import 'package:lunchbox/core/theme/theme_provider.dart';
 import 'package:lunchbox/core/utils/logger_utils.dart';
+import 'package:lunchbox/features/payment/entities/payment_request.dart';
 import 'package:lunchbox/features/payment/providers/payment_state.dart';
 import 'package:lunchbox/features/payment/repositories/payment_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -29,7 +30,11 @@ class PaymentNotifier extends _$PaymentNotifier {
   }
 
   /// 处理支付提交
-  Future<void> submitPayment() async {
+  Future<void> submitPayment({
+    int? userCouponId,
+    required List<PaymentProductItem> productList,
+    String? description,
+  }) async {
     final current = state.value;
     if (current == null || state.isLoading) return;
 
@@ -41,15 +46,34 @@ class PaymentNotifier extends _$PaymentNotifier {
         await presentPaymentSheet();
       }
     } else {
-      await _payWithBalance();
+      await _payWithBalance(
+        userCouponId: userCouponId,
+        productList: productList,
+        description: description,
+      );
     }
   }
 
   /// 余额支付逻辑
-  Future<void> _payWithBalance() async {
+  Future<void> _payWithBalance({
+    int? userCouponId,
+    required List<PaymentProductItem> productList,
+    String? description,
+  }) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      await Future<void>.delayed(const Duration(seconds: 1));
+      final paymentRepo = ref.read(paymentRepositoryProvider);
+
+      final request = PaymentRequest(
+        amount: amount,
+        payType: PaymentPayType.balance,
+        productList: productList,
+        userCouponId: userCouponId,
+        description: description,
+      );
+
+      await paymentRepo.pay(request);
+
       LoggerUtils.i('PaymentNotifier: Balance payment successful');
       return state.value!.copyWith(isPaymentSuccessful: true);
     });

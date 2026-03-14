@@ -50,7 +50,7 @@ final class PaymentNotifierProvider
   }
 }
 
-String _$paymentNotifierHash() => r'79155b8a4a1b7800a5291be9f08ef76007e2ed61';
+String _$paymentNotifierHash() => r'3074d27bed920afd9dd503380f0c4cd03ca95173';
 
 final class PaymentNotifierFamily extends $Family
     with

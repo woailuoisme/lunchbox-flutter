@@ -1,6 +1,7 @@
 import 'package:lunchbox/features/payment/datasources/payment_rest_client.dart';
 import 'package:lunchbox/features/payment/entities/payment_intent_request.dart';
 import 'package:lunchbox/features/payment/entities/payment_intent_response.dart';
+import 'package:lunchbox/features/payment/entities/payment_request.dart';
 import 'package:lunchbox/features/payment/entities/setup_intent_response.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -33,6 +34,12 @@ class PaymentRepository {
   /// 创建设置意向 (Setup Intent)
   Future<SetupIntentResponse?> createSetupIntent() async {
     final response = await _client.createStripeSetupIntent();
+    return response.data;
+  }
+
+  /// 支付
+  Future<dynamic> pay(PaymentRequest request) async {
+    final response = await _client.pay(request: request);
     return response.data;
   }
 }

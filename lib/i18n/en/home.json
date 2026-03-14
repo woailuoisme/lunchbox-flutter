@@ -8,9 +8,9 @@
   "deviceDistance": "${name} is ${distance} away",
   "recommendTitle": "Recommended for Me",
   "selfPickup": "Self Pickup",
-  "selfPickupHint": "Scan to Order / Take Away",
+  "selfPickupHint": "Scan to Order/Take Away",
   "teamOrder": "Team Order",
-  "teamOrderHint": "Multi-person / Team Ordering",
+  "teamOrderHint": "Multi-person/Team Ordering",
   "welcome": "Hello, Richer User",
   "grid": {
     "welfare": "Welfare",

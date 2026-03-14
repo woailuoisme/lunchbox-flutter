@@ -2,9 +2,21 @@
 variables:
   PGYER_API_KEY: "your api key" # Replace with your own API keys
 output: dist/
+
 releases:
   - name: dev
     jobs:
+      # Build and publish AAB to PGYER
+      - name: release-dev-android-aab
+        package:
+          platform: android
+          target: appbundle
+          build_args:
+            target-platform: android-arm,android-arm64
+            dart-define:
+              APP_ENV: dev
+        publish_to: pgyer
+
       # Build and publish APK to PGYER
       - name: release-dev-android
         package:
@@ -25,4 +37,39 @@ releases:
             export-options-plist: ios/dev_ExportOptions.plist
             dart-define:
               APP_ENV: dev
+        publish_to: pgyer
+
+  - name: prod
+    jobs:
+      # Build and publish AAB to PGYER
+      - name: release-prod-android-aab
+        package:
+          platform: android
+          target: appbundle
+          build_args:
+            target-platform: android-arm,android-arm64
+            dart-define:
+              APP_ENV: prod
+        publish_to: pgyer
+
+      # Build and publish APK to PGYER
+      - name: release-prod-android-apk
+        package:
+          platform: android
+          target: apk
+          build_args:
+            target-platform: android-arm,android-arm64
+            dart-define:
+              APP_ENV: prod
+        publish_to: pgyer
+
+      # Build and publish IPA to PGYER
+      - name: release-prod-ios
+        package:
+          platform: ios
+          target: ipa
+          build_args:
+            export-options-plist: ios/prod_ExportOptions.plist
+            dart-define:
+              APP_ENV: prod
         publish_to: pgyer

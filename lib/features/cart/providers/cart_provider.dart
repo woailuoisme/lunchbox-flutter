@@ -5,6 +5,7 @@ import 'package:lunchbox/features/cart/entities/cart_item_model.dart';
 import 'package:lunchbox/features/cart/entities/cart_product_model.dart';
 import 'package:lunchbox/features/cart/providers/cart_state.dart';
 import 'package:lunchbox/features/cart/repositories/cart_repository.dart';
+import 'package:lunchbox/features/device/providers/device_provider.dart';
 import 'package:lunchbox/features/product/entities/category_product_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -21,17 +22,33 @@ class CartNotifier extends _$CartNotifier {
 
   Future<void> addToCart(ProductModel product, {int quantity = 1}) async {
     final cartProduct = CartProductModel.fromProductModel(product);
-    await addCartProductToCart(cartProduct, quantity: quantity);
+    final selectedDevice = ref.read(selectedDeviceProvider);
+    await addCartProductToCart(
+      cartProduct,
+      quantity: quantity,
+      deviceId: selectedDevice?.id.toString(),
+    );
   }
 
   Future<void> addCartProductToCart(
     CartProductModel product, {
     int quantity = 1,
+    String? deviceId,
   }) async {
     state = const AsyncLoading<CartState>();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(cartRepositoryProvider);
-      await repository.addToCart(product, quantity: quantity);
+
+      // 如果提供了设备ID，更新仓库中的当前设备ID
+      if (deviceId != null) {
+        repository.setCurrentDeviceId(deviceId);
+      }
+
+      await repository.addToCart(
+        product,
+        quantity: quantity,
+        deviceId: deviceId,
+      );
       final items = await repository.getCartItems();
       LoggerUtils.i('CartNotifier: Added ${product.name} to cart');
       return CartState(cartItems: items);

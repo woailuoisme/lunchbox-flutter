@@ -28,7 +28,10 @@ GoRouter goRouter(Ref ref) {
   final splashAsync = ref.watch(splashProvider);
   final splashState = splashAsync.value;
   final hasInitialized = splashState?.hasInitialized ?? false;
+  // isFirstLaunch 由 SplashNotifier 管理，完成引导后会被设为 false
+  final isFirstLaunch = splashState?.isFirstLaunch ?? true;
   final analytics = ref.watch(firebaseAnalyticsProvider);
+
 
   return GoRouter(
     navigatorKey: rootNavigatorKey,
@@ -61,20 +64,32 @@ GoRouter goRouter(Ref ref) {
                 : const SignInRoute().location);
       }
 
+      final isOnboardingRoute =
+          state.matchedLocation == const OnboardingRoute().location;
+
       final isAuthRoute =
           state.matchedLocation == const SignInRoute().location ||
           state.matchedLocation == const SignUpRoute().location ||
           state.matchedLocation == const ForgotPasswordRoute().location ||
           isSplashRoute ||
-          state.matchedLocation == const OnboardingRoute().location;
+          isOnboardingRoute;
+
+      // 引导页已完成但仍在 /onboarding：防止 GoRouter 重建（如登录失败）导致回退
+      if (!isFirstLaunch && isOnboardingRoute) {
+        return isLoggedIn
+            ? const HomeRoute().location
+            : const SignInRoute().location;
+      }
 
       // 如果用户未认证且不在认证相关页面，重定向到登录页
       if (!isLoggedIn && !isAuthRoute) {
         return const SignInRoute().location;
       }
 
-      // 如果用户已认证且在登录页，重定向到首页
-      if (isLoggedIn && state.matchedLocation == const SignInRoute().location) {
+      // 如果用户已认证且在登录页或引导页，重定向到首页
+      if (isLoggedIn &&
+          (state.matchedLocation == const SignInRoute().location ||
+              isOnboardingRoute)) {
         return const HomeRoute().location;
       }
 

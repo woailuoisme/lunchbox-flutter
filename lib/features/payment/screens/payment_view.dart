@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lunchbox/features/cart/cart.dart';
 import 'package:lunchbox/features/payment/providers/payment_provider.dart';
 import 'package:lunchbox/features/payment/providers/payment_state.dart';
+import 'package:lunchbox/features/payment/entities/payment_request.dart';
 import 'package:lunchbox/i18n/translations.g.dart';
 import 'package:lunchbox/features/payment/widgets/confirmation_bottom_bar.dart';
 import 'package:lunchbox/features/payment/widgets/order_amount_card.dart';
@@ -27,11 +28,13 @@ class PaymentView extends ConsumerWidget {
 
     // 监听支付状态
     final paymentState = ref.watch(paymentProvider(totalAmount));
-    final paymentNotifier = ref.watch(paymentProvider(totalAmount).notifier);
+    final paymentNotifier = ref.read(paymentProvider(totalAmount).notifier);
     final theme = Theme.of(context);
 
     // 监听支付结果
     ref.listen(paymentProvider(totalAmount), (previous, next) {
+      if (next.isLoading) return;
+
       if (next.value?.isPaymentSuccessful ?? false) {
         if (context.mounted) {
           context.go('/orders'); // 支付成功跳转订单列表
@@ -115,7 +118,26 @@ class PaymentView extends ConsumerWidget {
               ConfirmationBottomBar(
                 totalAmount: totalAmount,
                 isLoading: paymentState.isLoading,
-                onSubmit: () => paymentNotifier.submitPayment(),
+                onSubmit: () {
+                  final cartRepo = ref.read(cartRepositoryProvider);
+                  final currentDeviceId = cartRepo.getCurrentDeviceId();
+
+                  final productList = items.map((item) {
+                    // 优先从 item 中获取 deviceId，如果没有则尝试从仓库获取当前设备ID
+                    final deviceIdStr =
+                        (item.deviceId != null && item.deviceId!.isNotEmpty)
+                        ? item.deviceId!
+                        : currentDeviceId ?? '0';
+
+                    return PaymentProductItem(
+                      productId: int.tryParse(item.productId) ?? 0,
+                      deviceId: int.tryParse(deviceIdStr) ?? 0,
+                      quantity: item.quantity,
+                    );
+                  }).toList();
+
+                  paymentNotifier.submitPayment(productList: productList);
+                },
               ),
             ],
           ),

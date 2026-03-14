@@ -58,7 +58,11 @@ class CartRepository {
   }
 
   /// 添加商品到购物车
-  Future<void> addToCart(CartProductModel product, {int quantity = 1}) async {
+  Future<void> addToCart(
+    CartProductModel product, {
+    int quantity = 1,
+    String? deviceId,
+  }) async {
     final existingItem =
         await (_db.select(_db.cartItems)
               ..where((t) => t.productId.equals(product.id.toString())))
@@ -85,7 +89,7 @@ class CartRepository {
           .into(_db.cartItems)
           .insert(
             CartItemsCompanion.insert(
-              deviceId: getCurrentDeviceId() ?? '',
+              deviceId: deviceId ?? getCurrentDeviceId() ?? '',
               productId: product.id.toString(),
               productData: jsonEncode(product.toJson()),
               quantity: Value(quantity),
